@@ -1,0 +1,18 @@
+Package: formatable
+Title: Formatters and ASCII Rendering For Tables
+Date: 2021-10-06
+Version: 0.1.0
+Authors@R: c(
+  person("Gabriel", "Becker", email = "gabembecker@gmail.com", role = c("aut", "cre")),
+  person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = "aut"),
+  person("F. Hoffmann-La Roche", role = "cph"))
+Description: We provide a framework for rendering complex tables to ASCII, and aset of formatters for transforming values or sets of values into ASCII-display ready strings.
+License: Apache License 2.0 | file LICENSE
+Depends: methods, R (>= 2.10)
+Imports: htmltools
+Suggests: dplyr, rtables
+Encoding: UTF-8
+LazyData: true
+URL: http://github.com/insightsengineering/formatable
+BugReports: http://github.com/insightsengineering/formatable/issues
+RoxygenNote: 7.1.2
