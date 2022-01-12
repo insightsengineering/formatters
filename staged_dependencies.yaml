@@ -1,0 +1,11 @@
+current_repo:
+  repo: insightsengineering/formatable
+  host: https://github.com
+upstream_repos: {}
+downstream_repos: {}
+  insightsengineering/rlistings:
+    repo: insightsengineering/rlistings
+    host: https://github.com
+  Roche/rtables:
+    repo: Roche/rtables
+    host: https://github.com
