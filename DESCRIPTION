@@ -10,7 +10,7 @@ Description: We provide a framework for rendering complex tables to ASCII, and a
 License: Apache License 2.0 | file LICENSE
 Depends: methods, R (>= 2.10)
 Imports: htmltools
-Suggests: dplyr, rtables
+Suggests: dplyr
 Encoding: UTF-8
 LazyData: true
 URL: http://github.com/insightsengineering/formatable
