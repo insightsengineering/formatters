@@ -99,7 +99,12 @@ matrix_print_form <- function(strings = NULL,
                               nrow_header,
                               has_topleft = TRUE,
                               has_rowlabs = has_topleft,
-                              expand_newlines = TRUE) {
+                              expand_newlines = TRUE,
+                              main_title = "",
+                              subtitles = character(),
+                              page_titles = character(),
+                              main_footer = "",
+                              prov_footer = character()) {
 
     display <- matrix(rep(TRUE, length(strings)), ncol = ncol(strings))
 
@@ -131,7 +136,12 @@ matrix_print_form <- function(strings = NULL,
             display = display,
             row_info = row_info,
             line_grouping = 1:nrow(strings), # this is done for real in .do_mat_expand now
-            ref_footnotes = ref_fnotes
+            ref_footnotes = ref_fnotes,
+            main_title = main_title,
+            subtitles = subtitles,
+            page_titles = page_titles,
+            main_footer = main_footer,
+            prov_footer = prov_footer
         ),
         nlines_header = nlines_header, ## this is done for real in .do_mat_expand nownlines_header,
         nrow_header = nrow_header,

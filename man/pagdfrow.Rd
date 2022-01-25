@@ -20,7 +20,9 @@ pagdfrow(
   rclass = class(row),
   nrowrefs = 0L,
   ncellrefs = 0L,
-  nreflines = 0L
+  nreflines = 0L,
+  force_page = FALSE,
+  page_title = NA_character_
 )
 }
 \arguments{

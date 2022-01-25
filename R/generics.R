@@ -250,7 +250,7 @@ setGeneric("main_title", function(obj) standardGeneric("main_title"))
 #' @export
 #' @rdname title_footer
 setMethod("main_title", "MatrixPrintForm",
-          function(obj) attr(obj, "title"))
+          function(obj) obj$main_title)
 
 ##' @rdname title_footer
 ##' @export
@@ -264,11 +264,37 @@ setGeneric("subtitles", function(obj) standardGeneric("subtitles"))
 #' @export
 #' @rdname title_footer
 setMethod("subtitles", "MatrixPrintForm",
-          function(obj) NULL)
+          function(obj) obj$subtitles)
 
 ##' @rdname title_footer
 ##' @export
 setGeneric("subtitles<-", function(obj, value) standardGeneric("subtitles<-"))
+
+#' @export
+#' @rdname title_footer
+setGeneric("page_titles", function(obj) standardGeneric("page_titles"))
+
+#' @export
+#' @rdname title_footer
+setMethod("page_titles", "MatrixPrintForm",
+          function(obj) obj$page_titles)
+
+setMethod("page_titles", "ANY", function(obj) NULL)
+
+##' @rdname title_footer
+##' @export
+setGeneric("page_titles<-", function(obj, value) standardGeneric("page_titles<-"))
+
+#' @export
+#' @rdname title_footer
+setMethod("page_titles<-", "MatrixPrintForm",
+          function(obj, value) {
+    if(!is.character(value))
+        stop("page titles must be in the form of a character vector, got object of class ", class(value))
+    obj$page_titles <- value
+    obj
+})
+
 
 
 #' @export
@@ -286,6 +312,18 @@ setMethod("main_footer", "MatrixPrintForm",
 setGeneric("main_footer<-", function(obj, value) standardGeneric("main_footer<-"))
 
 
+
+#' @export
+#' @rdname title_footer
+setMethod("main_footer<-", "MatrixPrintForm",
+          function(obj, value) {
+    if(!is.character(value))
+        stop("main footer must be a character vector. Got object of class ", class(value))
+    obj$main_footer <- value
+    obj
+})
+
+
 #' @export
 #' @rdname title_footer
 setGeneric("prov_footer", function(obj) standardGeneric("prov_footer"))
@@ -293,11 +331,24 @@ setGeneric("prov_footer", function(obj) standardGeneric("prov_footer"))
 #' @export
 #' @rdname title_footer
 setMethod("prov_footer", "MatrixPrintForm",
-          function(obj) NULL)
+          function(obj) obj$prov_footer)
 
 #' @rdname title_footer
 #' @export
 setGeneric("prov_footer<-", function(obj, value) standardGeneric("prov_footer<-"))
+
+#' @export
+#' @rdname title_footer
+setMethod("prov_footer<-", "MatrixPrintForm",
+          function(obj, value) {
+    if(!is.character(value))
+        stop("provenance footer must be a character vector. Got object of class ", class(value))
+    obj$prov_footer <- value
+    obj
+})
+
+
+
 
 #' @rdname title_footer
 #' @export
@@ -305,4 +356,4 @@ all_footers <- function(obj) c(main_footer(obj), prov_footer(obj))
 
 #' @rdname title_footer
 #' @export
-all_titles <- function(obj) c(main_title(obj), subtitles(obj))
+all_titles <- function(obj) c(main_title(obj), subtitles(obj), page_titles(obj))

@@ -36,7 +36,9 @@ pagdfrow = function(row,
                     rclass = class(row),
                     nrowrefs = 0L,
                     ncellrefs = 0L,
-                    nreflines = 0L
+                    nreflines = 0L,
+                    force_page = FALSE,
+                    page_title = NA_character_
                     ) {
     data.frame(label = lab,
                name = nm,
@@ -52,6 +54,8 @@ pagdfrow = function(row,
                nrowrefs = nrowrefs,
                ncellrefs = ncellrefs,
                nreflines = nreflines,
+               force_page = force_page,
+               page_title = page_title,
                stringsAsFactors = FALSE)
 }
 
@@ -172,6 +176,7 @@ pag_indices_inner <- function(pagdf, rlpp,
     start = 1
     nr = nrow(pagdf)
     ret = list()
+    force_pags <- which(pagdf$force_pag)
     while(start <= nr) {
         adjrlpp = rlpp - pagdf$par_extent[start]
         stopifnot(adjrlpp > 0)

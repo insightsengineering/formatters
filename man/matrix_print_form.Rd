@@ -17,7 +17,12 @@ matrix_print_form(
   nrow_header,
   has_topleft = TRUE,
   has_rowlabs = has_topleft,
-  expand_newlines = TRUE
+  expand_newlines = TRUE,
+  main_title = "",
+  subtitles = character(),
+  page_titles = character(),
+  main_footer = "",
+  prov_footer = character()
 )
 
 MatrixPrintForm(
@@ -31,7 +36,12 @@ MatrixPrintForm(
   nrow_header,
   has_topleft = TRUE,
   has_rowlabs = has_topleft,
-  expand_newlines = TRUE
+  expand_newlines = TRUE,
+  main_title = "",
+  subtitles = character(),
+  page_titles = character(),
+  main_footer = "",
+  prov_footer = character()
 )
 }
 \arguments{

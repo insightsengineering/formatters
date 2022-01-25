@@ -7,12 +7,18 @@
 \alias{subtitles}
 \alias{subtitles,MatrixPrintForm-method}
 \alias{subtitles<-}
+\alias{page_titles}
+\alias{page_titles,MatrixPrintForm-method}
+\alias{page_titles<-}
+\alias{page_titles<-,MatrixPrintForm-method}
 \alias{main_footer}
 \alias{main_footer,MatrixPrintForm-method}
 \alias{main_footer<-}
+\alias{main_footer<-,MatrixPrintForm-method}
 \alias{prov_footer}
 \alias{prov_footer,MatrixPrintForm-method}
 \alias{prov_footer<-}
+\alias{prov_footer<-,MatrixPrintForm-method}
 \alias{all_footers}
 \alias{all_titles}
 \title{General title/footer accessors}
@@ -29,17 +35,29 @@ subtitles(obj)
 
 subtitles(obj) <- value
 
+page_titles(obj)
+
+\S4method{page_titles}{MatrixPrintForm}(obj)
+
+page_titles(obj) <- value
+
+\S4method{page_titles}{MatrixPrintForm}(obj) <- value
+
 main_footer(obj)
 
 \S4method{main_footer}{MatrixPrintForm}(obj)
 
 main_footer(obj) <- value
 
+\S4method{main_footer}{MatrixPrintForm}(obj) <- value
+
 prov_footer(obj)
 
 \S4method{prov_footer}{MatrixPrintForm}(obj)
 
 prov_footer(obj) <- value
+
+\S4method{prov_footer}{MatrixPrintForm}(obj) <- value
 
 all_footers(obj)
 
