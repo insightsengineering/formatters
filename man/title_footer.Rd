@@ -9,6 +9,7 @@
 \alias{subtitles<-}
 \alias{page_titles}
 \alias{page_titles,MatrixPrintForm-method}
+\alias{page_titles,ANY-method}
 \alias{page_titles<-}
 \alias{page_titles<-,MatrixPrintForm-method}
 \alias{main_footer}
@@ -38,6 +39,8 @@ subtitles(obj) <- value
 page_titles(obj)
 
 \S4method{page_titles}{MatrixPrintForm}(obj)
+
+\S4method{page_titles}{ANY}(obj)
 
 page_titles(obj) <- value
 
