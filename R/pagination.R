@@ -14,6 +14,8 @@
 #' @param nrowrefs integer(1). Number of row referential footnotes for this row
 #' @param ncellrefs integer(1). Number of cell referential footnotes for the cells in this row
 #' @param nreflines integer(1). Total number of lines required by all referential footnotes
+#' @param force_page logical(1). Currently Ignored.
+#' @param page_title logical(1). Currently Ignored.
 #' @param row ANY. Object representing the row, which is used for default values of \code{nm}, \code{lab},
 #' \code{extent} and \code{rclass} if provided. Must have methods for \code{obj_name}, \code{obj_label},
 #' and \code{nlines}, respectively, for default values of \code{nm}, \code{lab} and \code{extent} to

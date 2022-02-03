@@ -51,12 +51,12 @@ rendered.   Elements that  span more  than one  column must  be
 followed  by  the  correct number  of  placeholders  (typically
 either empty strings or repeats of the value).}
 
-\item{spans}{numeric  matrix.   Matrix  of  same  dimension  as
+\item{spans}{numeric  matrix.    Matrix  of  same  dimension  as
 \code{strings}  giving   the  spanning  information   for  each
 element.    Must  be   repeated   to   match  placeholders   in
 \code{strings}.}
 
-\item{aligns}{character  matrix.  Matrix  of same  dimension  as
+\item{aligns}{character  matrix.   Matrix  of same  dimension  as
 \code{strings} giving  the text alignment information  for each
 element.    Must  be   repeated   to   match  placeholders   in
 \code{strings}.}
@@ -65,11 +65,11 @@ element.    Must  be   repeated   to   match  placeholders   in
 necessary for pagination (XXX document exactly what that is).}
 
 \item{line_grouping}{integer. Sequence of  integers indicating how
-print   lines    correspond   to    semantic   rows    in   the
-object.  Typically  this  should  not be  set  manually  unless
+print  lines  correspond  to   semantic  rows  in  the  object.
+Typically   this   should   not    be   set   manually   unless
 expact_newlines is set to \code{FALSE}.}
 
-\item{ref_fnotes}{list.  Referential  footnote  information  if
+\item{ref_fnotes}{list.   Referential  footnote  information  if
 applicable.}
 
 \item{nlines_header}{numeric(1). Number  of lines taken up  by the
@@ -83,15 +83,27 @@ to the header.}
 expanding  newlines.   Ignored   if  \code{expand_newlines}  is
 \code{FALSE}.}
 
-\item{has_rowlabs}{logical(1). Do the matrices (\code{strings},
-\code{spans}, \code{aligns}) each contain a column that
-corresponds with row labels (Rather than with table cell values).
-Defaults to \code{TRUE}.}
+\item{has_rowlabs}{logical(1). Do  the matrices  (\code{strings},
+\code{spans},  \code{aligns})   each  contain  a   column  that
+corresponds  with  row  labels  (Rather than  with  table  cell
+values).  Defaults to \code{TRUE}.}
 
 \item{expand_newlines}{logical(1). Should the matrix form generated
 expand  rows  whose  values   contain  newlines  into  multiple
 'physical'  rows  (as  they  will  appear  when  rendered  into
 ASCII). Defaults to \code{TRUE}}
+
+\item{main_title}{character(1). Main title as a string.}
+
+\item{subtitles}{character. Subtitles, as a character vector.}
+
+\item{page_titles}{character.  Page-specific titles, as a character
+vector.}
+
+\item{main_footer}{character(1). Main footer as a string.}
+
+\item{prov_footer}{character.  Provenance footer information  as a
+character vector.}
 }
 \description{
 Matrix Print Form - Intermediate Representation for ASCII Table Printing

@@ -278,7 +278,8 @@ setGeneric("page_titles", function(obj) standardGeneric("page_titles"))
 #' @rdname title_footer
 setMethod("page_titles", "MatrixPrintForm",
           function(obj) obj$page_titles)
-
+#' @rdname title_footer
+#' @export
 setMethod("page_titles", "ANY", function(obj) NULL)
 
 ##' @rdname title_footer

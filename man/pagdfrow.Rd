@@ -60,6 +60,10 @@ be retrieved, respectively.}
 \item{ncellrefs}{integer(1). Number of cell referential footnotes for the cells in this row}
 
 \item{nreflines}{integer(1). Total number of lines required by all referential footnotes}
+
+\item{force_page}{logical(1). Currently Ignored.}
+
+\item{page_title}{logical(1). Currently Ignored.}
 }
 \value{
 a single row data.frame with the columns appropriate for a pagination info data frame.
