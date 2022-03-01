@@ -14,6 +14,8 @@
 #' @param nrowrefs integer(1). Number of row referential footnotes for this row
 #' @param ncellrefs integer(1). Number of cell referential footnotes for the cells in this row
 #' @param nreflines integer(1). Total number of lines required by all referential footnotes
+#' @param force_page logical(1). Currently Ignored.
+#' @param page_title logical(1). Currently Ignored.
 #' @param row ANY. Object representing the row, which is used for default values of \code{nm}, \code{lab},
 #' \code{extent} and \code{rclass} if provided. Must have methods for \code{obj_name}, \code{obj_label},
 #' and \code{nlines}, respectively, for default values of \code{nm}, \code{lab} and \code{extent} to
@@ -36,7 +38,9 @@ pagdfrow = function(row,
                     rclass = class(row),
                     nrowrefs = 0L,
                     ncellrefs = 0L,
-                    nreflines = 0L
+                    nreflines = 0L,
+                    force_page = FALSE,
+                    page_title = NA_character_
                     ) {
     data.frame(label = lab,
                name = nm,
@@ -52,6 +56,8 @@ pagdfrow = function(row,
                nrowrefs = nrowrefs,
                ncellrefs = ncellrefs,
                nreflines = nreflines,
+               force_page = force_page,
+               page_title = page_title,
                stringsAsFactors = FALSE)
 }
 
@@ -172,6 +178,7 @@ pag_indices_inner <- function(pagdf, rlpp,
     start = 1
     nr = nrow(pagdf)
     ret = list()
+    force_pags <- which(pagdf$force_pag)
     while(start <= nr) {
         adjrlpp = rlpp - pagdf$par_extent[start]
         stopifnot(adjrlpp > 0)

@@ -50,39 +50,46 @@ mform_handle_newlines <- function(matform, has_topleft = TRUE) {
 
 ## constructor
 #'
-#' @param  strings character  matrix.  Matrix  of formatted,  ready to
+#' @param strings character  matrix.  Matrix  of formatted,  ready to
 #'     display  strings  organized as  they  will  be positioned  when
 #'     rendered.   Elements that  span more  than one  column must  be
 #'     followed  by  the  correct number  of  placeholders  (typically
 #'     either empty strings or repeats of the value).
-#' @param  spans  numeric  matrix.   Matrix  of  same  dimension  as
+#' @param spans  numeric  matrix.    Matrix  of  same  dimension  as
 #'     \code{strings}  giving   the  spanning  information   for  each
 #'     element.    Must  be   repeated   to   match  placeholders   in
 #'     \code{strings}.
-#' @param aligns character  matrix.  Matrix  of same  dimension  as
+#' @param aligns character  matrix.   Matrix  of same  dimension  as
 #'     \code{strings} giving  the text alignment information  for each
 #'     element.    Must  be   repeated   to   match  placeholders   in
 #'     \code{strings}.
-#' @param row_info  data.frame.   Data.frame  with  row-information
+#' @param row_info   data.frame.   Data.frame  with  row-information
 #'     necessary for pagination (XXX document exactly what that is).
-#' @param  line_grouping integer. Sequence of  integers indicating how
-#'     print   lines    correspond   to    semantic   rows    in   the
-#'     object.  Typically  this  should  not be  set  manually  unless
+#' @param line_grouping integer. Sequence of  integers indicating how
+#'     print  lines  correspond  to   semantic  rows  in  the  object.
+#'     Typically   this   should   not    be   set   manually   unless
 #'     expact_newlines is set to \code{FALSE}.
-#' @param  ref_fnotes  list.  Referential  footnote  information  if
+#' @param ref_fnotes  list.   Referential  footnote  information  if
 #'     applicable.
 #' @param  nlines_header numeric(1). Number  of lines taken up  by the
 #'     values of the header (ie not including the divider).
 #' @param nrow_header numeric(1).  Number of \emph{rows} corresponding
 #'     to the header.
-#' @param  has_topleft logical(1).  Does the  corresponding table have
+#' @param has_topleft logical(1).  Does the  corresponding table have
 #'     'top left information' which should be treated differently when
 #'     expanding  newlines.   Ignored   if  \code{expand_newlines}  is
 #'     \code{FALSE}.
-#' @param has_rowlabs logical(1). Do the matrices (\code{strings},
-#'     \code{spans}, \code{aligns}) each contain a column that
-#'     corresponds with row labels (Rather than with table cell values).
-#'     Defaults to \code{TRUE}.
+#' @param has_rowlabs  logical(1). Do  the matrices  (\code{strings},
+#'     \code{spans},  \code{aligns})   each  contain  a   column  that
+#'     corresponds  with  row  labels  (Rather than  with  table  cell
+#'     values).  Defaults to \code{TRUE}.
+#' @param main_title character(1). Main title as a string.
+#' @param subtitles character. Subtitles, as a character vector.
+#' @param page_titles character.  Page-specific titles, as a character
+#'     vector.
+#' @param main_footer character(1). Main footer as a string.
+#' @param prov_footer character.  Provenance footer information  as a
+#'     character vector.
 #' @param expand_newlines logical(1). Should the matrix form generated
 #'     expand  rows  whose  values   contain  newlines  into  multiple
 #'     'physical'  rows  (as  they  will  appear  when  rendered  into
@@ -99,7 +106,12 @@ matrix_print_form <- function(strings = NULL,
                               nrow_header,
                               has_topleft = TRUE,
                               has_rowlabs = has_topleft,
-                              expand_newlines = TRUE) {
+                              expand_newlines = TRUE,
+                              main_title = "",
+                              subtitles = character(),
+                              page_titles = character(),
+                              main_footer = "",
+                              prov_footer = character()) {
 
     display <- matrix(rep(TRUE, length(strings)), ncol = ncol(strings))
 
@@ -131,7 +143,12 @@ matrix_print_form <- function(strings = NULL,
             display = display,
             row_info = row_info,
             line_grouping = 1:nrow(strings), # this is done for real in .do_mat_expand now
-            ref_footnotes = ref_fnotes
+            ref_footnotes = ref_fnotes,
+            main_title = main_title,
+            subtitles = subtitles,
+            page_titles = page_titles,
+            main_footer = main_footer,
+            prov_footer = prov_footer
         ),
         nlines_header = nlines_header, ## this is done for real in .do_mat_expand nownlines_header,
         nrow_header = nrow_header,
