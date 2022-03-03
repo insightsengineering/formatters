@@ -38,6 +38,7 @@ mform_handle_newlines <- function(matform, has_topleft = TRUE) {
         mf_aligns(matform) <- expand_mat_rows(mf_aligns(matform), row_nlines, rep_vec_to_len)
         ##matform$display <- expand_mat_rows(matform$display, row_nlines, rep_vec_to_len)
         mf_display(matform) <- expand_mat_rows(mf_display(matform), row_nlines, rep_vec_to_len)
+        mf_formats(matform) <- expand_mat_rows(mf_formats(matform), row_nlines, rep_vec_to_len)
         ## matform$line_grouping <- rep(1:nrows, times = row_nlines)
         mf_lgrouping(matform) <- rep(1:nrows, times = row_nlines)
 
@@ -98,6 +99,7 @@ mform_handle_newlines <- function(matform, has_topleft = TRUE) {
 matrix_print_form <- function(strings = NULL,
                               spans,
                               aligns,
+                              formats,
     ##                          display,
                               row_info,
                               line_grouping = seq_len(NROW(strings)),
@@ -141,6 +143,7 @@ matrix_print_form <- function(strings = NULL,
             spans = spans,
             aligns = aligns,
             display = display,
+            formats = formats,
             row_info = row_info,
             line_grouping = 1:nrow(strings), # this is done for real in .do_mat_expand now
             ref_footnotes = ref_fnotes,
@@ -219,6 +222,11 @@ mf_nrheader <- function(mf) attr(mf, "nrow_header")
 `mf_display<-` <- function(mf, value) {
    .chkdim_and_replace(mf, value, component = "display")
 }
+
+`mf_formats<-` <- function(mf, value) {
+   .chkdim_and_replace(mf, value, component = "formats")
+}
+
 
 ## NB NROW(v) == length(v) for atomic vectors so this is ok for lgrouping as wellas rinfo
 .chknrow_and_replace <- function(mf, value, component) {
