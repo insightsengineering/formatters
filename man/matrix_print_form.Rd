@@ -10,6 +10,7 @@ matrix_print_form(
   strings = NULL,
   spans,
   aligns,
+  formats,
   row_info,
   line_grouping = seq_len(NROW(strings)),
   ref_fnotes = list(),
@@ -29,6 +30,7 @@ MatrixPrintForm(
   strings = NULL,
   spans,
   aligns,
+  formats,
   row_info,
   line_grouping = seq_len(NROW(strings)),
   ref_fnotes = list(),
@@ -59,6 +61,11 @@ element.    Must  be   repeated   to   match  placeholders   in
 \item{aligns}{character  matrix.   Matrix  of same  dimension  as
 \code{strings} giving  the text alignment information  for each
 element.    Must  be   repeated   to   match  placeholders   in
+\code{strings}.}
+
+\item{formats}{matrix. Matrix  of same dimension
+as  \code{strings} giving  the text  format information  for
+each  element.   Must  be  repeated to  match  placeholders  in
 \code{strings}.}
 
 \item{row_info}{data.frame.   Data.frame  with  row-information
@@ -102,7 +109,7 @@ vector.}
 
 \item{main_footer}{character(1). Main footer as a string.}
 
-\item{prov_footer}{character.  Provenance footer information  as a
+\item{prov_footer}{character.  Provenance footer  information as a
 character vector.}
 }
 \description{
