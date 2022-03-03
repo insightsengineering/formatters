@@ -188,37 +188,6 @@ spans_to_viscell <- function(spans) {
 }
 
 
-.do_mat_expand <- function(matform, has_topleft = TRUE) {
-
-    row_nlines <- apply(matform$strings, 1, nlines)
-    nlines_header <- attr(matform, "nlines_header")
-    nr_header <- attr(matform, "nrow_header")
-    nrows <- nrow(matform$strings)
-    if (any(row_nlines > 1)) {
-        hdr_inds <- 1:nr_header
-        ## groundwork for sad haxx to get tl to not be messed up
-        if(has_topleft)
-            tl <- matform$strings[hdr_inds, 1]
-        else
-            tl <- character()
-        matform$strings <- rbind(expand_mat_rows(matform$strings[hdr_inds, , drop = FALSE], row_nlines[hdr_inds], cpadder = pad_vert_bottom),
-                      expand_mat_rows(matform$strings[-1*hdr_inds,, drop = FALSE], row_nlines[-hdr_inds]))
-        matform$spans <- expand_mat_rows(matform$spans, row_nlines, rep_vec_to_len)
-        matform$aligns <- expand_mat_rows(matform$aligns, row_nlines, rep_vec_to_len)
-        matform$display <- expand_mat_rows(matform$display, row_nlines, rep_vec_to_len)
-        attr(matform, "nlines_header") <- sum(row_nlines[1:nr_header])
-        ## sad haxx :(
-        if(has_topleft)
-            matform$strings[1:nr_header,1] <- c(tl, rep("", nr_header - length(tl)))
-        matform$line_grouping <- rep(1:nrows, times = row_nlines)
-
-    }
-
-    matform
-}
-
-
-
 #' Propose Column Widths based on an object's `MatrixPrintForm` form
 #'
 #' The row names are also considered a column for the output

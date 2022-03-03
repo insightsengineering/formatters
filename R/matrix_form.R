@@ -14,6 +14,7 @@ mform_handle_newlines <- function(matform, has_topleft = TRUE) {
 
     ##row_nlines <- apply(matform$strings, 1, nlines)
     strmat <- mf_strings(matform)
+    frmmat <- mf_formats(matform)
     row_nlines <- apply(strmat, 1, nlines)
     nlines_header <- mf_nlheader(matform) ##attr(matform, "nlines_header")
     nr_header <- mf_nrheader(matform) ## attr(matform, "nrow_header")
@@ -28,17 +29,21 @@ mform_handle_newlines <- function(matform, has_topleft = TRUE) {
         ##matform$strings <- rbind(expand_mat_rows(matform$strings[hdr_inds, , drop = FALSE], row_nlines[hdr_inds], cpadder = pad_vert_bottom),
         newstrmat <- rbind(expand_mat_rows(strmat[hdr_inds, , drop = FALSE], row_nlines[hdr_inds], cpadder = pad_vert_bottom),
                            expand_mat_rows(strmat[-1*hdr_inds,, drop = FALSE], row_nlines[-hdr_inds]))
+        newfrmmat <- rbind(expand_mat_rows(frmmat[hdr_inds, , drop = FALSE], row_nlines[hdr_inds], cpadder = pad_vert_bottom),
+                           expand_mat_rows(frmmat[-1*hdr_inds,, drop = FALSE], row_nlines[-hdr_inds]))
         ## sad haxx :(
-        if(has_topleft)
+        if(has_topleft) {
             newstrmat[1:nr_header,1] <- c(tl, rep("", nr_header - length(tl)))
+            newfrmmat[1:nr_header,1] <- c(tl, rep("", nr_header - length(tl)))
+        }
         mf_strings(matform) <- newstrmat
+        mf_formats(matform) <- newfrmmat
         ##matform$spans <- expand_mat_rows(matform$spans, row_nlines, rep_vec_to_len)
         mf_spans(matform) <- expand_mat_rows(mf_spans(matform), row_nlines, rep_vec_to_len)
         ##matform$aligns <- expand_mat_rows(matform$aligns, row_nlines, rep_vec_to_len)
         mf_aligns(matform) <- expand_mat_rows(mf_aligns(matform), row_nlines, rep_vec_to_len)
         ##matform$display <- expand_mat_rows(matform$display, row_nlines, rep_vec_to_len)
         mf_display(matform) <- expand_mat_rows(mf_display(matform), row_nlines, rep_vec_to_len)
-        mf_formats(matform) <- expand_mat_rows(mf_formats(matform), row_nlines, rep_vec_to_len)
         ## matform$line_grouping <- rep(1:nrows, times = row_nlines)
         mf_lgrouping(matform) <- rep(1:nrows, times = row_nlines)
 
