@@ -12,3 +12,15 @@ downstream_repos:
   insightsengineering/tern:
     repo: insightsengineering/tern
     host: https://github.com
+  insightsengineering/teal.slice:
+    repo: insightsengineering/teal.slice
+    host: https://github.com
+  insightsengineering/teal.transform:
+    repo: insightsengineering/teal.transform
+    host: https://github.com
+  insightsengineering/teal.modules.clinical:
+    repo: insightsengineering/teal.modules.clinical
+    host: https://github.com
+  insightsengineering/chevron:
+    repo: insightsengineering/chevron
+    host: https://github.com
