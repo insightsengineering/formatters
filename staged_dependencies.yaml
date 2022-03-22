@@ -15,3 +15,18 @@ downstream_repos:
   insightsengineering/teal.osprey:
     repo: insightsengineering/teal.osprey
     host: https://github.com
+  insightsengineering/teal.data:
+    repo: insightsengineering/teal.data
+    host: https://github.com
+  insightsengineering/teal.slice:
+    repo: insightsengineering/teal.slice
+    host: https://github.com
+  insightsengineering/teal.transform:
+    repo: insightsengineering/teal.transform
+    host: https://github.com
+  insightsengineering/teal.modules.clinical:
+    repo: insightsengineering/teal.modules.clinical
+    host: https://github.com
+  insightsengineering/chevron:
+    repo: insightsengineering/chevron
+    host: https://github.com
