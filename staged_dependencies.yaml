@@ -12,6 +12,8 @@ downstream_repos:
   insightsengineering/tern:
     repo: insightsengineering/tern
     host: https://github.com
+  insightsengineering/teal.slice:
+    repo: insightsengineering/teal.slice
   insightsengineering/teal.transform:
     repo: insightsengineering/teal.transform
     host: https://github.com
