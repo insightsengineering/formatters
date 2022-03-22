@@ -12,6 +12,9 @@ downstream_repos:
   insightsengineering/tern:
     repo: insightsengineering/tern
     host: https://github.com
+  insightsengineering/teal.osprey:
+    repo: insightsengineering/teal.osprey
+    host: https://github.com
   insightsengineering/teal.data:
     repo: insightsengineering/teal.data
     host: https://github.com
