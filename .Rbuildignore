@@ -11,6 +11,7 @@
 ^Jenkinsfile$
 ^logs$
 ^man-roxygen$
+^staged_dependencies\.yaml$
 ^\..*$
 ^temp$
 ^[^/]*.R$
