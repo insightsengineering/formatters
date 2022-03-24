@@ -1,6 +1,6 @@
 Package: formatters
-Title: Formatters and ASCII Rendering For Tables
-Date: 2021-10-06
+Title: Formatters and ASCII Rendering for Tables
+Date: 2022-03-24
 Version: 0.1.0.0003
 Authors@R: c(
   person("Gabriel", "Becker", email = "gabembecker@gmail.com", role = c("aut", "cre")),
@@ -10,9 +10,9 @@ Description: We provide a framework for rendering complex tables to ASCII, and a
 License: Apache License 2.0 | file LICENSE
 Depends: methods, R (>= 2.10)
 Imports: htmltools
-Suggests: dplyr
+Suggests: dplyr, tinytest
 Encoding: UTF-8
 LazyData: true
-URL: http://github.com/insightsengineering/formatters
-BugReports: http://github.com/insightsengineering/formatters/issues
+URL: https://github.com/insightsengineering/formatters
+BugReports: https://github.com/insightsengineering/formatters/issues
 RoxygenNote: 7.1.2
