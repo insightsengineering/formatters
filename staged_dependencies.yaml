@@ -1,5 +1,5 @@
 current_repo:
-  repo: insightsengineering/formatable
+  repo: insightsengineering/formatters
   host: https://github.com
 upstream_repos: {}
 downstream_repos:
@@ -11,6 +11,9 @@ downstream_repos:
     host: https://github.com
   insightsengineering/tern:
     repo: insightsengineering/tern
+    host: https://github.com
+  insightsengineering/tern.mmrm:
+    repo: insightsengineering/tern.mmrm
     host: https://github.com
   insightsengineering/teal.osprey:
     repo: insightsengineering/teal.osprey
