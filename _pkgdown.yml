@@ -9,7 +9,7 @@ navbar:
   type: default
   right:
   - icon: fa-github fa-lg
-    href: https://github.com/insightsengineering/formatables
+    href: https://github.com/insightsengineering/formatters
 
 
 reference:

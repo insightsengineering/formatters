@@ -1,4 +1,4 @@
-Package: formatable
+Package: formatters
 Title: Formatters and ASCII Rendering For Tables
 Date: 2021-10-06
 Version: 0.1.0.0003
@@ -13,6 +13,6 @@ Imports: htmltools
 Suggests: dplyr
 Encoding: UTF-8
 LazyData: true
-URL: http://github.com/insightsengineering/formatable
-BugReports: http://github.com/insightsengineering/formatable/issues
+URL: http://github.com/insightsengineering/formatters
+BugReports: http://github.com/insightsengineering/formatters/issues
 RoxygenNote: 7.1.2
