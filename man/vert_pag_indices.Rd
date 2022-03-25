@@ -21,3 +21,8 @@ into subsets for 1 or more vertically paginated pages.
 \description{
 Find Column Indicies for Vertical Pagination
 }
+\examples{
+mf <- basic_matrix_form(df = mtcars)
+colpaginds <- vert_pag_indices(mf)
+lapply(colpaginds, function(j) mtcars[,j, drop = FALSE])
+}

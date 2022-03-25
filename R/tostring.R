@@ -11,6 +11,9 @@
 #' @param linesep character(1). Characters to repeat to create header/body
 #' separator line.
 #' @exportMethod toString
+#' @examples
+#' mform <- basic_matrix_form(mtcars)
+#' cat(toString(mform))
 setMethod("toString", "MatrixPrintForm", function(x,
                                                   widths = NULL,
                                                   col_gap = 3,
@@ -193,6 +196,10 @@ spans_to_viscell <- function(spans) {
 #' The row names are also considered a column for the output
 #'
 #' @param x MatrixPrintForm object
+#'
+#' @examples
+#' mf <- basic_matrix_form(mtcars)
+#' propose_column_widths(mf)
 #'
 #' @export
 #' @return a vector of column widths based on the content of \code{x}

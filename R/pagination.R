@@ -58,12 +58,9 @@ pagdfrow = function(row,
                nreflines = nreflines,
                force_page = force_page,
                page_title = page_title,
-               stringsAsFactors = FALSE)
+               stringsAsFactors = FALSE,
+               row.names = NULL)
 }
-
-
-
-
 
 
 valid_pag = function(pagdf,
@@ -169,6 +166,14 @@ find_pag = function(pagdf,
 #'   considerations. Defaults to none.
 #' @param verbose logical(1). Should additional informative messages about the search for
 #' pagination breaks be shown. Defaults to \code{FALSE}.
+#' @return A list containing the vector of row numbers, broken up by page
+#'
+#' @examples
+#' mypgdf <- basic_pagdf(row.names(mtcars))
+#'
+#' paginds <- pag_indices_inner(mypgdf, rlpp = 15, min_siblings = 0)
+#' lapply(paginds, function(x) mtcars[x,])
+#'
 #' @export
 pag_indices_inner <- function(pagdf, rlpp,
                                  min_siblings,
@@ -202,6 +207,11 @@ pag_indices_inner <- function(pagdf, rlpp,
 #'
 #' @return A list partitioning the vector of column indices
 #' into subsets for 1 or more vertically paginated pages.
+#'
+#' @examples
+#' mf <- basic_matrix_form(df = mtcars)
+#' colpaginds <- vert_pag_indices(mf)
+#' lapply(colpaginds, function(j) mtcars[,j, drop = FALSE])
 #' @export
 vert_pag_indices <- function(obj, cpp = 40, verbose = FALSE) {
 
@@ -212,19 +222,47 @@ vert_pag_indices <- function(obj, cpp = 40, verbose = FALSE) {
     clwds <- propose_column_widths(strm)
 
 
-    pdfrows <- lapply(1:ncol(strm),
+    pdfrows <- lapply(2:ncol(strm),
                       function(i) {pagdfrow(row = NA,
-                                            nm = i,
-                                            lab = i,
-                                            rnum = i,
+                                            nm = i-1,
+                                            lab = i-1,
+                                            rnum = i-1,
                                             pth = NA,
-                                            extent = clwds[1+i],
+                                            extent = clwds[i],
                                             rclass = "stuff",
-                                            sibpos = 1,
-                                            nsibs = 1)
+                                            sibpos = 1-1,
+                                            nsibs = 1-1)
     })
 
     pdf <- do.call(rbind, pdfrows)
     res <- pag_indices_inner(pdf, rlpp = cpp - clwds[1], verbose = verbose, min_siblings = 1)
     res
+}
+
+
+#' Basic/spoof pagination info dataframe
+#'
+#' Returns a minimal pagination info data.frame (with no sibling/footnote/etc info).
+#'
+#' @param rnames character. Vector of row names
+#' @param labs character. Vector of row labels (defaults to names)
+#' @param rnums integer. Vector of row numbers. Defaults to `seq_along(rnames)`.
+#' @param extents integer. Number of lines each row will take to print,d efaults to 1 for all rows
+#' @param rclass character. Class(es) for the rows. Defaults to "NA"
+#'
+#' @return A data.frame suitable for use in both the `matrix_print_form` constructor and the pagination machinery
+#'
+#' @examples
+#'
+#' basic_pagdf(c("hi", "there"))
+#' @export
+basic_pagdf <- function(rnames, labs = rnames, rnums = seq_along(rnames),
+                        extents = 1L,
+                        rclass = "NA") {
+
+    rws <- mapply(pagdfrow, nm = rnames, lab = labs, extent = extents,
+                  rclass = rclass, rnum = rnums, pth = rnames,
+                  SIMPLIFY = FALSE, nsibs = 1, sibpos = 1)
+    do.call(rbind.data.frame, rws)
+
 }

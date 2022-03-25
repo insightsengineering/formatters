@@ -55,6 +55,10 @@ mform_handle_newlines <- function(matform, has_topleft = TRUE) {
 }
 
 ## constructor
+#' MatrixPrintForm object constructor
+#'
+#' This should generally only be called by `matrix_form` custom
+#' methods, and almost never from other code.
 #'
 #' @param  strings character  matrix.  Matrix  of formatted,  ready to
 #'     display  strings  organized as  they  will  be positioned  when
@@ -281,3 +285,56 @@ mf_nrheader <- function(mf) attr(mf, "nrow_header")
 
 setMethod("ncol", "MatrixPrintForm",
           function(x) attr(x, "ncols", TRUE))
+
+#' Create spoof matrix form from a data.frame
+#'
+#' This is  useful primarily  for writing  testing/examples, and as a
+#' starting point for more sophisticated custom `matrix_form` methods
+#'
+#' @param df data.frame
+#'
+#' @return A valid `MatrixPrintForm` object representing `df`,
+#' ready for ASCII rendering
+#'
+#' @examples
+#' mform <- basic_matrix_form(mtcars)
+#' cat(toString(mform))
+#' @export
+basic_matrix_form <- function(df) {
+
+    fmts <- lapply(df, function(x) if(is.null(obj_format(x))) "xx" else obj_format(x))
+
+    bodystrs <- mapply(function(x, fmt) {
+        sapply(x, format_value, format = fmt)
+    }, x = df, fmt = fmts)
+
+    rnms <- row.names(df)
+    if(is.null(rnms))
+        rnms <- as.character(seq_len(NROW(df)))
+
+    cnms <- names(df)
+
+    strings <- rbind(c("", cnms),
+                     cbind(rnms, bodystrs))
+
+    fnr <- nrow(strings)
+    fnc <- ncol(strings)
+
+    ## center alignment for column labels, left alignment for everything else
+    aligns <- rbind("center",
+                    matrix("left", nrow = NROW(df), ncol = fnc))
+
+
+    ## build up fake pagination df,
+    rowdf <- basic_pagdf(row.names(df))
+    matrix_print_form(strings = strings,
+                      aligns = aligns,
+                      spans = matrix(1, nrow = fnr, ncol = fnc),
+                      formats = NULL,
+                      row_info = rowdf,
+                      has_topleft = FALSE,
+                      nlines_header = 1,
+                      nrow_header = 1)
+
+
+}

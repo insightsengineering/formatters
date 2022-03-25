@@ -55,6 +55,9 @@ list_valid_format_labels <- function() {
 #'
 #' @export
 #'
+#' @examples
+#' is_valid_format("xx.x")
+#' is_valid_format("fakeyfake")
 is_valid_format <- function(x, stop_otherwise=FALSE) {
   is_valid <- is.null(x) ||
     (length(x) == 1 &&

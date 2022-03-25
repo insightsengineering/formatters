@@ -16,3 +16,8 @@ for use in printing and pagination.
 \description{
 The row names are also considered a column for the output
 }
+\examples{
+mf <- basic_matrix_form(mtcars)
+propose_column_widths(mf)
+
+}

@@ -113,5 +113,6 @@ vector.}
 character vector.}
 }
 \description{
-Matrix Print Form - Intermediate Representation for ASCII Table Printing
+This should generally only be called by `matrix_form` custom
+methods, and almost never from other code.
 }

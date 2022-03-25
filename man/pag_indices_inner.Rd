@@ -27,8 +27,18 @@ considerations. Defaults to none.}
 \item{verbose}{logical(1). Should additional informative messages about the search for
 pagination breaks be shown. Defaults to \code{FALSE}.}
 }
+\value{
+A list containing the vector of row numbers, broken up by page
+}
 \description{
 Pagination methods should typically call the `make_row_df` method
 for their object and then call this function on the resulting
 pagination info data.frame.
+}
+\examples{
+mypgdf <- basic_pagdf(row.names(mtcars))
+
+paginds <- pag_indices_inner(mypgdf, rlpp = 15, min_siblings = 0)
+lapply(paginds, function(x) mtcars[x,])
+
 }
