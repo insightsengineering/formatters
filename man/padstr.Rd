@@ -15,6 +15,9 @@ nchar(x)` an error is thrown}
 \item{just}{character(1).   Text  alignment   justification  to
 use. Defaults to center. Must be center, right or left.}
 }
+\value{
+`x`, padded to be a string of `n` characters
+}
 \description{
 Pad a string and align within string
 }
@@ -29,5 +32,4 @@ padstr("abc", 5, "right")
 if(interactive()){
 padstr("abc", 1)
 }
-
 }

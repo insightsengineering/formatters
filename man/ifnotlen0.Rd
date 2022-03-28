@@ -12,6 +12,10 @@ a \%||\% b
 
 \item{b}{ANY. Element to select if \code{a} is length 0}
 }
+\value{
+`a`, unless it  is length 0, in which case  `b` (even in the
+    case `b` is also length 0)
+}
 \description{
 '\%||\%' If length-0 alternative operator
 }
@@ -21,5 +25,4 @@ a \%||\% b
 character() \%||\% "hi"
 
 NULL \%||\% "hi"
-
 }

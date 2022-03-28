@@ -14,6 +14,8 @@
 #' @examples
 #' mform <- basic_matrix_form(mtcars)
 #' cat(toString(mform))
+#' @return A character string containing the ASCII rendering
+#' of the table-like object reprseented by `x`
 setMethod("toString", "MatrixPrintForm", function(x,
                                                   widths = NULL,
                                                   col_gap = 3,
@@ -178,6 +180,8 @@ expand_mat_rows <- function(mat, row_nlines = apply(mat, 1, nlines), expfun = pa
 #' @examples
 #'
 #' spans_to_viscell(c(2, 2, 2, 2, 1, 3, 3, 3))
+#' @return a logical vector the same length as `spans` indicating
+#' whether the contents of a string vector with those spans
 spans_to_viscell <- function(spans) {
     if(!is.vector(spans))
         spans <- as.vector(spans)
@@ -290,6 +294,7 @@ propose_column_widths <- function(x) {
 #' if(interactive()){
 #' padstr("abc", 1)
 #' }
+#' @return `x`, padded to be a string of `n` characters
 #'
 padstr <- function(x, n, just = c("center", "left", "right")) {
 

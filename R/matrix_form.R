@@ -109,6 +109,34 @@ mform_handle_newlines <- function(matform, has_topleft = TRUE) {
 #'     'physical'  rows  (as  they  will  appear  when  rendered  into
 #'     ASCII). Defaults to \code{TRUE}
 #' @export
+#' @return An object of class `MatrixPrintForm`. Currently this is
+#' implemented as an S3 class inheriting from list with the following
+#' elements:
+#' \describe{
+#' \item{\code{strings}}{see argument}
+#' \item{\code{spans}}{see argument}
+#' \item{\code{aligns}}{see argument}
+#' \item{\code{display}}{logical matrix of same dimension as `strings`
+#' that specifies whether an element in `strings` will be displayed
+#' when the table is rendered}
+#' \item{\code{formats}}{see arugment}
+#' \item{\code{row_info}}{see argument}
+#' \item{\code{line_grouping}}{see argument}
+#' \item{\code{ref_footnotes}}{see argument}
+#' \item{\code{main_title}}{see argument}
+#' \item{\code{subtitles}}{see argument}
+#' \item{\code{page_titles}}{see argument}
+#' \item{\code{main_footer}}{see argument}
+#' \item{\code{prov_footer}}{see argument}
+#' }
+#'
+#' as well as the following attributes:
+#' \describe{
+#' \item{\code{nlines_header}}{see argument}
+#' \item{\code{nrow_header}}{see argument}
+#' \item{\code{ncols}}{number of columns \emph{of the table}, not including
+#' any row names/row labels}
+#' }
 matrix_print_form <- function(strings = NULL,
                               spans,
                               aligns,
@@ -158,7 +186,7 @@ matrix_print_form <- function(strings = NULL,
             display = display,
             formats = formats,
             row_info = row_info,
-            line_grouping = 1:nrow(strings), # this is done for real in .do_mat_expand now
+            line_grouping =line_grouping,
             ref_footnotes = ref_fnotes,
             main_title = main_title,
             subtitles = subtitles,
