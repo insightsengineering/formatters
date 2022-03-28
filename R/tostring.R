@@ -18,10 +18,10 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   widths = NULL,
                                                   col_gap = 3,
                                                   linesep = "\u2014") {
-    mat <- x
+  mat <- x
 
   ## we create a matrix with the formatted cell contents
-##  mat <- matrix_form(x, indent_rownames = TRUE)
+  ##  mat <- matrix_form(x, indent_rownames = TRUE)
 
 
   if (is.null(widths)) {
@@ -34,8 +34,8 @@ setMethod("toString", "MatrixPrintForm", function(x,
   aligns <- mat$aligns
   keep_mat <- mat$display
   spans <- mat$spans
-#    ri <- mat$row_info
-    ref_fnotes <- mat$ref_footnotes
+  #    ri <- mat$row_info
+  ref_fnotes <- mat$ref_footnotes
 
 
   # xxxx <- 1
@@ -78,79 +78,81 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
   gap_str <- strrep(" ", col_gap)
 
-  ncchar <-  sum(widths) + (length(widths) - 1) * col_gap
+  ncchar <- sum(widths) + (length(widths) - 1) * col_gap
   div <- substr(strrep(linesep, ncchar), 1, ncchar)
 
   txt_head <- apply(head(content, nl_header), 1, .paste_no_na, collapse = gap_str)
   txt_body <- apply(tail(content, -nl_header), 1, .paste_no_na, collapse = gap_str)
 
   allts <- all_titles(x)
-  titles_txt <- if(any(nzchar(allts))) c(allts, "", div)  else NULL
-    ## TODO make titles affect width...
+  titles_txt <- if (any(nzchar(allts))) c(allts, "", div) else NULL
+  ## TODO make titles affect width...
 
-    allfoots <- all_footers(x)
+  allfoots <- all_footers(x)
 
 
-    footer_txt <- c(if(length(ref_fnotes) > 0) c(div, "", ref_fnotes),
-                    if(any(nzchar(allfoots))) c(div, "", allfoots))
+  footer_txt <- c(
+    if (length(ref_fnotes) > 0) c(div, "", ref_fnotes),
+    if (any(nzchar(allfoots))) c(div, "", allfoots)
+  )
   paste0(paste(c(titles_txt, txt_head, div, txt_body, footer_txt), collapse = "\n"), "\n")
-
 })
 
 pad_vert_center <- function(x, len) {
-    needed <- len - length(x)
-    if(needed < 0) stop("got vector already longer than target length this shouldn't happen")
-    if(needed > 0) {
-        bf <- ceiling(needed/2)
-        af <- needed - bf
-        x <- c(if(bf > 0) rep("", bf), x, if(af > 0) rep("", af))
-    }
-    x
+  needed <- len - length(x)
+  if (needed < 0) stop("got vector already longer than target length this shouldn't happen")
+  if (needed > 0) {
+    bf <- ceiling(needed / 2)
+    af <- needed - bf
+    x <- c(if (bf > 0) rep("", bf), x, if (af > 0) rep("", af))
+  }
+  x
 }
 
 pad_vert_top <- function(x, len) {
-    c(x, rep("", len - length(x)))
+  c(x, rep("", len - length(x)))
 }
 
 pad_vert_bottom <- function(x, len) {
-    c(rep("", len - length(x)), x)
+  c(rep("", len - length(x)), x)
 }
 
 pad_vec_to_len <- function(vec, len, cpadder = pad_vert_top, rlpadder = cpadder) {
-    dat <- unlist(lapply(vec[-1], cpadder, len = len))
-    dat <- c(rlpadder(vec[[1]], len = len), dat)
-    matrix(dat,  nrow = len)
+  dat <- unlist(lapply(vec[-1], cpadder, len = len))
+  dat <- c(rlpadder(vec[[1]], len = len), dat)
+  matrix(dat, nrow = len)
 }
 
 rep_vec_to_len <- function(vec, len, ...) {
-    matrix(unlist(lapply(vec, rep, times = len)),
-           nrow = len)
+  matrix(unlist(lapply(vec, rep, times = len)),
+    nrow = len
+  )
 }
 
 
 safe_strsplit <- function(x, split, ...) {
-    ret <- strsplit(x, split, ...)
-    lapply(ret, function(reti) if(length(reti) == 0) "" else reti)
+  ret <- strsplit(x, split, ...)
+  lapply(ret, function(reti) if (length(reti) == 0) "" else reti)
 }
 
 .expand_mat_rows_inner <- function(i, mat, row_nlines, expfun, ...) {
-    leni <- row_nlines[i]
-    rw <- mat[i,]
-    if(is.character(rw))
-        rw <- safe_strsplit(rw, "\n", fixed = TRUE)
-    expfun(rw, len = leni, ...)
+  leni <- row_nlines[i]
+  rw <- mat[i, ]
+  if (is.character(rw)) {
+    rw <- safe_strsplit(rw, "\n", fixed = TRUE)
+  }
+  expfun(rw, len = leni, ...)
 }
 
 expand_mat_rows <- function(mat, row_nlines = apply(mat, 1, nlines), expfun = pad_vec_to_len, ...) {
-
-    rinds <- 1:nrow(mat)
-    exprows <- lapply(rinds, .expand_mat_rows_inner,
-                      mat = mat,
-                      row_nlines = row_nlines,
-                      expfun = expfun,
-                      ...)
-    do.call(rbind, exprows)
-
+  rinds <- 1:nrow(mat)
+  exprows <- lapply(rinds, .expand_mat_rows_inner,
+    mat = mat,
+    row_nlines = row_nlines,
+    expfun = expfun,
+    ...
+  )
+  do.call(rbind, exprows)
 }
 
 
@@ -179,15 +181,21 @@ expand_mat_rows <- function(mat, row_nlines = apply(mat, 1, nlines), expfun = pa
 #'
 #' spans_to_viscell(c(2, 2, 2, 2, 1, 3, 3, 3))
 spans_to_viscell <- function(spans) {
-    if(!is.vector(spans))
-        spans <- as.vector(spans)
-    myrle <- rle(spans)
-    unlist(mapply(function(vl, ln) rep(c(TRUE, rep(FALSE, vl - 1L)),
-                                                                  times = ln/vl),
-                                             SIMPLIFY = FALSE,
-                                             vl = myrle$values,
-                                             ln = myrle$lengths),
-                                      recursive = FALSE)
+  if (!is.vector(spans)) {
+    spans <- as.vector(spans)
+  }
+  myrle <- rle(spans)
+  unlist(mapply(function(vl, ln) {
+    rep(c(TRUE, rep(FALSE, vl - 1L)),
+      times = ln / vl
+    )
+  },
+  SIMPLIFY = FALSE,
+  vl = myrle$values,
+  ln = myrle$lengths
+  ),
+  recursive = FALSE
+  )
 }
 
 
@@ -222,7 +230,7 @@ spans_to_viscell <- function(spans) {
 ## ' propose_column_widths(mf)
 propose_column_widths <- function(x) {
 
-    ##stopifnot(is(x, "VTableTree"))
+  ## stopifnot(is(x, "VTableTree"))
 
   body <- x$strings
   spans <- x$spans
@@ -287,12 +295,11 @@ propose_column_widths <- function(x) {
 #' padstr("abc", 5, "left")
 #' padstr("abc", 5, "right")
 #'
-#' if(interactive()){
-#' padstr("abc", 1)
+#' if (interactive()) {
+#'   padstr("abc", 1)
 #' }
 #'
 padstr <- function(x, n, just = c("center", "left", "right")) {
-
   just <- match.arg(just)
 
   if (length(x) != 1) stop("length of x needs to be 1 and not", length(x))
@@ -304,10 +311,9 @@ padstr <- function(x, n, just = c("center", "left", "right")) {
 
   if (n < nc) stop("\"", x, "\" has more than ", n, " characters")
 
-  switch(
-    just,
+  switch(just,
     center = {
-      pad <- (n - nc)/2
+      pad <- (n - nc) / 2
       paste0(spaces(floor(pad)), x, spaces(ceiling(pad)))
     },
     left = paste0(x, spaces(n - nc)),
@@ -354,7 +360,7 @@ spread_integer <- function(x, len) {
   if (len == 0) {
     integer(0)
   } else {
-    y <- rep(floor(x/len), len)
+    y <- rep(floor(x / len), len)
     i <- 1
     while (sum(y) < x) {
       y[i] <- y[i] + 1
@@ -384,6 +390,6 @@ spread_integer <- function(x, len) {
 #' is.wholenumber(5.00000000000000001)
 #' is.wholenumber(.5)
 #'
-is.wholenumber <- function(x, tol = .Machine$double.eps^0.5){
+is.wholenumber <- function(x, tol = .Machine$double.eps^0.5) {
   abs(x - round(x)) < tol
 }

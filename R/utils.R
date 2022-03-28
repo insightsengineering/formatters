@@ -17,4 +17,4 @@
 #'
 #' NULL %||% "hi"
 #'
-`%||%` <- function(a, b) if(length(a) == 0) b else a
+`%||%` <- function(a, b) if (length(a) == 0) b else a
