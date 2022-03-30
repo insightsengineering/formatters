@@ -1,7 +1,3 @@
-## temporary until tinytest is supported in validated environment
-expect_identical <- function(x,y) if(!identical(x,y)) stop("test failed")
-expect_true <- stopifnot
-
 ## listing supported formats and enuring they all read as valid
 forms <- list_valid_format_labels()
 
