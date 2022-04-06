@@ -1,4 +1,4 @@
-## listing supported formats and enuring they all read as valid
+o## listing supported formats and enuring they all read as valid
 forms <- list_valid_format_labels()
 
 res <- sapply(forms, function(vc) all(sapply(vc, is_valid_format)))
@@ -160,4 +160,19 @@ myfun <- sprintf_format("hi there %1.4f")
 expect_true(is_valid_format(myfun))
 expect_identical(format_value(pi, format = myfun),
                      "hi there 3.1416")
+
+
+
+
+## https://github.com/insightsengineering/formatters/issues/18
+dfmf <- basic_matrix_form(mtcars)
+expect_identical(main_footer(dfmf), "")
+ftmsg <- "my footer is here"
+main_footer(dfmf) <- ftmsg
+expect_identical(main_footer(dfmf),
+                 ftmsg)
+
+strout <- toString(dfmf)
+expect_true(any(grepl(ftmsg, strout)))
+
 
