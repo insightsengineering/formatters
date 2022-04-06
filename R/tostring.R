@@ -99,16 +99,17 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
 })
 
-pad_vert_center <- function(x, len) {
-    needed <- len - length(x)
-    if(needed < 0) stop("got vector already longer than target length this shouldn't happen")
-    if(needed > 0) {
-        bf <- ceiling(needed/2)
-        af <- needed - bf
-        x <- c(if(bf > 0) rep("", bf), x, if(af > 0) rep("", af))
-    }
-    x
-}
+
+## pad_vert_center <- function(x, len) {
+##     needed <- len - length(x)
+##     if(needed < 0) stop("got vector already longer than target length this shouldn't happen")
+##     if(needed > 0) {
+##         bf <- ceiling(needed/2)
+##         af <- needed - bf
+##         x <- c(if(bf > 0) rep("", bf), x, if(af > 0) rep("", af))
+##     }
+##     x
+## }
 
 pad_vert_top <- function(x, len) {
     c(x, rep("", len - length(x)))

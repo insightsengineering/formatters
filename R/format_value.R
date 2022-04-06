@@ -3,7 +3,7 @@
 
 formats_1d <- c(
   "xx", "xx.", "xx.x", "xx.xx", "xx.xxx", "xx.xxxx",
-  "xx%", "xx.x%", "xx.xx%", "xx.xxx%", "(N=xx)", ">999.9", ">999.99",
+  "xx%", "xx.%", "xx.x%", "xx.xx%", "xx.xxx%", "(N=xx)", ">999.9", ">999.99",
   "x.xxxx | (<0.0001)"
 )
 
@@ -178,13 +178,13 @@ sep_2d_helper <- function(x, dig1, dig2, sep, na_str, wrap = NULL) {
     ret
 }
 
-na_or_round <- function(x, digits, na_str) {
-    if(is.na(x))
-        na_str
-    else
-        round(x, digits = digits)
+## na_or_round <- function(x, digits, na_str) {
+##     if(is.na(x))
+##         na_str
+##     else
+##         round(x, digits = digits)
 
-}
+## }
 
 #' Converts a (possibly compound) value into a string using the \code{format} information
 #'
@@ -238,7 +238,7 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
                    "xx.xx" = round_fmt(x, digits = 2, na_str = na_str),
                    "xx.xxx" = round_fmt(x, digits = 3, na_str = na_str),
                    "xx.xxxx" = round_fmt(x, digits = 4, na_str = na_str),
-                   "xx%" = paste0(round_fmt(x*100, digits = NA, na_str = na_str), "%"),
+                   "xx%" = paste0(round_fmt(x * 100, digits = NA, na_str = na_str), "%"),
                    "xx.%" = paste0(round_fmt(x * 100, digits = 0, na_str = na_str), "%"),
                    "xx.x%" = paste0(round_fmt(x * 100, digits = 1, na_str = na_str), "%"),
                    "xx.xx%" = paste0(round_fmt(x * 100, digits = 2, na_str = na_str), "%"),

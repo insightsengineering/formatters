@@ -353,12 +353,19 @@ basic_matrix_form <- function(df) {
                     matrix("left", nrow = NROW(df), ncol = fnc))
 
 
-    ## build up fake pagination df,
-    rowdf <- basic_pagdf(row.names(df))
+    ## build up fake pagination df
+    charcols <- which(sapply(df, is.character))
+    if(length(charcols) > 0) {
+        exts <- apply(df[,charcols, drop = FALSE], 1, nlines)
+    } else {
+        exts <- rep(1L, NROW(df))
+    }
+    rowdf <- basic_pagdf(row.names(df),
+                         extents = exts)
     matrix_print_form(strings = strings,
                       aligns = aligns,
                       spans = matrix(1, nrow = fnr, ncol = fnc),
-                      formats = NULL,
+                      formats = matrix("xx", nrow = fnr, ncol = fnc),
                       row_info = rowdf,
                       has_topleft = FALSE,
                       nlines_header = 1,

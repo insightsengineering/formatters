@@ -41,6 +41,8 @@
 #' @export
 #' @return a data.frame of row/column-structure information used by the pagination machinery.
 #' @rdname make_row_df
+#'
+## nocov start
 setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
                                   rownum = 0,
                                   indent = 0L,
@@ -50,10 +52,7 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
                                   repr_inds = integer(),
                                   sibpos = NA_integer_,
                                   nsibs = NA_integer_) standardGeneric("make_row_df"))
-
-
-
-
+## nocov end
 
 
 #' Transform rtable to a list of matrices which can be used for outputting
@@ -157,14 +156,14 @@ setMethod("nlines", "character", function(x, colwidths) max(vapply(strsplit(x, "
 setGeneric("toString", function(x,...) standardGeneric("toString"))
 
 ## preserve S3 behavior
-setMethod("toString", "ANY", base::toString)
+setMethod("toString", "ANY", base::toString) ## nocov
 
 #' @title Print
 #'
 #' Print an R object. see \code{[base::print()]}
 #' @inheritParams base::print
 #' @rdname basemethods
-setMethod("print", "ANY", base::print)
+setMethod("print", "ANY", base::print) ## nocov
 
 
 
@@ -262,7 +261,7 @@ setGeneric("main_title<-", function(obj, value) standardGeneric("main_title<-"))
 
 #' @export
 #' @rdname title_footer
-setGeneric("subtitles", function(obj) standardGeneric("subtitles"))
+setGeneric("subtitles", function(obj) standardGeneric("subtitles")) ## nocov
 
 #' @export
 #' @rdname title_footer
@@ -271,7 +270,7 @@ setMethod("subtitles", "MatrixPrintForm",
 
 ##' @rdname title_footer
 ##' @export
-setGeneric("subtitles<-", function(obj, value) standardGeneric("subtitles<-"))
+setGeneric("subtitles<-", function(obj, value) standardGeneric("subtitles<-")) ## nocov
 
 #' @export
 #' @rdname title_footer

@@ -27,6 +27,9 @@ expect_identical(format_value(values[1], format = "xx.xxxx"),
 expect_identical(format_value(values[1], format = "xx%"),
                  paste0(values[1]*100, "%"))
 
+expect_identical(format_value(values[1], format = "xx.%"),
+                 "512%")
+
 expect_identical(format_value(values[1], format = "xx.x%"),
                  "512.3%")
 
@@ -135,14 +138,26 @@ expect_identical(format_value(values, format = "xx.x to xx.x"),
 expect_identical(format_value(c(values, 10.1235), format = "xx.xx (xx.xx - xx.xx)"),
                  "5.12 (7.89 - 10.12)")
 
+expect_identical(format_value(NULL, "xx"), "")
 
+
+expect_identical(format_value(5.123, "xx.x", output = "html"),
+                 list("5.1" = htmltools::tagList(format_value(5.123, "xx.x"), NULL)))
+
+
+## errors
+
+expect_error(format_value(5.1, "abcd"), "unknown format label")
+expect_error(format_value(5.1, "xx - xx"), "are of different length")
+
+expect_error(format_value(c(5.1, 2, 3), "xx - xx"), "are of different length")
 ## handling NAs
 
 results <- vapply(forms[["1d"]], function(fmt) format_value(NA, format = fmt), "")
 justnastr <- results == "NA"
 
 expect_identical(names(results)[!justnastr],
-                 c("xx%", "xx.x%", "xx.xx%", "xx.xxx%", "(N=xx)"))
+                 c("xx%", "xx.%", "xx.x%", "xx.xx%", "xx.xxx%", "(N=xx)"))
 
 expect_identical(format_value(NA, "xx.", na_str = "-"),
                  "-")
@@ -175,4 +190,89 @@ expect_identical(main_footer(dfmf),
 strout <- toString(dfmf)
 expect_true(any(grepl(ftmsg, strout)))
 
+df2 <- mtcars
+df2$extra <- paste("row", 1:NROW(df2), "haha", sep = "\n")
 
+df2mf <- basic_matrix_form(df2)
+
+mf_rinfo <- formatters:::mf_rinfo
+
+expect_identical(basic_pagdf(row.names(df2),
+                             extents = 3L),
+                 mf_rinfo(df2mf))
+
+hpaginds <- pag_indices_inner(mf_rinfo(df2mf),
+                              8, min_siblings = 0)
+
+expect_true(all(lengths(hpaginds) == 2L))
+
+vpaginds <- vert_pag_indices(df2mf, cpp = 40)
+
+expect_identical(lengths(vpaginds),
+                 c(5L, 5L, 2L))
+
+
+df3 <- data.frame(x = 1:5, y = c(1:3, 8, 9),
+                 row.names = c("spna", "spnb", "spnc", "sep1", "sep2"))
+
+df3mf <- basic_matrix_form(df3)
+
+spnmat <- formatters:::mf_spans(df3mf)
+
+spnmat[2:3, 2:3] <- 2
+
+df3mf$spans <- spnmat
+df3mf$display[2:3, 3] <- FALSE
+df3mf$aligns[2:6, 2:3] <- "center"
+strout <- toString(df3mf)
+expect_false(grepl("1[[:space:]]*1", strout))
+expect_true(grepl("3[[:space:]]*3", strout))
+
+
+expect_identical(spread_integer(7, 3),
+                 c(3, 2, 2))
+
+expect_error(spread_integer(3.5, 2))
+
+
+## matrix_form on a matrix form a no op
+expect_identical(df3mf, matrix_form(df3mf))
+expect_identical(divider_height(df3mf), 1L)
+expect_identical(subtitles(df3mf), character())
+expect_identical(page_titles(df3mf), character())
+prov_footer(df3mf) <- "file: myfile.txt"
+expect_identical(prov_footer(df3mf), "file: myfile.txt")
+expect_identical(nlines(NULL), 0L)
+expect_identical(nlines("hi\nthere"), 2L)
+
+
+thing <- 5.1234
+expect_true(is.null(obj_label(thing)))
+obj_label(thing) <- "hi thing"
+expect_identical(obj_label(thing), "hi thing")
+expect_true(is.null(obj_format(thing)))
+obj_format(thing) <- "xx.x"
+expect_identical(format_value(thing, obj_format(thing)),
+                 "5.1")
+
+
+## labels
+
+x <- 15
+expect_identical(obj_label(with_label(x, "hi")),
+                 "hi")
+
+mydf <- mtcars
+lbls <- paste("LBL: ", names(mydf))
+var_labels(mydf) <- lbls
+expect_identical(var_labels(mydf),
+                 setNames(lbls,
+                          names(mydf)))
+
+mydf <- var_relabel(mydf, mpg = "New MPG")
+expect_identical(var_labels(mydf),
+                 c(mpg = "New MPG", setNames(lbls[-1],
+                                             names(mydf)[-1])))
+
+
+expect_true(all(is.na(var_labels(var_labels_remove(mydf)))))
