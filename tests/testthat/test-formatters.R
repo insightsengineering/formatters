@@ -1,4 +1,4 @@
-o## listing supported formats and enuring they all read as valid
+## listing supported formats and enuring they all read as valid
 forms <- list_valid_format_labels()
 
 res <- sapply(forms, function(vc) all(sapply(vc, is_valid_format)))
