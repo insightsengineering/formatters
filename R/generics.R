@@ -305,7 +305,7 @@ setGeneric("main_footer", function(obj) standardGeneric("main_footer"))
 #' @export
 #' @rdname title_footer
 setMethod("main_footer", "MatrixPrintForm",
-          function(obj) attr(obj, "footer"))
+          function(obj) obj$main_footer)
 
 #' @rdname title_footer
 #' @param value character. New value.
