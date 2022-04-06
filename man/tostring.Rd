@@ -24,6 +24,10 @@ toString(x, ...)
 \item{linesep}{character(1). Characters to repeat to create header/body
 separator line.}
 }
+\value{
+A character string containing the ASCII rendering
+of the table-like object reprseented by `x`
+}
 \description{
 toString
 

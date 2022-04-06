@@ -1,18 +1,18 @@
 Package: formatters
 Title: ASCII Formatting for Values and Tables
 Date: 2022-03-24
-Version: 0.1.0.0004
+Version: 0.2.0.1
 Authors@R: c(
   person("Gabriel", "Becker", email = "gabembecker@gmail.com", role = c("aut", "cre")),
   person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = "aut"),
   person("F. Hoffmann-La Roche", role = "cph"))
 Description: We provide a framework for rendering complex tables to ASCII, and a set of formatters for transforming values or sets of values into ASCII-ready display strings.
-License: Apache License 2.0 | file LICENSE
+License: Apache License 2.0
 Depends: methods, R (>= 2.10)
 Imports: htmltools
 Suggests:
   dplyr,
-  tinytest,
+  testthat,
   knitr,
   rmarkdown
 Encoding: UTF-8

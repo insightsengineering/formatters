@@ -112,6 +112,36 @@ vector.}
 \item{prov_footer}{character.  Provenance footer  information as a
 character vector.}
 }
+\value{
+An object of class `MatrixPrintForm`. Currently this is
+implemented as an S3 class inheriting from list with the following
+elements:
+\describe{
+\item{\code{strings}}{see argument}
+\item{\code{spans}}{see argument}
+\item{\code{aligns}}{see argument}
+\item{\code{display}}{logical matrix of same dimension as `strings`
+that specifies whether an element in `strings` will be displayed
+when the table is rendered}
+\item{\code{formats}}{see arugment}
+\item{\code{row_info}}{see argument}
+\item{\code{line_grouping}}{see argument}
+\item{\code{ref_footnotes}}{see argument}
+\item{\code{main_title}}{see argument}
+\item{\code{subtitles}}{see argument}
+\item{\code{page_titles}}{see argument}
+\item{\code{main_footer}}{see argument}
+\item{\code{prov_footer}}{see argument}
+}
+
+as well as the following attributes:
+\describe{
+\item{\code{nlines_header}}{see argument}
+\item{\code{nrow_header}}{see argument}
+\item{\code{ncols}}{number of columns \emph{of the table}, not including
+any row names/row labels}
+}
+}
 \description{
 This should generally only be called by `matrix_form` custom
 methods, and almost never from other code.

@@ -10,6 +10,10 @@ spans_to_viscell(spans)
 \item{spans}{numeric. Vector of spans, with each span value repeated
 for the cells it covers.}
 }
+\value{
+a logical vector the same length as `spans` indicating
+whether the contents of a string vector with those spans
+}
 \description{
 Transform vectors of spans (with dupblication) to Visibility vector
 }

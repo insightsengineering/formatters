@@ -1,4 +1,3 @@
-
 ## listing supported formats and enuring they all read as valid
 forms <- list_valid_format_labels()
 

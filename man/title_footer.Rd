@@ -71,6 +71,11 @@ all_titles(obj)
 
 \item{value}{character. New value.}
 }
+\value{
+a character scalar (`main_title`, `main_footer`), or
+vector of length zero or more (`subtitles`, `page_titles`,
+`prov_footer`) containing the relevant title/footer contents
+}
 \description{
 General title/footer accessors
 }

@@ -1,4 +1,4 @@
-library(tinytest)
+library(testthat)
 library(formatters)
 
-run_test_dir("tinytest")
+test_check("formatters", reporter = "check")
