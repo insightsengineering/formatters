@@ -163,7 +163,7 @@ expect_identical(format_value(NA, "xx.", na_str = "-"),
                  "-")
 
 ## trailing 0s are correct
-expect_identical(format_value(0, "xx."), "0") ## XXX TODO is this right? what is xx. supposed to do????
+expect_identical(format_value(0, "xx."), "0")
 expect_identical(format_value(0, "xx.x"), "0.0")
 expect_identical(format_value(0, "xx.xx"), "0.00")
 expect_identical(format_value(0, "xx.xxx"), "0.000")
@@ -186,6 +186,20 @@ ftmsg <- "my footer is here"
 main_footer(dfmf) <- ftmsg
 expect_identical(main_footer(dfmf),
                  ftmsg)
+
+
+## https://github.com/Roche/rtables/issues/318
+dfmf2 <- dfmf
+dfmf2$strings[1, 2] <- "m\npg"
+dfmf2$strings[1, 1] <- "tleft mats"
+
+dfmf2 <- formatters:::mform_handle_newlines(dfmf2, has_topleft = TRUE)
+expect_identical(dfmf2$strings[1:2, 1:2],
+                 matrix(c("tleft mats", "", "m", "pg"), nrow = 2, ncol = 2))
+
+
+
+
 
 strout <- toString(dfmf)
 expect_true(any(grepl(ftmsg, strout)))
@@ -276,3 +290,5 @@ expect_identical(var_labels(mydf),
 
 
 expect_true(all(is.na(var_labels(var_labels_remove(mydf)))))
+
+

@@ -20,7 +20,9 @@ mform_handle_newlines <- function(matform, has_topleft = TRUE) {
     nr_header <- mf_nrheader(matform) ## attr(matform, "nrow_header")
     nrows <- nrow(strmat) #matform$strings)
     if (any(row_nlines > 1)) {
+
         hdr_inds <- 1:nr_header
+        new_nlines_hdr <- sum(row_nlines[hdr_inds])
         ## groundwork for sad haxx to get tl to not be messed up
         if(has_topleft)
             tl <- strmat[hdr_inds, 1]
@@ -33,8 +35,12 @@ mform_handle_newlines <- function(matform, has_topleft = TRUE) {
                            expand_mat_rows(frmmat[-1*hdr_inds,, drop = FALSE], row_nlines[-hdr_inds]))
         ## sad haxx :(
         if(has_topleft) {
-            newstrmat[1:nr_header,1] <- c(tl, rep("", nr_header - length(tl)))
-            newfrmmat[1:nr_header,1] <- c(tl, rep("", nr_header - length(tl)))
+            newtl <- unlist(strsplit(tl, "\n"))
+            if(length(newtl) > new_nlines_hdr)
+                stop("Expanding top-left material resulted in more lines (", length(newtl),
+                     "than fit in the header.")
+            newstrmat[1:new_nlines_hdr,1] <- c(tl, rep("", new_nlines_hdr - length(tl)))
+            newfrmmat[1:new_nlines_hdr,1] <- "xx"
         }
         mf_strings(matform) <- newstrmat
         mf_formats(matform) <- newfrmmat
@@ -48,7 +54,7 @@ mform_handle_newlines <- function(matform, has_topleft = TRUE) {
         mf_lgrouping(matform) <- rep(1:nrows, times = row_nlines)
 
         ##attr(matform, "nlines_header") <- sum(row_nlines[1:nr_header])
-        mf_nlheader(matform) <- sum(row_nlines[1:nr_header])
+        mf_nlheader(matform) <- new_nlines_hdr
     }
 
     matform
