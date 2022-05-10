@@ -7,7 +7,7 @@ Authors@R: c(
   person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = "aut"),
   person("F. Hoffmann-La Roche", role = "cph"))
 Description: We provide a framework for rendering complex tables to ASCII, and a set of formatters for transforming values or sets of values into ASCII-ready display strings.
-License: Apache License 2.0
+License: Apache License 2.0 | file LICENSE
 Depends: methods, R (>= 2.10)
 Imports: htmltools
 Suggests:
