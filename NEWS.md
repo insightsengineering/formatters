@@ -1,3 +1,6 @@
+## formatters 0.2.0.3
+ * add a number of `"__ (__)"` (no pct) formats in response to #23
+
 ## formatters 0.2.0.1
  * Switch to `testthat` as testing framework
 

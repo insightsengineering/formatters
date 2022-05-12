@@ -123,6 +123,28 @@ expect_identical(format_value(values, format = "xx.x - xx.x"),
 expect_identical(format_value(values, format = "xx.xx - xx.xx"),
                  "5.12 - 7.89")
 
+expect_identical(format_value(values, format = "xx (xx%)"),
+                 paste0(values[1], " (", values[2]*100, "%)"))
+
+expect_identical(format_value(values, format = "xx (xx)"),
+                 paste0(values[1], " (", values[2], ")"))
+
+
+expect_identical(format_value(values, format = "xx (xx.)"),
+                 paste0(values[1], " (8)"))
+
+
+expect_identical(format_value(values, format = "xx (xx.x)"),
+                 paste0(values[1], " (7.9)"))
+
+expect_identical(format_value(values, format = "xx (xx.xx)"),
+                 paste0(values[1], " (7.89)"))
+
+
+expect_identical(format_value(values, format = "xx. (xx.)"),
+                 paste0(5, " (8)"))
+
+
 expect_identical(format_value(values, format = "xx.x (xx.x)"),
                  "5.1 (7.9)")
 
@@ -291,4 +313,34 @@ expect_identical(var_labels(mydf),
 
 expect_true(all(is.na(var_labels(var_labels_remove(mydf)))))
 
+
+## additional full smoke test of labels without output checking
+
+values2 <- c(values, 987)
+labs <- list_valid_format_labels()
+
+r1 <- vapply(labs[["1d"]],
+             function(lb) {
+    tmp <- format_value(values2[1], lb)
+    TRUE
+}, NA)
+
+expect_true(all(r1))
+
+r2 <- vapply(labs[["2d"]],
+             function(lb) {
+    tmp <- format_value(values2[1:2], lb)
+    TRUE
+}, NA)
+
+expect_true(all(r2))
+
+
+r3 <- vapply(labs[["3d"]],
+             function(lb) {
+    tmp <- format_value(values2, lb)
+    TRUE
+}, NA)
+
+expect_true(all(r3))
 

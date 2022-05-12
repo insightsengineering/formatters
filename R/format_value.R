@@ -14,7 +14,8 @@ formats_2d <- c(
   "(xx, xx)", "(xx., xx.)", "(xx.x, xx.x)", "(xx.xx, xx.xx)",
   "(xx.xxx, xx.xxx)", "(xx.xxxx, xx.xxxx)",
   "xx - xx", "xx.x - xx.x", "xx.xx - xx.xx",
-  "xx.x (xx.x)", "xx.xx (xx.xx)",
+  "xx (xx)", "xx. (xx.)", "xx.x (xx.x)", "xx.xx (xx.xx)",
+  "xx (xx.)", "xx (xx.x)", "xx (xx.xx)",
   "xx.x, xx.x",
   "xx.x to xx.x"
 )
@@ -268,8 +269,13 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
                    "xx - xx" = sep_2d_helper(x, dig1 = NA, dig2 = NA, sep = " - ", na_str = na_str),
                    "xx.x - xx.x" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = " - ", na_str = na_str),
                    "xx.xx - xx.xx" = sep_2d_helper(x, dig1 = 2, dig2 = 2, sep = " - ", na_str = na_str),
+                   "xx (xx)" = val_pct_helper(x, dig1 = NA, dig2 = NA, na_str = na_str, pct = FALSE),
+                   "xx. (xx.)" = val_pct_helper(x, dig1 = 0, dig2 = 0, na_str = na_str, pct = FALSE),
                    "xx.x (xx.x)" = val_pct_helper(x, dig1 = 1, dig2 = 1, na_str = na_str, pct = FALSE),
                    "xx.xx (xx.xx)" = val_pct_helper(x, dig1 = 2, dig2 = 2, na_str = na_str, pct = FALSE),
+                   "xx (xx.)" = val_pct_helper(x, dig1 = NA, dig2 = 0, na_str = na_str, pct = FALSE),
+                   "xx (xx.x)" = val_pct_helper(x, dig1 = NA, dig2 = 1, na_str = na_str, pct = FALSE),
+                   "xx (xx.xx)" = val_pct_helper(x, dig1 = NA, dig2 = 2, na_str = na_str, pct = FALSE),
                    "xx.x, xx.x" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = ", ", na_str = na_str),
                    "xx.x to xx.x" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = " to ", na_str = na_str),
                    "xx.xx (xx.xx - xx.xx)" = paste0(round_fmt(x[1], digits = 2, na_str = na_str), " ",
