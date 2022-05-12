@@ -29,9 +29,9 @@ calling the `list_valid_format_labels` function:
     $`1d`
      [1] "xx"                 "xx."                "xx.x"              
      [4] "xx.xx"              "xx.xxx"             "xx.xxxx"           
-     [7] "xx%"                "xx.x%"              "xx.xx%"            
-    [10] "xx.xxx%"            "(N=xx)"             ">999.9"            
-    [13] ">999.99"            "x.xxxx | (<0.0001)"
+     [7] "xx%"                "xx.%"               "xx.x%"             
+    [10] "xx.xx%"             "xx.xxx%"            "(N=xx)"            
+    [13] ">999.9"             ">999.99"            "x.xxxx | (<0.0001)"
 
     $`2d`
      [1] "xx / xx"            "xx. / xx."          "xx.x / xx.x"       
@@ -41,8 +41,9 @@ calling the `list_valid_format_labels` function:
     [13] "(xx, xx)"           "(xx., xx.)"         "(xx.x, xx.x)"      
     [16] "(xx.xx, xx.xx)"     "(xx.xxx, xx.xxx)"   "(xx.xxxx, xx.xxxx)"
     [19] "xx - xx"            "xx.x - xx.x"        "xx.xx - xx.xx"     
-    [22] "xx.x (xx.x)"        "xx.xx (xx.xx)"      "xx.x, xx.x"        
-    [25] "xx.x to xx.x"      
+    [22] "xx (xx)"            "xx. (xx.)"          "xx.x (xx.x)"       
+    [25] "xx.xx (xx.xx)"      "xx (xx.)"           "xx (xx.x)"         
+    [28] "xx (xx.xx)"         "xx.x, xx.x"         "xx.x to xx.x"      
 
     $`3d`
     [1] "xx.xx (xx.xx - xx.xx)"
