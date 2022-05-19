@@ -62,8 +62,9 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
 #'
 #' @param obj ANY. Object to be transformed into a ready-to-render form (a MatrixPrintForm object)
 #' @param indent_rownames logical(1), if TRUE the column with the row names in the `strings` matrix of has indented row
-#'   names (strings pre-fixed)
-#'
+#' names (strings pre-fixed)
+#' @param indent_size numeric(1). Number of spaces to be used per level of indent (if supported by
+#' the relevant method). Defaults to 2.
 #' @export
 #'
 #' @details
@@ -81,11 +82,14 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
 #'
 #' With an additional \code{nrow_header} attribute indicating the number of pseudo "rows"  the
 #' column structure defines.
-setGeneric("matrix_form", function(obj, indent_rownames = FALSE) standardGeneric("matrix_form"))
+setGeneric("matrix_form", function(obj, indent_rownames = FALSE,
+                                   indent_size = 2) standardGeneric("matrix_form"))
 
 #' @rdname matrix_form
 #' @export
-setMethod("matrix_form", "MatrixPrintForm", function(obj, indent_rownames = FALSE) obj)
+setMethod("matrix_form", "MatrixPrintForm", function(obj,
+                                                     indent_rownames = FALSE,
+                                                     indent_size = 2) obj)
 
 
 ## Generics for toString and helper functions
