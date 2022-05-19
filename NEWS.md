@@ -1,3 +1,6 @@
+## formatters 0.2.0.5
+ * rename `linesep` argument to `hsep` in `toString` generic signature 
+
 ## formatters 0.2.0.4
  * add `indent_size` argument to `matrix_form` generic signature
 

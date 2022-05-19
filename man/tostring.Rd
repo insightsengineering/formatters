@@ -10,7 +10,7 @@ to be printed or written to a plain-text file}
 \usage{
 toString(x, ...)
 
-\S4method{toString}{MatrixPrintForm}(x, widths = NULL, col_gap = 3, linesep = "—")
+\S4method{toString}{MatrixPrintForm}(x, widths = NULL, col_gap = 3, hsep = "—")
 }
 \arguments{
 \item{x}{ANY. Object to be prepared for rendering.}
@@ -21,7 +21,7 @@ toString(x, ...)
 
 \item{col_gap}{numeric(1). Space between columns}
 
-\item{linesep}{character(1). Characters to repeat to create header/body
+\item{hsep}{character(1). Characters to repeat to create header/body
 separator line.}
 }
 \value{

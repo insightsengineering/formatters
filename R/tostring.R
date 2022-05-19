@@ -8,7 +8,7 @@
 #' @rdname tostring
 #' @param widths (proposed) widths for the columns of \code{x}
 #' @param col_gap numeric(1). Space between columns
-#' @param linesep character(1). Characters to repeat to create header/body
+#' @param hsep character(1). Characters to repeat to create header/body
 #' separator line.
 #' @exportMethod toString
 #' @examples
@@ -19,7 +19,7 @@
 setMethod("toString", "MatrixPrintForm", function(x,
                                                   widths = NULL,
                                                   col_gap = 3,
-                                                  linesep = "\u2014") {
+                                                  hsep = "\u2014") {
     mat <- x
 
   ## we create a matrix with the formatted cell contents
@@ -81,7 +81,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
   gap_str <- strrep(" ", col_gap)
 
   ncchar <-  sum(widths) + (length(widths) - 1) * col_gap
-  div <- substr(strrep(linesep, ncchar), 1, ncchar)
+  div <- substr(strrep(hsep, ncchar), 1, ncchar)
 
   txt_head <- apply(head(content, nl_header), 1, .paste_no_na, collapse = gap_str)
   txt_body <- apply(tail(content, -nl_header), 1, .paste_no_na, collapse = gap_str)
