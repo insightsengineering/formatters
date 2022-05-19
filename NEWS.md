@@ -1,3 +1,6 @@
+## formatters 0.2.0.6
+ * format_value now respects `na_str` even when format is `xx` (previously it returned `"NA"` always)
+
 ## formatters 0.2.0.5
  * rename `linesep` argument to `hsep` in `toString` generic signature 
 

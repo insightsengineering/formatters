@@ -233,7 +233,7 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
 
                switch(
                    format,
-                   "xx" = if (all(is.na(x))) "NA" else as.character(x),
+                   "xx" = if (all(is.na(x))) na_str else as.character(x),
                    "xx." = round_fmt(x, digits = 0, na_str = na_str),
                    "xx.x" = round_fmt(x, digits = 1, na_str = na_str),
                    "xx.xx" = round_fmt(x, digits = 2, na_str = na_str),
