@@ -183,6 +183,8 @@ expect_identical(names(results)[!justnastr],
 
 expect_identical(format_value(NA, "xx.", na_str = "-"),
                  "-")
+expect_identical(format_value(NA, "xx", na_str = "-"),
+                 "-")
 
 ## trailing 0s are correct
 expect_identical(format_value(0, "xx."), "0")
