@@ -10,7 +10,7 @@ to be printed or written to a plain-text file}
 \usage{
 toString(x, ...)
 
-\S4method{toString}{MatrixPrintForm}(x, widths = NULL, col_gap = 3, hsep = "—")
+\S4method{toString}{MatrixPrintForm}(x, widths = NULL, col_gap = 3, hsep = default_hsep())
 }
 \arguments{
 \item{x}{ANY. Object to be prepared for rendering.}

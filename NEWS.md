@@ -1,3 +1,6 @@
+## formatters 0.2.0.7
+ * add exported `default_hsep` function for use her and in reverse-dependencies (incl `rtables)
+
 ## formatters 0.2.0.6
  * format_value now respects `na_str` even when format is `xx` (previously it returned `"NA"` always)
 

@@ -1,8 +1,38 @@
 # toString ----
 
 #' @importFrom stats na.omit
-#' @importFrom utils head tail
+#' @importFrom utils head tail localeToCharset
 
+d_hsep_factory <- function() {
+    warn_sent <- FALSE
+    function() {
+        if(any(grepl("^UTF", localeToCharset())))
+            "\u2014"
+        else {
+            if(!warn_sent) {
+                warning("Detected non-UTF charset. Falling back to '-' ",
+                        "as default header/body separator. This warning ",
+                        "will only be shown once per R session.")
+                warn_sent <<- TRUE
+            }
+            "-"
+        }
+    }
+}
+
+#' Default horizontal Separator
+#'
+#' The default horizontal separator character which can be
+#' displayed in the current charset for use in rendering table-likes.
+#'
+#' @return unicode 2014 (long dash for generating solid horizontal line)
+#' if in a locale that uses a UTF character set, otherwise an ASCII hyphen
+#' with a once-per-session warning.
+#'
+#' @export
+#' @examples
+#' default_hsep()
+default_hsep <- d_hsep_factory()
 
 
 #' @rdname tostring
@@ -19,7 +49,7 @@
 setMethod("toString", "MatrixPrintForm", function(x,
                                                   widths = NULL,
                                                   col_gap = 3,
-                                                  hsep = "\u2014") {
+                                                  hsep = default_hsep()) {
     mat <- x
 
   ## we create a matrix with the formatted cell contents
