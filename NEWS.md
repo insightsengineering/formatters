@@ -1,19 +1,12 @@
-## formatters 0.2.0.7
- * add exported `default_hsep` function for use her and in reverse-dependencies (incl `rtables)
+## formatters 0.3.1
+ * Released on CRAN
 
-## formatters 0.2.0.6
+## formatters 0.3.0
+ * add exported `default_hsep` function for use her and in reverse-dependencies (incl `rtables`)
  * format_value now respects `na_str` even when format is `xx` (previously it returned `"NA"` always)
-
-## formatters 0.2.0.5
  * rename `linesep` argument to `hsep` in `toString` generic signature 
-
-## formatters 0.2.0.4
  * add `indent_size` argument to `matrix_form` generic signature
-
-## formatters 0.2.0.3
  * add a number of `"__ (__)"` (no pct) formats in response to #23
-
-## formatters 0.2.0.1
  * Switch to `testthat` as testing framework
 
 ## formatters 0.2.0
