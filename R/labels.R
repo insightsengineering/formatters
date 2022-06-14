@@ -40,7 +40,9 @@ with_label <- function(x, label) {
 #' var_labels(x) <- paste("label for", names(iris))
 #' var_labels(x)
 var_labels <- function(x, fill = FALSE) {
-  stopifnot(is.data.frame(x))
+    stopifnot(is.data.frame(x))
+    if(NCOL(x) == 0)
+        return(character())
 
   y <- Map(function(col, colname) {
     label <- attr(col, "label")

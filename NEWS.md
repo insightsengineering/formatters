@@ -1,3 +1,6 @@
+## formatters 0.3.2.1
+ * calling `var_labels` on a data.frame with no columns is no longer an error (roche/rtables#224)
+
 ## formatters 0.3.2
  * Change warning when non-UTF line sep default is used to message, and display it only during interactive sessions (once per sessoin).
 
