@@ -9,8 +9,8 @@ d_hsep_factory <- function() {
         if(any(grepl("^UTF", localeToCharset())))
             "\u2014"
         else {
-            if(!warn_sent) {
-                warning("Detected non-UTF charset. Falling back to '-' ",
+            if(!warn_sent && interactive()) {
+                message("Detected non-UTF charset. Falling back to '-' ",
                         "as default header/body separator. This warning ",
                         "will only be shown once per R session.")
                 warn_sent <<- TRUE

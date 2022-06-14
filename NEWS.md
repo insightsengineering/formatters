@@ -1,3 +1,6 @@
+## formatters 0.3.2
+ * Change warning when non-UTF line sep default is used to message, and display it only during interactive sessions (once per sessoin).
+
 ## formatters 0.3.1
  * Released on CRAN
 
