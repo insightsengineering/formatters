@@ -346,3 +346,5 @@ r3 <- vapply(labs[["3d"]],
 
 expect_true(all(r3))
 
+expect_identical(var_labels(data.frame()),
+                 character())
