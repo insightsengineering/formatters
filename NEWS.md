@@ -1,5 +1,7 @@
-## formatters 0.3.2.2
+## formatters 0.3.2.3 
+ * fix regression caused by `0.3.2.2` in `vert_pag_indices` when `obj` is not a `MatrixPrintForm` object
  
+## formatters 0.3.2.2
  * Added support for `trailing_sep` column to row_info data.frames (e.g, `pagdfrow` constructor)
  * `trailing_sep` info now used in both printing and pagination
  * `col_gap` is now an element of `MatrixPrintForm` objects

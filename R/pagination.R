@@ -272,14 +272,13 @@ vert_pag_indices <- function(obj, cpp = 40, verbose = FALSE) {
 
     clwds <- propose_column_widths(strm)
 
-
     pdfrows <- lapply(2:ncol(strm$strings),
                       function(i) {pagdfrow(row = NA,
                                             nm = i-1,
                                             lab = i-1,
                                             rnum = i-1,
                                             pth = NA,
-                                            extent = clwds[i] + obj$col_gap,
+                                            extent = clwds[i] + strm$col_gap,
                                             rclass = "stuff",
                                             sibpos = 1-1,
                                             nsibs = 1-1)
