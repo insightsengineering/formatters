@@ -1,3 +1,10 @@
+## formatters 0.3.2.2
+ 
+ * Added support for `trailing_sep` column to row_info data.frames (e.g, `pagdfrow` constructor)
+ * `trailing_sep` info now used in both printing and pagination
+ * `col_gap` is now an element of `MatrixPrintForm` objects
+ * `vert_pag_indices` fixed to correctly take gap between printed columns into account
+ 
 ## formatters 0.3.2.1
  * calling `var_labels` on a data.frame with no columns is no longer an error (roche/rtables#224)
 

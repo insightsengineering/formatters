@@ -36,8 +36,8 @@ default_hsep <- d_hsep_factory()
 
 
 #' @rdname tostring
+#' @inheritParams MatrixPrintForm
 #' @param widths (proposed) widths for the columns of \code{x}
-#' @param col_gap numeric(1). Space between columns
 #' @param hsep character(1). Characters to repeat to create header/body
 #' separator line.
 #' @exportMethod toString
@@ -48,7 +48,7 @@ default_hsep <- d_hsep_factory()
 #' of the table-like object reprseented by `x`
 setMethod("toString", "MatrixPrintForm", function(x,
                                                   widths = NULL,
-                                                  col_gap = 3,
+                                                  col_gap = x$col_gap,
                                                   hsep = default_hsep()) {
     mat <- x
 
@@ -113,9 +113,35 @@ setMethod("toString", "MatrixPrintForm", function(x,
   ncchar <-  sum(widths) + (length(widths) - 1) * col_gap
   div <- substr(strrep(hsep, ncchar), 1, ncchar)
 
-  txt_head <- apply(head(content, nl_header), 1, .paste_no_na, collapse = gap_str)
-  txt_body <- apply(tail(content, -nl_header), 1, .paste_no_na, collapse = gap_str)
-
+    txt_head <- apply(head(content, nl_header), 1, .paste_no_na, collapse = gap_str)
+    sec_seps_df <- x$row_info[,c("abs_rownumber", "trailing_sep"), drop = FALSE]
+    if(!is.null(sec_seps_df) && any(!is.na(sec_seps_df$trailing_sep))) {
+        bdy_cont <- tail(content, -nl_header)
+        ## unfortunately we count "header rows" wrt lihnegrouping so it
+        ## doesn't match the real (ie body) rows as is
+        row_grouping <- tail(x$line_grouping, -nl_header) - attr(x, "nrow_header")
+        nrbody <- NROW(bdy_cont)
+        stopifnot(length(row_grouping) == nrbody)
+        sec_seps_df <- sec_seps_df[!is.na(sec_seps_df$trailing_sep), ]
+        txt_body <- character()
+        sec_strt <- 1
+        section_rws <- sec_seps_df$abs_rownumber
+        for(i in seq_len(NROW(section_rws))) {
+            cur_rownum <- section_rws[i]
+            sec_end <-  max(which(row_grouping == cur_rownum))
+            txt_body <- c(txt_body,
+                        apply(bdy_cont[seq(sec_strt, sec_end),, drop = FALSE],
+                              1,
+                              .paste_no_na,
+                              collapse = gap_str),
+                        ## don't print section dividers if they would be the last thing before the
+                        ## footer divider
+                        if(sec_end < nrbody) substr(strrep(sec_seps_df$trailing_sep[i], ncchar), 1, ncchar))
+            sec_strt <- sec_end + 1
+        }
+    }  else {
+        txt_body <- apply(tail(content, -nl_header), 1, .paste_no_na, collapse = gap_str)
+    }
   allts <- all_titles(x)
   titles_txt <- if(any(nzchar(allts))) c(allts, "", div)  else NULL
     ## TODO make titles affect width...

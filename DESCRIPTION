@@ -1,7 +1,7 @@
 Package: formatters
 Title: ASCII Formatting for Values and Tables
 Date: 2022-05-20
-Version: 0.3.2.1
+Version: 0.3.2.2
 Authors@R: c(
   person("Gabriel", "Becker", email = "gabembecker@gmail.com", role = c("aut", "cre")),
   person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = "aut"),
@@ -19,5 +19,5 @@ Encoding: UTF-8
 LazyData: true
 URL: https://github.com/insightsengineering/formatters
 BugReports: https://github.com/insightsengineering/formatters/issues
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 VignetteBuilder: knitr

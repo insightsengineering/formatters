@@ -247,7 +247,12 @@ expect_true(all(lengths(hpaginds) == 2L))
 vpaginds <- vert_pag_indices(df2mf, cpp = 40)
 
 expect_identical(lengths(vpaginds),
-                 c(5L, 5L, 2L))
+                 c(3L, 3L, 3L, 2L, 1L))
+
+vpaginds2 <- vert_pag_indices(df2mf, cpp = 39, verbose = TRUE)
+
+expect_identical(lengths(vpaginds2),
+                 c(2L, 2L, 2L, 3L, 2L, 1L))
 
 
 df3 <- data.frame(x = 1:5, y = c(1:3, 8, 9),

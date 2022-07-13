@@ -2,9 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{print,ANY-method}
 \alias{print,ANY-method}
-\title{Print
-
-Print an R object. see \code{[base::print()]}}
+\title{Print}
 \usage{
 \S4method{print}{ANY}(x, ...)
 }
@@ -14,7 +12,5 @@ Print an R object. see \code{[base::print()]}}
 \item{...}{further arguments passed to or from other methods.}
 }
 \description{
-Print
-
 Print an R object. see \code{[base::print()]}
 }

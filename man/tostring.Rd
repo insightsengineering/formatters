@@ -3,14 +3,11 @@
 \name{toString}
 \alias{toString}
 \alias{toString,MatrixPrintForm-method}
-\title{toString
-
-Transform a complex object into a string representation ready
-to be printed or written to a plain-text file}
+\title{toString}
 \usage{
 toString(x, ...)
 
-\S4method{toString}{MatrixPrintForm}(x, widths = NULL, col_gap = 3, hsep = default_hsep())
+\S4method{toString}{MatrixPrintForm}(x, widths = NULL, col_gap = x$col_gap, hsep = default_hsep())
 }
 \arguments{
 \item{x}{ANY. Object to be prepared for rendering.}
@@ -19,7 +16,7 @@ toString(x, ...)
 
 \item{widths}{(proposed) widths for the columns of \code{x}}
 
-\item{col_gap}{numeric(1). Space between columns}
+\item{col_gap}{numeric(1). Space (in characters) between columns}
 
 \item{hsep}{character(1). Characters to repeat to create header/body
 separator line.}
@@ -29,8 +26,6 @@ A character string containing the ASCII rendering
 of the table-like object reprseented by `x`
 }
 \description{
-toString
-
 Transform a complex object into a string representation ready
 to be printed or written to a plain-text file
 }

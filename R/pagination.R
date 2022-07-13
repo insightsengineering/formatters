@@ -1,3 +1,43 @@
+## #' Page Dimensions
+## #'
+## #' Dimensions for mapping page dimensions to text dimensions
+## #' @references https://www.ietf.org/rfc/rfc0678.txt
+## #' @export
+## #' @rdname pagedims
+## lpi_vert <- 6
+## #' @export
+## #' @rdname pagedims
+## cpi_horiz <- 10
+## #' @export
+## #' @rdname pagedims
+## horiz_margin_chars <- 13
+## #' @export
+## #' @rdname pagedims
+## horiz_margin_inches <- horiz_margin_chars / cpi_horiz
+## #' @export
+## #' @rdname pagedims
+## vert_margin_lines <- 6
+## #' @export
+## #' @rdname pagedims
+## vert_margin_inches <- vert_margin_lines / lpi_vert
+
+## #' Phsyical Page dimenensions to chars x lines
+## #'
+## #' Calculate number of lines long and characters wide a page size is,
+## #' after excluding margins
+## #' @export
+## #' @examples
+## #' phys_page_to_lc()
+## phys_page_to_lc <- function(width = 8.5, len = 11,
+##                             h_margin = horiz_margin_inches,
+##                             v_margin = vert_margin_inches) {
+##     lgl_width <- width - h_margin
+##     lgl_len <- len - v_margin
+##     c(chars_wide = floor(lgl_width * cpi_horiz),
+##       lines_long = floor(lgl_len * lpi_vert))
+## }
+
+
 #' Create row of pagination data frame
 #' @param nm character(1). Name
 #' @param lab character(1). Label
@@ -16,6 +56,8 @@
 #' @param nreflines integer(1). Total number of lines required by all referential footnotes
 #' @param force_page logical(1). Currently Ignored.
 #' @param page_title logical(1). Currently Ignored.
+#' @param trailing_sep character(1). The string to used as a separator below this row during printing (or
+#' `NA_character_` for no separator).
 #' @param row ANY. Object representing the row, which is used for default values of \code{nm}, \code{lab},
 #' \code{extent} and \code{rclass} if provided. Must have methods for \code{obj_name}, \code{obj_label},
 #' and \code{nlines}, respectively, for default values of \code{nm}, \code{lab} and \code{extent} to
@@ -40,7 +82,8 @@ pagdfrow = function(row,
                     ncellrefs = 0L,
                     nreflines = 0L,
                     force_page = FALSE,
-                    page_title = NA_character_
+                    page_title = NA_character_,
+                    trailing_sep = NA_character_
                     ) {
     data.frame(label = lab,
                name = nm,
@@ -58,6 +101,7 @@ pagdfrow = function(row,
                nreflines = nreflines,
                force_page = force_page,
                page_title = page_title,
+               trailing_sep = trailing_sep,
                stringsAsFactors = FALSE,
                row.names = NULL)
 }
@@ -78,9 +122,12 @@ valid_pag = function(pagdf,
     rowlines <- sum(pagdf[start:guess, "self_extent"])
     reflines <-  sum(pagdf[start:guess, "nreflines"])
     rowlines <- sum(pagdf[start:guess, "self_extent"]) - reflines ## self extent includes reflines
+    ## self extent does ***not*** currently include trailing sep
+    ## we don't include the trailing_sep for guess because if we paginate here it won't be printed
+    sectlines <- if(start == guess) 0L else sum(!is.na(pagdf[start:(guess - 1), "trailing_sep"]))
 
     if(reflines > 0) reflines <- reflines + 2 ## divider plus empty line
-    lines <- rowlines + reflines  # guess - start + 1 because inclusive of start
+    lines <- rowlines + reflines  + sectlines # guess - start + 1 because inclusive of start
     if(rowlines > rlpp) {
         if(verbose)
             message("\t....................... FAIL: Rows take up too much space (", rowlines, " lines)")
@@ -88,7 +135,11 @@ valid_pag = function(pagdf,
     }
     if(lines > rlpp) {
         if(verbose)
-            message("\t....................... FAIL: Referential footnotes take up too much space (", reflines, " lines)")
+            message("\t....................... FAIL: Referential footnotes (",
+                    reflines,
+                    ") or section dividers (",
+                    sectlines,
+                    ") take up too much space.")
         return(FALSE)
     }
     if(rw[["node_class"]] %in% c("LabelRow", "ContentRow")) {
@@ -222,13 +273,13 @@ vert_pag_indices <- function(obj, cpp = 40, verbose = FALSE) {
     clwds <- propose_column_widths(strm)
 
 
-    pdfrows <- lapply(2:ncol(strm),
+    pdfrows <- lapply(2:ncol(strm$strings),
                       function(i) {pagdfrow(row = NA,
                                             nm = i-1,
                                             lab = i-1,
                                             rnum = i-1,
                                             pth = NA,
-                                            extent = clwds[i],
+                                            extent = clwds[i] + obj$col_gap,
                                             rclass = "stuff",
                                             sibpos = 1-1,
                                             nsibs = 1-1)

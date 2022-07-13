@@ -12,10 +12,7 @@
 \alias{obj_format,ANY-method}
 \alias{obj_format<-}
 \alias{obj_format<-,ANY-method}
-\title{Label, Name and Format accessor generics
-
-Getters and setters for basic, relatively universal attributes
-of "table-like" objects"}
+\title{Label, Name and Format accessor generics}
 \usage{
 obj_name(obj)
 
@@ -47,8 +44,6 @@ the name, format or label of \code{obj} for getters, or \code{obj} after modific
 for setters.
 }
 \description{
-Label, Name and Format accessor generics
-
 Getters and setters for basic, relatively universal attributes
 of "table-like" objects"
 }

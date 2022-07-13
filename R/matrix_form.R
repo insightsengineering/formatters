@@ -4,7 +4,7 @@
 #'
 #' @name MatrixPrintForm
 #'
-#' @rdname matrix_print_form
+#' @rdname MatrixPrintForm
 #' @aliases MatrixPrintForm-class
 #' @exportClass MatrixPrintForm
 setOldClass(c("MatrixPrintForm", "list"))
@@ -114,6 +114,7 @@ mform_handle_newlines <- function(matform, has_topleft = TRUE) {
 #'     expand  rows  whose  values   contain  newlines  into  multiple
 #'     'physical'  rows  (as  they  will  appear  when  rendered  into
 #'     ASCII). Defaults to \code{TRUE}
+#' @param col_gap numeric(1). Space (in characters) between columns
 #' @export
 #' @return An object of class `MatrixPrintForm`. Currently this is
 #' implemented as an S3 class inheriting from list with the following
@@ -143,7 +144,7 @@ mform_handle_newlines <- function(matform, has_topleft = TRUE) {
 #' \item{\code{ncols}}{number of columns \emph{of the table}, not including
 #' any row names/row labels}
 #' }
-matrix_print_form <- function(strings = NULL,
+MatrixPrintForm <- function(strings = NULL,
                               spans,
                               aligns,
                               formats,
@@ -160,7 +161,8 @@ matrix_print_form <- function(strings = NULL,
                               subtitles = character(),
                               page_titles = character(),
                               main_footer = "",
-                              prov_footer = character()) {
+                            prov_footer = character(),
+                            col_gap = 3) {
 
     display <- matrix(rep(TRUE, length(strings)), ncol = ncol(strings))
 
@@ -198,7 +200,8 @@ matrix_print_form <- function(strings = NULL,
             subtitles = subtitles,
             page_titles = page_titles,
             main_footer = main_footer,
-            prov_footer = prov_footer
+            prov_footer = prov_footer,
+            col_gap = col_gap
         ),
         nlines_header = nlines_header, ## this is done for real in .do_mat_expand nownlines_header,
         nrow_header = nrow_header,
@@ -210,10 +213,10 @@ matrix_print_form <- function(strings = NULL,
     ret
 }
 
-## constructor with usual naming convention
-#' @rdname matrix_print_form
+## constructor with snake_case naming convention
+#' @rdname MatrixPrintForm
 #' @export
-MatrixPrintForm <- matrix_print_form
+matrix_print_form <- MatrixPrintForm
 
 
 ## hide the implementation behind abstraction incase we decide we want a real class someday

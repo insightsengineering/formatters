@@ -150,7 +150,7 @@ setMethod("nlines", "character", function(x, colwidths) max(vapply(strsplit(x, "
 
 #' @title toString
 #'
-#' Transform a complex object into a string representation ready
+#' @description Transform a complex object into a string representation ready
 #' to be printed or written to a plain-text file
 #'
 #' @param x ANY. Object to be prepared for rendering.
@@ -164,7 +164,7 @@ setMethod("toString", "ANY", base::toString) ## nocov
 
 #' @title Print
 #'
-#' Print an R object. see \code{[base::print()]}
+#' @description Print an R object. see \code{[base::print()]}
 #' @inheritParams base::print
 #' @rdname basemethods
 setMethod("print", "ANY", base::print) ## nocov
@@ -182,8 +182,9 @@ setMethod("print", "ANY", base::print) ## nocov
 
 #' @title Label, Name and Format accessor generics
 #'
-#' Getters and setters for basic, relatively universal attributes
+#' @description Getters and setters for basic, relatively universal attributes
 #' of "table-like" objects"
+#'
 #' @name lab_name
 #' @param obj ANY. The object.
 #' @param value character(1)/FormatSpec. The new value of the attribute.
