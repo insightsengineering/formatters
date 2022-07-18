@@ -4,12 +4,14 @@
 \alias{vert_pag_indices}
 \title{Find Column Indicies for Vertical Pagination}
 \usage{
-vert_pag_indices(obj, cpp = 40, verbose = FALSE)
+vert_pag_indices(obj, cpp = 40, colwidths = NULL, verbose = FALSE)
 }
 \arguments{
 \item{obj}{ANY. object to be paginated. Must have a \code{\link{matrix_form}} method.}
 
 \item{cpp}{numeric(1). Number of columns per page}
+
+\item{colwidths}{numeric vector. Column widths for use with vertical pagination.}
 
 \item{verbose}{logical(1). Should additional informative messages about the search for
 pagination breaks be shown. Defaults to \code{FALSE}.}

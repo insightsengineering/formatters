@@ -1,3 +1,6 @@
+## formatters 0.3.2.4
+ * `vert_pag_indices` now accepts `colwidths` argument
+
 ## formatters 0.3.2.3 
  * fix regression caused by `0.3.2.2` in `vert_pag_indices` when `obj` is not a `MatrixPrintForm` object
  

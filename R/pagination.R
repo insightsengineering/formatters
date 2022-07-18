@@ -254,6 +254,7 @@ pag_indices_inner <- function(pagdf, rlpp,
 #' Find Column Indicies for Vertical Pagination
 #' @param obj ANY. object to be paginated. Must have a \code{\link{matrix_form}} method.
 #' @param cpp numeric(1). Number of columns per page
+#' @param colwidths numeric vector. Column widths for use with vertical pagination.
 #' @inheritParams pag_indices_inner
 #'
 #' @return A list partitioning the vector of column indices
@@ -264,13 +265,11 @@ pag_indices_inner <- function(pagdf, rlpp,
 #' colpaginds <- vert_pag_indices(mf)
 #' lapply(colpaginds, function(j) mtcars[,j, drop = FALSE])
 #' @export
-vert_pag_indices <- function(obj, cpp = 40, verbose = FALSE) {
+vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE) {
 
     strm <- matrix_form(obj, TRUE)
 
-    nhl <- attr(strm, "nlines_header")
-
-    clwds <- propose_column_widths(strm)
+    clwds <- colwidths %||% propose_column_widths(strm)
 
     pdfrows <- lapply(2:ncol(strm$strings),
                       function(i) {pagdfrow(row = NA,
