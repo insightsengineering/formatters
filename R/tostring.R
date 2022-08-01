@@ -256,7 +256,11 @@ spans_to_viscell <- function(spans) {
 #'
 #' The row names are also considered a column for the output
 #'
-#' @param x MatrixPrintForm object
+#' @param x MatrixPrintForm object, or an object with a `matrix_form`
+#' method.
+#' @param indent_size numeric(1). Indent size in characters. Ingored
+#' when `x` is already a MatrixPrintForm object in favor of information
+#' there.
 #'
 #' @examples
 #' mf <- basic_matrix_form(mtcars)
@@ -281,10 +285,11 @@ spans_to_viscell <- function(spans) {
 ## ' tbl <- build_table(l, iris2)
 ## ' mf <- matrix_form(tbl)
 ## ' propose_column_widths(mf)
-propose_column_widths <- function(x) {
+propose_column_widths <- function(x, indent_size = 2) {
 
     ##stopifnot(is(x, "VTableTree"))
-
+    if(!is(x, "MatrixPrintForm"))
+        x <- matrix_form(x, indent_rownames = TRUE, indent_size = indent_size)
   body <- x$strings
   spans <- x$spans
   aligns <- x$aligns

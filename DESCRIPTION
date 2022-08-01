@@ -19,5 +19,5 @@ Encoding: UTF-8
 LazyData: true
 URL: https://github.com/insightsengineering/formatters
 BugReports: https://github.com/insightsengineering/formatters/issues
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 VignetteBuilder: knitr
