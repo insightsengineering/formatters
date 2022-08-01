@@ -21,7 +21,10 @@ formats_2d <- c(
 )
 
 formats_3d <- c(
-  "xx.xx (xx.xx - xx.xx)"
+    "xx. (xx. - xx.)",
+    "xx.x (xx.x - xx.x)",
+    "xx.xx (xx.xx - xx.xx)",
+    "xx.xxx (xx.xxx - xx.xxx)"
 )
 
 #' List with currently support 'xx' style format labels grouped by 1d, 2d and 3d
@@ -280,6 +283,22 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
                    "xx.x to xx.x" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = " to ", na_str = na_str),
                    "xx.xx (xx.xx - xx.xx)" = paste0(round_fmt(x[1], digits = 2, na_str = na_str), " ",
                                                     sep_2d_helper(x[2:3], dig1 = 2, dig2 = 2,
+                                                                  sep = " - ", na_str = na_str,
+                                                                  wrap = c("(", ")"))),
+                   "xx. (xx. - xx.)" = paste0(round_fmt(x[1], digits = 0, na_str = na_str), " ",
+                                                    sep_2d_helper(x[2:3], dig1 = 0, dig2 = 0,
+                                                                  sep = " - ", na_str = na_str,
+                                                                  wrap = c("(", ")"))),
+                   "xx.x (xx.x - xx.x)" = paste0(round_fmt(x[1], digits = 1, na_str = na_str), " ",
+                                                    sep_2d_helper(x[2:3], dig1 = 1, dig2 = 1,
+                                                                  sep = " - ", na_str = na_str,
+                                                                  wrap = c("(", ")"))),
+                   "xx.xx (xx.xx - xx.xx)" = paste0(round_fmt(x[1], digits = 2, na_str = na_str), " ",
+                                                    sep_2d_helper(x[2:3], dig1 = 2, dig2 = 2,
+                                                                  sep = " - ", na_str = na_str,
+                                                                  wrap = c("(", ")"))),
+                   "xx.xxx (xx.xxx - xx.xxx)" = paste0(round_fmt(x[1], digits = 3, na_str = na_str), " ",
+                                                    sep_2d_helper(x[2:3], dig1 = 3, dig2 = 3,
                                                                   sep = " - ", na_str = na_str,
                                                                   wrap = c("(", ")"))),
                    paste("format string", format, "not found")

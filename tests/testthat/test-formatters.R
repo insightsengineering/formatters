@@ -157,8 +157,18 @@ expect_identical(format_value(values, format = "xx.x, xx.x"),
 expect_identical(format_value(values, format = "xx.x to xx.x"),
                  "5.1 to 7.9")
 
+expect_identical(format_value(c(values, 10.1235), format = "xx. (xx. - xx.)"),
+                 "5 (8 - 10)")
+
+expect_identical(format_value(c(values, 10.1235), format = "xx.x (xx.x - xx.x)"),
+                 "5.1 (7.9 - 10.1)")
+
 expect_identical(format_value(c(values, 10.1235), format = "xx.xx (xx.xx - xx.xx)"),
                  "5.12 (7.89 - 10.12)")
+
+expect_identical(format_value(c(values, 10.1235), format = "xx.xxx (xx.xxx - xx.xxx)"),
+                 "5.123 (7.891 - 10.124)")
+
 
 expect_identical(format_value(NULL, "xx"), "")
 
