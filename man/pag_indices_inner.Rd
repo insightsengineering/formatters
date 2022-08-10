@@ -9,7 +9,8 @@ pag_indices_inner(
   rlpp,
   min_siblings,
   nosplitin = character(),
-  verbose = FALSE
+  verbose = FALSE,
+  row = TRUE
 )
 }
 \arguments{
@@ -26,6 +27,9 @@ considerations. Defaults to none.}
 
 \item{verbose}{logical(1). Should additional informative messages about the search for
 pagination breaks be shown. Defaults to \code{FALSE}.}
+
+\item{row}{logical(1). Is pagination happening in row
+space (`TRUE`, the default) or column space (`FALSE`)}
 }
 \value{
 A list containing the vector of row numbers, broken up by page

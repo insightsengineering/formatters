@@ -113,24 +113,27 @@ valid_pag = function(pagdf,
                      rlpp,
                      min_sibs,
                      nosplit = NULL,
-                     verbose = FALSE) {
+                     verbose = FALSE,
+                     row = TRUE) {
     rw <- pagdf[guess,]
 
 
     if(verbose)
-        message("Checking pagination after row ", guess)
+        message("Checking pagination after ",
+                paste(ifelse(row, "row", "column"), guess))
     rowlines <- sum(pagdf[start:guess, "self_extent"])
     reflines <-  sum(pagdf[start:guess, "nreflines"])
     rowlines <- sum(pagdf[start:guess, "self_extent"]) - reflines ## self extent includes reflines
     ## self extent does ***not*** currently include trailing sep
     ## we don't include the trailing_sep for guess because if we paginate here it won't be printed
     sectlines <- if(start == guess) 0L else sum(!is.na(pagdf[start:(guess - 1), "trailing_sep"]))
-
     if(reflines > 0) reflines <- reflines + 2 ## divider plus empty line
     lines <- rowlines + reflines  + sectlines # guess - start + 1 because inclusive of start
     if(rowlines > rlpp) {
         if(verbose)
-            message("\t....................... FAIL: Rows take up too much space (", rowlines, " lines)")
+            message(sprintf("\t....................... FAIL: %s take up too much space (%d %s)",
+                            ifelse(row, "rows", "columns"), rowlines,
+                            ifelse(row, "lines", "characters")))
         return(FALSE)
     }
     if(lines > rlpp) {
@@ -191,9 +194,10 @@ find_pag = function(pagdf,
                     rlpp,
                     min_siblings,
                     nosplitin = character(),
-                    verbose = FALSE) {
+                    verbose = FALSE,
+                    row = TRUE) {
     origuess = guess
-    while(guess >= start && !valid_pag(pagdf, guess, start = start, rlpp  = rlpp, min_sibs = min_siblings, nosplit = nosplitin, verbose)) {
+    while(guess >= start && !valid_pag(pagdf, guess, start = start, rlpp  = rlpp, min_sibs = min_siblings, nosplit = nosplitin, verbose, row = row)) {
         guess = guess - 1
     }
     if(guess < start)
@@ -217,6 +221,8 @@ find_pag = function(pagdf,
 #'   considerations. Defaults to none.
 #' @param verbose logical(1). Should additional informative messages about the search for
 #' pagination breaks be shown. Defaults to \code{FALSE}.
+#' @param row logical(1). Is pagination happening in row
+#' space (`TRUE`, the default) or column space (`FALSE`)
 #' @return A list containing the vector of row numbers, broken up by page
 #'
 #' @examples
@@ -227,23 +233,30 @@ find_pag = function(pagdf,
 #'
 #' @export
 pag_indices_inner <- function(pagdf, rlpp,
-                                 min_siblings,
-                                 nosplitin = character(),
-                                 verbose = FALSE) {
+                              min_siblings,
+                              nosplitin = character(),
+                              verbose = FALSE,
+                              row = TRUE) {
 
     start = 1
     nr = nrow(pagdf)
     ret = list()
-    force_pags <- which(pagdf$force_pag)
     while(start <= nr) {
         adjrlpp = rlpp - pagdf$par_extent[start]
-        stopifnot(adjrlpp > 0)
+        if(adjrlpp <= 0) {
+            if(row) {
+                stop("Lines of repeated context (plus header materials) larger than specified lines per page")
+            } else {
+                stop("Width of row labels equal to or larger than specified characters per page.")
+            }
+        }
         guess = min(nr, start + adjrlpp - 1)
         end = find_pag(pagdf, start, guess,
                        rlpp = adjrlpp,
                        min_siblings = min_siblings,
                        nosplitin = nosplitin,
-                       verbose = verbose)
+                       verbose = verbose,
+                       row = row)
         ret = c(ret, list(c(pagdf$reprint_inds[[start]],
                             start:end)))
         start = end + 1
@@ -284,7 +297,11 @@ vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE) {
     })
 
     pdf <- do.call(rbind, pdfrows)
-    res <- pag_indices_inner(pdf, rlpp = cpp - clwds[1], verbose = verbose, min_siblings = 1)
+    res <- pag_indices_inner(pdf,
+                             rlpp = cpp - clwds[1],
+                             verbose = verbose,
+                             min_siblings = 1,
+                             row = FALSE)
     res
 }
 
