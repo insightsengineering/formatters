@@ -101,8 +101,9 @@ var_labels <- function(x, fill = FALSE) {
     ncol(x) == length(value)
   )
 
+  theseq <- if(!is.null(names(value))) names(value) else seq_along(x)
   # across columns of x
-  for (j in seq_along(x)) {
+  for (j in theseq) {
     attr(x[[j]], "label") <- if (!is.na(value[j])) {
       value[j]
     } else {
