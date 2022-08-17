@@ -18,7 +18,7 @@
 #' @param  path character.  Path  to  the (sub)table  represented  by
 #'     \code{tt}. Defaults to \code{character()}
 #'
-#'  @details When  \code{visible_only} is  \code{TRUE} (the  default),
+#' @details When  \code{visible_only} is  \code{TRUE} (the  default),
 #'     methods should  return a  data.frame with  exactly one  row per
 #'     visible  row in  the table-like  object.  This  is useful  when
 #'     reasoning about  how a table  will print, but does  not reflect
