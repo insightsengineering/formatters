@@ -1,4 +1,4 @@
-## formatters 0.3.2.5
+## formatters 0.3.3
  * `label_vars<-` now correctly adheres to names of value, even in different order than `names(x)`. Fixes rlistings#8
  
 ## formatters 0.3.2.4
