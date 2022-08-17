@@ -1,10 +1,9 @@
 home:
-  strip_header: true
+  strip_header: false
 
 template:
-  params:
-    bootswatch: cerulean
-    bootstrap: 5
+  bootswatch: cerulean
+  bootstrap: 5
 
 navbar:
   type: default
