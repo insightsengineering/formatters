@@ -37,7 +37,8 @@ reference:
     desc: Generics required for rendering table-like object to ASCII
     contents:
     - matrix_form
-    
+    - basic_matrix_form
+
   - title: MatrixPrintForm
     desc: MatrixPrintForm class and constructor
     contents:
@@ -53,6 +54,7 @@ reference:
     - padstr
     - spread_integer
     - is.wholenumber
+    - default_hsep
 
   - title: Pagination
     desc: Pagination functionality
@@ -60,6 +62,7 @@ reference:
     - pag_indices_inner
     - vert_pag_indices
     - pagdfrow
+    - basic_pagdf
 
   - title: Variable Labels
     desc: Functions for Assigning Labels to Variables In Data
