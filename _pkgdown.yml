@@ -4,7 +4,8 @@ home:
 template:
   params:
     bootswatch: cerulean
-    
+    bootstrap: 5
+
 navbar:
   type: default
   right:
