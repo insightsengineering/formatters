@@ -1,5 +1,5 @@
 ## formatters 0.3.3
-* `vert_pag_indices` now accepts `colwidths` argument
+ * `vert_pag_indices` now accepts `colwidths` argument
 
 ## formatters 0.3.2.5
  * `label_vars<-` now correctly adheres to names of value, even in different order than `names(x)`. Fixes rlistings#8
