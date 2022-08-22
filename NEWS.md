@@ -1,3 +1,7 @@
+## formatters 0.3.3.1
+ * `format_value` now returns solely the `na_str` value when all-NA values are formatted with certain formats 
+    (currently`"(N=xx)"`, `">999.9"`, `">999.99"`, `"x.xxxx | (<0.0001)"`)
+ 
 ## formatters 0.3.3
  * `vert_pag_indices` now accepts `colwidths` argument
 

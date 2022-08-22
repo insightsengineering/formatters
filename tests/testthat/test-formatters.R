@@ -188,8 +188,7 @@ expect_error(format_value(c(5.1, 2, 3), "xx - xx"), "are of different length")
 results <- vapply(forms[["1d"]], function(fmt) format_value(NA, format = fmt), "")
 justnastr <- results == "NA"
 
-expect_identical(names(results)[!justnastr],
-                 c("xx%", "xx.%", "xx.x%", "xx.xx%", "xx.xxx%", "(N=xx)"))
+expect_true(all(justnastr))
 
 expect_identical(format_value(NA, "xx.", na_str = "-"),
                  "-")

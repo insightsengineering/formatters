@@ -218,7 +218,9 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
    ## format <- if (!missing(format)) format else obj_format(x)
 
 
-    txt <- if (is.null(format)) {
+    txt <- if(all(is.na(x)) && length(na_str) == 1L) {
+               na_str
+           } else if (is.null(format)) {
                toString(x)
            } else if (is.function(format)) {
                format(x, output = output)
@@ -236,7 +238,7 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
 
                switch(
                    format,
-                   "xx" = if (all(is.na(x))) na_str else as.character(x),
+                   "xx" = as.character(x),
                    "xx." = round_fmt(x, digits = 0, na_str = na_str),
                    "xx.x" = round_fmt(x, digits = 1, na_str = na_str),
                    "xx.xx" = round_fmt(x, digits = 2, na_str = na_str),
@@ -247,7 +249,7 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
                    "xx.x%" = paste0(round_fmt(x * 100, digits = 1, na_str = na_str), "%"),
                    "xx.xx%" = paste0(round_fmt(x * 100, digits = 2, na_str = na_str), "%"),
                    "xx.xxx%" = paste0(round_fmt(x * 100, digits = 3, na_str = na_str), "%"),
-                   "(N=xx)" = paste0("(N=", round_fmt(x, digits = NA, na_str = na_str), ")"),
+                   "(N=xx)" =  paste0("(N=", round_fmt(x, digits = NA, na_str = na_str), ")"),
                    ">999.9" = ifelse(x > 999.9, ">999.9", round_fmt(x, digits = 1, na_str = na_str)),
                    ">999.99" = ifelse(x > 999.99, ">999.99", round_fmt(x, digits = 2, na_str = na_str)),
                    "x.xxxx | (<0.0001)" = ifelse(x < 0.0001, "<0.0001", round_fmt(x, digits = 4, na_str = na_str)),
