@@ -1,19 +1,23 @@
+
+ 
+## formatters 0.3.3
+ * `vert_pag_indices` now accepts `colwidths` argument
+
 ## formatters 0.3.2.5
- * `format_value` now returns solely the `na_str` value when all-NA values are formatted with certain formats 
-    (currently`"(N=xx)"`, `">999.9"`, `">999.99"`, `"x.xxxx | (<0.0001)"`)
-	
+ * `label_vars<-` now correctly adheres to names of value, even in different order than `names(x)`. Fixes rlistings#8
+
 ## formatters 0.3.2.4
  * `vert_pag_indices` now accepts `colwidths` argument
 
-## formatters 0.3.2.3 
+## formatters 0.3.2.3
  * fix regression caused by `0.3.2.2` in `vert_pag_indices` when `obj` is not a `MatrixPrintForm` object
- 
+
 ## formatters 0.3.2.2
  * Added support for `trailing_sep` column to row_info data.frames (e.g, `pagdfrow` constructor)
  * `trailing_sep` info now used in both printing and pagination
  * `col_gap` is now an element of `MatrixPrintForm` objects
  * `vert_pag_indices` fixed to correctly take gap between printed columns into account
- 
+
 ## formatters 0.3.2.1
  * calling `var_labels` on a data.frame with no columns is no longer an error (roche/rtables#224)
 
