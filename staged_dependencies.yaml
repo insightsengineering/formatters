@@ -33,6 +33,9 @@ downstream_repos:
   insightsengineering/teal.modules.clinical:
     repo: insightsengineering/teal.modules.clinical
     host: https://github.com
+  insightsengineering/teal.modules.general:
+    repo: insightsengineering/teal.modules.general
+    host: https://github.com
   insightsengineering/chevron:
     repo: insightsengineering/chevron
     host: https://github.com
