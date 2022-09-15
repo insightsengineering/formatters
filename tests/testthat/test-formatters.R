@@ -329,6 +329,18 @@ expect_identical(var_labels(mydf),
 
 expect_true(all(is.na(var_labels(var_labels_remove(mydf)))))
 
+expect_identical(format_value(c(NA, NA), format = "xx.x - xx.x", na_str = c("hi", "lo")),
+                 "hi - lo")
+
+expect_identical(format_value(c(NA, NA), format = "xx.x - xx.x", na_str = "what"),
+                 "what")
+
+expect_identical(format_value(c(NA, 5.2), format = "xx.x - xx.x", na_str = "what"),
+                 "what - 5.2")
+
+expect_identical(format_value(c(NA, 5.2), format = "xx.x - xx.x", na_str =c("hi", "lo")),
+                 "hi - 5.2")
+
 
 ## additional full smoke test of labels without output checking
 

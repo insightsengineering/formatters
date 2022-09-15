@@ -167,9 +167,11 @@ round_fmt <- function(x, digits, na_str = "NA") {
 val_pct_helper <- function(x, dig1, dig2, na_str, pct = TRUE) {
     if(pct)
         x[2] <- x[2] * 100
-    paste0(round_fmt(x[1], digits = dig1, na_str = na_str),
+    if(length(na_str) == 1)
+        na_str <- rep(na_str, 2)
+    paste0(round_fmt(x[1], digits = dig1, na_str = na_str[1]),
            " (",
-           round_fmt(x[2], digits = dig2, na_str = na_str),
+           round_fmt(x[2], digits = dig2, na_str = na_str[2]),
            if(pct) "%", ")")
 }
 
@@ -235,7 +237,8 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
                       stop("unknown format label: ", format, ". use list_valid_format_labels() to get a list of all formats")
                   }
                if (format != "xx" && length(x) != l) stop("cell <", paste(x), "> and format ", format, " are of different length")
-
+               if(length(na_str) < length(x))
+                   na_str <- rep(na_str, length.out = length(x))
                switch(
                    format,
                    "xx" = as.character(x),
@@ -283,25 +286,25 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
                    "xx (xx.xx)" = val_pct_helper(x, dig1 = NA, dig2 = 2, na_str = na_str, pct = FALSE),
                    "xx.x, xx.x" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = ", ", na_str = na_str),
                    "xx.x to xx.x" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = " to ", na_str = na_str),
-                   "xx.xx (xx.xx - xx.xx)" = paste0(round_fmt(x[1], digits = 2, na_str = na_str), " ",
+                   "xx.xx (xx.xx - xx.xx)" = paste0(round_fmt(x[1], digits = 2, na_str = na_str[1]), " ",
                                                     sep_2d_helper(x[2:3], dig1 = 2, dig2 = 2,
-                                                                  sep = " - ", na_str = na_str,
+                                                                  sep = " - ", na_str = na_str[2:3],
                                                                   wrap = c("(", ")"))),
-                   "xx. (xx. - xx.)" = paste0(round_fmt(x[1], digits = 0, na_str = na_str), " ",
+                   "xx. (xx. - xx.)" = paste0(round_fmt(x[1], digits = 0, na_str = na_str[1]), " ",
                                                     sep_2d_helper(x[2:3], dig1 = 0, dig2 = 0,
-                                                                  sep = " - ", na_str = na_str,
+                                                                  sep = " - ", na_str = na_str[2:3],
                                                                   wrap = c("(", ")"))),
-                   "xx.x (xx.x - xx.x)" = paste0(round_fmt(x[1], digits = 1, na_str = na_str), " ",
+                   "xx.x (xx.x - xx.x)" = paste0(round_fmt(x[1], digits = 1, na_str = na_str[1]), " ",
                                                     sep_2d_helper(x[2:3], dig1 = 1, dig2 = 1,
-                                                                  sep = " - ", na_str = na_str,
+                                                                  sep = " - ", na_str = na_str[2:3],
                                                                   wrap = c("(", ")"))),
-                   "xx.xx (xx.xx - xx.xx)" = paste0(round_fmt(x[1], digits = 2, na_str = na_str), " ",
+                   "xx.xx (xx.xx - xx.xx)" = paste0(round_fmt(x[1], digits = 2, na_str = na_str[1]), " ",
                                                     sep_2d_helper(x[2:3], dig1 = 2, dig2 = 2,
-                                                                  sep = " - ", na_str = na_str,
+                                                                  sep = " - ", na_str = na_str[2:3],
                                                                   wrap = c("(", ")"))),
-                   "xx.xxx (xx.xxx - xx.xxx)" = paste0(round_fmt(x[1], digits = 3, na_str = na_str), " ",
+                   "xx.xxx (xx.xxx - xx.xxx)" = paste0(round_fmt(x[1], digits = 3, na_str = na_str[1]), " ",
                                                     sep_2d_helper(x[2:3], dig1 = 3, dig2 = 3,
-                                                                  sep = " - ", na_str = na_str,
+                                                                  sep = " - ", na_str = na_str[2:3],
                                                                   wrap = c("(", ")"))),
                    paste("format string", format, "not found")
                )
