@@ -374,3 +374,18 @@ expect_true(all(r3))
 
 expect_identical(var_labels(data.frame()),
                  character())
+
+expect_identical(page_lcpp(margins = c(top = .5, bottom = .5,
+                                       left = .65, right = .65)),
+                 list(cpp = 72, lpp = 60))
+
+
+
+
+
+## non-monospaced fonts
+expect_error(page_lcpp(font_family = "Times"), "does not appear to be monospaced")
+
+expect_identical(page_lcpp("a4"),
+                 page_lcpp(pg_width = pg_dim_names$a4[[1]],
+                           pg_height = pg_dim_names$a4[[2]]))

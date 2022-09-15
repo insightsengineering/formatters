@@ -52,67 +52,54 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   hsep = default_hsep()) {
     mat <- x
 
-  ## we create a matrix with the formatted cell contents
-##  mat <- matrix_form(x, indent_rownames = TRUE)
+    ## we create a matrix with the formatted cell contents
+    ##  mat <- matrix_form(x, indent_rownames = TRUE)
 
 
-  if (is.null(widths)) {
-    widths <- propose_column_widths(x)
-  }
-  stopifnot(length(widths) == ncol(mat$strings))
+    if (is.null(widths)) {
+        widths <- propose_column_widths(x)
+    }
+    stopifnot(length(widths) == ncol(mat$strings))
 
-  # format the to ASCII
-  body <- mat$strings
-  aligns <- mat$aligns
-  keep_mat <- mat$display
-  spans <- mat$spans
-#    ri <- mat$row_info
+    ## format the to ASCII
+    body <- mat$strings
+    aligns <- mat$aligns
+    keep_mat <- mat$display
+    spans <- mat$spans
+    ##    ri <- mat$row_info
     ref_fnotes <- mat$ref_footnotes
 
+    nr <- nrow(body)
+    nl_header <- attr(mat, "nlines_header")
 
-  # xxxx <- 1
-  # # get rowgap position
-  # insert_gap_before <- which(ri$depth == sort(ri$depth)[seq_len(xxxx)])
-  # # which(ri$rowtype == "LabelRow" & ri$depth == min(ri$depth))
-  # insert_gap_before <- remove_consecutive_numbers(insert_gap_before)
-  # insert_gap_before <- insert_gap_before[insert_gap_before != 1]
+    cell_widths_mat <- matrix(rep(widths, nr), nrow = nr, byrow = TRUE)
+    nc <- ncol(cell_widths_mat)
 
-  nr <- nrow(body)
-  nl_header <- attr(mat, "nlines_header")
-
-  cell_widths_mat <- matrix(rep(widths, nr), nrow = nr, byrow = TRUE)
-  nc <- ncol(cell_widths_mat)
-
-  for (i in seq_len(nrow(body))) {
-    if (any(!keep_mat[i, ])) { # any spans?
-      j <- 1
-      while (j <= nc) {
-        nj <- spans[i, j]
-        j <- if (nj > 1) {
-          js <- seq(j, j + nj - 1)
-          cell_widths_mat[i, js] <- sum(cell_widths_mat[i, js]) + col_gap * (nj - 1)
-          j + nj
-        } else {
-          j + 1
+    for (i in seq_len(nrow(body))) {
+        if (any(!keep_mat[i, ])) { # any spans?
+            j <- 1
+            while (j <= nc) {
+                nj <- spans[i, j]
+                j <- if (nj > 1) {
+                         js <- seq(j, j + nj - 1)
+                         cell_widths_mat[i, js] <- sum(cell_widths_mat[i, js]) + col_gap * (nj - 1)
+                         j + nj
+                     } else {
+                         j + 1
+                     }
+            }
         }
-      }
     }
-  }
 
-  # Are the total characters per row the same?
-  # A <- cell_widths_mat
-  # A[!keep_mat] <- 0
-  # apply(A, 1, sum)
 
-  content <- matrix(mapply(padstr, body, cell_widths_mat, aligns), ncol = ncol(body))
-  content[!keep_mat] <- NA
-  # apply(content, 1, function(x) sum(nchar(x), na.rm = TRUE))
+    content <- matrix(mapply(padstr, body, cell_widths_mat, aligns), ncol = ncol(body))
+    content[!keep_mat] <- NA
+                                        # apply(content, 1, function(x) sum(nchar(x), na.rm = TRUE))
 
-  gap_str <- strrep(" ", col_gap)
+    gap_str <- strrep(" ", col_gap)
 
-  ncchar <-  sum(widths) + (length(widths) - 1) * col_gap
-  div <- substr(strrep(hsep, ncchar), 1, ncchar)
-
+    ncchar <-  sum(widths) + (length(widths) - 1) * col_gap
+    div <- substr(strrep(hsep, ncchar), 1, ncchar)
     txt_head <- apply(head(content, nl_header), 1, .paste_no_na, collapse = gap_str)
     sec_seps_df <- x$row_info[,c("abs_rownumber", "trailing_sep"), drop = FALSE]
     if(!is.null(sec_seps_df) && any(!is.na(sec_seps_df$trailing_sep))) {
@@ -130,20 +117,20 @@ setMethod("toString", "MatrixPrintForm", function(x,
             cur_rownum <- section_rws[i]
             sec_end <-  max(which(row_grouping == cur_rownum))
             txt_body <- c(txt_body,
-                        apply(bdy_cont[seq(sec_strt, sec_end),, drop = FALSE],
-                              1,
-                              .paste_no_na,
-                              collapse = gap_str),
-                        ## don't print section dividers if they would be the last thing before the
-                        ## footer divider
+                          apply(bdy_cont[seq(sec_strt, sec_end),, drop = FALSE],
+                                1,
+                                .paste_no_na,
+                                collapse = gap_str),
+                          ## don't print section dividers if they would be the last thing before the
+                          ## footer divider
                         if(sec_end < nrbody) substr(strrep(sec_seps_df$trailing_sep[i], ncchar), 1, ncchar))
             sec_strt <- sec_end + 1
         }
     }  else {
         txt_body <- apply(tail(content, -nl_header), 1, .paste_no_na, collapse = gap_str)
     }
-  allts <- all_titles(x)
-  titles_txt <- if(any(nzchar(allts))) c(allts, "", div)  else NULL
+    allts <- all_titles(x)
+    titles_txt <- if(any(nzchar(allts))) c(allts, "", div)  else NULL
     ## TODO make titles affect width...
 
     allfoots <- all_footers(x)
@@ -151,7 +138,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
     footer_txt <- c(if(length(ref_fnotes) > 0) c(div, "", ref_fnotes),
                     if(any(nzchar(allfoots))) c(div, "", allfoots))
-  paste0(paste(c(titles_txt, txt_head, div, txt_body, footer_txt), collapse = "\n"), "\n")
+    paste0(paste(c(titles_txt, txt_head, div, txt_body, footer_txt), collapse = "\n"), "\n")
 
 })
 

@@ -1,7 +1,7 @@
 Package: formatters
 Title: ASCII Formatting for Values and Tables
 Date: 2022-08-16
-Version: 0.3.3.1
+Version: 0.3.3.2
 Authors@R: c(
   person("Gabriel", "Becker", email = "gabembecker@gmail.com", role = c("aut", "cre")),
   person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = "aut"),
@@ -9,12 +9,14 @@ Authors@R: c(
 Description: We provide a framework for rendering complex tables to ASCII, and a set of formatters for transforming values or sets of values into ASCII-ready display strings.
 License: Apache License 2.0
 Depends: methods, R (>= 2.10)
-Imports: htmltools
+Imports: htmltools, grid
 Suggests:
   dplyr,
   testthat,
   knitr,
-  rmarkdown
+  rmarkdown,
+  huxtable,
+  gt (>= 0.7.0)
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/insightsengineering/formatters

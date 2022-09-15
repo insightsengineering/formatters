@@ -220,27 +220,59 @@ matrix_print_form <- MatrixPrintForm
 
 
 ## hide the implementation behind abstraction incase we decide we want a real class someday
+#' Setters and Getters for aspects of MatrixPrintForm Objects
+#'
+#' Most of these functions, particularly the settters, are intended
+#' almost exclusively for internal use in, e.g., `matrix_form` methods,
+#' and should generally not be called by end users.
+#'
+#' @param mf MatrixPrintForm(1). A MatrixPrintForm object
+#' @param value ANY. The new value for the component in question.
+#' @return The element of the MatrixPrintForm associated with the getter, or
+#' the modified MatrixPrintForm object in the case of a setter.
+#' @export
+#' @rdname mpf_accessors
 mf_strings <- function(mf) mf$strings
+#' @export
+#' @rdname mpf_accessors
 
 mf_spans <- function(mf) mf$spans
+#' @export
+#' @rdname mpf_accessors
 
 mf_aligns <- function(mf) mf$aligns
 
+#' @export
+#' @rdname mpf_accessors
 mf_display <- function(mf) mf$display
 
+#' @export
+#' @rdname mpf_accessors
 mf_formats <- function(mf) mf$formats
 
+#' @export
+#' @rdname mpf_accessors
 mf_rinfo <- function(mf) mf$row_info
 
+#' @export
+#' @rdname mpf_accessors
 mf_lgrouping <- function(mf) mf$linegrouping
 
+#' @export
+#' @rdname mpf_accessors
 mf_rfnotes <- function(mf) mf$ref_footnotes
 
+#' @export
+#' @rdname mpf_accessors
 mf_nlheader <- function(mf) attr(mf, "nlines_header")
 
+#' @export
+#' @rdname mpf_accessors
 mf_nrheader <- function(mf) attr(mf, "nrow_header")
 
 
+#' @export
+#' @rdname mpf_accessors
 `mf_strings<-` <- function(mf, value) {
     mf$strings <- value
     mf
@@ -261,20 +293,28 @@ mf_nrheader <- function(mf) attr(mf, "nrow_header")
 
 
 
+#' @export
+#' @rdname mpf_accessors
 `mf_spans<-` <- function(mf, value) {
    .chkdim_and_replace(mf, value, component = "spans")
 
 }
 
+#' @export
+#' @rdname mpf_accessors
 `mf_aligns<-` <- function(mf, value) {
    .chkdim_and_replace(mf, value, component = "aligns")
 }
 
 
+#' @export
+#' @rdname mpf_accessors
 `mf_display<-` <- function(mf, value) {
    .chkdim_and_replace(mf, value, component = "display")
 }
 
+#' @export
+#' @rdname mpf_accessors
 `mf_formats<-` <- function(mf, value) {
    .chkdim_and_replace(mf, value, component = "formats")
 }
@@ -293,26 +333,36 @@ mf_nrheader <- function(mf) attr(mf, "nrow_header")
     mf
 }
 
+#' @export
+#' @rdname mpf_accessors
 `mf_rinfo<-` <- function(mf, value) {
     .chknrow_and_replace(mf, value, component = "row_info")
 }
 
+#' @export
+#' @rdname mpf_accessors
 `mf_lgrouping<-` <- function(mf, value) {
     .chknrow_and_replace(mf, value, component = "line_grouping")
 }
 
 
+#' @export
+#' @rdname mpf_accessors
 `mf_rfnotes<-` <- function(mf, value) {
     mf$ref_footnotes <- value
     mf
 }
 
 
+#' @export
+#' @rdname mpf_accessors
 `mf_nlheader<-` <- function(mf, value) {
     attr(mf, "nlines_header") <- value
     mf
 }
 
+#' @export
+#' @rdname mpf_accessors
 `mf_nrheader<-` <- function(mf, value) {
     attr(mf, "nrow_header") <- value
     mf
@@ -371,10 +421,14 @@ basic_matrix_form <- function(df) {
     }
     rowdf <- basic_pagdf(row.names(df),
                          extents = exts)
+    formats <- cbind("",
+                     rbind("",
+                           matrix("xx", nrow = nrow(df), ncol = ncol(df))))
+
     matrix_print_form(strings = strings,
                       aligns = aligns,
                       spans = matrix(1, nrow = fnr, ncol = fnc),
-                      formats = matrix("xx", nrow = fnr, ncol = fnc),
+                      formats = formats, ##matrix("xx", nrow = fnr, ncol = fnc),
                       row_info = rowdf,
                       has_topleft = FALSE,
                       nlines_header = 1,

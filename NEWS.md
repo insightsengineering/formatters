@@ -1,3 +1,10 @@
+## formatters 0.3.3.2
+ * `page_lcpp` function now provided to map page size and font combinations to lines
+   and characters per page.
+ * getters and setters for the components of `MatrixPrintForm` objects are now exported 
+   (i.e., `mf_spans` and friends).
+ * `na_str` can now be length >1, and is matched positionally to NAs in that case.
+
 ## formatters 0.3.3.1
  * `format_value` now returns solely the `na_str` value when all-NA values are formatted with certain formats 
     (currently`"(N=xx)"`, `">999.9"`, `">999.99"`, `"x.xxxx | (<0.0001)"`)

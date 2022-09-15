@@ -42,7 +42,7 @@ be retrieved, respectively.}
 
 \item{sibpos}{integer(1). Position amongst sibling rows}
 
-\item{nsibs}{integer(1). Number of siblings}
+\item{nsibs}{integer(1). Number of siblings (including self).}
 
 \item{extent}{numberic(1). Number of lines required to print the row}
 
