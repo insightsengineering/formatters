@@ -48,13 +48,18 @@ default_hsep <- d_hsep_factory()
 #' of the table-like object reprseented by `x`
 setMethod("toString", "MatrixPrintForm", function(x,
                                                   widths = NULL,
+                                                  indent_titles = FALSE,
+                                                  indent_footers = FALSE,
                                                   col_gap = x$col_gap,
                                                   hsep = default_hsep()) {
     mat <- x
 
     ## we create a matrix with the formatted cell contents
     ##  mat <- matrix_form(x, indent_rownames = TRUE)
+    browser()
 
+    stopifnot(is.logical(indent_titles))
+    stopifnot(is.logical(indent_footers))
 
     if (is.null(widths)) {
         widths <- propose_column_widths(x)
@@ -129,12 +134,40 @@ setMethod("toString", "MatrixPrintForm", function(x,
     }  else {
         txt_body <- apply(tail(content, -nl_header), 1, .paste_no_na, collapse = gap_str)
     }
+
+
     allts <- all_titles(x)
+
+    # Indenting titles if they go beyond the horizontally allowed space
+    txt_indent <- 1
+    nchar_max <- ncchar
+    if(indent_titles &&
+       all(!sapply(as.list(allts), grepl, pattern = "\n")) &&
+       any(sapply(allts, function(x) nchar(x) > ncchar))) {
+      allts <- sapply(as.list(allts),
+                      splitter_new_line,
+                      nchar_max = nchar_max,
+                      txt_indent = txt_indent)
+      names(allts) <- NULL
+    }
+
     titles_txt <- if(any(nzchar(allts))) c(allts, "", div)  else NULL
-    ## TODO make titles affect width...
+
 
     allfoots <- all_footers(x)
 
+    # Indenting footers if they go beyond the horizontally allowed space
+    txt_indent <- 1
+    nchar_max <- ncchar
+    if(indent_footers &&
+       all(!sapply(as.list(allfoots), grepl, pattern = "\n")) &&
+       any(sapply(allfoots, function(x) nchar(x) > ncchar))) {
+      allfoots <- sapply(as.list(allfoots),
+                      splitter_new_line,
+                      nchar_max = nchar_max,
+                      txt_indent = txt_indent)
+      names(allfoots) <- NULL
+    }
 
     footer_txt <- c(if(length(ref_fnotes) > 0) c(div, "", ref_fnotes),
                     if(any(nzchar(allfoots))) c(div, "", allfoots))
@@ -153,6 +186,32 @@ setMethod("toString", "MatrixPrintForm", function(x,
 ##     }
 ##     x
 ## }
+
+splitter_new_line <- function(x, nchar_max = 80, txt_indent = 1) {
+  gen_tmp_list <- list(x)
+  while (TRUE) {
+    tmp_split <- unlist(strsplit(gen_tmp_list[[length(gen_tmp_list)]],
+      split = " ",
+      fixed = TRUE
+    ))
+    to_keep <- cumsum(sapply(tmp_split, function(y) nchar(y) + 1)) < nchar_max
+    if (isFALSE(to_keep[1])) {
+      err_msg <- paste(
+        "Indenting title or footnotes: words are too long or nchar_max is too small.",
+        "We suggest using shorter words, or increasing the relative parameters or",
+        "add manually the new line symbol."
+      )
+      stop(err_msg)
+    }
+    if (all(to_keep)) break
+    gen_tmp_list[[length(gen_tmp_list)]] <- tmp_split[to_keep]
+    gen_tmp_list[[length(gen_tmp_list) + 1]] <- tmp_split[!to_keep]
+  }
+  paste0(sapply(gen_tmp_list, function(y) {
+    paste0(y, collapse = " ")
+  }), collapse = paste0(c("\n", rep(" ", txt_indent)), collapse = ""))
+}
+
 
 pad_vert_top <- function(x, len) {
     c(x, rep("", len - length(x)))
