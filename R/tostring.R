@@ -56,7 +56,6 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
     ## we create a matrix with the formatted cell contents
     ##  mat <- matrix_form(x, indent_rownames = TRUE)
-    browser()
 
     stopifnot(is.logical(indent_titles))
     stopifnot(is.logical(indent_footers))
