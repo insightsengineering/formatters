@@ -48,8 +48,8 @@ default_hsep <- d_hsep_factory()
 #' of the table-like object reprseented by `x`
 setMethod("toString", "MatrixPrintForm", function(x,
                                                   widths = NULL,
-                                                  indent_titles = FALSE,
-                                                  indent_footers = FALSE,
+                                                  max_width = 80,
+                                                  wrap = FALSE,
                                                   col_gap = x$col_gap,
                                                   hsep = default_hsep()) {
     mat <- x
@@ -57,8 +57,8 @@ setMethod("toString", "MatrixPrintForm", function(x,
     ## we create a matrix with the formatted cell contents
     ##  mat <- matrix_form(x, indent_rownames = TRUE)
 
-    stopifnot(is.logical(indent_titles))
-    stopifnot(is.logical(indent_footers))
+    stopifnot(is.logical(wrap))
+    stopifnot(is.numeric(max_width), max_width > 0)
 
     if (is.null(widths)) {
         widths <- propose_column_widths(x)
@@ -137,17 +137,9 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
     allts <- all_titles(x)
 
-    # Indenting titles if they go beyond the horizontally allowed space
-    txt_indent <- 1
-    nchar_max <- ncchar
-    if(indent_titles &&
-       all(!sapply(as.list(allts), grepl, pattern = "\n")) &&
-       any(sapply(allts, function(x) nchar(x) > ncchar))) {
-      allts <- sapply(as.list(allts),
-                      splitter_new_line,
-                      nchar_max = nchar_max,
-                      txt_indent = txt_indent)
-      names(allts) <- NULL
+    # Wrapping titles if they go beyond the horizontally allowed space
+    if (wrap) {
+      allts <- wrap_list(as.list(allts), max_width)
     }
 
     titles_txt <- if(any(nzchar(allts))) c(allts, "", div)  else NULL
@@ -155,17 +147,9 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
     allfoots <- all_footers(x)
 
-    # Indenting footers if they go beyond the horizontally allowed space
-    txt_indent <- 1
-    nchar_max <- ncchar
-    if(indent_footers &&
-       all(!sapply(as.list(allfoots), grepl, pattern = "\n")) &&
-       any(sapply(allfoots, function(x) nchar(x) > ncchar))) {
-      allfoots <- sapply(as.list(allfoots),
-                      splitter_new_line,
-                      nchar_max = nchar_max,
-                      txt_indent = txt_indent)
-      names(allfoots) <- NULL
+    # Wrapping footers if they go beyond the horizontally allowed space
+    if (wrap) {
+      allfoots <- wrap_list(as.list(allfoots), max_width)
     }
 
     footer_txt <- c(if(length(ref_fnotes) > 0) c(div, "", ref_fnotes),
@@ -186,31 +170,18 @@ setMethod("toString", "MatrixPrintForm", function(x,
 ##     x
 ## }
 
-splitter_new_line <- function(x, nchar_max = 80, txt_indent = 1) {
-  gen_tmp_list <- list(x)
-  while (TRUE) {
-    tmp_split <- unlist(strsplit(gen_tmp_list[[length(gen_tmp_list)]],
-      split = " ",
-      fixed = TRUE
-    ))
-    to_keep <- cumsum(sapply(tmp_split, function(y) nchar(y) + 1)) < nchar_max
-    if (isFALSE(to_keep[1])) {
-      err_msg <- paste(
-        "Indenting title or footnotes: words are too long or nchar_max is too small.",
-        "We suggest using shorter words, or increasing the relative parameters or",
-        "add manually the new line symbol."
-      )
-      stop(err_msg)
-    }
-    if (all(to_keep)) break
-    gen_tmp_list[[length(gen_tmp_list)]] <- tmp_split[to_keep]
-    gen_tmp_list[[length(gen_tmp_list) + 1]] <- tmp_split[!to_keep]
+wrap_list <- function(txt_lst, max_width) {
+  if(all(!sapply(txt_lst, grepl, pattern = "\n")) &&
+     any(sapply(txt_lst, function(x) nchar(x) > max_width))) {
+    txt_out <- sapply(txt_lst,
+                      strwrap,
+                      width = max_width)
+    names(txt_out) <- NULL
+    unlist(txt_out)
+  } else {
+    unlist(txt_lst)
   }
-  paste0(sapply(gen_tmp_list, function(y) {
-    paste0(y, collapse = " ")
-  }), collapse = paste0(c("\n", rep(" ", txt_indent)), collapse = ""))
 }
-
 
 pad_vert_top <- function(x, len) {
     c(x, rep("", len - length(x)))
