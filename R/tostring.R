@@ -58,7 +58,9 @@ setMethod("toString", "MatrixPrintForm", function(x,
     ##  mat <- matrix_form(x, indent_rownames = TRUE)
 
     stopifnot(is.logical(wrap))
-    stopifnot(is.numeric(max_width), max_width > 0)
+    if (!is.character(max_width)) {
+      stopifnot(is.numeric(max_width), max_width > 0)
+    }
 
     if (is.null(widths)) {
         widths <- propose_column_widths(x)
@@ -103,6 +105,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
     gap_str <- strrep(" ", col_gap)
 
     ncchar <-  sum(widths) + (length(widths) - 1) * col_gap
+    if (is.character(max_width) && max_width == "auto") max_width <- ncchar
     div <- substr(strrep(hsep, ncchar), 1, ncchar)
     txt_head <- apply(head(content, nl_header), 1, .paste_no_na, collapse = gap_str)
     sec_seps_df <- x$row_info[,c("abs_rownumber", "trailing_sep"), drop = FALSE]
