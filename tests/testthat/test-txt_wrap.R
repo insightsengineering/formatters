@@ -36,15 +36,3 @@ test_that("indentation happens correctly if called for", {
   )
   expect_identical(printform, expected)
 })
-
-test_that("indentation fails when too long words are provided", {
-  lyt <- basic_table(
-    title = paste0(rep("ohno", 10), collapse = ""),
-  ) %>%
-    analyze("Sepal.Width", afun = mean, format = "xx.")
-
-  tbl <- build_table(lyt, iris)
-  matform <- matrix_form(tbl)
-
-  expect_error(toString(matform, indent_titles = TRUE, indent_footers = TRUE))
-})
