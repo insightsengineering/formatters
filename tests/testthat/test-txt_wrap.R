@@ -20,11 +20,19 @@ test_that("indentation happens correctly if called for", {
   expect_identical(matform$main_title, tit)
   expect_identical(matform$main_footer, mn_ft)
 
-  printform <- toString(matform, wrap = TRUE, max_width = 15)
+  printform <- toString(matform, wrap = TRUE, max_width = "auto")
   expected <- paste0(
-    "ttttt ttttt\n ttttt\nsssss sssss\n sssss\n\n--------------\n ",
+    "ttttt ttttt\nttttt\nsssss sssss\nsssss\n\n--------------\n ",
     "      all obs\n--------------\nmean      3   \n--------------\n",
-    "\nfffff fffff\n fffff\n"
+    "\nfffff fffff\nfffff\n"
+  )
+  expect_identical(printform, expected)
+
+  printform <- toString(matform, wrap = TRUE, max_width = 10)
+  expected <- paste0(
+    "ttttt\nttttt\nttttt\nsssss\nsssss\nsssss\n\n--------------\n ",
+    "      all obs\n--------------\nmean      3   \n--------------\n",
+    "\nfffff\nfffff\nfffff\n"
   )
   expect_identical(printform, expected)
 })
