@@ -228,7 +228,7 @@ setGeneric("obj_format", function(obj) standardGeneric("obj_format"))
 ## this covers rcell, etc
 #' @rdname lab_name
 #' @exportMethod obj_format
-setMethod("obj_format", "ANY", function(obj) attr(obj, "format"))
+setMethod("obj_format", "ANY", function(obj) attr(obj, "format", exact = TRUE))
 
 
 #' @export
@@ -238,7 +238,7 @@ setGeneric("obj_format<-", function(obj, value) standardGeneric("obj_format<-"))
 #' @exportMethod obj_format<-
 #' @rdname lab_name
 setMethod("obj_format<-", "ANY", function(obj, value) {
-    attr(obj, "format") = value
+    attr(obj, "format") <- value
     obj
 })
 
