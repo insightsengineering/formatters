@@ -36,3 +36,11 @@ test_that("indentation happens correctly if called for", {
   )
   expect_identical(printform, expected)
 })
+
+test_that("toString() throws a warning when newline is in string", {
+  bmf <- basic_matrix_form(iris)
+  bmf$main_title <- "some\nvery\nspacious\ntitle"
+  bmf$prov_footer <- "some\nvery\nspacious\nfooter"
+  bmf$ref_footnotes <- "some\nvery\nspacious\nreference"
+  testthat::expect_warning(toString(bmf, wrap = FALSE))
+})
