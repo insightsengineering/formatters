@@ -194,6 +194,9 @@ sep_2d_helper <- function(x, dig1, dig2, sep, na_str, wrap = NULL) {
 
 #' Converts a (possibly compound) value into a string using the \code{format} information
 #'
+#' @details A length-zero value for `na_str` will be interpreted as `"NA"`, as will any
+#' missing values within a non-length-zero `na_str` vector.
+#'
 #' @param x ANY. The value to be formatted
 #' @param format character(1) or function. The format label (string) or formatter function to apply to \code{x}.
 #' @param na_str character(1). String that should be displayed when the value of \code{x} is missing. Defaults to \code{"NA"}.
@@ -217,6 +220,10 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
     if (length(x) == 0) return("")
 
     output <- match.arg(output)
+    if(length(na_str) == 0)
+        na_str <- "NA"
+    if(any(is.na(na_str)))
+        na_str[is.na(na_str)] <- "NA"
    ## format <- if (!missing(format)) format else obj_format(x)
 
 

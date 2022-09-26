@@ -21,6 +21,10 @@ formatted text representing the cell \code{x}.
 \description{
 Converts a (possibly compound) value into a string using the \code{format} information
 }
+\details{
+A length-zero value for `na_str` will be interpreted as `"NA"`, as will any
+missing values within a non-length-zero `na_str` vector.
+}
 \examples{
 
 x <- format_value(pi, format = "xx.xx")

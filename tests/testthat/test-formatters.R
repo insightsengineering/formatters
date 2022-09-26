@@ -341,6 +341,11 @@ expect_identical(format_value(c(NA, 5.2), format = "xx.x - xx.x", na_str = "what
 expect_identical(format_value(c(NA, 5.2), format = "xx.x - xx.x", na_str =c("hi", "lo")),
                  "hi - 5.2")
 
+expect_identical(format_value(NA, format = "xx.x", na_str = character()),
+                 "NA")
+
+expect_identical(format_value(NA, format = "xx.x", na_str = NA_character_),
+                 "NA")
 
 ## additional full smoke test of labels without output checking
 
