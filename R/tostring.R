@@ -158,6 +158,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
 
     allts <- all_titles(x)
+    new_line_warning(allts)
 
     # Wrapping titles if they go beyond the horizontally allowed space
     if (wrap) {
@@ -168,6 +169,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
 
     allfoots <- all_footers(x)
+    new_line_warning(allfoots)
 
     # Wrapping footers if they go beyond the horizontally allowed space
     if (wrap) {
@@ -192,13 +194,16 @@ setMethod("toString", "MatrixPrintForm", function(x,
 ##     x
 ## }
 
-wrap_list <- function(txt_lst, max_width) {
-  if (any(sapply(txt_lst, grepl, pattern = "\n"))) {
+new_line_warning <- function(str_v) {
+  if (any(sapply(str_v, grepl, pattern = "\n"))) {
     msg <- c("Newline was manually inserted with its ASCII code. We suggest and ",
              "support adding newlines by splitting title, subtitle or footnotes ",
              "in a vector of strings, where every element is on a separate line.")
     warning(paste0(msg, collapse = ""))
   }
+}
+
+wrap_list <- function(txt_lst, max_width) {
   if (any(sapply(txt_lst, function(x) nchar(x) > max_width))) {
     txt_out <- sapply(txt_lst,
                       strwrap,
