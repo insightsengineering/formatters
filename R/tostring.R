@@ -53,7 +53,7 @@ default_hsep <- d_hsep_factory()
 #' cat(toString(mform))
 #'
 #' @return A character string containing the ASCII rendering
-#' of the table-like object reprseented by `x`
+#' of the table-like object represented by `x`
 #'
 #' @exportMethod toString
 setMethod("toString", "MatrixPrintForm", function(x,
