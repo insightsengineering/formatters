@@ -36,20 +36,30 @@ default_hsep <- d_hsep_factory()
 
 
 #' @rdname tostring
+#'
 #' @inheritParams MatrixPrintForm
-#' @param widths (proposed) widths for the columns of \code{x}
+#' @param widths numeric (or NULL). (proposed) widths for the columns of
+#'  \code{x}. The expected length of this numeric vector can be retrieved with
+#'  `ncol() + 1` as the column of row names must also be considered.
 #' @param hsep character(1). Characters to repeat to create header/body
-#' separator line.
-#' @exportMethod toString
+#'  separator line.
+#' @param wrap logical(1). Should the texts like title and footnotes be wrapped?
+#' @param max_width integer(1) (or NULL). If NULL, it will be assigned to
+#'  `options("width")`. Otherwise, it is also possible to use `c("auto")` to
+#'  automatically use the table width.
+#'
 #' @examples
 #' mform <- basic_matrix_form(mtcars)
 #' cat(toString(mform))
+#'
 #' @return A character string containing the ASCII rendering
 #' of the table-like object reprseented by `x`
+#'
+#' @exportMethod toString
 setMethod("toString", "MatrixPrintForm", function(x,
                                                   widths = NULL,
-                                                  max_width = 80,
                                                   wrap = FALSE,
+                                                  max_width = NULL,
                                                   col_gap = x$col_gap,
                                                   hsep = default_hsep()) {
     mat <- x
@@ -57,14 +67,19 @@ setMethod("toString", "MatrixPrintForm", function(x,
     ## we create a matrix with the formatted cell contents
     ##  mat <- matrix_form(x, indent_rownames = TRUE)
 
+    # Text wrapping checks
     stopifnot(is.logical(wrap))
-    if (!is.character(max_width)) {
-      stopifnot(is.numeric(max_width), max_width > 0)
+    if (wrap) {
+      if (is.null(max_width)) max_width <- options("width")
+      if (!is.character(max_width)) {
+        stopifnot(is.numeric(max_width), max_width > 0)
+      }
     }
 
     if (is.null(widths)) {
         widths <- propose_column_widths(x)
     }
+
     stopifnot(length(widths) == ncol(mat$strings))
 
     ## format the to ASCII

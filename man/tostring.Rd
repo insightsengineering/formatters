@@ -7,14 +7,29 @@
 \usage{
 toString(x, ...)
 
-\S4method{toString}{MatrixPrintForm}(x, widths = NULL, col_gap = x$col_gap, hsep = default_hsep())
+\S4method{toString}{MatrixPrintForm}(
+  x,
+  widths = NULL,
+  wrap = FALSE,
+  max_width = NULL,
+  col_gap = x$col_gap,
+  hsep = default_hsep()
+)
 }
 \arguments{
 \item{x}{ANY. Object to be prepared for rendering.}
 
 \item{...}{Passed to individual methods.}
 
-\item{widths}{(proposed) widths for the columns of \code{x}}
+\item{widths}{numeric (or NULL). (proposed) widths for the columns of
+\code{x}. The expected length of this numeric vector can be retrieved with
+`ncol() + 1` as the column of row names must also be considered.}
+
+\item{wrap}{logical(1). Should the texts like title and footnotes be wrapped?}
+
+\item{max_width}{integer(1) (or NULL). If NULL, it will be assigned to
+`options("width")`. Otherwise, it is also possible to use `c("auto")` to
+automatically use the table width.}
 
 \item{col_gap}{numeric(1). Space (in characters) between columns}
 
