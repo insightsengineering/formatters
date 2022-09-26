@@ -198,7 +198,7 @@ new_line_warning <- function(str_v) {
   if (any(sapply(str_v, grepl, pattern = "\n"))) {
     msg <- c("Newline was manually inserted with its ASCII code. We suggest and ",
              "support adding newlines by splitting title, subtitle or footnotes ",
-             "in a vector of strings, where every element is on a separate line.")
+             "in a vector of strings, so that every element will be on a separate line.")
     warning(paste0(msg, collapse = ""))
   }
 }
