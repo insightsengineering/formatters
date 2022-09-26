@@ -48,6 +48,10 @@ default_hsep <- d_hsep_factory()
 #'  `options("width")`. Otherwise, it is also possible to use `c("auto")` to
 #'  automatically use the table width.
 #'
+#' @details When wrapping texts such as title, subtitle, or footnotes, please
+#'  consider inserting a vector of strings, and every element will be on a
+#'  separate line. Using the newline character is not adviced.
+#'
 #' @examples
 #' mform <- basic_matrix_form(mtcars)
 #' cat(toString(mform))
@@ -189,8 +193,13 @@ setMethod("toString", "MatrixPrintForm", function(x,
 ## }
 
 wrap_list <- function(txt_lst, max_width) {
-  if(all(!sapply(txt_lst, grepl, pattern = "\n")) &&
-     any(sapply(txt_lst, function(x) nchar(x) > max_width))) {
+  if (any(sapply(txt_lst, grepl, pattern = "\n"))) {
+    msg <- c("Newline was manually inserted with its ASCII code. We suggest and ",
+             "support adding newlines by splitting title, subtitle or footnotes ",
+             "in a vector of strings, where every element is on a separate line.")
+    warning(paste0(msg, collapse = ""))
+  }
+  if (any(sapply(txt_lst, function(x) nchar(x) > max_width))) {
     txt_out <- sapply(txt_lst,
                       strwrap,
                       width = max_width)

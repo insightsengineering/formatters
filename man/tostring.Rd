@@ -38,13 +38,19 @@ separator line.}
 }
 \value{
 A character string containing the ASCII rendering
-of the table-like object reprseented by `x`
+of the table-like object represented by `x`
 }
 \description{
 Transform a complex object into a string representation ready
 to be printed or written to a plain-text file
 }
+\details{
+When wrapping texts such as title, subtitle, or footnotes, please
+ consider inserting a vector of strings, and every element will be on a
+ separate line. Using the newline character is not adviced.
+}
 \examples{
 mform <- basic_matrix_form(mtcars)
 cat(toString(mform))
+
 }
