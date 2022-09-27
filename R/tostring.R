@@ -208,38 +208,44 @@ new_line_warning <- function(str_v) {
 
 wrap_list <- function(txt_lst, max_width) {
   if (any(sapply(txt_lst, function(x) nchar(x) > max_width))) {
+
+    # Checking if any word is larger than max_width
+    spl_txt_l <- unname(sapply(txt_lst, function(x) strsplit(x, split = " ")))
+    which_large_txt <- sapply(spl_txt_l, function(x) any(nchar(x) > max_width))
+
+    if (any(which_large_txt)) {
+      warning(
+        "Found the following txt that could not be wrapped with max_width of ",
+        max_width,
+        ":\n- ",
+        paste0(txt_lst[which_large_txt], collapse = "\n- "),
+        "\nAttempting at a split after ", max_width, " characters."
+      )
+
+      spl_txt_l[which_large_txt] <- lapply(
+        spl_txt_l[which_large_txt],
+        function(x) {
+          # Splitting single words from list elements
+          unname(unlist(lapply(x, function(y) {
+            sapply(
+              seq(from = 1, to = nchar(y), by = max_width),
+              function(i) substr(y, i, i + max_width - 1)
+            )
+          })))
+        }
+      )
+
+      # Paste everything back together
+      txt_lst <- lapply(spl_txt_l, paste, collapse = " ")
+    }
+
+    # Main wrapper
     txt_out <- sapply(txt_lst,
       strwrap,
       width = max_width
     )
     names(txt_out) <- NULL
     txt_out <- unlist(txt_out)
-
-    # Checking remaining sizes and splitting
-    which_large_txt <- sapply(txt_out, function(x) any(nchar(x) > max_width))
-    if (any(which_large_txt)) {
-      warning(
-        "Found the following txt that could not be wrapped with max_width of ",
-        max_width,
-        ":\n- ",
-        paste0(txt_out[which_large_txt], collapse = "\n- "),
-        "\nAttempting at a split after ", max_width, " characters."
-      )
-
-      # Splits each element larger than max_width by max_width
-      txt_out <- sapply(txt_out, function(y) {
-        if (y == "") { # Cases of only newline (e.g. in footers)
-          y
-        } else {
-          sapply(
-            seq(from = 1, to = nchar(y), by = max_width),
-            function(i) substr(y, i, i + max_width - 1)
-          )
-        }
-      })
-      names(txt_out) <- NULL
-      txt_out <- unlist(txt_out)
-    }
 
     txt_out
   } else {

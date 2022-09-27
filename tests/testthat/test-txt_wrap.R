@@ -48,11 +48,11 @@ test_that("toString() throws a warning when newline is in string", {
 test_that("toString() throws a specific warning when words are too large", {
   bmf <- basic_matrix_form(mtcars[1:2, 1:2])
   bmf$main_title <- "TITLE"
-  bmf$subtitles <- "SUB TITLE"
+  bmf$subtitles <- "SUB TITLE IS"
   bmf$page_titles <- "PAGE TITLE"
   bmf$prov_footer <- "FOOTER"
   bmf$ref_footnotes <- "REFERENCE"
-  expect_warning(result <- toString(bmf, tf_wrap = TRUE, max_width = 3))
+  expect_warning(result <- toString(bmf, tf_wrap = TRUE, max_width = 4))
   res_vec <- strsplit(result, "\n")[[1]]
   exp_vec <- c("TIT", "LE",
                "SUB", "TIT", "LE",
