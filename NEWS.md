@@ -1,3 +1,6 @@
+## formatters 0.3.3.4
+ * Use `exact=TRUE` for all calls to `attr` in accessor functions.
+
 ## formatters 0.3.3.3
  * length-zero values of `na_str` are now silently interpreted as the default value (`"NA"`),
    as are any missing values in `na_str` of length > 0.

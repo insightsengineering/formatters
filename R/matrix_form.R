@@ -264,11 +264,11 @@ mf_rfnotes <- function(mf) mf$ref_footnotes
 
 #' @export
 #' @rdname mpf_accessors
-mf_nlheader <- function(mf) attr(mf, "nlines_header")
+mf_nlheader <- function(mf) attr(mf, "nlines_header", exact = TRUE)
 
 #' @export
 #' @rdname mpf_accessors
-mf_nrheader <- function(mf) attr(mf, "nrow_header")
+mf_nrheader <- function(mf) attr(mf, "nrow_header", exact = TRUE)
 
 
 #' @export
@@ -371,7 +371,7 @@ mf_nrheader <- function(mf) attr(mf, "nrow_header")
 
 
 setMethod("ncol", "MatrixPrintForm",
-          function(x) attr(x, "ncols", TRUE))
+          function(x) attr(x, "ncols", exact = TRUE))
 
 #' Create spoof matrix form from a data.frame
 #'
