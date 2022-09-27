@@ -43,7 +43,7 @@ default_hsep <- d_hsep_factory()
 #'  `ncol() + 1` as the column of row names must also be considered.
 #' @param hsep character(1). Characters to repeat to create header/body
 #'  separator line.
-#' @param wrap logical(1). Should the texts like title and footnotes be wrapped?
+#' @param tf_wrap logical(1). Should the texts like title and footnotes be wrapped?
 #' @param max_width integer(1) (or NULL). If NULL, it will be assigned to
 #'  `options("width")`. Otherwise, it is also possible to use `c("auto")` to
 #'  automatically use the table width.
@@ -62,7 +62,7 @@ default_hsep <- d_hsep_factory()
 #' @exportMethod toString
 setMethod("toString", "MatrixPrintForm", function(x,
                                                   widths = NULL,
-                                                  wrap = FALSE,
+                                                  tf_wrap = FALSE,
                                                   max_width = NULL,
                                                   col_gap = x$col_gap,
                                                   hsep = default_hsep()) {
@@ -72,8 +72,8 @@ setMethod("toString", "MatrixPrintForm", function(x,
     ##  mat <- matrix_form(x, indent_rownames = TRUE)
 
     # Text wrapping checks
-    stopifnot(is.logical(wrap))
-    if (wrap) {
+    stopifnot(is.logical(tf_wrap))
+    if (tf_wrap) {
       if (is.null(max_width)) max_width <- options("width")
       if (!is.character(max_width)) {
         stopifnot(is.numeric(max_width), max_width > 0)
@@ -161,7 +161,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
     new_line_warning(allts)
 
     # Wrapping titles if they go beyond the horizontally allowed space
-    if (wrap) {
+    if (tf_wrap) {
       allts <- wrap_list(as.list(allts), max_width)
     }
 
@@ -172,8 +172,11 @@ setMethod("toString", "MatrixPrintForm", function(x,
     new_line_warning(allfoots)
 
     # Wrapping footers if they go beyond the horizontally allowed space
-    if (wrap) {
+    if (tf_wrap) {
       allfoots <- wrap_list(as.list(allfoots), max_width)
+      if (!is.null(ref_fnotes)) {
+        ref_fnotes <- wrap_list(as.list(ref_fnotes), max_width)
+      }
     }
 
     footer_txt <- c(if(length(ref_fnotes) > 0) c(div, "", ref_fnotes),
@@ -206,10 +209,39 @@ new_line_warning <- function(str_v) {
 wrap_list <- function(txt_lst, max_width) {
   if (any(sapply(txt_lst, function(x) nchar(x) > max_width))) {
     txt_out <- sapply(txt_lst,
-                      strwrap,
-                      width = max_width)
+      strwrap,
+      width = max_width
+    )
     names(txt_out) <- NULL
-    unlist(txt_out)
+    txt_out <- unlist(txt_out)
+
+    # Checking remaining sizes and splitting
+    which_large_txt <- sapply(txt_out, function(x) any(nchar(x) > max_width))
+    if (any(which_large_txt)) {
+      warning(
+        "Found the following txt that could not be wrapped with max_width of ",
+        max_width,
+        ":\n- ",
+        paste0(txt_out[which_large_txt], collapse = "\n- "),
+        "\nAttempting at a split after ", max_width, " characters."
+      )
+
+      # Splits each element larger than max_width by max_width
+      txt_out <- sapply(txt_out, function(y) {
+        if (y == "") { # Cases of only newline (e.g. in footers)
+          y
+        } else {
+          sapply(
+            seq(from = 1, to = nchar(y), by = max_width),
+            function(i) substr(y, i, i + max_width - 1)
+          )
+        }
+      })
+      names(txt_out) <- NULL
+      txt_out <- unlist(txt_out)
+    }
+
+    txt_out
   } else {
     unlist(txt_lst)
   }

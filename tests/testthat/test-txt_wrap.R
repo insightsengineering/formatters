@@ -20,7 +20,7 @@ test_that("indentation happens correctly if called for", {
   expect_identical(matform$main_title, tit)
   expect_identical(matform$main_footer, mn_ft)
 
-  printform <- toString(matform, wrap = TRUE, max_width = "auto")
+  printform <- toString(matform, tf_wrap = TRUE, max_width = "auto")
   expected <- paste0(
     "ttttt ttttt\nttttt\nsssss sssss\nsssss\n\n--------------\n ",
     "      all obs\n--------------\nmean      3   \n--------------\n",
@@ -28,7 +28,7 @@ test_that("indentation happens correctly if called for", {
   )
   expect_identical(printform, expected)
 
-  printform <- toString(matform, wrap = TRUE, max_width = 10)
+  printform <- toString(matform, tf_wrap = TRUE, max_width = 10)
   expected <- paste0(
     "ttttt\nttttt\nttttt\nsssss\nsssss\nsssss\n\n--------------\n ",
     "      all obs\n--------------\nmean      3   \n--------------\n",
@@ -42,5 +42,32 @@ test_that("toString() throws a warning when newline is in string", {
   bmf$main_title <- "some\nvery\nspacious\ntitle"
   bmf$prov_footer <- "some\nvery\nspacious\nfooter"
   bmf$ref_footnotes <- "some\nvery\nspacious\nreference"
-  testthat::expect_warning(toString(bmf, wrap = FALSE))
+  expect_warning(toString(bmf, tf_wrap = FALSE))
+})
+
+test_that("toString() throws a specific warning when words are too large", {
+  bmf <- basic_matrix_form(mtcars[1:2, 1:2])
+  bmf$main_title <- "TITLE"
+  bmf$subtitles <- "SUB TITLE"
+  bmf$page_titles <- "PAGE TITLE"
+  bmf$prov_footer <- "FOOTER"
+  bmf$ref_footnotes <- "REFERENCE"
+  expect_warning(result <- toString(bmf, tf_wrap = TRUE, max_width = 3))
+  res_vec <- strsplit(result, "\n")[[1]]
+  exp_vec <- c("TIT", "LE",
+               "SUB", "TIT", "LE",
+               "PAG", "E", "TIT", "LE",
+               "",
+               "-------------------------",
+               "                mpg   cyl",
+               "-------------------------",
+               "Mazda RX4       21    6  ",
+               "Mazda RX4 Wag   21    6  ",
+               "-------------------------",
+               "", "REF", "ERE", "NCE",
+               "-------------------------",
+               "",
+               "",
+               "FOO", "TER")
+  expect_identical(res_vec, exp_vec)
 })
