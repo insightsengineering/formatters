@@ -241,8 +241,8 @@ wrap_list <- function(txt_lst, max_width) {
 
     # Main wrapper
     txt_out <- sapply(txt_lst,
-      stringi::stri_wrap,
-      width = max_width
+      strwrap,
+      width = max_width + 1
     )
     names(txt_out) <- NULL
     txt_out <- unlist(txt_out)

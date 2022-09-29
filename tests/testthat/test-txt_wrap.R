@@ -52,7 +52,7 @@ test_that("toString() throws a specific warning when words are too large", {
   bmf$subtitles <- "SUB TITLE IS"
   bmf$page_titles <- "PAGE TITLE"
   bmf$main_footer <- "FOOTER"
-  bmf$prov_footer <- "PROV FOOTER"
+  bmf$prov_footer <- c("", "PROV FOOTER")
   bmf$ref_footnotes <- "REFERENCE"
   expect_warning(result <- toString(bmf, tf_wrap = TRUE, max_width = 4))
   res_vec <- strsplit(result, "\n")[[1]]
@@ -71,6 +71,7 @@ test_that("toString() throws a specific warning when words are too large", {
                "-------------------------",
                "",
                "FOOT", "ER",
+               "",
                "PROV", "FOOT", "ER")
   expect_identical(res_vec, exp_vec)
 })

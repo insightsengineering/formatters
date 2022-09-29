@@ -11,8 +11,7 @@ License: Apache License 2.0
 Depends: methods, R (>= 2.10)
 Imports: 
   grid,
-  htmltools,
-  stringi
+  htmltools
 Suggests:
   dplyr,
   gt (>= 0.7.0),
