@@ -166,30 +166,27 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
     # Wrapping titles if they go beyond the horizontally allowed space
     if (tf_wrap) {
-      allts <- wrap_list(as.list(allts), max_width)
+      allts <- unlist(sapply(as.list(allts), wrap_txt, max_width = max_width))
     }
 
     titles_txt <- if(any(nzchar(allts))) c(allts, "", .do_inset(div, inset))  else NULL
 
-    allfoots <- all_footers(x)
+    allfoots <- list("main_footer" = main_footer(x),
+                     "prov_footer" = prov_footer(x),
+                     "ref_footnotes" = ref_fnotes)
+    allfoots <- allfoots[!sapply(allfoots, is.null)]
     new_line_warning(allfoots)
 
     # Wrapping footers if they go beyond the horizontally allowed space
     if (tf_wrap) {
-      allfoots <- wrap_list(as.list(allfoots), max_width)
-      if (!is.null(ref_fnotes)) {
-        ref_fnotes <- wrap_list(as.list(ref_fnotes), max_width)
-      }
+      allfoots <- sapply(allfoots, wrap_txt, max_width = max_width)
     }
-    ## TODO make titles affect width...
-
-    ##allfoots <- all_footers(x)
 
     paste0(paste(c(titles_txt,
                    .do_inset(txt_head, inset),
                    .do_inset(div, inset),
                    .do_inset(txt_body, inset),
-                   .footer_inset_helper(x, div, inset)),
+                   .footer_inset_helper(allfoots, div, inset)),
                  collapse = "\n"), "\n")
 
 })
@@ -211,20 +208,22 @@ setMethod("toString", "MatrixPrintForm", function(x,
     c(.do_inset(div, inset), "", txt)
 }
 
-.footer_inset_helper <- function(x, div, inset) {
+.footer_inset_helper <- function(footers_v, div, inset) {
     div_done = FALSE
-    rfn <- x$ref_footnotes
-    footer_txt <- .do_inset(x$ref_footnotes, inset)
+    fter <- footers_v$main_footer
+    prvf <- footers_v$prov_footer
+    rfn <- footers_v$ref_footnotes
+    footer_txt <- .do_inset(rfn, inset)
     if(any(nzchar(footer_txt)))
         footer_txt <- .inset_div(footer_txt, div, inset)
-    if(any(nzchar(all_footers(x)))) {
-        if(any(nzchar(prov_footer(x))))
-            provtxt <- c(if(any(nzchar(main_footer(x)))) "",
-                         prov_footer(x))
+    if(any(nzchar(footers_v))) {
+        if(any(nzchar(prvf)))
+            provtxt <- c(if(any(nzchar(fter))) "",
+                         prvf)
         else
             provtxt <- character()
         footer_txt <- c(footer_txt,
-                        .inset_div(c(.do_inset(main_footer(x), inset),
+                        .inset_div(c(.do_inset(fter, inset),
                                      provtxt),
                                    div,
                                    inset))
@@ -244,7 +243,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
 ## }
 
 new_line_warning <- function(str_v) {
-  if (any(sapply(str_v, grepl, pattern = "\n"))) {
+  if (any(unlist(sapply(str_v, grepl, pattern = "\n")))) {
     msg <- c("Newline was manually inserted with its ASCII code. We suggest and ",
              "support adding newlines by splitting title, subtitle or footnotes ",
              "in a vector of strings, so that every element will be on a separate line.")
@@ -252,11 +251,17 @@ new_line_warning <- function(str_v) {
   }
 }
 
-wrap_list <- function(txt_lst, max_width) {
-  if (any(sapply(txt_lst, function(x) nchar(x) > max_width))) {
+wrap_txt <- function(txt, max_width) {
+  if (any(sapply(txt, function(x) nchar(x) > max_width))) {
 
     # Checking if any word is larger than max_width
-    spl_txt_l <- unname(sapply(txt_lst, function(x) strsplit(x, split = " ")))
+    spl_txt_l <- unname(sapply(txt, function(x) {
+      if (nchar(x) > 0) {
+        strsplit(x, split = " ")
+      } else {
+        x
+      }
+    }))
     which_large_txt <- sapply(spl_txt_l, function(x) any(nchar(x) > max_width))
 
     if (any(which_large_txt)) {
@@ -264,14 +269,13 @@ wrap_list <- function(txt_lst, max_width) {
         "Found the following txt that could not be wrapped with max_width of ",
         max_width,
         ":\n- ",
-        paste0(txt_lst[which_large_txt], collapse = "\n- "),
+        paste0(txt[which_large_txt], collapse = "\n- "),
         "\nAttempting at a split after ", max_width, " characters."
       )
 
       spl_txt_l[which_large_txt] <- lapply(
         spl_txt_l[which_large_txt],
         function(x) {
-          # Splitting single words from list elements
           unname(unlist(lapply(x, function(y) {
             sapply(
               seq(from = 1, to = nchar(y), by = max_width),
@@ -280,13 +284,11 @@ wrap_list <- function(txt_lst, max_width) {
           })))
         }
       )
-
       # Paste everything back together
-      txt_lst <- lapply(spl_txt_l, paste, collapse = " ")
+      txt <- lapply(spl_txt_l, paste, collapse = " ")
     }
-
     # Main wrapper
-    txt_out <- sapply(txt_lst,
+    txt_out <- lapply(txt,
       strwrap,
       width = max_width + 1
     )
@@ -295,7 +297,7 @@ wrap_list <- function(txt_lst, max_width) {
 
     txt_out
   } else {
-    unlist(txt_lst)
+    unlist(txt)
   }
 }
 

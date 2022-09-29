@@ -71,6 +71,7 @@ test_that("toString() throws a specific warning when words are too large", {
                "",
                "FOOT", "ER",
                "",
+               "",
                "PROV", "FOOT", "ER")
   expect_identical(res_vec, exp_vec)
 })
