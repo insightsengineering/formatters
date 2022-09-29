@@ -9,6 +9,7 @@ test_that("indentation happens correctly if called for", {
     subtitles = subtit,
     main_footer = mn_ft
   ) %>%
+    split_rows_by("Species") %>%
     analyze("Sepal.Width", afun = mean, format = "xx.")
 
   tbl <- build_table(lyt, iris)
@@ -50,13 +51,14 @@ test_that("toString() throws a specific warning when words are too large", {
   bmf$main_title <- "TITLE"
   bmf$subtitles <- "SUB TITLE IS"
   bmf$page_titles <- "PAGE TITLE"
-  bmf$prov_footer <- "FOOTER"
+  bmf$main_footer <- "FOOTER"
+  bmf$prov_footer <- "PROV FOOTER"
   bmf$ref_footnotes <- "REFERENCE"
   expect_warning(result <- toString(bmf, tf_wrap = TRUE, max_width = 4))
   res_vec <- strsplit(result, "\n")[[1]]
   exp_vec <- c("TITL", "E",
                "SUB", "TITL", "E IS",
-               "PAGE","TITL", "E",
+               "PAGE", "TITL", "E",
                "",
                "-------------------------",
                "                mpg   cyl",
@@ -64,10 +66,11 @@ test_that("toString() throws a specific warning when words are too large", {
                "Mazda RX4       21    6  ",
                "Mazda RX4 Wag   21    6  ",
                "-------------------------",
-               "", "REFE", "RENC", "E",
+               "",
+               "REFE", "RENC", "E",
                "-------------------------",
                "",
-               "",
-               "FOOT", "ER")
+               "FOOT", "ER",
+               "PROV", "FOOT", "ER")
   expect_identical(res_vec, exp_vec)
 })
