@@ -111,7 +111,6 @@ pagdfrow <- function(row,
   )
 }
 
-# nolint start: cyclocomp_linter.
 valid_pag <- function(pagdf,
                       guess,
                       start,
@@ -214,7 +213,6 @@ valid_pag <- function(pagdf,
   }
   TRUE
 }
-# nolint end
 
 find_pag <- function(pagdf,
                      start,

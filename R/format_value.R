@@ -218,7 +218,6 @@ sep_2d_helper <- function(x, dig1, dig2, sep, na_str, wrap = NULL) {
 #'
 #' format_value(x, output = "ascii")
 #'
-# nolint start: cyclocomp_linter.
 format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str = "NA") {
   # nolint start
   # if(is(x, "CellValue"))
@@ -358,4 +357,3 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
     txt
   }
 }
-# nolint end

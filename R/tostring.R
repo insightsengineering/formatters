@@ -52,7 +52,6 @@ default_hsep <- d_hsep_factory()
 #' mform <- basic_matrix_form(mtcars)
 #' cat(toString(mform))
 #'
-# nolint start: cyclocomp_linter.
 setMethod("toString", "MatrixPrintForm", function(x,
                                                   widths = NULL,
                                                   col_gap = x$col_gap,
@@ -147,7 +146,6 @@ setMethod("toString", "MatrixPrintForm", function(x,
   )
   paste0(paste(c(titles_txt, txt_head, div, txt_body, footer_txt), collapse = "\n"), "\n")
 })
-# nolint end
 
 # nolint start
 # pad_vert_center <- function(x, len) {
@@ -285,7 +283,6 @@ spans_to_viscell <- function(spans) {
 #' # ' tbl <- build_table(l, iris2)
 #' # ' mf <- matrix_form(tbl)
 #' # ' propose_column_widths(mf)
-# nolint start: cyclocomp_linter.
 propose_column_widths <- function(x, indent_size = 2) {
   # stopifnot(is(x, "VTableTree")) # nolint
   if (!is(x, "MatrixPrintForm")) {
@@ -333,7 +330,6 @@ propose_column_widths <- function(x, indent_size = 2) {
   }
   widths
 }
-# nolint end
 
 #' Pad a string and align within string
 #'
