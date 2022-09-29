@@ -8,7 +8,6 @@ NULL
 std_cpi <- 10L
 std_lpi <- 6L
 
-
 std_full_pg_wd_in <- 8.5
 
 std_full_pg_ht_in <- 11
@@ -17,36 +16,40 @@ std_log_pg_wd_chars <- 72
 
 std_log_pg_ht_lines <- 60
 
-std_marg_ht <- round((std_full_pg_ht_in - std_log_pg_ht_lines/std_lpi)/2, 2)
-std_marg_wd <- round((std_full_pg_wd_in - std_log_pg_wd_chars/std_cpi)/2, 2)
+std_marg_ht <- round((std_full_pg_ht_in - std_log_pg_ht_lines / std_lpi) / 2, 2)
+std_marg_wd <- round((std_full_pg_wd_in - std_log_pg_wd_chars / std_cpi) / 2, 2)
 
-std_margins <- list(top = std_marg_ht,
-                 bottom = std_marg_ht,
-                 left = std_marg_wd,
-                 right = std_marg_wd)
+std_margins <- list(
+  top = std_marg_ht,
+  bottom = std_marg_ht,
+  left = std_marg_wd,
+  right = std_marg_wd
+)
 
 to_inches_num <- function(x) {
-    if(is(x, "unit"))
-        x <- unclass(convertUnit(x, "inches"))
-    x
+  if (is(x, "unit")) {
+    x <- unclass(convertUnit(x, "inches"))
+  }
+  x
 }
 
-## Physical size, does not take margins into account
+# Physical size, does not take margins into account
 pg_dim_names <- list(
-    letter = c(8.5, 11),
-    a4 = c(8.27, 11.69),
-    legal = c(8.5, 14))
-
+  letter = c(8.5, 11),
+  a4 = c(8.27, 11.69),
+  legal = c(8.5, 14)
+)
 
 #' List supported named page types
 #'
 #' @return a character vector of supported page types
-#'
 #' @export
+#'
 #' @examples
 #' page_types()
+#'
 page_types <- function() {
-    names(pg_dim_names)
+  names(pg_dim_names)
 }
 
 #' Calculate lines per inch and characters per inch for font
@@ -60,31 +63,37 @@ page_types <- function() {
 #'
 #' An error is thrown if the font is not monospaced (determined by comparing
 #' the effective widths of the `M` and `.` glyphs).
+#'
 #' @return named list with `cpi` and `lpi`, the characters and lines per
 #' inch, respectively.
-#'
 #' @export
+#'
 #' @examples
 #' font_lcpi()
 #'
 #' font_lcpi(font_size = 8)
 #'
 #' font_lcpi(font_size = 8, lineheight = 1.1)
+#'
 font_lcpi <- function(font_family = "Courier", font_size = 12, lineheight = 1) {
-    tmppdf <- tempfile(fileext=".pdf")
-    pdf(tmppdf)
-    on.exit(dev.off())
-    grid.newpage()
-    gp <- gpar(fontfamily = font_family, fontsize = font_size, lineheight = lineheight)
-    pushViewport(plotViewport(gp = gp))
-    if (convertWidth(unit(1, "strwidth", "."), "inches", valueOnly = TRUE) !=
-        convertWidth(unit(1, "strwidth", "M"), "inches", valueOnly = TRUE)) {
-        stop("The font family you selected - ",
-             font_family,
-             " - does not appear to be monospaced. This is not supported.")
-    }
-    list(cpi = 1/convertWidth(unit(1, "strwidth", "h"), "inches", valueOnly = TRUE),
-         lpi = convertHeight(unit(1, "inches"), "lines", valueOnly = TRUE))
+  tmppdf <- tempfile(fileext = ".pdf")
+  pdf(tmppdf)
+  on.exit(dev.off())
+  grid.newpage()
+  gp <- gpar(fontfamily = font_family, fontsize = font_size, lineheight = lineheight)
+  pushViewport(plotViewport(gp = gp))
+  if (convertWidth(unit(1, "strwidth", "."), "inches", valueOnly = TRUE) !=
+    convertWidth(unit(1, "strwidth", "M"), "inches", valueOnly = TRUE)) {
+    stop(
+      "The font family you selected - ",
+      font_family,
+      " - does not appear to be monospaced. This is not supported."
+    )
+  }
+  list(
+    cpi = 1 / convertWidth(unit(1, "strwidth", "h"), "inches", valueOnly = TRUE),
+    lpi = convertHeight(unit(1, "inches"), "lines", valueOnly = TRUE)
+  )
 }
 
 #' Determine LPP and CPP based on font and page type
@@ -118,6 +127,7 @@ font_lcpi <- function(font_family = "Courier", font_size = 12, lineheight = 1) {
 #'
 #' page_lcpp(margins = c(top = 1, bottom = 1, left = 1, right = 1))
 #' page_lcpp(pg_width = 10, pg_height = 15)
+#'
 page_lcpp <- function(page_type = page_types(),
                       landscape = FALSE,
                       font_family = "Courier",
@@ -126,23 +136,26 @@ page_lcpp <- function(page_type = page_types(),
                       margins = c(top = .5, bottom = .5, left = .75, right = .75),
                       pg_width = NULL,
                       pg_height = NULL) {
-    lcpi <- font_lcpi(font_family = font_family,
-                           font_size = font_size,
-                           lineheight = lineheight)
-    if(is.null(pg_width) ||
-       is.null(pg_height)) {
-        page_type <- match.arg(page_type)
-        wdpos <- ifelse(landscape, 2, 1)
-        pg_width <- pg_dim_names[[page_type]][wdpos]
-        pg_height <- pg_dim_names[[page_type]][-wdpos]
-    }
+  lcpi <- font_lcpi(
+    font_family = font_family,
+    font_size = font_size,
+    lineheight = lineheight
+  )
+  if (is.null(pg_width) ||
+    is.null(pg_height)) {
+    page_type <- match.arg(page_type)
+    wdpos <- ifelse(landscape, 2, 1)
+    pg_width <- pg_dim_names[[page_type]][wdpos]
+    pg_height <- pg_dim_names[[page_type]][-wdpos]
+  }
 
+  pg_width <- pg_width - sum(margins[c("left", "right")])
+  pg_height <- pg_height - sum(margins[c("top", "bottom")])
 
-    pg_width <- pg_width - sum(margins[c("left", "right")])
-    pg_height <- pg_height - sum(margins[c("top", "bottom")])
-
-    list(cpp = floor(lcpi[["cpi"]] * pg_width),
-         lpp = floor(lcpi[["lpi"]] * pg_height))
+  list(
+    cpp = floor(lcpi[["cpi"]] * pg_width),
+    lpp = floor(lcpi[["lpi"]] * pg_height)
+  )
 }
 
 ## pg_types <- list(
@@ -191,11 +204,6 @@ page_lcpp <- function(page_type = page_types(),
 ##     "shibap7" = c(cpp = 127, lpp = 92),
 ##     "shibap6" = c(cpp = 148, lpp = 108))
 
-
-
-
-
-
 ## courier_fontsize_lcpi_df <- tribble(
 ##     ~courier_size,   ~cpi,                                      ~lpi,
 ##      6,              floor(129 / pg_dim_names[["letter"]][1]),  floor(85 / pg_dim_names[["letter"]][2]),
@@ -205,6 +213,7 @@ page_lcpp <- function(page_type = page_types(),
 ##     10,              floor(75 / pg_dim_names[["letter"]][1]),   floor(56 / pg_dim_names[["letter"]][2])
 ## )
 
+# nolint start
 ## courier_lcpi <- function(size) {
 ##     grid.newpage()
 ##     gp <- gpar(fontfamily="Courier New", fontsize = size, lineheight = 1)
@@ -212,4 +221,4 @@ page_lcpp <- function(page_type = page_types(),
 ##     list(cpi = round(1/convertWidth(unit(1, "strwidth", "h"), "inches", valueOnly = TRUE), 0),
 ##          lpi = round(convertHeight(unit(1, "inches"), "lines", valueOnly = TRUE), 0))
 ## }
-
+# nolint end

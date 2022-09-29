@@ -3,9 +3,9 @@
 #' @title Make row and column layout summary data.frames for use during pagination
 #' @name make_row_df
 #'
-#'
 #' @param tt ANY. Object representing the table-like object to be summarized.
-#' @param visible_only logical(1). Should only visible aspects of the table structure be reflected in this summary. Defaults to \code{TRUE}. May not be supported by all methods.
+#' @param visible_only logical(1). Should only visible aspects of the table structure be reflected in this summary.
+#'   Defaults to \code{TRUE}. May not be supported by all methods.
 #' @param incontent logical(1). Internal detail do not set manually.
 #' @param repr_ext integer(1). Internal detail do not set manually.
 #' @param repr_inds integer. Internal detail do not set manually.
@@ -44,16 +44,17 @@
 #'
 ## nocov start
 setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
-                                  rownum = 0,
-                                  indent = 0L,
-                                  path = character(),
-                                  incontent = FALSE,
-                                  repr_ext = 0L,
-                                  repr_inds = integer(),
-                                  sibpos = NA_integer_,
-                                  nsibs = NA_integer_) standardGeneric("make_row_df"))
+                                   rownum = 0,
+                                   indent = 0L,
+                                   path = character(),
+                                   incontent = FALSE,
+                                   repr_ext = 0L,
+                                   repr_inds = integer(),
+                                   sibpos = NA_integer_,
+                                   nsibs = NA_integer_) {
+  standardGeneric("make_row_df")
+})
 ## nocov end
-
 
 #' Transform rtable to a list of matrices which can be used for outputting
 #'
@@ -68,12 +69,14 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
 #' @export
 #'
 #' @details
+#' The strings in the return object are defined as follows: row labels are those determined by
+#' \code{summarize_rows} and cell values are determined using \code{get_formatted_cells}.
+#' (Column labels are calculated using a non-exported internal funciton.
 #'
-#' The strings in the return object are defined as follows: row labels are those determined by \code{summarize_rows} and cell values are determined using \code{get_formatted_cells}. (Column labels are calculated using a non-exported internal funciton.
-#'
-#'@return A `MatrixPrintForm` classed list with the following elements:
+#' @return A `MatrixPrintForm` classed list with the following elements:
 #' \describe{
-#' \item{strings}{The content, as it should be printed, of the top-left material, column headers, row labels , and cell values of \code{tt}}
+#' \item{strings}{The content, as it should be printed, of the top-left material, column headers, row labels, and
+#'   cell values of \code{tt}}
 #' \item{spans}{The column-span information for each print-string in the strings matrix}
 #' \item{aligns}{The text alignment for each print-string in the strings matrix}
 #' \item{display}{Whether each print-string in the strings matrix should be printed or not}.
@@ -82,18 +85,21 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
 #'
 #' With an additional \code{nrow_header} attribute indicating the number of pseudo "rows"  the
 #' column structure defines.
+#'
 setGeneric("matrix_form", function(obj, indent_rownames = FALSE,
-                                   indent_size = 2) standardGeneric("matrix_form"))
+                                   indent_size = 2) {
+  standardGeneric("matrix_form")
+})
 
 #' @rdname matrix_form
 #' @export
 setMethod("matrix_form", "MatrixPrintForm", function(obj,
                                                      indent_rownames = FALSE,
-                                                     indent_size = 2) obj)
-
+                                                     indent_size = 2) {
+  obj
+})
 
 ## Generics for toString and helper functions
-
 
 ## this is where we will take wordwrapping
 ## into account when it is added
@@ -105,37 +111,49 @@ setMethod("matrix_form", "MatrixPrintForm", function(obj,
 #' Divider Height
 #'
 #' @param obj ANY. Object.
+#'
 #' @return The height, in lines of text, of the divider between
 #' header and body. Currently returns \code{1L} for the default method.
 #' @export
+#'
 #' @examples
 #' divider_height(mtcars)
+#'
 setGeneric("divider_height", function(obj) standardGeneric("divider_height"))
 
 #' @rdname divider_height
 #' @export
-setMethod("divider_height", "ANY",
-          function(obj) 1L)
+setMethod(
+  "divider_height", "ANY",
+  function(obj) 1L
+)
 
 #' Number of lines required to print a value
+#'
 #' @param x ANY. The object to be printed
 #' @param colwidths numeric. Column widths (if necessary)
+#'
 #' @return A scalar numeric indicating the number of lines needed
 #' to render the object \code{x}.
 #' @export
-setGeneric("nlines",
-           function(x, colwidths) standardGeneric("nlines"))
+setGeneric(
+  "nlines",
+  function(x, colwidths) standardGeneric("nlines")
+)
 
 ## XXX beware. I think it is dangerous
 #' @export
 #' @rdname nlines
-setMethod("nlines", "list",
-          function(x, colwidths) {
-    if(length(x) == 0)
-        0L
-    else
-        sum(unlist(vapply(x, nlines, NA_integer_, colwidths = colwidths)))
-})
+setMethod(
+  "nlines", "list",
+  function(x, colwidths) {
+    if (length(x) == 0) {
+      0L
+    } else {
+      sum(unlist(vapply(x, nlines, NA_integer_, colwidths = colwidths)))
+    }
+  }
+)
 
 #' @export
 #' @rdname nlines
@@ -145,9 +163,6 @@ setMethod("nlines", "NULL", function(x, colwidths) 0L)
 #' @rdname nlines
 setMethod("nlines", "character", function(x, colwidths) max(vapply(strsplit(x, "\n", fixed = TRUE), length, 1L)))
 
-
-
-
 #' @title toString
 #'
 #' @description Transform a complex object into a string representation ready
@@ -155,9 +170,10 @@ setMethod("nlines", "character", function(x, colwidths) max(vapply(strsplit(x, "
 #'
 #' @param x ANY. Object to be prepared for rendering.
 #' @param ... Passed to individual methods.
+#'
 #' @rdname tostring
 #' @export
-setGeneric("toString", function(x,...) standardGeneric("toString"))
+setGeneric("toString", function(x, ...) standardGeneric("toString"))
 
 ## preserve S3 behavior
 setMethod("toString", "ANY", base::toString) ## nocov
@@ -170,14 +186,6 @@ setMethod("toString", "ANY", base::toString) ## nocov
 setMethod("print", "ANY", base::print) ## nocov
 
 
-
-
-
-
-
-
-
-
 ## General/"universal" property getter and setter generics and stubs
 
 #' @title Label, Name and Format accessor generics
@@ -188,17 +196,16 @@ setMethod("print", "ANY", base::print) ## nocov
 #' @name lab_name
 #' @param obj ANY. The object.
 #' @param value character(1)/FormatSpec. The new value of the attribute.
+#'
 #' @return the name, format or label of \code{obj} for getters, or \code{obj} after modification
 #' for setters.
 #' @aliases obj_name
 #' @export
 setGeneric("obj_name", function(obj) standardGeneric("obj_name"))
 
-
 #' @rdname lab_name
 #' @export
 setGeneric("obj_name<-", function(obj, value) standardGeneric("obj_name<-"))
-
 
 #' @seealso with_label
 #' @rdname lab_name
@@ -216,11 +223,13 @@ setMethod("obj_label", "ANY", function(obj) attr(obj, "label"))
 
 #' @rdname lab_name
 #' @exportMethod obj_label<-
-setMethod("obj_label<-", "ANY",
-          function(obj, value){
-    attr(obj, "label") = value
+setMethod(
+  "obj_label<-", "ANY",
+  function(obj, value) {
+    attr(obj, "label") <- value
     obj
-})
+  }
+)
 
 #' @rdname lab_name
 #' @export
@@ -230,7 +239,6 @@ setGeneric("obj_format", function(obj) standardGeneric("obj_format"))
 #' @exportMethod obj_format
 setMethod("obj_format", "ANY", function(obj) attr(obj, "format", exact = TRUE))
 
-
 #' @export
 #' @rdname lab_name
 setGeneric("obj_format<-", function(obj, value) standardGeneric("obj_format<-"))
@@ -238,15 +246,14 @@ setGeneric("obj_format<-", function(obj, value) standardGeneric("obj_format<-"))
 #' @exportMethod obj_format<-
 #' @rdname lab_name
 setMethod("obj_format<-", "ANY", function(obj, value) {
-    attr(obj, "format") <- value
-    obj
+  attr(obj, "format") <- value
+  obj
 })
-
-
 
 #' General title/footer accessors
 #'
 #' @param obj ANY. Object to extract information from.
+#'
 #' @export
 #' @rdname title_footer
 #' @return a character scalar (`main_title`, `main_footer`), or
@@ -256,13 +263,14 @@ setGeneric("main_title", function(obj) standardGeneric("main_title"))
 
 #' @export
 #' @rdname title_footer
-setMethod("main_title", "MatrixPrintForm",
-          function(obj) obj$main_title)
+setMethod(
+  "main_title", "MatrixPrintForm",
+  function(obj) obj$main_title
+)
 
-##' @rdname title_footer
-##' @export
+#' @rdname title_footer
+#' @export
 setGeneric("main_title<-", function(obj, value) standardGeneric("main_title<-"))
-
 
 #' @export
 #' @rdname title_footer
@@ -270,11 +278,13 @@ setGeneric("subtitles", function(obj) standardGeneric("subtitles")) ## nocov
 
 #' @export
 #' @rdname title_footer
-setMethod("subtitles", "MatrixPrintForm",
-          function(obj) obj$subtitles)
+setMethod(
+  "subtitles", "MatrixPrintForm",
+  function(obj) obj$subtitles
+)
 
-##' @rdname title_footer
-##' @export
+#' @rdname title_footer
+#' @export
 setGeneric("subtitles<-", function(obj, value) standardGeneric("subtitles<-")) ## nocov
 
 #' @export
@@ -283,27 +293,31 @@ setGeneric("page_titles", function(obj) standardGeneric("page_titles"))
 
 #' @export
 #' @rdname title_footer
-setMethod("page_titles", "MatrixPrintForm",
-          function(obj) obj$page_titles)
+setMethod(
+  "page_titles", "MatrixPrintForm",
+  function(obj) obj$page_titles
+)
+
 #' @rdname title_footer
 #' @export
 setMethod("page_titles", "ANY", function(obj) NULL)
 
-##' @rdname title_footer
-##' @export
+#' @rdname title_footer
+#' @export
 setGeneric("page_titles<-", function(obj, value) standardGeneric("page_titles<-"))
 
 #' @export
 #' @rdname title_footer
-setMethod("page_titles<-", "MatrixPrintForm",
-          function(obj, value) {
-    if(!is.character(value))
-        stop("page titles must be in the form of a character vector, got object of class ", class(value))
+setMethod(
+  "page_titles<-", "MatrixPrintForm",
+  function(obj, value) {
+    if (!is.character(value)) {
+      stop("page titles must be in the form of a character vector, got object of class ", class(value))
+    }
     obj$page_titles <- value
     obj
-})
-
-
+  }
+)
 
 #' @export
 #' @rdname title_footer
@@ -311,26 +325,28 @@ setGeneric("main_footer", function(obj) standardGeneric("main_footer"))
 
 #' @export
 #' @rdname title_footer
-setMethod("main_footer", "MatrixPrintForm",
-          function(obj) obj$main_footer)
+setMethod(
+  "main_footer", "MatrixPrintForm",
+  function(obj) obj$main_footer
+)
 
 #' @rdname title_footer
 #' @param value character. New value.
 #' @export
 setGeneric("main_footer<-", function(obj, value) standardGeneric("main_footer<-"))
 
-
-
 #' @export
 #' @rdname title_footer
-setMethod("main_footer<-", "MatrixPrintForm",
-          function(obj, value) {
-    if(!is.character(value))
-        stop("main footer must be a character vector. Got object of class ", class(value))
+setMethod(
+  "main_footer<-", "MatrixPrintForm",
+  function(obj, value) {
+    if (!is.character(value)) {
+      stop("main footer must be a character vector. Got object of class ", class(value))
+    }
     obj$main_footer <- value
     obj
-})
-
+  }
+)
 
 #' @export
 #' @rdname title_footer
@@ -338,8 +354,10 @@ setGeneric("prov_footer", function(obj) standardGeneric("prov_footer"))
 
 #' @export
 #' @rdname title_footer
-setMethod("prov_footer", "MatrixPrintForm",
-          function(obj) obj$prov_footer)
+setMethod(
+  "prov_footer", "MatrixPrintForm",
+  function(obj) obj$prov_footer
+)
 
 #' @rdname title_footer
 #' @export
@@ -347,16 +365,16 @@ setGeneric("prov_footer<-", function(obj, value) standardGeneric("prov_footer<-"
 
 #' @export
 #' @rdname title_footer
-setMethod("prov_footer<-", "MatrixPrintForm",
-          function(obj, value) {
-    if(!is.character(value))
-        stop("provenance footer must be a character vector. Got object of class ", class(value))
+setMethod(
+  "prov_footer<-", "MatrixPrintForm",
+  function(obj, value) {
+    if (!is.character(value)) {
+      stop("provenance footer must be a character vector. Got object of class ", class(value))
+    }
     obj$prov_footer <- value
     obj
-})
-
-
-
+  }
+)
 
 #' @rdname title_footer
 #' @export
