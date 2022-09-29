@@ -9,7 +9,6 @@ test_that("indentation happens correctly if called for", {
     subtitles = subtit,
     main_footer = mn_ft
   ) %>%
-    split_rows_by("Species") %>%
     analyze("Sepal.Width", afun = mean, format = "xx.")
 
   tbl <- build_table(lyt, iris)
