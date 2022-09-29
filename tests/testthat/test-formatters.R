@@ -392,5 +392,5 @@ expect_identical(page_lcpp(margins = c(top = .5, bottom = .5,
 expect_error(page_lcpp(font_family = "Times"), "does not appear to be monospaced")
 
 expect_identical(page_lcpp("a4"),
-                 page_lcpp(pg_width = pg_dim_names$a4[[1]],
-                           pg_height = pg_dim_names$a4[[2]]))
+                 page_lcpp(pg_width = formatters:::pg_dim_names$a4[[1]],
+                           pg_height = formatters:::pg_dim_names$a4[[2]]))

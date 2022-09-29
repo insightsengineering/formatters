@@ -115,6 +115,8 @@ mform_handle_newlines <- function(matform, has_topleft = TRUE) {
 #'     'physical'  rows  (as  they  will  appear  when  rendered  into
 #'     ASCII). Defaults to \code{TRUE}
 #' @param col_gap numeric(1). Space (in characters) between columns
+#' @param table_inset numeric(1). Table inset. See
+#' \code{\link{table_inset}}
 #' @export
 #' @return An object of class `MatrixPrintForm`. Currently this is
 #' implemented as an S3 class inheriting from list with the following
@@ -135,6 +137,8 @@ mform_handle_newlines <- function(matform, has_topleft = TRUE) {
 #' \item{\code{page_titles}}{see argument}
 #' \item{\code{main_footer}}{see argument}
 #' \item{\code{prov_footer}}{see argument}
+#' \item{\code{col_gap}}{see argument}
+#' \item{\code{table_inset}}{see argument}
 #' }
 #'
 #' as well as the following attributes:
@@ -145,24 +149,24 @@ mform_handle_newlines <- function(matform, has_topleft = TRUE) {
 #' any row names/row labels}
 #' }
 MatrixPrintForm <- function(strings = NULL,
-                              spans,
-                              aligns,
-                              formats,
-    ##                          display,
-                              row_info,
-                              line_grouping = seq_len(NROW(strings)),
-                              ref_fnotes = list(),
-                              nlines_header,
-                              nrow_header,
-                              has_topleft = TRUE,
-                              has_rowlabs = has_topleft,
-                              expand_newlines = TRUE,
-                              main_title = "",
-                              subtitles = character(),
-                              page_titles = character(),
-                              main_footer = "",
+                            spans,
+                            aligns,
+                            formats,
+                            row_info,
+                            line_grouping = seq_len(NROW(strings)),
+                            ref_fnotes = list(),
+                            nlines_header,
+                            nrow_header,
+                            has_topleft = TRUE,
+                            has_rowlabs = has_topleft,
+                            expand_newlines = TRUE,
+                            main_title = "",
+                            subtitles = character(),
+                            page_titles = character(),
+                            main_footer = "",
                             prov_footer = character(),
-                            col_gap = 3) {
+                            col_gap = 3,
+                            table_inset = 0L) {
 
     display <- matrix(rep(TRUE, length(strings)), ncol = ncol(strings))
 
@@ -201,7 +205,8 @@ MatrixPrintForm <- function(strings = NULL,
             page_titles = page_titles,
             main_footer = main_footer,
             prov_footer = prov_footer,
-            col_gap = col_gap
+            col_gap = col_gap,
+            table_inset = as.integer(table_inset)
         ),
         nlines_header = nlines_header, ## this is done for real in .do_mat_expand nownlines_header,
         nrow_header = nrow_header,

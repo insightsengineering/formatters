@@ -94,6 +94,8 @@ setMethod("toString", "MatrixPrintForm", function(x,
     ##    ri <- mat$row_info
     ref_fnotes <- mat$ref_footnotes
 
+    inset <- table_inset(mat)
+
     nr <- nrow(body)
     nl_header <- attr(mat, "nlines_header")
 
@@ -125,6 +127,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
     ncchar <-  sum(widths) + (length(widths) - 1) * col_gap
     if (is.character(max_width) && max_width == "auto") max_width <- ncchar
+
     div <- substr(strrep(hsep, ncchar), 1, ncchar)
     txt_head <- apply(head(content, nl_header), 1, .paste_no_na, collapse = gap_str)
     sec_seps_df <- x$row_info[,c("abs_rownumber", "trailing_sep"), drop = FALSE]
@@ -149,7 +152,8 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                 collapse = gap_str),
                           ## don't print section dividers if they would be the last thing before the
                           ## footer divider
-                        if(sec_end < nrbody) substr(strrep(sec_seps_df$trailing_sep[i], ncchar), 1, ncchar))
+                          if(sec_end < nrbody) substr(strrep(sec_seps_df$trailing_sep[i], ncchar), 1,
+                                                      ncchar - inset))
             sec_strt <- sec_end + 1
         }
     }  else {
@@ -165,8 +169,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
       allts <- wrap_list(as.list(allts), max_width)
     }
 
-    titles_txt <- if(any(nzchar(allts))) c(allts, "", div)  else NULL
-
+    titles_txt <- if(any(nzchar(allts))) c(allts, "", .do_inset(div, inset))  else NULL
 
     allfoots <- all_footers(x)
     new_line_warning(allfoots)
@@ -178,13 +181,56 @@ setMethod("toString", "MatrixPrintForm", function(x,
         ref_fnotes <- wrap_list(as.list(ref_fnotes), max_width)
       }
     }
+    ## TODO make titles affect width...
 
-    footer_txt <- c(if(length(ref_fnotes) > 0) c(div, "", ref_fnotes),
-                    if(any(nzchar(allfoots))) c(div, "", allfoots))
-    paste0(paste(c(titles_txt, txt_head, div, txt_body, footer_txt), collapse = "\n"), "\n")
+    ##allfoots <- all_footers(x)
+
+    paste0(paste(c(titles_txt,
+                   .do_inset(txt_head, inset),
+                   .do_inset(div, inset),
+                   .do_inset(txt_body, inset),
+                   .footer_inset_helper(x, div, inset)),
+                 collapse = "\n"), "\n")
 
 })
 
+.do_inset <- function(x, inset) {
+    if(inset == 0 || !any(nzchar(x)))
+        return(x)
+    padding <- strrep(" ", inset)
+    if(is.character(x)) {
+        x <- paste0(padding, x)
+    } else if(is(x, "matrix")) {
+        x[,1] <- .do_inset(x[,1, drop = TRUE], inset)
+    }
+    x
+}
+
+
+.inset_div <- function(txt, div, inset) {
+    c(.do_inset(div, inset), "", txt)
+}
+
+.footer_inset_helper <- function(x, div, inset) {
+    div_done = FALSE
+    rfn <- x$ref_footnotes
+    footer_txt <- .do_inset(x$ref_footnotes, inset)
+    if(any(nzchar(footer_txt)))
+        footer_txt <- .inset_div(footer_txt, div, inset)
+    if(any(nzchar(all_footers(x)))) {
+        if(any(nzchar(prov_footer(x))))
+            provtxt <- c(if(any(nzchar(main_footer(x)))) "",
+                         prov_footer(x))
+        else
+            provtxt <- character()
+        footer_txt <- c(footer_txt,
+                        .inset_div(c(.do_inset(main_footer(x), inset),
+                                     provtxt),
+                                   div,
+                                   inset))
+    }
+    footer_txt
+}
 
 ## pad_vert_center <- function(x, len) {
 ##     needed <- len - length(x)
@@ -330,11 +376,11 @@ spans_to_viscell <- function(spans) {
         spans <- as.vector(spans)
     myrle <- rle(spans)
     unlist(mapply(function(vl, ln) rep(c(TRUE, rep(FALSE, vl - 1L)),
-                                                                  times = ln/vl),
-                                             SIMPLIFY = FALSE,
-                                             vl = myrle$values,
-                                             ln = myrle$lengths),
-                                      recursive = FALSE)
+                                       times = ln/vl),
+                  SIMPLIFY = FALSE,
+                  vl = myrle$values,
+                  ln = myrle$lengths),
+           recursive = FALSE)
 }
 
 

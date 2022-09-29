@@ -365,3 +365,44 @@ all_footers <- function(obj) c(main_footer(obj), prov_footer(obj))
 #' @rdname title_footer
 #' @export
 all_titles <- function(obj) c(main_title(obj), subtitles(obj), page_titles(obj))
+
+
+#' Access or (recursively) set table inset.
+#'
+#' Table inset is the amount of characters that the body of
+#' a table, referential footnotes, and main footer material
+#' are inset from the left-alignment of the titles and provenance
+#' footer materials.
+#'
+#' @param obj ANY. Object to get or (recursively if necessary) set
+#' table inset for.
+#' @param value character(1). String to use as new header/body separator.
+#'
+#' @return for `table_inset` the integer value that the table body
+#' (including column heading information and section dividers),
+#' referential footnotes, and main footer should be inset from the
+#' left alignment of the titles and provenance footers during rendering.
+#' For `table_inset<-`, the `obj`, with the new table_inset value
+#' applied recursively to it and all its subtables.
+#'
+#' @export
+setGeneric("table_inset", function(obj) standardGeneric("table_inset"))
+
+#' @rdname table_inset
+#' @export
+setMethod("table_inset", "MatrixPrintForm",
+          function(obj) obj$table_inset)
+
+
+#' @rdname table_inset
+#' @export
+setGeneric("table_inset<-", function(obj, value) standardGeneric("table_inset<-"))
+
+#' @rdname table_inset
+#' @export
+setMethod("table_inset<-", "MatrixPrintForm",
+          function(obj, value) {
+    obj$table_inset <- as.integer(value)
+    obj
+})
+
