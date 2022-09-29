@@ -21,4 +21,5 @@ Divider Height
 }
 \examples{
 divider_height(mtcars)
+
 }

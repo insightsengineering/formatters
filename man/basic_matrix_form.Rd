@@ -20,4 +20,5 @@ starting point for more sophisticated custom `matrix_form` methods
 \examples{
 mform <- basic_matrix_form(mtcars)
 cat(toString(mform))
+
 }

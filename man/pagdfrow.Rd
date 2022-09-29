@@ -48,7 +48,8 @@ be retrieved, respectively.}
 
 \item{colwidths}{numeric. Column widths}
 
-\item{repext}{integer(1). Number of lines required to reprint all context for this row if it appears directly after pagination.}
+\item{repext}{integer(1). Number of lines required to reprint all context for this row if it
+appears directly after pagination.}
 
 \item{repind}{integer. Vector of row numbers to be reprinted if this row appears directly after pagination.}
 

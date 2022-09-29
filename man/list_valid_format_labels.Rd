@@ -14,7 +14,6 @@ Currently valid format labels can not be added dynamically. Format functions
 must be used for special cases
 }
 \examples{
-
 list_valid_format_labels()
 
 }

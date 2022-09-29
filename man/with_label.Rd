@@ -19,6 +19,7 @@ considered an internal implementation detail, but the label will always be retri
 Return an object with a label attribute
 }
 \examples{
-x <- with_label(c(1,2,3), label = "Test")
+x <- with_label(c(1, 2, 3), label = "Test")
 obj_label(x)
+
 }

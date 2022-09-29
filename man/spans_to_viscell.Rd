@@ -33,6 +33,6 @@ Currently no  checking or  enforcement is done  that the  vector of
 spans is valid in the sense described in the Details section above.
 }
 \examples{
-
 spans_to_viscell(c(2, 2, 2, 2, 1, 3, 3, 3))
+
 }

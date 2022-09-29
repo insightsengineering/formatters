@@ -32,4 +32,5 @@ to be printed or written to a plain-text file
 \examples{
 mform <- basic_matrix_form(mtcars)
 cat(toString(mform))
+
 }

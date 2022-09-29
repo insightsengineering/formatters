@@ -10,18 +10,19 @@ sprintf_format(format)
 \item{format}{character(1). A format string passed to sprintf.}
 }
 \value{
-A formating function which wraps and will apply the specified \code{printf} style format string \code{format}.
+A formatting function which wraps and will apply the specified \code{printf} style
+  format string \code{format}.
 }
 \description{
 Specify text format via a sprintf format string
 }
 \examples{
-
 fmtfun <- sprintf_format("(N=\%i")
 format_value(100, format = fmtfun)
 
 fmtfun2 <- sprintf_format("\%.4f - \%.2f")
 format_value(list(12.23456, 2.724))
+
 }
 \seealso{
 \code{\link[base]{sprintf}}

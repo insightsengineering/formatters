@@ -13,7 +13,8 @@ format_value(x, format = NULL, output = c("ascii", "html"), na_str = "NA")
 
 \item{output}{character(1). output type}
 
-\item{na_str}{character(1). String that should be displayed when the value of \code{x} is missing. Defaults to \code{"NA"}.}
+\item{na_str}{character(1). String that should be displayed when the value of \code{x} is
+missing. Defaults to \code{"NA"}.}
 }
 \value{
 formatted text representing the cell \code{x}.
@@ -26,7 +27,6 @@ A length-zero value for `na_str` will be interpreted as `"NA"`, as will any
 missing values within a non-length-zero `na_str` vector.
 }
 \examples{
-
 x <- format_value(pi, format = "xx.xx")
 x
 

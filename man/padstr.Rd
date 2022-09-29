@@ -22,14 +22,14 @@ use. Defaults to center. Must be center, right or left.}
 Pad a string and align within string
 }
 \examples{
-
 padstr("abc", 3)
 padstr("abc", 4)
 padstr("abc", 5)
 padstr("abc", 5, "left")
 padstr("abc", 5, "right")
 
-if(interactive()){
-padstr("abc", 1)
+if (interactive()) {
+  padstr("abc", 1)
 }
+
 }
