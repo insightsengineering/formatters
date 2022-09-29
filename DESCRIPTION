@@ -9,14 +9,17 @@ Authors@R: c(
 Description: We provide a framework for rendering complex tables to ASCII, and a set of formatters for transforming values or sets of values into ASCII-ready display strings.
 License: Apache License 2.0
 Depends: methods, R (>= 2.10)
-Imports: htmltools, grid
+Imports: 
+  grid,
+  htmltools,
+  stringi
 Suggests:
   dplyr,
-  testthat,
+  gt (>= 0.7.0),
+  huxtable,
   knitr,
   rmarkdown,
-  huxtable,
-  gt (>= 0.7.0)
+  testthat
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/insightsengineering/formatters

@@ -54,9 +54,9 @@ test_that("toString() throws a specific warning when words are too large", {
   bmf$ref_footnotes <- "REFERENCE"
   expect_warning(result <- toString(bmf, tf_wrap = TRUE, max_width = 4))
   res_vec <- strsplit(result, "\n")[[1]]
-  exp_vec <- c("TIT", "LE",
-               "SUB", "TIT", "LE",
-               "PAG", "E", "TIT", "LE",
+  exp_vec <- c("TITL", "E",
+               "SUB", "TITL", "E IS",
+               "PAGE","TITL", "E",
                "",
                "-------------------------",
                "                mpg   cyl",
@@ -64,10 +64,10 @@ test_that("toString() throws a specific warning when words are too large", {
                "Mazda RX4       21    6  ",
                "Mazda RX4 Wag   21    6  ",
                "-------------------------",
-               "", "REF", "ERE", "NCE",
+               "", "REFE", "RENC", "E",
                "-------------------------",
                "",
                "",
-               "FOO", "TER")
+               "FOOT", "ER")
   expect_identical(res_vec, exp_vec)
 })
