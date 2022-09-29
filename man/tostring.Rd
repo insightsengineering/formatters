@@ -25,7 +25,8 @@ toString(x, ...)
 \code{x}. The expected length of this numeric vector can be retrieved with
 `ncol() + 1` as the column of row names must also be considered.}
 
-\item{tf_wrap}{logical(1). Should the texts like title and footnotes be wrapped?}
+\item{tf_wrap}{logical(1). Should the texts for title, subtitle,
+and footnotes be wrapped?}
 
 \item{max_width}{integer(1) (or NULL). If NULL, it will be assigned to
 `options("width")`. Otherwise, it is also possible to use `c("auto")` to

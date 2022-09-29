@@ -43,7 +43,8 @@ default_hsep <- d_hsep_factory()
 #'  `ncol() + 1` as the column of row names must also be considered.
 #' @param hsep character(1). Characters to repeat to create header/body
 #'  separator line.
-#' @param tf_wrap logical(1). Should the texts like title and footnotes be wrapped?
+#' @param tf_wrap logical(1). Should the texts for title, subtitle,
+#'  and footnotes be wrapped?
 #' @param max_width integer(1) (or NULL). If NULL, it will be assigned to
 #'  `options("width")`. Otherwise, it is also possible to use `c("auto")` to
 #'  automatically use the table width.
