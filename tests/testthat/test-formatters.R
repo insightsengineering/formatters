@@ -211,12 +211,10 @@ expect_identical(
   paste0(values[1], " (", values[2], ")")
 )
 
-
 expect_identical(
   format_value(values, format = "xx (xx.)"),
   paste0(values[1], " (8)")
 )
-
 
 expect_identical(
   format_value(values, format = "xx (xx.x)"),
@@ -228,12 +226,10 @@ expect_identical(
   paste0(values[1], " (7.89)")
 )
 
-
 expect_identical(
   format_value(values, format = "xx. (xx.)"),
   paste0(5, " (8)")
 )
-
 
 expect_identical(
   format_value(values, format = "xx.x (xx.x)"),
@@ -275,15 +271,12 @@ expect_identical(
   "5.123 (7.891 - 10.124)"
 )
 
-
 expect_identical(format_value(NULL, "xx"), "")
-
 
 expect_identical(
   format_value(5.123, "xx.x", output = "html"),
   list("5.1" = htmltools::tagList(format_value(5.123, "xx.x"), NULL))
 )
-
 
 ## errors
 
@@ -314,7 +307,6 @@ expect_identical(format_value(0, "xx.xx"), "0.00")
 expect_identical(format_value(0, "xx.xxx"), "0.000")
 expect_identical(format_value(0, "xx.xxxx"), "0.0000")
 
-
 ## sprintf_format functionality
 myfun <- sprintf_format("hi there %1.4f")
 expect_true(is_valid_format(myfun))
@@ -322,9 +314,6 @@ expect_identical(
   format_value(pi, format = myfun),
   "hi there 3.1416"
 )
-
-
-
 
 ## https://github.com/insightsengineering/formatters/issues/18
 dfmf <- basic_matrix_form(mtcars)
@@ -335,7 +324,6 @@ expect_identical(
   main_footer(dfmf),
   ftmsg
 )
-
 
 ## https://github.com/Roche/rtables/issues/318
 dfmf2 <- dfmf
@@ -348,15 +336,11 @@ expect_identical(
   matrix(c("tleft mats", "", "m", "pg"), nrow = 2, ncol = 2)
 )
 
-
-
-
-
 strout <- toString(dfmf)
 expect_true(any(grepl(ftmsg, strout)))
 
 df2 <- mtcars
-df2$extra <- paste("row", 1:NROW(df2), "haha", sep = "\n")
+df2$extra <- paste("row", seq_len(df2), "haha", sep = "\n")
 
 df2mf <- basic_matrix_form(df2)
 
@@ -390,7 +374,6 @@ expect_identical(
   c(2L, 2L, 2L, 3L, 2L, 1L)
 )
 
-
 df3 <- data.frame(
   x = 1:5, y = c(1:3, 8, 9),
   row.names = c("spna", "spnb", "spnc", "sep1", "sep2")
@@ -409,14 +392,12 @@ strout <- toString(df3mf)
 expect_false(grepl("1[[:space:]]*1", strout))
 expect_true(grepl("3[[:space:]]*3", strout))
 
-
 expect_identical(
   spread_integer(7, 3),
   c(3, 2, 2)
 )
 
 expect_error(spread_integer(3.5, 2))
-
 
 ## matrix_form on a matrix form a no op
 expect_identical(df3mf, matrix_form(df3mf))
@@ -439,7 +420,6 @@ expect_identical(
   format_value(thing, obj_format(thing)),
   "5.1"
 )
-
 
 ## labels
 
@@ -468,7 +448,6 @@ expect_identical(
     names(mydf)[-1]
   ))
 )
-
 
 expect_true(all(is.na(var_labels(var_labels_remove(mydf)))))
 
@@ -527,7 +506,6 @@ r2 <- vapply(
 
 expect_true(all(r2))
 
-
 r3 <- vapply(
   labs[["3d"]],
   function(lb) {
@@ -550,10 +528,6 @@ expect_identical(
   )),
   list(cpp = 72, lpp = 60)
 )
-
-
-
-
 
 ## non-monospaced fonts
 expect_error(page_lcpp(font_family = "Times"), "does not appear to be monospaced")

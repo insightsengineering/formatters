@@ -84,7 +84,6 @@ provides. This method must return a `MatrixPrintForm` object representing your t
 We can build a baby example method for `data.frames` to illustrate this process:
 
 ```{r}
-
 ## pagdfrow supports a large number of pieces of information regarding
 ## siblings and what information should be repeated after a pagination.
 ## we ignore all that here and just give the absolutely crucial info:
@@ -96,15 +95,15 @@ fake_pagdf_row <- function(i, rnms) {
              rclass = "NA")
 }
 
-matrix_form.data.frame <- function(df) {
-    fmts <- lapply(df, function(x) if(is.null(obj_format(x))) "xx" else obj_format(x))
+matrix_form.data.frame <- function(df) { # nolint
+    fmts <- lapply(df, function(x) if (is.null(obj_format(x))) "xx" else obj_format(x))
 
     bodystrs <- mapply(function(x, fmt) {
         sapply(x, format_value, format = fmt)
     }, x = df, fmt = fmts)
 
     rnms <- row.names(df)
-    if(is.null(rnms))
+    if (is.null(rnms))
         rnms <- as.character(seq_len(NROW(df)))
 
     cnms <- names(df)
@@ -119,8 +118,7 @@ matrix_form.data.frame <- function(df) {
     aligns <- rbind("center",
                     matrix("left", nrow = NROW(df), ncol = fnc))
 
-   
-    ## build up fake pagination df, 
+    ## build up fake pagination df
     rowdf <- basic_pagdf(row.names(df))
     matrix_print_form(strings = strings,
                       aligns = aligns,
@@ -131,7 +129,6 @@ matrix_form.data.frame <- function(df) {
                       nlines_header = 1,
                       nrow_header = 1)
 }
-                      
 
 cat(toString(matrix_form.data.frame(mtcars)))
 ```
