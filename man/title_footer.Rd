@@ -4,9 +4,11 @@
 \alias{main_title}
 \alias{main_title,MatrixPrintForm-method}
 \alias{main_title<-}
+\alias{main_title<-,MatrixPrintForm-method}
 \alias{subtitles}
 \alias{subtitles,MatrixPrintForm-method}
 \alias{subtitles<-}
+\alias{subtitles<-,MatrixPrintForm-method}
 \alias{page_titles}
 \alias{page_titles,MatrixPrintForm-method}
 \alias{page_titles,ANY-method}
@@ -30,11 +32,15 @@ main_title(obj)
 
 main_title(obj) <- value
 
+\S4method{main_title}{MatrixPrintForm}(obj) <- value
+
 subtitles(obj)
 
 \S4method{subtitles}{MatrixPrintForm}(obj)
 
 subtitles(obj) <- value
+
+\S4method{subtitles}{MatrixPrintForm}(obj) <- value
 
 page_titles(obj)
 
