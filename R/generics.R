@@ -262,6 +262,14 @@ setMethod("main_title", "MatrixPrintForm",
 ##' @rdname title_footer
 ##' @export
 setGeneric("main_title<-", function(obj, value) standardGeneric("main_title<-"))
+##' @rdname title_footer
+##' @export
+setMethod("main_title<-", "MatrixPrintForm",
+          function(obj, value) {
+    obj$main_title <- value
+    obj
+})
+
 
 
 #' @export
@@ -276,6 +284,14 @@ setMethod("subtitles", "MatrixPrintForm",
 ##' @rdname title_footer
 ##' @export
 setGeneric("subtitles<-", function(obj, value) standardGeneric("subtitles<-")) ## nocov
+
+##' @rdname title_footer
+##' @export
+setMethod("subtitles<-", "MatrixPrintForm",
+          function(obj, value) {
+    obj$subtitles <- value
+    obj
+})
 
 #' @export
 #' @rdname title_footer

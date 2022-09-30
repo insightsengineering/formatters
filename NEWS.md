@@ -1,3 +1,11 @@
+## formatters 0.3.3.7 
+ * `tf_wrap` functionality now breaks up words that are too large with respect to surrounding wordwrapping.
+ * `tf_wrap` behavior no longer emits a warning when breaking up 'words' larger than `max_width`
+ * `tf_wrap` `max_width = "auto"` now sets the `max_width` to `sum(widths) + table_inset(x)` instead of `sum(widths)`
+
+## formatters 0.3.3.6
+ * Experimental `tf_wrap` functionality added to `toString` `MatrixPrintForm` method
+
 ## formatters 0.3.3.5
  * `MatrixPrintForm` class now includes a `table_inset` element
  * Add `table_inset` and `table_inset<-` generics now exported
@@ -9,6 +17,7 @@
 ## formatters 0.3.3.3
  * length-zero values of `na_str` are now silently interpreted as the default value (`"NA"`),
    as are any missing values in `na_str` of length > 0.
+ * adding wrapping of titles, subtitles, and footers.
 
 ## formatters 0.3.3.2
  * `page_lcpp` function now provided to map page size and font combinations to lines

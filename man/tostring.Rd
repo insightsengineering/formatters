@@ -7,29 +7,63 @@
 \usage{
 toString(x, ...)
 
-\S4method{toString}{MatrixPrintForm}(x, widths = NULL, col_gap = x$col_gap, hsep = default_hsep())
+\S4method{toString}{MatrixPrintForm}(
+  x,
+  widths = NULL,
+  tf_wrap = FALSE,
+  max_width = NULL,
+  col_gap = x$col_gap,
+  hsep = default_hsep()
+)
 }
 \arguments{
 \item{x}{ANY. Object to be prepared for rendering.}
 
 \item{...}{Passed to individual methods.}
 
-\item{widths}{(proposed) widths for the columns of \code{x}}
+\item{widths}{numeric (or  NULL). (proposed) widths for the columns
+of \code{x}. The expected length  of this numeric vector can be
+retrieved with  `ncol() + 1`  as the  column of row  names must
+also be considered.}
+
+\item{tf_wrap}{logical(1). Should  the texts for  title, subtitle,
+and footnotes be wrapped?}
+
+\item{max_width}{integer(1), character(1) or NULL. Width that title
+and   footer   (including   footnotes)  materials   should   be
+word-wrapped to. If NULL, it is  set to the current print width
+of the  session (`getOption("width")`). If set to `"auto"`,
+the width of the table (plus any table inset) is used. Ignored
+completely if `tf_wrap` is `FALSE`.}
 
 \item{col_gap}{numeric(1). Space (in characters) between columns}
 
-\item{hsep}{character(1). Characters to repeat to create header/body
-separator line.}
+\item{hsep}{character(1).   Characters  to  repeat   to  create
+header/body separator line.}
 }
 \value{
 A character string containing the ASCII rendering
-of the table-like object reprseented by `x`
+of the table-like object represented by `x`
 }
 \description{
 Transform a complex object into a string representation ready
 to be printed or written to a plain-text file
 }
+\details{
+When `tf_wrap` is  `TRUE`, word wrapping happens  as with
+    \link[base:strwrap]{base::strwrap}    with     the    following
+    exception: individual  words which are longer  than `max_width`
+    are  broken  up  in a  way  that  fits  with  the rest  of  the
+    wordwrapping.
+
+Manual insertion of newlines is not supported when `tf_wrap` is on
+and will result in a warning and undefined wrapping behavior. Passing
+vectors of already split strings remains supported, however in this
+case each string is word-wrapped separately with the behavior
+described above.
+}
 \examples{
 mform <- basic_matrix_form(mtcars)
 cat(toString(mform))
+
 }
