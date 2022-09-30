@@ -53,7 +53,7 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
                                    repr_inds = integer(),
                                    sibpos = NA_integer_,
                                    nsibs = NA_integer_) {
-  standardGeneric("make_row_df")
+    standardGeneric("make_row_df")
 })
 ## nocov end
 
@@ -89,7 +89,7 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
 #'
 setGeneric("matrix_form", function(obj, indent_rownames = FALSE,
                                    indent_size = 2) {
-  standardGeneric("matrix_form")
+    standardGeneric("matrix_form")
 })
 
 #' @rdname matrix_form
@@ -97,7 +97,7 @@ setGeneric("matrix_form", function(obj, indent_rownames = FALSE,
 setMethod("matrix_form", "MatrixPrintForm", function(obj,
                                                      indent_rownames = FALSE,
                                                      indent_size = 2) {
-  obj
+    obj
 })
 
 ## Generics for toString and helper functions
@@ -125,8 +125,8 @@ setGeneric("divider_height", function(obj) standardGeneric("divider_height"))
 #' @rdname divider_height
 #' @export
 setMethod(
-  "divider_height", "ANY",
-  function(obj) 1L
+    "divider_height", "ANY",
+    function(obj) 1L
 )
 
 #' Number of lines required to print a value
@@ -138,22 +138,22 @@ setMethod(
 #' to render the object \code{x}.
 #' @export
 setGeneric(
-  "nlines",
-  function(x, colwidths) standardGeneric("nlines")
+    "nlines",
+    function(x, colwidths) standardGeneric("nlines")
 )
 
 ## XXX beware. I think it is dangerous
 #' @export
 #' @rdname nlines
 setMethod(
-  "nlines", "list",
-  function(x, colwidths) {
-    if (length(x) == 0) {
-      0L
-    } else {
-      sum(unlist(vapply(x, nlines, NA_integer_, colwidths = colwidths)))
+    "nlines", "list",
+    function(x, colwidths) {
+        if (length(x) == 0) {
+            0L
+        } else {
+            sum(unlist(vapply(x, nlines, NA_integer_, colwidths = colwidths)))
+        }
     }
-  }
 )
 
 #' @export
@@ -225,16 +225,17 @@ setMethod("obj_label", "ANY", function(obj) attr(obj, "label"))
 #' @rdname lab_name
 #' @exportMethod obj_label<-
 setMethod(
-  "obj_label<-", "ANY",
-  function(obj, value) {
-    attr(obj, "label") <- value
-    obj
-  }
+    "obj_label<-", "ANY",
+    function(obj, value) {
+        attr(obj, "label") <- value
+        obj
+    }
 )
 
 #' @rdname lab_name
 #' @export
 setGeneric("obj_format", function(obj) standardGeneric("obj_format"))
+
 ## this covers rcell, etc
 #' @rdname lab_name
 #' @exportMethod obj_format
@@ -243,12 +244,13 @@ setMethod("obj_format", "ANY", function(obj) attr(obj, "format", exact = TRUE))
 #' @export
 #' @rdname lab_name
 setGeneric("obj_format<-", function(obj, value) standardGeneric("obj_format<-"))
+
 ## this covers rcell, etc
 #' @exportMethod obj_format<-
 #' @rdname lab_name
 setMethod("obj_format<-", "ANY", function(obj, value) {
-  attr(obj, "format") <- value
-  obj
+    attr(obj, "format") <- value
+    obj
 })
 
 #' General title/footer accessors
@@ -265,12 +267,12 @@ setGeneric("main_title", function(obj) standardGeneric("main_title"))
 #' @export
 #' @rdname title_footer
 setMethod(
-  "main_title", "MatrixPrintForm",
-  function(obj) obj$main_title
+    "main_title", "MatrixPrintForm",
+    function(obj) obj$main_title
 )
 
-#' @rdname title_footer
-#' @export
+##' @rdname title_footer
+##' @export
 setGeneric("main_title<-", function(obj, value) standardGeneric("main_title<-"))
 
 #' @export
@@ -280,12 +282,12 @@ setGeneric("subtitles", function(obj) standardGeneric("subtitles")) ## nocov
 #' @export
 #' @rdname title_footer
 setMethod(
-  "subtitles", "MatrixPrintForm",
-  function(obj) obj$subtitles
+    "subtitles", "MatrixPrintForm",
+    function(obj) obj$subtitles
 )
 
-#' @rdname title_footer
-#' @export
+##' @rdname title_footer
+##' @export
 setGeneric("subtitles<-", function(obj, value) standardGeneric("subtitles<-")) ## nocov
 
 #' @export
@@ -295,29 +297,29 @@ setGeneric("page_titles", function(obj) standardGeneric("page_titles"))
 #' @export
 #' @rdname title_footer
 setMethod(
-  "page_titles", "MatrixPrintForm",
-  function(obj) obj$page_titles
+    "page_titles", "MatrixPrintForm",
+    function(obj) obj$page_titles
 )
 
 #' @rdname title_footer
 #' @export
 setMethod("page_titles", "ANY", function(obj) NULL)
 
-#' @rdname title_footer
-#' @export
+##' @rdname title_footer
+##' @export
 setGeneric("page_titles<-", function(obj, value) standardGeneric("page_titles<-"))
 
 #' @export
 #' @rdname title_footer
 setMethod(
-  "page_titles<-", "MatrixPrintForm",
-  function(obj, value) {
-    if (!is.character(value)) {
-      stop("page titles must be in the form of a character vector, got object of class ", class(value))
+    "page_titles<-", "MatrixPrintForm",
+    function(obj, value) {
+        if (!is.character(value)) {
+            stop("page titles must be in the form of a character vector, got object of class ", class(value))
+        }
+        obj$page_titles <- value
+        obj
     }
-    obj$page_titles <- value
-    obj
-  }
 )
 
 #' @export
@@ -327,8 +329,8 @@ setGeneric("main_footer", function(obj) standardGeneric("main_footer"))
 #' @export
 #' @rdname title_footer
 setMethod(
-  "main_footer", "MatrixPrintForm",
-  function(obj) obj$main_footer
+    "main_footer", "MatrixPrintForm",
+    function(obj) obj$main_footer
 )
 
 #' @rdname title_footer
@@ -339,14 +341,14 @@ setGeneric("main_footer<-", function(obj, value) standardGeneric("main_footer<-"
 #' @export
 #' @rdname title_footer
 setMethod(
-  "main_footer<-", "MatrixPrintForm",
-  function(obj, value) {
-    if (!is.character(value)) {
-      stop("main footer must be a character vector. Got object of class ", class(value))
+    "main_footer<-", "MatrixPrintForm",
+    function(obj, value) {
+        if (!is.character(value)) {
+            stop("main footer must be a character vector. Got object of class ", class(value))
+        }
+        obj$main_footer <- value
+        obj
     }
-    obj$main_footer <- value
-    obj
-  }
 )
 
 #' @export
@@ -356,8 +358,8 @@ setGeneric("prov_footer", function(obj) standardGeneric("prov_footer"))
 #' @export
 #' @rdname title_footer
 setMethod(
-  "prov_footer", "MatrixPrintForm",
-  function(obj) obj$prov_footer
+    "prov_footer", "MatrixPrintForm",
+    function(obj) obj$prov_footer
 )
 
 #' @rdname title_footer
@@ -367,14 +369,14 @@ setGeneric("prov_footer<-", function(obj, value) standardGeneric("prov_footer<-"
 #' @export
 #' @rdname title_footer
 setMethod(
-  "prov_footer<-", "MatrixPrintForm",
-  function(obj, value) {
-    if (!is.character(value)) {
-      stop("provenance footer must be a character vector. Got object of class ", class(value))
+    "prov_footer<-", "MatrixPrintForm",
+    function(obj, value) {
+        if (!is.character(value)) {
+            stop("provenance footer must be a character vector. Got object of class ", class(value))
+        }
+        obj$prov_footer <- value
+        obj
     }
-    obj$prov_footer <- value
-    obj
-  }
 )
 
 #' @rdname title_footer
@@ -384,3 +386,46 @@ all_footers <- function(obj) c(main_footer(obj), prov_footer(obj))
 #' @rdname title_footer
 #' @export
 all_titles <- function(obj) c(main_title(obj), subtitles(obj), page_titles(obj))
+
+
+#' Access or (recursively) set table inset.
+#'
+#' Table inset is the amount of characters that the body of
+#' a table, referential footnotes, and main footer material
+#' are inset from the left-alignment of the titles and provenance
+#' footer materials.
+#'
+#' @param obj ANY. Object to get or (recursively if necessary) set
+#' table inset for.
+#' @param value character(1). String to use as new header/body separator.
+#'
+#' @return for `table_inset` the integer value that the table body
+#' (including column heading information and section dividers),
+#' referential footnotes, and main footer should be inset from the
+#' left alignment of the titles and provenance footers during rendering.
+#' For `table_inset<-`, the `obj`, with the new table_inset value
+#' applied recursively to it and all its subtables.
+#'
+#' @export
+setGeneric("table_inset", function(obj) standardGeneric("table_inset"))
+
+#' @rdname table_inset
+#' @export
+setMethod(
+    "table_inset", "MatrixPrintForm",
+    function(obj) obj$table_inset
+)
+
+#' @rdname table_inset
+#' @export
+setGeneric("table_inset<-", function(obj, value) standardGeneric("table_inset<-"))
+
+#' @rdname table_inset
+#' @export
+setMethod(
+    "table_inset<-", "MatrixPrintForm",
+    function(obj, value) {
+        obj$table_inset <- as.integer(value)
+        obj
+    }
+)

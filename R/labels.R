@@ -12,8 +12,8 @@
 #' obj_label(x)
 #'
 with_label <- function(x, label) {
-  obj_label(x) <- label
-  x
+    obj_label(x) <- label
+    x
 }
 
 #' Get Label Attributes of Variables in a \code{data.frame}
@@ -37,35 +37,35 @@ with_label <- function(x, label) {
 #' var_labels(x)
 #'
 var_labels <- function(x, fill = FALSE) {
-  stopifnot(is.data.frame(x))
-  if (NCOL(x) == 0) {
-    return(character())
-  }
-
-  y <- Map(function(col, colname) {
-    label <- attr(col, "label")
-
-    if (is.null(label)) {
-      if (fill) {
-        colname
-      } else {
-        NA_character_
-      }
-    } else {
-      if (!is.character(label) && !(length(label) == 1)) {
-        stop("label for variable ", colname, "is not a character string")
-      }
-      as.vector(label)
+    stopifnot(is.data.frame(x))
+    if (NCOL(x) == 0) {
+        return(character())
     }
-  }, x, colnames(x))
 
-  labels <- unlist(y, recursive = FALSE, use.names = TRUE)
+    y <- Map(function(col, colname) {
+        label <- attr(col, "label")
 
-  if (!is.character(labels)) {
-    stop("label extraction failed")
-  }
+        if (is.null(label)) {
+            if (fill) {
+                colname
+            } else {
+                NA_character_
+            }
+        } else {
+            if (!is.character(label) && !(length(label) == 1)) {
+                stop("label for variable ", colname, "is not a character string")
+            }
+            as.vector(label)
+        }
+    }, x, colnames(x))
 
-  labels
+    labels <- unlist(y, recursive = FALSE, use.names = TRUE)
+
+    if (!is.character(labels)) {
+        stop("label extraction failed")
+    }
+
+    labels
 }
 
 #' Set Label Attributes of All Variables in a \code{data.frame}
@@ -86,27 +86,27 @@ var_labels <- function(x, fill = FALSE) {
 #' var_labels(x)
 #'
 #' if (interactive()) {
-#'   View(x) # in RStudio data viewer labels are displayed
+#'     View(x) # in RStudio data viewer labels are displayed
 #' }
 #'
 `var_labels<-` <- function(x, value) {
-  stopifnot(
-    is.data.frame(x),
-    is.character(value),
-    ncol(x) == length(value)
-  )
+    stopifnot(
+        is.data.frame(x),
+        is.character(value),
+        ncol(x) == length(value)
+    )
 
-  theseq <- if (!is.null(names(value))) names(value) else seq_along(x)
-  # across columns of x
-  for (j in theseq) {
-    attr(x[[j]], "label") <- if (!is.na(value[j])) {
-      value[j]
-    } else {
-      NULL
+    theseq <- if (!is.null(names(value))) names(value) else seq_along(x)
+    # across columns of x
+    for (j in theseq) {
+        attr(x[[j]], "label") <- if (!is.na(value[j])) {
+            value[j]
+        } else {
+            NULL
+        }
     }
-  }
 
-  x
+    x
 }
 
 #' Copy and Change Variable Labels of a \code{data.frame}
@@ -125,30 +125,30 @@ var_labels <- function(x, fill = FALSE) {
 #' var_labels(x)
 #'
 var_relabel <- function(x, ...) {
-  # todo: make this function more readable / code easier
-  stopifnot(is.data.frame(x))
-  if (missing(...)) {
-    return(x)
-  }
-  dots <- list(...)
-  varnames <- names(dots)
-  stopifnot(!is.null(varnames))
+    # todo: make this function more readable / code easier
+    stopifnot(is.data.frame(x))
+    if (missing(...)) {
+        return(x)
+    }
+    dots <- list(...)
+    varnames <- names(dots)
+    stopifnot(!is.null(varnames))
 
-  map_varnames <- match(varnames, colnames(x))
+    map_varnames <- match(varnames, colnames(x))
 
-  if (any(is.na(map_varnames))) {
-    stop("variables: ", paste(varnames[is.na(map_varnames)], collapse = ", "), " not found")
-  }
+    if (any(is.na(map_varnames))) {
+        stop("variables: ", paste(varnames[is.na(map_varnames)], collapse = ", "), " not found")
+    }
 
-  if (any(vapply(dots, Negate(is.character), logical(1)))) {
-    stop("all variable labels must be of type character")
-  }
+    if (any(vapply(dots, Negate(is.character), logical(1)))) {
+        stop("all variable labels must be of type character")
+    }
 
-  for (i in seq_along(map_varnames)) {
-    attr(x[[map_varnames[[i]]]], "label") <- dots[[i]]
-  }
+    for (i in seq_along(map_varnames)) {
+        attr(x[[map_varnames[[i]]]], "label") <- dots[[i]]
+    }
 
-  x
+    x
 }
 
 #' Remove Variable Labels of a \code{data.frame}
@@ -164,11 +164,11 @@ var_relabel <- function(x, ...) {
 #' x <- var_labels_remove(iris)
 #'
 var_labels_remove <- function(x) {
-  stopifnot(is.data.frame(x))
+    stopifnot(is.data.frame(x))
 
-  for (i in seq_len(ncol(x))) {
-    attr(x[[i]], "label") <- NULL
-  }
+    for (i in seq_len(ncol(x))) {
+        attr(x[[i]], "label") <- NULL
+    }
 
-  x
+    x
 }

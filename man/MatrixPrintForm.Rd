@@ -24,7 +24,8 @@ MatrixPrintForm(
   page_titles = character(),
   main_footer = "",
   prov_footer = character(),
-  col_gap = 3
+  col_gap = 3,
+  table_inset = 0L
 )
 
 matrix_print_form(
@@ -45,7 +46,8 @@ matrix_print_form(
   page_titles = character(),
   main_footer = "",
   prov_footer = character(),
-  col_gap = 3
+  col_gap = 3,
+  table_inset = 0L
 )
 }
 \arguments{
@@ -115,6 +117,9 @@ vector.}
 character vector.}
 
 \item{col_gap}{numeric(1). Space (in characters) between columns}
+
+\item{table_inset}{numeric(1). Table inset. See
+\code{\link{table_inset}}}
 }
 \value{
 An object of class `MatrixPrintForm`. Currently this is
@@ -136,6 +141,8 @@ when the table is rendered}
 \item{\code{page_titles}}{see argument}
 \item{\code{main_footer}}{see argument}
 \item{\code{prov_footer}}{see argument}
+\item{\code{col_gap}}{see argument}
+\item{\code{table_inset}}{see argument}
 }
 
 as well as the following attributes:

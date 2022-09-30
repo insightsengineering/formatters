@@ -29,7 +29,7 @@ padstr("abc", 5, "left")
 padstr("abc", 5, "right")
 
 if (interactive()) {
-  padstr("abc", 1)
+    padstr("abc", 1)
 }
 
 }
