@@ -30,6 +30,6 @@ A data.frame suitable for use in both the `matrix_print_form` constructor and th
 Returns a minimal pagination info data.frame (with no sibling/footnote/etc info).
 }
 \examples{
-basic_pagdf(c("hi", "there"))
 
+basic_pagdf(c("hi", "there"))
 }

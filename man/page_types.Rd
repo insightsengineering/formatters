@@ -14,5 +14,4 @@ List supported named page types
 }
 \examples{
 page_types()
-
 }

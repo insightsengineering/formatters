@@ -24,5 +24,4 @@ No check if the function is actually a formatter is performed.
 \examples{
 is_valid_format("xx.x")
 is_valid_format("fakeyfake")
-
 }

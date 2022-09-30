@@ -17,5 +17,4 @@ displayed in the current charset for use in rendering table-likes.
 }
 \examples{
 default_hsep()
-
 }

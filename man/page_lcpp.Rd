@@ -55,5 +55,4 @@ page_lcpp("a4", font_size = 10)
 
 page_lcpp(margins = c(top = 1, bottom = 1, left = 1, right = 1))
 page_lcpp(pg_width = 10, pg_height = 15)
-
 }

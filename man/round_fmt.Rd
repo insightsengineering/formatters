@@ -53,12 +53,12 @@ IEC 60559 standard, particularly for R versions > 4.0.0 (see Warning in \code{\l
 documentation).
 }
 \examples{
+
 round_fmt(0, digits = 3)
 round_fmt(.395, digits = 2)
 round_fmt(NA, digits = 1)
 round_fmt(NA, digits = 1, na_str = "-")
 round_fmt(2.765923, digits = NA)
-
 }
 \seealso{
 \code{link{format_value}} \code{\link[base:round]{round}} \code{\link[base:sprintf]{sprintf}}
