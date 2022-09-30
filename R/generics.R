@@ -386,7 +386,9 @@ all_footers <- function(obj) c(main_footer(obj), prov_footer(obj))
 #' @rdname title_footer
 #' @export
 all_titles <- function(obj) c(main_title(obj), subtitles(obj), page_titles(obj))
-
+#' applied recursively to it and all its subtables.
+#'
+#' @export
 
 #' Access or (recursively) set table inset.
 #'

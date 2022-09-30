@@ -1,3 +1,8 @@
+## formatters 0.3.3.5
+ * `MatrixPrintForm` class now includes a `table_inset` element
+ * Add `table_inset` and `table_inset<-` generics now exported
+ * `toString` now respects `table_inset` values set on a `MatrixPrintForm` object
+
 ## formatters 0.3.3.4
  * Use `exact=TRUE` for all calls to `attr` in accessor functions.
 

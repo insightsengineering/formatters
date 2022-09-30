@@ -179,32 +179,22 @@ setMethod("toString", "MatrixPrintForm", function(x,
 }
 
 .footer_inset_helper <- function(x, div, inset) {
-    # div_done <- FALSE
-    # rfn <- x$ref_footnotes
+    div_done = FALSE
+    rfn <- x$ref_footnotes
     footer_txt <- .do_inset(x$ref_footnotes, inset)
-    if (any(nzchar(footer_txt))) {
+    if(any(nzchar(footer_txt)))
         footer_txt <- .inset_div(footer_txt, div, inset)
-    }
-    if (any(nzchar(all_footers(x)))) {
-        if (any(nzchar(prov_footer(x)))) {
-            provtxt <- c(
-                if (any(nzchar(main_footer(x)))) "",
-                prov_footer(x)
-            )
-        } else {
+    if(any(nzchar(all_footers(x)))) {
+        if(any(nzchar(prov_footer(x))))
+            provtxt <- c(if(any(nzchar(main_footer(x)))) "",
+                         prov_footer(x))
+        else
             provtxt <- character()
-        }
-        footer_txt <- c(
-            footer_txt,
-            .inset_div(
-                c(
-                    .do_inset(main_footer(x), inset),
-                    provtxt
-                ),
-                div,
-                inset
-            )
-        )
+        footer_txt <- c(footer_txt,
+                        .inset_div(c(.do_inset(main_footer(x), inset),
+                                     provtxt),
+                                   div,
+                                   inset))
     }
     footer_txt
 }
