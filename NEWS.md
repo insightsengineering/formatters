@@ -1,3 +1,6 @@
+## formatters 0.3.3.8
+ * export new `page_dim` function which returns values of page dims for a named type.
+
 ## formatters 0.3.3.7 
  * `tf_wrap` functionality now breaks up words that are too large with respect to surrounding wordwrapping.
  * `tf_wrap` behavior no longer emits a warning when breaking up 'words' larger than `max_width`
