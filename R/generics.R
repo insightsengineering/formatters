@@ -154,6 +154,8 @@ setMethod("nlines", "character", function(x, colwidths) {
                function(xi, max_width) {
         if(length(max_width) == 0)
             length(xi)
+        else if(length(xi) == 0)
+            1L ## this happens with strsplit("", "\n")
         else
             length(wrap_string(xi, max_width))
     }, 1L, max_width = colwidths))

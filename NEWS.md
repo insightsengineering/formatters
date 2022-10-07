@@ -1,3 +1,6 @@
+## formatters 0.3.3.11
+ * fix bug which lead to Roche/rtables#414 (`nlines("", <non-null>)` threw an error
+
 ## formatters 0.3.3.10
  * paginate related generics now accept max_width for use in ensuring pagination now takes wordwrapping into account for titles and footers.
  * nlines character method has changed, not takes the sum of the nlines of its elements instead of the max in the case of a vector of length > 1
