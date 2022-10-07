@@ -1,3 +1,10 @@
+## formatters 0.3.3.10
+ * paginate related generics now accept max_width for use in ensuring pagination now takes wordwrapping into account for titles and footers.
+ * nlines character method has changed, not takes the sum of the nlines of its elements instead of the max in the case of a vector of length > 1
+
+## formatters 0.3.3.9
+ * new `wrap_title_footer` function for use on everything which implements the generic interface we design.
+
 ## formatters 0.3.3.8
  * export new `page_dim` function which returns values of page dims for a named type.
 

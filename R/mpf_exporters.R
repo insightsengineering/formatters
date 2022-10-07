@@ -1,6 +1,7 @@
 ## XXX Experimental. Not to be exported without approval
 mpf_to_huxtable <- function(obj) {
-    requireNamespace("huxtable")
+    if(!requireNamespace("huxtable"))
+        stop("mpf_to_huxtable requires the huxtable package")
     mf <- matrix_form(obj, indent_rownames = TRUE)
     nlr <- mf_nlheader(mf)
     myfakedf <- as.data.frame(tail(mf$strings, -nlr))

@@ -50,12 +50,6 @@ Transform a complex object into a string representation ready
 to be printed or written to a plain-text file
 }
 \details{
-When `tf_wrap` is  `TRUE`, word wrapping happens  as with
-    \link[base:strwrap]{base::strwrap}    with     the    following
-    exception: individual  words which are longer  than `max_width`
-    are  broken  up  in a  way  that  fits  with  the rest  of  the
-    wordwrapping.
-
 Manual insertion of newlines is not supported when `tf_wrap` is on
 and will result in a warning and undefined wrapping behavior. Passing
 vectors of already split strings remains supported, however in this

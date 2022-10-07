@@ -53,11 +53,7 @@ default_hsep <- d_hsep_factory()
 #'     the width of the table (plus any table inset) is used. Ignored
 #'     completely if `tf_wrap` is `FALSE`.
 #'
-#' @details  When `tf_wrap` is  `TRUE`, word wrapping happens  as with
-#'     \link[base:strwrap]{base::strwrap}    with     the    following
-#'     exception: individual  words which are longer  than `max_width`
-#'     are  broken  up  in a  way  that  fits  with  the rest  of  the
-#'     wordwrapping.
+#' @details
 #'
 #' Manual insertion of newlines is not supported when `tf_wrap` is on
 #' and will result in a warning and undefined wrapping behavior. Passing
@@ -79,9 +75,13 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   max_width = NULL,
                                                   col_gap = x$col_gap,
                                                   hsep = default_hsep()) {
-    mat <- x
+    mat <- matrix_form(x, TRUE)
 
     inset <- table_inset(mat)
+
+    ## if(tf_wrap)
+    ##     mat <- wrap_title_footer(mat, max_width = max_width, inset = inset)
+
     if (is.null(widths)) {
         widths <- propose_column_widths(x)
     }
@@ -180,7 +180,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
     allfoots <- allfoots[!sapply(allfoots, is.null)]
 
 
-    # Wrapping titles if they go beyond the horizontally allowed space
+    ## Wrapping titles if they go beyond the horizontally allowed space
     if (tf_wrap) {
         new_line_warning(allts)
         allts <- wrap_txt(allts, max_width = max_width)
@@ -269,6 +269,20 @@ new_line_warning <- function(str_v) {
   }
 }
 
+#' Wrap a string to within a maximum width
+#' @param str character(1). String to be wrapped
+#' @param max_width numeric(1). Maximum width, in characters, that the
+#' text should be wrapped at.
+#'
+#' @details      word      wrapping     happens      as      with
+#'     \link[base:strwrap]{base::strwrap}    with     the    following
+#'     exception: individual  words which are longer  than `max_width`
+#'     are  broken  up  in a  way  that  fits  with  the rest  of  the
+#'     wordwrapping.
+#'
+#' @return a string (`wrap_string` or character vector (`wrap_txt`) containing
+#' the word-wrapped content.
+#' @export
 wrap_string <- function(str, max_width) {
     stopifnot(is.character(str) && length(str) == 1)
     naive <- strwrap(str, max_width + 1)
@@ -311,10 +325,36 @@ wrap_string <- function(str, max_width) {
     naive
 }
 
-
+#' @param txt character. Vector of strings that should be (independently)
+#' text-wrapped.
+#' @rdname wrap_string
+#' @export
 wrap_txt <- function(txt, max_width) {
     unlist(lapply(txt, wrap_string, max_width = max_width), use.names = FALSE)
 }
+
+## #' Wrap title and footer materials on a table-like object
+## #'
+## #' @inheritParams wrap_string
+## #' @param obj. Table-like object. The MatrixPrintForm or Table-like object to modify
+## #' @param inset numeric(1). Inset amount in characters for the body. Defaults to
+## #' `table_inset(obj)` and so generally should not be set manually for objects that
+## #' whose class has a defined `table_inset` method.
+## #' @return `obj` with the main title, subtitles, referential footnotes, main footer
+## #' and prov footers word-wrapped.
+## #' @export
+## wrap_title_footer <- function(obj, max_width = NULL, inset = table_inset(obj) %||% 0L) {
+
+##     if(is.null(max_width))
+##         return(obj)
+
+##     main_title(obj) <- wrap_txt(main_title(obj), max_width = max_width)
+##     subtitles(obj) <- wrap_txt(subtitles(obj), max_width = max_width)
+##     ref_footnotes(obj) <- wrap_txt(ref_footnotes(obj), max_width = max_width - inset)
+##     main_footer(obj) <- wrap_txt(main_footer(obj), max_width = max_width - inset)
+##     prov_footer(obj) <- wrap_txt(prov_footer(obj), max_width = max_width)
+##     obj
+## }
 
 ##   if (any(sapply(txt, function(x) nchar(x) > max_width))) {
 

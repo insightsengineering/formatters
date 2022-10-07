@@ -7,13 +7,13 @@
 \alias{nlines,character-method}
 \title{Number of lines required to print a value}
 \usage{
-nlines(x, colwidths)
+nlines(x, colwidths = NULL)
 
-\S4method{nlines}{list}(x, colwidths)
+\S4method{nlines}{list}(x, colwidths = NULL)
 
-\S4method{nlines}{`NULL`}(x, colwidths)
+\S4method{nlines}{`NULL`}(x, colwidths = NULL)
 
-\S4method{nlines}{character}(x, colwidths)
+\S4method{nlines}{character}(x, colwidths = NULL)
 }
 \arguments{
 \item{x}{ANY. The object to be printed}

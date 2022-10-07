@@ -245,7 +245,7 @@ pag_indices_inner <- function(pagdf, rlpp,
         adjrlpp = rlpp - pagdf$par_extent[start]
         if(adjrlpp <= 0) {
             if(row) {
-                stop("Lines of repeated context (plus header materials) larger than specified lines per page")
+                stop( "Lines of repeated context (plus header materials) larger than specified lines per page")
             } else {
                 stop("Width of row labels equal to or larger than specified characters per page.")
             }

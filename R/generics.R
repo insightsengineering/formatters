@@ -17,6 +17,8 @@
 #' @param colwidths numeric. Internal detail do not set manually.
 #' @param  path character.  Path  to  the (sub)table  represented  by
 #'     \code{tt}. Defaults to \code{character()}
+#' @param max_width numeric(1) or NULL. Maximum width for title/footer
+#' materials.
 #'
 #' @details When  \code{visible_only} is  \code{TRUE} (the  default),
 #'     methods should  return a  data.frame with  exactly one  row per
@@ -51,7 +53,8 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
                                   repr_ext = 0L,
                                   repr_inds = integer(),
                                   sibpos = NA_integer_,
-                                  nsibs = NA_integer_) standardGeneric("make_row_df"))
+                                  nsibs = NA_integer_,
+                                  max_width = NULL) standardGeneric("make_row_df"))
 ## nocov end
 
 
@@ -124,7 +127,7 @@ setMethod("divider_height", "ANY",
 #' to render the object \code{x}.
 #' @export
 setGeneric("nlines",
-           function(x, colwidths) standardGeneric("nlines"))
+           function(x, colwidths = NULL) standardGeneric("nlines"))
 
 ## XXX beware. I think it is dangerous
 #' @export
@@ -143,8 +146,18 @@ setMethod("nlines", "NULL", function(x, colwidths) 0L)
 
 #' @export
 #' @rdname nlines
-setMethod("nlines", "character", function(x, colwidths) max(vapply(strsplit(x, "\n", fixed = TRUE), length, 1L)))
+setMethod("nlines", "character", function(x, colwidths) {
+    if(length(x) == 0)
+        return(0L)
 
+    sum(vapply(strsplit(x, "\n", fixed = TRUE),
+               function(xi, max_width) {
+        if(length(max_width) == 0)
+            length(xi)
+        else
+            length(wrap_string(xi, max_width))
+    }, 1L, max_width = colwidths))
+})
 
 
 
