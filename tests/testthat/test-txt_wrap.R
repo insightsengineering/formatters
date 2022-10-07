@@ -54,38 +54,72 @@ test_that("toString() throws a warning when newline is in string", {
 
 test_that("works with words that are too big (no warning)", {
     bmf <- basic_matrix_form(mtcars[1:2, 1:2])
-    bmf$col_gap <- 3
-    bmf$table_inset <- 1
-    bmf$main_title <- strrep("a", 30)
-    bmf$subtitles <- strrep("b", 30)
-    bmf$page_titles <- strrep("c", 30)
-    bmf$main_footer <- strrep("d", 30)
-    bmf$prov_footer <- strrep("e", 30)
-    bmf$ref_footnotes <- strrep("f", 30)
-    result <- toString(bmf, tf_wrap = TRUE, max_width = "auto", hsep = "=")
+    bmf$main_title <- "TITLE"
+    bmf$subtitles <- "SUB TITLE IS"
+    bmf$page_titles <- "PAGE TITLE"
+    bmf$main_footer <- "FOOTER"
+    bmf$prov_footer <- c("", "PROV FOOTER")
+    bmf$ref_footnotes <- "REFERENCE"
+    result <- toString(bmf, tf_wrap = TRUE, max_width = 4, hsep = "-")
     res_vec <- strsplit(result, "\n")[[1]]
-    exp_vec <- c("aaaaaaaaaaaaaaaaaaaaaaaaaa",
-                 "aaaa",
-                 "bbbbbbbbbbbbbbbbbbbbbbbbbb",
-                 "bbbb",
-                  "cccccccccccccccccccccccccc",
-                 "cccc",
+    exp_vec <- c("TITL", "E",
+                 "SUB", "TITL", "E IS",
+                 "PAGE", "TITL", "E",
                  "",
-                 " =========================",
-                 "                 mpg   cyl",
-                 " =========================",
-                 " Mazda RX4       21    6  ",
-                 " Mazda RX4 Wag   21    6  ",
-                 " =========================",
+                 "-------------------------",
+                 "                mpg   cyl",
+                 "-------------------------",
+                 "Mazda RX4       21    6  ",
+                 "Mazda RX4 Wag   21    6  ",
+                 "-------------------------",
                  "",
-                 " fffffffffffffffffffffffff",
-                 " fffff",
-                 " =========================",
+                 "REFE", "RENC", "E",
+                 "-------------------------",
                  "",
-                 " ddddddddddddddddddddddddd",
-                 " ddddd",
+                 "FOOT", "ER",
                  "",
-                 "eeeeeeeeeeeeeeeeeeeeeeeeee",
-                 "eeee")
+                 "",
+                 "PROV", "FOOT", "ER")
     expect_identical(res_vec, exp_vec)
+})
+
+
+test_that("auto works with inset and col_gap", {
+  bmf <- basic_matrix_form(mtcars[1:2, 1:2])
+  bmf$col_gap <- 3
+  bmf$table_inset <- 1
+  bmf$main_title <- strrep("a", 30)
+  bmf$subtitles <- strrep("b", 30)
+  bmf$page_titles <- strrep("c", 30)
+  bmf$main_footer <- strrep("d", 30)
+  bmf$prov_footer <- strrep("e", 30)
+  bmf$ref_footnotes <- strrep("f", 30)
+  result <- toString(bmf, tf_wrap = TRUE, max_width = "auto", hsep = "=")
+  res_vec <- strsplit(result, "\n")[[1]]
+  exp_vec <- c(
+    "aaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "aaaa",
+    "bbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "bbbb",
+    "cccccccccccccccccccccccccc",
+    "cccc",
+    "",
+    " =========================",
+    "                 mpg   cyl",
+    " =========================",
+    " Mazda RX4       21    6  ",
+    " Mazda RX4 Wag   21    6  ",
+    " =========================",
+    "",
+    " fffffffffffffffffffffffff",
+    " fffff",
+    " =========================",
+    "",
+    " ddddddddddddddddddddddddd",
+    " ddddd",
+    "",
+    "eeeeeeeeeeeeeeeeeeeeeeeeee",
+    "eeee"
+  )
+  expect_identical(res_vec, exp_vec)
 })
