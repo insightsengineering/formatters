@@ -83,17 +83,15 @@ test_that("works with words that are too big (no warning)", {
     expect_identical(res_vec, exp_vec)
 })
 
-
-
 test_that("auto works with inset and col_gap", {
   bmf <- basic_matrix_form(mtcars[1:2, 1:2])
+  table_inset(bmf) <- 1
+  main_title(bmf) <- strrep("a", 30)
+  subtitles(bmf) <- strrep("b", 30)
+  page_titles(bmf) <- strrep("c", 30)
+  main_footer(bmf) <- strrep("d", 30)
+  prov_footer(bmf) <- strrep("e", 30)
   bmf$col_gap <- 3
-  bmf$table_inset <- 1
-  bmf$main_title <- strrep("a", 30)
-  bmf$subtitles <- strrep("b", 30)
-  bmf$page_titles <- strrep("c", 30)
-  bmf$main_footer <- strrep("d", 30)
-  bmf$prov_footer <- strrep("e", 30)
   bmf$ref_footnotes <- strrep("f", 30)
   result <- toString(bmf, tf_wrap = TRUE, max_width = "auto", hsep = "=")
   res_vec <- strsplit(result, "\n")[[1]]
