@@ -84,6 +84,7 @@ test_that("works with words that are too big (no warning)", {
 })
 
 
+
 test_that("auto works with inset and col_gap", {
   bmf <- basic_matrix_form(mtcars[1:2, 1:2])
   bmf$col_gap <- 3
@@ -122,4 +123,9 @@ test_that("auto works with inset and col_gap", {
     "eeee"
   )
   expect_identical(res_vec, exp_vec)
+})
+
+test_that("regression tests for rtables empty title underlying issue", {
+    expect_identical(nlines("", 6), 1L)
+    expect_identical(wrap_string("", 6), "")
 })
