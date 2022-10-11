@@ -85,6 +85,6 @@ test_that("works with words that are too big (no warning)", {
 
 
 test_that("regression tests for rtables empty title underlying issue", {
-    expect_identical(nlines("", 6), 1L)
-    expect_identical(wrap_string("", 6), "")
+    expect_identical(nlines("", max_width = 6), 1L)
+    expect_identical(wrap_string("", max_width = 6), "")
 })

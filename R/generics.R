@@ -122,43 +122,46 @@ setMethod("divider_height", "ANY",
 
 #' Number of lines required to print a value
 #' @param x ANY. The object to be printed
-#' @param colwidths numeric. Column widths (if necessary)
+#' @param colwidths numeric. Column widths (if necessary).
+#' @param max_width numeric(1). Width strings should be wrapped to
+#' when determining how many lines they require.
 #' @return A scalar numeric indicating the number of lines needed
 #' to render the object \code{x}.
 #' @export
 setGeneric("nlines",
-           function(x, colwidths = NULL) standardGeneric("nlines"))
+           function(x, colwidths = NULL, max_width = NULL) standardGeneric("nlines"))
 
 ## XXX beware. I think it is dangerous
 #' @export
 #' @rdname nlines
 setMethod("nlines", "list",
-          function(x, colwidths) {
+          function(x, colwidths, max_width) {
     if(length(x) == 0)
         0L
     else
-        sum(unlist(vapply(x, nlines, NA_integer_, colwidths = colwidths)))
+        sum(unlist(vapply(x, nlines, NA_integer_, colwidths = colwidths,
+                          max_width = max_width)))
 })
 
 #' @export
 #' @rdname nlines
-setMethod("nlines", "NULL", function(x, colwidths) 0L)
+setMethod("nlines", "NULL", function(x, colwidths, max_width) 0L)
 
 #' @export
 #' @rdname nlines
-setMethod("nlines", "character", function(x, colwidths) {
+setMethod("nlines", "character", function(x, colwidths, max_width) {
     if(length(x) == 0)
         return(0L)
 
     sum(vapply(strsplit(x, "\n", fixed = TRUE),
                function(xi, max_width) {
-        if(length(max_width) == 0)
+         if(length(xi) == 0)
+             1L ## this happens with strsplit("", "\n")
+         else if(length(max_width) == 0)
             length(xi)
-        else if(length(xi) == 0)
-            1L ## this happens with strsplit("", "\n")
-        else
+         else
             length(wrap_string(xi, max_width))
-    }, 1L, max_width = colwidths))
+    }, 1L, max_width = max_width))
 })
 
 

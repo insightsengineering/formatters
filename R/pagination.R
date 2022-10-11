@@ -113,8 +113,10 @@ valid_pag = function(pagdf,
                      rlpp,
                      min_sibs,
                      nosplit = NULL,
+                     div_height = 1L,
                      verbose = FALSE,
-                     row = TRUE) {
+                     row = TRUE,
+                     have_col_fnotes = FALSE) {
     rw <- pagdf[guess,]
 
 
@@ -127,7 +129,7 @@ valid_pag = function(pagdf,
     ## self extent does ***not*** currently include trailing sep
     ## we don't include the trailing_sep for guess because if we paginate here it won't be printed
     sectlines <- if(start == guess) 0L else sum(!is.na(pagdf[start:(guess - 1), "trailing_sep"]))
-    if(reflines > 0) reflines <- reflines + 2 ## divider plus empty line
+    if(reflines > 0) reflines <- reflines + if(have_col_fnotes) 0L else  div_height + 1L
     lines <- rowlines + reflines  + sectlines # guess - start + 1 because inclusive of start
     if(rowlines > rlpp) {
         if(verbose)
@@ -195,9 +197,11 @@ find_pag = function(pagdf,
                     min_siblings,
                     nosplitin = character(),
                     verbose = FALSE,
-                    row = TRUE) {
+                    row = TRUE,
+                    have_col_fnotes = FALSE,
+                    div_height = 1L) {
     origuess = guess
-    while(guess >= start && !valid_pag(pagdf, guess, start = start, rlpp  = rlpp, min_sibs = min_siblings, nosplit = nosplitin, verbose, row = row)) {
+    while(guess >= start && !valid_pag(pagdf, guess, start = start, rlpp  = rlpp, min_sibs = min_siblings, nosplit = nosplitin, verbose, row = row, have_col_fnotes = have_col_fnotes, div_height = div_height)) {
         guess = guess - 1
     }
     if(guess < start)
@@ -223,6 +227,10 @@ find_pag = function(pagdf,
 #' pagination breaks be shown. Defaults to \code{FALSE}.
 #' @param row logical(1). Is pagination happening in row
 #' space (`TRUE`, the default) or column space (`FALSE`)
+#' @param have_col_fnotes logical(1). Does the table-like object being rendered have
+#' column-associated referential footnotes.
+#' @param div_height numeric(1). The height of the divider line when the
+#' associated object is rendered. Defaults to `1`.
 #' @return A list containing the vector of row numbers, broken up by page
 #'
 #' @examples
@@ -236,7 +244,9 @@ pag_indices_inner <- function(pagdf, rlpp,
                               min_siblings,
                               nosplitin = character(),
                               verbose = FALSE,
-                              row = TRUE) {
+                              row = TRUE,
+                              have_col_fnotes = FALSE,
+                              div_height = 1L) {
 
     start = 1
     nr = nrow(pagdf)
@@ -256,7 +266,9 @@ pag_indices_inner <- function(pagdf, rlpp,
                        min_siblings = min_siblings,
                        nosplitin = nosplitin,
                        verbose = verbose,
-                       row = row)
+                       row = row,
+                       have_col_fnotes = have_col_fnotes,
+                       div_height = div_height)
         ret = c(ret, list(c(pagdf$reprint_inds[[start]],
                             start:end)))
         start = end + 1
