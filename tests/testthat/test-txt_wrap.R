@@ -124,6 +124,6 @@ test_that("auto works with inset and col_gap", {
 })
 
 test_that("regression tests for rtables empty title underlying issue", {
-    expect_identical(nlines("", 6), 1L)
-    expect_identical(wrap_string("", 6), "")
+    expect_identical(nlines("", max_width = 6), 1L)
+    expect_identical(wrap_string("", max_width = 6), "")
 })

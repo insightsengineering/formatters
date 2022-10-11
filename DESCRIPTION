@@ -1,7 +1,7 @@
 Package: formatters
 Title: ASCII Formatting for Values and Tables
 Date: 2022-09-30
-Version: 0.3.3.11
+Version: 0.3.3.12
 Authors@R: c(
   person("Gabriel", "Becker", email = "gabembecker@gmail.com", role = c("aut", "cre")),
   person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = "aut"),
