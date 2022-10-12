@@ -45,8 +45,8 @@ test_that("tf_wordwrap and table inset work (including together)", {
 
 test_that("toString() throws a warning when newline is in string", {
     bmf <- basic_matrix_form(iris)
-    bmf$main_title <- "some\nvery\nspacious\ntitle"
-    bmf$prov_footer <- "some\nvery\nspacious\nfooter"
+    main_title(bmf) <- "some\nvery\nspacious\ntitle"
+    prov_footer(bmf) <- "some\nvery\nspacious\nfooter"
     bmf$ref_footnotes <- "some\nvery\nspacious\nreference"
     expect_silent(toString(bmf, tf_wrap = FALSE))
     expect_warning(toString(bmf, tf_wrap = TRUE))
@@ -54,11 +54,11 @@ test_that("toString() throws a warning when newline is in string", {
 
 test_that("works with words that are too big (no warning)", {
     bmf <- basic_matrix_form(mtcars[1:2, 1:2])
-    bmf$main_title <- "TITLE"
-    bmf$subtitles <- "SUB TITLE IS"
-    bmf$page_titles <- "PAGE TITLE"
-    bmf$main_footer <- "FOOTER"
-    bmf$prov_footer <- c("", "PROV FOOTER")
+    main_title(bmf) <- "TITLE"
+    subtitles(bmf) <- "SUB TITLE IS"
+    page_titles(bmf) <- "PAGE TITLE"
+    main_footer(bmf) <- "FOOTER"
+    prov_footer(bmf) <- c("", "PROV FOOTER")
     bmf$ref_footnotes <- "REFERENCE"
     result <- toString(bmf, tf_wrap = TRUE, max_width = 4, hsep = "-")
     res_vec <- strsplit(result, "\n")[[1]]
