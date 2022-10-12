@@ -436,7 +436,10 @@ setGeneric("table_inset<-", function(obj, value) standardGeneric("table_inset<-"
 #' @export
 setMethod("table_inset<-", "MatrixPrintForm",
           function(obj, value) {
-    obj$table_inset <- as.integer(value)
+    newval <- as.integer(value)
+    if(is.na(newval) || newval < 0)
+        stop("Got invalid value for table_inset: ", newval)
+    obj$table_inset <- newval
     obj
 })
 
