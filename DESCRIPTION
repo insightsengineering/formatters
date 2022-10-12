@@ -4,7 +4,8 @@ Date: 2022-09-30
 Version: 0.3.3.12
 Authors@R: c(
   person("Gabriel", "Becker", email = "gabembecker@gmail.com", role = c("aut", "cre")),
-  person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = "aut"),
+  person("Adrian", "Waddell", email = "adrian.waddell@gene.com", role = "aut"),
+  person("Davide", "Garolini", email = "davide.garolini@roche.com", role = "ctb"),
   person("F. Hoffmann-La Roche AG", role = c("cph", "fnd")))
 Description: We provide a framework for rendering complex tables to ASCII, and a set of formatters for transforming values or sets of values into ASCII-ready display strings.
 License: Apache License 2.0
