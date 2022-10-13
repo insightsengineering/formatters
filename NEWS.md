@@ -1,52 +1,30 @@
-## formatters 0.3.3.12
+## formatters 0.3.4
  * `nlines` now accepts both `colwidths` and `max_width`, defaulting to `NULL` for both
  * `pag_indices_inner`, `find_pag` and `valid_pag` now accept `have_col_fnotes` and `div_height` arguments
-
-## formatters 0.3.3.11
  * fix bug which lead to Roche/rtables#414 (`nlines("", <non-null>)` threw an error
-
-## formatters 0.3.3.10
  * paginate related generics now accept max_width for use in ensuring pagination now takes wordwrapping into account for titles and footers.
  * nlines character method has changed, not takes the sum of the nlines of its elements instead of the max in the case of a vector of length > 1
-
-## formatters 0.3.3.9
  * new `wrap_title_footer` function for use on everything which implements the generic interface we design.
-
-## formatters 0.3.3.8
  * export new `page_dim` function which returns values of page dims for a named type.
-
-## formatters 0.3.3.7 
  * `tf_wrap` functionality now breaks up words that are too large with respect to surrounding wordwrapping.
  * `tf_wrap` behavior no longer emits a warning when breaking up 'words' larger than `max_width`
  * `tf_wrap` `max_width = "auto"` now sets the `max_width` to `sum(widths) + table_inset(x)` instead of `sum(widths)`
-
-## formatters 0.3.3.6
  * Experimental `tf_wrap` functionality added to `toString` `MatrixPrintForm` method
-
-## formatters 0.3.3.5
  * `MatrixPrintForm` class now includes a `table_inset` element
  * Add `table_inset` and `table_inset<-` generics now exported
  * `toString` now respects `table_inset` values set on a `MatrixPrintForm` object
-
-## formatters 0.3.3.4
  * Use `exact=TRUE` for all calls to `attr` in accessor functions.
-
-## formatters 0.3.3.3
  * length-zero values of `na_str` are now silently interpreted as the default value (`"NA"`),
    as are any missing values in `na_str` of length > 0.
  * adding wrapping of titles, subtitles, and footers.
-
-## formatters 0.3.3.2
  * `page_lcpp` function now provided to map page size and font combinations to lines
    and characters per page.
  * getters and setters for the components of `MatrixPrintForm` objects are now exported 
    (i.e., `mf_spans` and friends).
  * `na_str` can now be length >1, and is matched positionally to NAs in that case.
-
-## formatters 0.3.3.1
  * `format_value` now returns solely the `na_str` value when all-NA values are formatted with certain formats 
     (currently`"(N=xx)"`, `">999.9"`, `">999.99"`, `"x.xxxx | (<0.0001)"`)
- 
+
 ## formatters 0.3.3
  * `vert_pag_indices` now accepts `colwidths` argument
 
