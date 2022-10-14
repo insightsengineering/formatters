@@ -160,7 +160,7 @@ setMethod("nlines", "character", function(x, colwidths, max_width) {
          else if(length(max_width) == 0)
             length(xi)
          else
-            length(wrap_string(xi, max_width))
+            length(wrap_txt(xi, max_width))
     }, 1L, max_width = max_width))
 })
 
