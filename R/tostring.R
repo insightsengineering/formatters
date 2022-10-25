@@ -106,7 +106,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
     keep_mat <- mat$display
     spans <- mat$spans
     ##    ri <- mat$row_info
-    # ref_fnotes <- mat$ref_footnotes
+    ref_fnotes <- mat$ref_footnotes
 
 
 
@@ -176,7 +176,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
     allfoots <- list("main_footer" = main_footer(x),
                      "prov_footer" = prov_footer(x),
-                     "ref_footnotes" = ref_fnotes) # nolint
+                     "ref_footnotes" = ref_fnotes)
     allfoots <- allfoots[!sapply(allfoots, is.null)]
 
 
