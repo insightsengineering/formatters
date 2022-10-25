@@ -7,18 +7,21 @@
 \alias{nlines,character-method}
 \title{Number of lines required to print a value}
 \usage{
-nlines(x, colwidths)
+nlines(x, colwidths = NULL, max_width = NULL)
 
-\S4method{nlines}{list}(x, colwidths)
+\S4method{nlines}{list}(x, colwidths = NULL, max_width = NULL)
 
-\S4method{nlines}{`NULL`}(x, colwidths)
+\S4method{nlines}{`NULL`}(x, colwidths = NULL, max_width = NULL)
 
-\S4method{nlines}{character}(x, colwidths)
+\S4method{nlines}{character}(x, colwidths = NULL, max_width = NULL)
 }
 \arguments{
 \item{x}{ANY. The object to be printed}
 
-\item{colwidths}{numeric. Column widths (if necessary)}
+\item{colwidths}{numeric. Column widths (if necessary).}
+
+\item{max_width}{numeric(1). Width strings should be wrapped to
+when determining how many lines they require.}
 }
 \value{
 A scalar numeric indicating the number of lines needed

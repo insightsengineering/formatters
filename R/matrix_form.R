@@ -15,8 +15,8 @@ mform_handle_newlines <- function(matform, has_topleft = TRUE) {
     ##row_nlines <- apply(matform$strings, 1, nlines)
     strmat <- mf_strings(matform)
     frmmat <- mf_formats(matform)
-    row_nlines <- apply(strmat, 1, nlines)
-    # nlines_header <- mf_nlheader(matform) ##attr(matform, "nlines_header")
+    row_nlines <- apply(strmat, 1, function(x) max(vapply(x, nlines, 1L), 1L))
+    nlines_header <- mf_nlheader(matform) ##attr(matform, "nlines_header") # nolint
     nr_header <- mf_nrheader(matform) ## attr(matform, "nrow_header")
     nrows <- nrow(strmat) #matform$strings)
     if (any(row_nlines > 1)) {
@@ -422,7 +422,7 @@ basic_matrix_form <- function(df) {
     ## build up fake pagination df
     charcols <- which(sapply(df, is.character))
     if (length(charcols) > 0) {
-        exts <- apply(df[, charcols, drop = FALSE], 1, nlines)
+        exts <- apply(df[, charcols, drop = FALSE], 1, function(x) max(vapply(x, nlines, 1L)))
     } else {
         exts <- rep(1L, NROW(df))
     }

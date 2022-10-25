@@ -36,29 +36,68 @@ default_hsep <- d_hsep_factory()
 
 
 #' @rdname tostring
+#'
 #' @inheritParams MatrixPrintForm
-#' @param widths (proposed) widths for the columns of \code{x}
-#' @param hsep character(1). Characters to repeat to create header/body
-#' separator line.
-#' @exportMethod toString
+#' @param widths numeric (or  NULL). (proposed) widths for the columns
+#'     of \code{x}. The expected length  of this numeric vector can be
+#'     retrieved with  `ncol() + 1`  as the  column of row  names must
+#'     also be considered.
+#' @param  hsep  character(1).   Characters  to  repeat   to  create
+#'     header/body separator line.
+#' @param tf_wrap logical(1). Should  the texts for  title, subtitle,
+#'     and footnotes be wrapped?
+#' @param max_width integer(1), character(1) or NULL. Width that title
+#'     and   footer   (including   footnotes)  materials   should   be
+#'     word-wrapped to. If NULL, it is  set to the current print width
+#'     of the  session (`getOption("width")`). If set to `"auto"`,
+#'     the width of the table (plus any table inset) is used. Ignored
+#'     completely if `tf_wrap` is `FALSE`.
+#'
+#' @details
+#'
+#' Manual insertion of newlines is not supported when `tf_wrap` is on
+#' and will result in a warning and undefined wrapping behavior. Passing
+#' vectors of already split strings remains supported, however in this
+#' case each string is word-wrapped separately with the behavior
+#' described above.
+#'
 #' @examples
 #' mform <- basic_matrix_form(mtcars)
 #' cat(toString(mform))
+#'
 #' @return A character string containing the ASCII rendering
-#' of the table-like object reprseented by `x`
+#' of the table-like object represented by `x`
+#'
+#' @exportMethod toString
 setMethod("toString", "MatrixPrintForm", function(x,
                                                   widths = NULL,
+                                                  tf_wrap = FALSE,
+                                                  max_width = NULL,
                                                   col_gap = x$col_gap,
                                                   hsep = default_hsep()) {
-    mat <- x
+    mat <- matrix_form(x, TRUE)
 
-    ## we create a matrix with the formatted cell contents
-    ##  mat <- matrix_form(x, indent_rownames = TRUE)
+    inset <- table_inset(mat)
 
+    ## if(tf_wrap)
+    ##     mat <- wrap_title_footer(mat, max_width = max_width, inset = inset)
 
     if (is.null(widths)) {
         widths <- propose_column_widths(x)
     }
+
+    ncchar <-  sum(widths) + (length(widths) - 1) * col_gap
+    ## Text wrapping checks
+    stopifnot(is.logical(tf_wrap))
+    if (tf_wrap) {
+        if (is.null(max_width))
+            max_width <- getOption("width", 80L)
+        else if (is.character(max_width) && identical(max_width, "auto"))
+            max_width <- ncchar + inset
+        stopifnot(is.numeric(max_width), max_width > 0)
+    }
+
+
     stopifnot(length(widths) == ncol(mat$strings))
 
     ## format the to ASCII
@@ -69,7 +108,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
     ##    ri <- mat$row_info
     # ref_fnotes <- mat$ref_footnotes
 
-    inset <- table_inset(mat)
+
 
     nr <- nrow(body)
     nl_header <- attr(mat, "nlines_header")
@@ -99,8 +138,6 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                         # apply(content, 1, function(x) sum(nchar(x), na.rm = TRUE))
 
     gap_str <- strrep(" ", col_gap)
-
-    ncchar <-  sum(widths) + (length(widths) - 1) * col_gap
 
     div <- substr(strrep(hsep, ncchar), 1, ncchar)
     txt_head <- apply(head(content, nl_header), 1, .paste_no_na, collapse = gap_str)
@@ -133,17 +170,38 @@ setMethod("toString", "MatrixPrintForm", function(x,
     }  else {
         txt_body <- apply(tail(content, -nl_header), 1, .paste_no_na, collapse = gap_str)
     }
-    allts <- all_titles(x)
-    titles_txt <- if (any(nzchar(allts))) c(allts, "", .do_inset(div, inset))  else NULL
-    ## TODO make titles affect width...
 
-    ##allfoots <- all_footers(x)
+
+    allts <- all_titles(x)
+
+    allfoots <- list("main_footer" = main_footer(x),
+                     "prov_footer" = prov_footer(x),
+                     "ref_footnotes" = ref_fnotes) # nolint
+    allfoots <- allfoots[!sapply(allfoots, is.null)]
+
+
+    ## Wrapping titles if they go beyond the horizontally allowed space
+    if (tf_wrap) {
+        new_line_warning(allts)
+        allts <- wrap_txt(allts, max_width = max_width)
+    }
+
+    titles_txt <- if (any(nzchar(allts))) c(allts, "", .do_inset(div, inset))  else NULL
+
+    # Wrapping footers if they go beyond the horizontally allowed space
+    if (tf_wrap) {
+        new_line_warning(allfoots)
+        allfoots$main_footer <- wrap_txt(allfoots$main_footer, max_width - inset)
+        allfoots$ref_footnotes <- wrap_txt(allfoots$ref_footnotes, max_width - inset)
+        ## no - inset here because the prov_footer is not inset
+        allfoots$prov_footer <- wrap_txt(allfoots$prov_footer, max_width)
+    }
 
     paste0(paste(c(titles_txt,
                    .do_inset(txt_head, inset),
                    .do_inset(div, inset),
                    .do_inset(txt_body, inset),
-                   .footer_inset_helper(x, div, inset)),
+                   .footer_inset_helper(allfoots, div, inset)),
                  collapse = "\n"), "\n")
 
 })
@@ -165,20 +223,23 @@ setMethod("toString", "MatrixPrintForm", function(x,
     c(.do_inset(div, inset), "", txt)
 }
 
-.footer_inset_helper <- function(x, div, inset) {
-    # div_done <- FALSE
-    # rfn <- x$ref_footnotes
-    footer_txt <- .do_inset(x$ref_footnotes, inset)
+.footer_inset_helper <- function(footers_v, div, inset) {
+    div_done <- FALSE # nolint
+    fter <- footers_v$main_footer
+    prvf <- footers_v$prov_footer
+    rfn <- footers_v$ref_footnotes
+    footer_txt <- .do_inset(rfn, inset)
     if (any(nzchar(footer_txt)))
         footer_txt <- .inset_div(footer_txt, div, inset)
-    if (any(nzchar(all_footers(x)))) {
-        if (any(nzchar(prov_footer(x))))
-            provtxt <- c(if (any(nzchar(main_footer(x)))) "",
-                         prov_footer(x))
+    if (any(vapply(footers_v, function(x) any(nzchar(x)),
+                  TRUE))) {
+        if (any(nzchar(prvf)))
+            provtxt <- c(if (any(nzchar(fter))) "",
+                         prvf)
         else
             provtxt <- character()
         footer_txt <- c(footer_txt,
-                        .inset_div(c(.do_inset(main_footer(x), inset),
+                        .inset_div(c(.do_inset(fter, inset),
                                      provtxt),
                                    div,
                                    inset))
@@ -195,6 +256,153 @@ setMethod("toString", "MatrixPrintForm", function(x,
 ##         x <- c(if(bf > 0) rep("", bf), x, if(af > 0) rep("", af))
 ##     }
 ##     x
+## }
+
+new_line_warning <- function(str_v) {
+  if (any(unlist(sapply(str_v, grepl, pattern = "\n")))) {
+      msg <- c("Detected manual newlines when automatic title/footer word-wrapping is on.",
+               "This is unsupported and will result in undefined behavior. Please either ",
+               "utilize automatic word-wrapping with newline characters inserted, or ",
+               "turn off automatic wrapping and wordwrap all contents manually by inserting ",
+               "newlines.")
+    warning(paste0(msg, collapse = ""))
+  }
+}
+
+#' Wrap a string to within a maximum width
+#' @param str character(1). String to be wrapped
+#' @param max_width numeric(1). Maximum width, in characters, that the
+#' text should be wrapped at.
+#'
+#' @details      word      wrapping     happens      as      with
+#'     \link[base:strwrap]{base::strwrap}    with     the    following
+#'     exception: individual  words which are longer  than `max_width`
+#'     are  broken  up  in a  way  that  fits  with  the rest  of  the
+#'     wordwrapping.
+#'
+#' @return a string (`wrap_string` or character vector (`wrap_txt`) containing
+#' the word-wrapped content.
+#' @export
+wrap_string <- function(str, max_width) {
+    stopifnot(is.character(str) && length(str) == 1)
+    naive <- strwrap(str, max_width + 1)
+    while (any(nchar(naive) > max_width)) {
+        good <- character()
+        bwi <- which(nchar(naive) > max_width)[1]
+        curbw <- naive[bwi]
+        if (bwi > 2) {
+            good <- c(good, naive[1:(bwi - 2)])
+        }
+        if (bwi > 1) {
+            str_before <- naive[bwi - 1]
+        } else {
+            str_before <- ""
+        }
+        room <- max_width - nchar(str_before) - (bwi > 1)
+        if (room <= 0) {
+            toadd <- c(str_before, substr(curbw, 1, max_width))
+            room <- 0
+            leftover <- substr(curbw, max_width + 1, nchar(curbw))
+        } else {
+            goodpart <- substr(curbw, 1, room)
+            if (nzchar(str_before))
+                toadd <- paste(str_before, goodpart)
+            else
+                toadd <- goodpart
+            leftover <- substr(curbw, room + 1, nchar(curbw))
+        }
+        good <- c(good, toadd)
+        if (bwi == length(naive))
+            good <- c(good, leftover)
+        else
+            good <- c(good,
+                      paste(leftover, naive[bwi + 1]),
+                      if (bwi < length(naive) - 1) naive[seq(bwi + 2, length(naive))]
+                      )
+        str <- paste(good, collapse = " ")
+        naive <- strwrap(str, max_width + 1)
+    }
+    naive
+}
+
+#' @param txt character. Vector of strings that should be (independently)
+#' text-wrapped.
+#' @rdname wrap_string
+#' @export
+wrap_txt <- function(txt, max_width) {
+    unlist(lapply(txt, wrap_string, max_width = max_width), use.names = FALSE)
+}
+
+## #' Wrap title and footer materials on a table-like object
+## #'
+## #' @inheritParams wrap_string
+## #' @param obj. Table-like object. The MatrixPrintForm or Table-like object to modify
+## #' @param inset numeric(1). Inset amount in characters for the body. Defaults to
+## #' `table_inset(obj)` and so generally should not be set manually for objects that
+## #' whose class has a defined `table_inset` method.
+## #' @return `obj` with the main title, subtitles, referential footnotes, main footer
+## #' and prov footers word-wrapped.
+## #' @export
+## wrap_title_footer <- function(obj, max_width = NULL, inset = table_inset(obj) %||% 0L) {
+
+##     if(is.null(max_width))
+##         return(obj)
+
+##     main_title(obj) <- wrap_txt(main_title(obj), max_width = max_width)
+##     subtitles(obj) <- wrap_txt(subtitles(obj), max_width = max_width)
+##     ref_footnotes(obj) <- wrap_txt(ref_footnotes(obj), max_width = max_width - inset)
+##     main_footer(obj) <- wrap_txt(main_footer(obj), max_width = max_width - inset)
+##     prov_footer(obj) <- wrap_txt(prov_footer(obj), max_width = max_width)
+##     obj
+## }
+
+##   if (any(sapply(txt, function(x) nchar(x) > max_width))) {
+
+##     # Checking if any word is larger than max_width
+##     spl_txt_l <- unname(sapply(txt, function(x) {
+##       if (nchar(x) > 0) {
+##         strsplit(x, split = " ")
+##       } else {
+##         x
+##       }
+##     }))
+##     which_large_txt <- sapply(spl_txt_l, function(x) any(nchar(x) > max_width))
+
+##     if (any(which_large_txt)) {
+##       warning(
+##         "Found the following txt that could not be wrapped with max_width of ",
+##         max_width,
+##         ":\n- ",
+##         paste0(txt[which_large_txt], collapse = "\n- "),
+##         "\nAttempting at a split after ", max_width, " characters."
+##       )
+
+##       spl_txt_l[which_large_txt] <- lapply(
+##         spl_txt_l[which_large_txt],
+##         function(x) {
+##           unname(unlist(lapply(x, function(y) {
+##             sapply(
+##               seq(from = 1, to = nchar(y), by = max_width),
+##               function(i) substr(y, i, i + max_width - 1)
+##             )
+##           })))
+##         }
+##       )
+##       # Paste everything back together
+##       txt <- lapply(spl_txt_l, paste, collapse = " ")
+##     }
+##     # Main wrapper
+##     txt_out <- lapply(txt,
+##       strwrap,
+##       width = max_width + 1
+##     )
+##     names(txt_out) <- NULL
+##     txt_out <- unlist(txt_out)
+
+##     txt_out
+##   } else {
+##     unlist(txt)
+##   }
 ## }
 
 pad_vert_top <- function(x, len) {

@@ -286,6 +286,12 @@ expect_identical(spread_integer(7, 3),
 
 expect_error(spread_integer(3.5, 2))
 
+expect_error({
+      table_inset(df3mf) <- -1
+  },
+  "invalid value for table_inset"
+)
+
 
 ## matrix_form on a matrix form a no op
 expect_identical(df3mf, matrix_form(df3mf))

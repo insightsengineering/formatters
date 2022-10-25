@@ -38,16 +38,31 @@ pg_dim_names <- list(
     legal = c(8.5, 14))
 
 
-#' List supported named page types
 #'
-#' @return a character vector of supported page types
+#' Supported Named Page TypesList supported named page types
+#'
+#' @return for `page_types` a character vector of supported page types,
+#' for `page_dim` the dimensions (width, then height) of the selected page type.
 #'
 #' @export
 #' @examples
 #' page_types()
+#' page_dim("a4")
 page_types <- function() {
     names(pg_dim_names)
 }
+
+#' @export
+#' @param page_type character(1). The name of a page size specification. Call
+#'   `page_types` for supported values.
+#' @rdname page_types
+page_dim <- function(page_type) {
+    if (!page_type %in% page_types())
+        stop("Unrecognized page-size specification: ", page_type)
+    pg_dim_names[[page_type]]
+}
+
+
 
 #' Calculate lines per inch and characters per inch for font
 #'

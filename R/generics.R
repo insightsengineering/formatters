@@ -18,6 +18,8 @@
 #' @param colwidths numeric. Internal detail do not set manually.
 #' @param  path character.  Path  to  the (sub)table  represented  by
 #'     \code{tt}. Defaults to \code{character()}
+#' @param max_width numeric(1) or NULL. Maximum width for title/footer
+#' materials.
 #'
 #' @details When  \code{visible_only} is  \code{TRUE} (the  default),
 #'     methods should  return a  data.frame with  exactly one  row per
@@ -52,7 +54,8 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
                                   repr_ext = 0L,
                                   repr_inds = integer(),
                                   sibpos = NA_integer_,
-                                  nsibs = NA_integer_) {
+                                  nsibs = NA_integer_,
+                                  max_width = NULL) {
   standardGeneric("make_row_df")
 })
 ## nocov end
@@ -129,32 +132,47 @@ setMethod("divider_height", "ANY",
 
 #' Number of lines required to print a value
 #' @param x ANY. The object to be printed
-#' @param colwidths numeric. Column widths (if necessary)
+#' @param colwidths numeric. Column widths (if necessary).
+#' @param max_width numeric(1). Width strings should be wrapped to
+#' when determining how many lines they require.
 #' @return A scalar numeric indicating the number of lines needed
 #' to render the object \code{x}.
 #' @export
 setGeneric("nlines",
-           function(x, colwidths) standardGeneric("nlines"))
+           function(x, colwidths = NULL, max_width = NULL) standardGeneric("nlines"))
 
 ## XXX beware. I think it is dangerous
 #' @export
 #' @rdname nlines
 setMethod("nlines", "list",
-          function(x, colwidths) {
+          function(x, colwidths, max_width) {
     if (length(x) == 0)
         0L
     else
-        sum(unlist(vapply(x, nlines, NA_integer_, colwidths = colwidths)))
+        sum(unlist(vapply(x, nlines, NA_integer_, colwidths = colwidths,
+                          max_width = max_width)))
 })
 
 #' @export
 #' @rdname nlines
-setMethod("nlines", "NULL", function(x, colwidths) 0L)
+setMethod("nlines", "NULL", function(x, colwidths, max_width) 0L)
 
 #' @export
 #' @rdname nlines
-setMethod("nlines", "character", function(x, colwidths) max(vapply(strsplit(x, "\n", fixed = TRUE), length, 1L)))
+setMethod("nlines", "character", function(x, colwidths, max_width) {
+    if (length(x) == 0)
+        return(0L)
 
+    sum(vapply(strsplit(x, "\n", fixed = TRUE),
+               function(xi, max_width) {
+         if (length(xi) == 0)
+             1L ## this happens with strsplit("", "\n")
+         else if (length(max_width) == 0)
+            length(xi)
+         else
+            length(wrap_txt(xi, max_width))
+    }, 1L, max_width = max_width))
+})
 
 
 
@@ -272,6 +290,14 @@ setMethod("main_title", "MatrixPrintForm",
 ##' @rdname title_footer
 ##' @export
 setGeneric("main_title<-", function(obj, value) standardGeneric("main_title<-"))
+##' @rdname title_footer
+##' @export
+setMethod("main_title<-", "MatrixPrintForm",
+          function(obj, value) {
+    obj$main_title <- value
+    obj
+})
+
 
 
 #' @export
@@ -286,6 +312,14 @@ setMethod("subtitles", "MatrixPrintForm",
 ##' @rdname title_footer
 ##' @export
 setGeneric("subtitles<-", function(obj, value) standardGeneric("subtitles<-")) ## nocov
+
+##' @rdname title_footer
+##' @export
+setMethod("subtitles<-", "MatrixPrintForm",
+          function(obj, value) {
+    obj$subtitles <- value
+    obj
+})
 
 #' @export
 #' @rdname title_footer
@@ -412,6 +446,9 @@ setGeneric("table_inset<-", function(obj, value) standardGeneric("table_inset<-"
 #' @export
 setMethod("table_inset<-", "MatrixPrintForm",
           function(obj, value) {
-    obj$table_inset <- as.integer(value)
+    newval <- as.integer(value)
+    if (is.na(newval) || newval < 0)
+        stop("Got invalid value for table_inset: ", newval)
+    obj$table_inset <- newval
     obj
 })

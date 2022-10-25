@@ -10,7 +10,9 @@ pag_indices_inner(
   min_siblings,
   nosplitin = character(),
   verbose = FALSE,
-  row = TRUE
+  row = TRUE,
+  have_col_fnotes = FALSE,
+  div_height = 1L
 )
 }
 \arguments{
@@ -31,6 +33,12 @@ pagination breaks be shown. Defaults to \code{FALSE}.}
 
 \item{row}{logical(1). Is pagination happening in row
 space (`TRUE`, the default) or column space (`FALSE`)}
+
+\item{have_col_fnotes}{logical(1). Does the table-like object being rendered have
+column-associated referential footnotes.}
+
+\item{div_height}{numeric(1). The height of the divider line when the
+associated object is rendered. Defaults to `1`.}
 }
 \value{
 A list containing the vector of row numbers, broken up by page
