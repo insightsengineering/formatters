@@ -57,6 +57,8 @@ page_types <- function() {
 #'   `page_types` for supported values.
 #' @rdname page_types
 page_dim <- function(page_type) {
+    if (is.null(page_type))
+        return(NULL)
     if (!page_type %in% page_types())
         stop("Unrecognized page-size specification: ", page_type)
     pg_dim_names[[page_type]]

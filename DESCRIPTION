@@ -19,7 +19,8 @@ Suggests:
   huxtable,
   knitr,
   rmarkdown,
-  testthat
+  testthat,
+  r2rtf
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/insightsengineering/formatters
