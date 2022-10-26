@@ -5,7 +5,8 @@
 #'
 #'
 #' @param tt ANY. Object representing the table-like object to be summarized.
-#' @param visible_only logical(1). Should only visible aspects of the table structure be reflected in this summary. Defaults to \code{TRUE}. May not be supported by all methods.
+#' @param visible_only logical(1). Should only visible aspects of the table structure be reflected in this summary.
+#'   Defaults to \code{TRUE}. May not be supported by all methods.
 #' @param incontent logical(1). Internal detail do not set manually.
 #' @param repr_ext integer(1). Internal detail do not set manually.
 #' @param repr_inds integer. Internal detail do not set manually.
@@ -54,7 +55,9 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
                                   repr_inds = integer(),
                                   sibpos = NA_integer_,
                                   nsibs = NA_integer_,
-                                  max_width = NULL) standardGeneric("make_row_df"))
+                                  max_width = NULL) {
+  standardGeneric("make_row_df")
+})
 ## nocov end
 
 
@@ -72,11 +75,14 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
 #'
 #' @details
 #'
-#' The strings in the return object are defined as follows: row labels are those determined by \code{summarize_rows} and cell values are determined using \code{get_formatted_cells}. (Column labels are calculated using a non-exported internal funciton.
+#' The strings in the return object are defined as follows: row labels are those determined by \code{summarize_rows} and
+#' cell values are determined using \code{get_formatted_cells}.
+#' (Column labels are calculated using a non-exported internal funciton.
 #'
 #'@return A `MatrixPrintForm` classed list with the following elements:
 #' \describe{
-#' \item{strings}{The content, as it should be printed, of the top-left material, column headers, row labels , and cell values of \code{tt}}
+#' \item{strings}{The content, as it should be printed, of the top-left material, column headers, row labels, and
+#'   cell values of \code{tt}}
 #' \item{spans}{The column-span information for each print-string in the strings matrix}
 #' \item{aligns}{The text alignment for each print-string in the strings matrix}
 #' \item{display}{Whether each print-string in the strings matrix should be printed or not}.
@@ -86,13 +92,17 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
 #' With an additional \code{nrow_header} attribute indicating the number of pseudo "rows"  the
 #' column structure defines.
 setGeneric("matrix_form", function(obj, indent_rownames = FALSE,
-                                   indent_size = 2) standardGeneric("matrix_form"))
+                                   indent_size = 2) {
+    standardGeneric("matrix_form")
+})
 
 #' @rdname matrix_form
 #' @export
 setMethod("matrix_form", "MatrixPrintForm", function(obj,
                                                      indent_rownames = FALSE,
-                                                     indent_size = 2) obj)
+                                                     indent_size = 2) {
+    obj
+})
 
 
 ## Generics for toString and helper functions
@@ -136,7 +146,7 @@ setGeneric("nlines",
 #' @rdname nlines
 setMethod("nlines", "list",
           function(x, colwidths, max_width) {
-    if(length(x) == 0)
+    if (length(x) == 0)
         0L
     else
         sum(unlist(vapply(x, nlines, NA_integer_, colwidths = colwidths,
@@ -150,14 +160,14 @@ setMethod("nlines", "NULL", function(x, colwidths, max_width) 0L)
 #' @export
 #' @rdname nlines
 setMethod("nlines", "character", function(x, colwidths, max_width) {
-    if(length(x) == 0)
+    if (length(x) == 0)
         return(0L)
 
     sum(vapply(strsplit(x, "\n", fixed = TRUE),
                function(xi, max_width) {
-         if(length(xi) == 0)
+         if (length(xi) == 0)
              1L ## this happens with strsplit("", "\n")
-         else if(length(max_width) == 0)
+         else if (length(max_width) == 0)
             length(xi)
          else
             length(wrap_txt(xi, max_width))
@@ -175,7 +185,7 @@ setMethod("nlines", "character", function(x, colwidths, max_width) {
 #' @param ... Passed to individual methods.
 #' @rdname tostring
 #' @export
-setGeneric("toString", function(x,...) standardGeneric("toString"))
+setGeneric("toString", function(x, ...) standardGeneric("toString"))
 
 ## preserve S3 behavior
 setMethod("toString", "ANY", base::toString) ## nocov
@@ -235,8 +245,8 @@ setMethod("obj_label", "ANY", function(obj) attr(obj, "label"))
 #' @rdname lab_name
 #' @exportMethod obj_label<-
 setMethod("obj_label<-", "ANY",
-          function(obj, value){
-    attr(obj, "label") = value
+          function(obj, value) {
+    attr(obj, "label") <- value
     obj
 })
 
@@ -331,7 +341,7 @@ setGeneric("page_titles<-", function(obj, value) standardGeneric("page_titles<-"
 #' @rdname title_footer
 setMethod("page_titles<-", "MatrixPrintForm",
           function(obj, value) {
-    if(!is.character(value))
+    if (!is.character(value))
         stop("page titles must be in the form of a character vector, got object of class ", class(value))
     obj$page_titles <- value
     obj
@@ -359,7 +369,7 @@ setGeneric("main_footer<-", function(obj, value) standardGeneric("main_footer<-"
 #' @rdname title_footer
 setMethod("main_footer<-", "MatrixPrintForm",
           function(obj, value) {
-    if(!is.character(value))
+    if (!is.character(value))
         stop("main footer must be a character vector. Got object of class ", class(value))
     obj$main_footer <- value
     obj
@@ -383,7 +393,7 @@ setGeneric("prov_footer<-", function(obj, value) standardGeneric("prov_footer<-"
 #' @rdname title_footer
 setMethod("prov_footer<-", "MatrixPrintForm",
           function(obj, value) {
-    if(!is.character(value))
+    if (!is.character(value))
         stop("provenance footer must be a character vector. Got object of class ", class(value))
     obj$prov_footer <- value
     obj
@@ -437,9 +447,8 @@ setGeneric("table_inset<-", function(obj, value) standardGeneric("table_inset<-"
 setMethod("table_inset<-", "MatrixPrintForm",
           function(obj, value) {
     newval <- as.integer(value)
-    if(is.na(newval) || newval < 0)
+    if (is.na(newval) || newval < 0)
         stop("Got invalid value for table_inset: ", newval)
     obj$table_inset <- newval
     obj
 })
-

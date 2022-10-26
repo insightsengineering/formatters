@@ -62,7 +62,7 @@ list_valid_format_labels <- function() {
 #' @examples
 #' is_valid_format("xx.x")
 #' is_valid_format("fakeyfake")
-is_valid_format <- function(x, stop_otherwise=FALSE) {
+is_valid_format <- function(x, stop_otherwise = FALSE) {
   is_valid <- is.null(x) ||
     (length(x) == 1 &&
        (is.function(x) ||
@@ -81,7 +81,8 @@ is_valid_format <- function(x, stop_otherwise=FALSE) {
 #' @param format character(1). A format string passed to sprintf.
 #'
 #' @export
-#' @return A formating function which wraps and will apply the specified \code{printf} style format string \code{format}.
+#' @return A formating function which wraps and will apply the specified \code{printf} style format
+#'   string \code{format}.
 #' @seealso \code{\link[base]{sprintf}}
 #'
 #' @examples
@@ -92,7 +93,7 @@ is_valid_format <- function(x, stop_otherwise=FALSE) {
 #' fmtfun2 <- sprintf_format("%.4f - %.2f")
 #' format_value(list(12.23456, 2.724))
 sprintf_format <- function(format) {
-    function(x,...) {
+    function(x, ...) {
         do.call(sprintf, c(list(fmt = format), x))
     }
 }
@@ -150,11 +151,11 @@ sprintf_format <- function(format) {
 #' round_fmt(NA, digits = 1, na_str = "-")
 #' round_fmt(2.765923, digits = NA)
 round_fmt <- function(x, digits, na_str = "NA") {
-    if(!is.na(digits) && digits < 0)
+    if (!is.na(digits) && digits < 0)
         stop("round_fmt currentlyd does not support non-missing values of digits <0")
-    if(is.na(x)) {
+    if (is.na(x)) {
         na_str
-    } else if(is.na(digits)) {
+    } else if (is.na(digits)) {
         paste0(x)
     } else {
         sprfmt <- paste0("%.", digits, "f")
@@ -165,21 +166,21 @@ round_fmt <- function(x, digits, na_str = "NA") {
 
 
 val_pct_helper <- function(x, dig1, dig2, na_str, pct = TRUE) {
-    if(pct)
+    if (pct)
         x[2] <- x[2] * 100
-    if(length(na_str) == 1)
+    if (length(na_str) == 1)
         na_str <- rep(na_str, 2)
     paste0(round_fmt(x[1], digits = dig1, na_str = na_str[1]),
            " (",
            round_fmt(x[2], digits = dig2, na_str = na_str[2]),
-           if(pct) "%", ")")
+           if (pct) "%", ")")
 }
 
 sep_2d_helper <- function(x, dig1, dig2, sep, na_str, wrap = NULL) {
 
     ret <- paste(mapply(round_fmt, x = x, digits = c(dig1, dig2), na_str = na_str),
                  collapse = sep)
-    if(!is.null(wrap))
+    if (!is.null(wrap))
         ret <- paste(c(wrap[1], ret, wrap[2]), collapse = "")
     ret
 }
@@ -199,7 +200,8 @@ sep_2d_helper <- function(x, dig1, dig2, sep, na_str, wrap = NULL) {
 #'
 #' @param x ANY. The value to be formatted
 #' @param format character(1) or function. The format label (string) or formatter function to apply to \code{x}.
-#' @param na_str character(1). String that should be displayed when the value of \code{x} is missing. Defaults to \code{"NA"}.
+#' @param na_str character(1). String that should be displayed when the value of \code{x} is missing.
+#'   Defaults to \code{"NA"}.
 #' @param output character(1). output type
 #'
 #' @return formatted text representing the cell \code{x}.
@@ -220,14 +222,14 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
     if (length(x) == 0) return("")
 
     output <- match.arg(output)
-    if(length(na_str) == 0)
+    if (length(na_str) == 0)
         na_str <- "NA"
-    if(any(is.na(na_str)))
+    if (any(is.na(na_str)))
         na_str[is.na(na_str)] <- "NA"
    ## format <- if (!missing(format)) format else obj_format(x)
 
 
-    txt <- if(all(is.na(x)) && length(na_str) == 1L) {
+    txt <- if (all(is.na(x)) && length(na_str) == 1L) {
                na_str
            } else if (is.null(format)) {
                toString(x)
@@ -241,10 +243,12 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
                     } else if (format %in% formats_3d) {
                         3
                   } else {
-                      stop("unknown format label: ", format, ". use list_valid_format_labels() to get a list of all formats")
+                      stop("unknown format label: ", format,
+                           ". use list_valid_format_labels() to get a list of all formats")
                   }
-               if (format != "xx" && length(x) != l) stop("cell <", paste(x), "> and format ", format, " are of different length")
-               if(length(na_str) < length(x))
+               if (format != "xx" && length(x) != l) stop("cell <", paste(x), "> and format ",
+                                                          format, " are of different length")
+               if (length(na_str) < length(x))
                    na_str <- rep(na_str, length.out = length(x))
                switch(
                    format,
@@ -275,12 +279,18 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
                    "xx. (xx.%)" = val_pct_helper(x, dig1 = 0, dig2 = 0, na_str = na_str),
                    "xx.x (xx.x%)" = val_pct_helper(x, dig1 = 1, dig2 = 1, na_str = na_str),
                    "xx.xx (xx.xx%)" = val_pct_helper(x, dig1 = 2, dig2 = 2, na_str = na_str),
-                   "(xx, xx)" = sep_2d_helper(x, dig1 = NA, dig2 = NA, sep = ", ", na_str = na_str, wrap = c("(", ")")),
-                   "(xx., xx.)" = sep_2d_helper(x, dig1 = 0, dig2 = 0, sep = ", ", na_str = na_str, wrap = c("(", ")")),
-                   "(xx.x, xx.x)" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = ", ", na_str = na_str, wrap = c("(", ")")),
-                   "(xx.xx, xx.xx)" = sep_2d_helper(x, dig1 = 2, dig2 = 2, sep = ", ", na_str = na_str, wrap = c("(", ")")),
-                   "(xx.xxx, xx.xxx)" = sep_2d_helper(x, dig1 = 3, dig2 = 3, sep = ", ", na_str = na_str, wrap = c("(", ")")),
-                   "(xx.xxxx, xx.xxxx)" = sep_2d_helper(x, dig1 = 4, dig2 = 4, sep = ", ", na_str = na_str, wrap = c("(", ")")),
+                   "(xx, xx)" = sep_2d_helper(x, dig1 = NA, dig2 = NA, sep = ", ",
+                                              na_str = na_str, wrap = c("(", ")")),
+                   "(xx., xx.)" = sep_2d_helper(x, dig1 = 0, dig2 = 0, sep = ", ",
+                                                na_str = na_str, wrap = c("(", ")")),
+                   "(xx.x, xx.x)" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = ", ",
+                                                  na_str = na_str, wrap = c("(", ")")),
+                   "(xx.xx, xx.xx)" = sep_2d_helper(x, dig1 = 2, dig2 = 2, sep = ", ",
+                                                    na_str = na_str, wrap = c("(", ")")),
+                   "(xx.xxx, xx.xxx)" = sep_2d_helper(x, dig1 = 3, dig2 = 3, sep = ", ",
+                                                      na_str = na_str, wrap = c("(", ")")),
+                   "(xx.xxxx, xx.xxxx)" = sep_2d_helper(x, dig1 = 4, dig2 = 4, sep = ", ",
+                                                        na_str = na_str, wrap = c("(", ")")),
                    "xx - xx" = sep_2d_helper(x, dig1 = NA, dig2 = NA, sep = " - ", na_str = na_str),
                    "xx.x - xx.x" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = " - ", na_str = na_str),
                    "xx.xx - xx.xx" = sep_2d_helper(x, dig1 = 2, dig2 = 2, sep = " - ", na_str = na_str),
@@ -329,7 +339,7 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
             els <- unlist(strsplit(txt, "\n", fixed = TRUE))
             Map(function(el, is.last) {
                 tagList(el, if (!is.last) tags$br() else NULL)
-            }, els, c(rep(FALSE, length(els) -1), TRUE))
+            }, els, c(rep(FALSE, length(els) - 1), TRUE))
         }
 
     } else {
