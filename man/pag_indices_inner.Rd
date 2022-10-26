@@ -19,7 +19,8 @@ pag_indices_inner(
 \item{pagdf}{data.frame. A pagination info data.frame as created by
 either `make_rows_df` or `make_cols_df`.}
 
-\item{rlpp}{numeric. Maximum number of \emph{row} lines per page (not including header materials), including (re)printed header and context rows}
+\item{rlpp}{numeric. Maximum number of \emph{row} lines per page (not including header materials), including
+(re)printed header and context rows}
 
 \item{min_siblings}{numeric. Minimum sibling rows which must appear on either side of pagination row for a
 mid-subtable split to be valid. Defaults to 2.}

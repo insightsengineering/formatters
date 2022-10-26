@@ -21,7 +21,7 @@
 ## #' @rdname pagedims
 ## vert_margin_inches <- vert_margin_lines / lpi_vert
 
-## #' Phsyical Page dimenensions to chars x lines
+## #' Physical Page dimensions to chars x lines
 ## #'
 ## #' Calculate number of lines long and characters wide a page size is,
 ## #' after excluding margins
@@ -47,7 +47,8 @@
 #' @param nsibs integer(1). Number of siblings (including self).
 #' @param extent numberic(1). Number of lines required to print the row
 #' @param colwidths numeric. Column widths
-#' @param repext integer(1). Number of lines required to reprint all context for this row if it appears directly after pagination.
+#' @param repext integer(1). Number of lines required to reprint all context for this row if it appears directly
+#'   after pagination.
 #' @param repind integer. Vector of row numbers to be reprinted if this row appears directly after pagination.
 #' @param indent integer. Indent
 #' @param rclass character(1). Class of row object.
@@ -65,11 +66,11 @@
 #'
 #' @return a single row data.frame with the columns appropriate for a pagination info data frame.
 #' @export
-pagdfrow = function(row,
+pagdfrow <- function(row,
                     nm = obj_name(row),
                     lab = obj_label(row),
                     rnum,
-                    pth ,
+                    pth,
                     sibpos = NA_integer_,
                     nsibs = NA_integer_,
                     extent = nlines(row, colwidths),
@@ -107,7 +108,7 @@ pagdfrow = function(row,
 }
 
 
-valid_pag = function(pagdf,
+valid_pag <- function(pagdf,
                      guess,
                      start,
                      rlpp,
@@ -117,10 +118,10 @@ valid_pag = function(pagdf,
                      verbose = FALSE,
                      row = TRUE,
                      have_col_fnotes = FALSE) {
-    rw <- pagdf[guess,]
+    rw <- pagdf[guess, ]
 
 
-    if(verbose)
+    if (verbose)
         message("Checking pagination after ",
                 paste(ifelse(row, "row", "column"), guess))
     rowlines <- sum(pagdf[start:guess, "self_extent"])
@@ -128,18 +129,18 @@ valid_pag = function(pagdf,
     rowlines <- sum(pagdf[start:guess, "self_extent"]) - reflines ## self extent includes reflines
     ## self extent does ***not*** currently include trailing sep
     ## we don't include the trailing_sep for guess because if we paginate here it won't be printed
-    sectlines <- if(start == guess) 0L else sum(!is.na(pagdf[start:(guess - 1), "trailing_sep"]))
-    if(reflines > 0) reflines <- reflines + if(have_col_fnotes) 0L else  div_height + 1L
+    sectlines <- if (start == guess) 0L else sum(!is.na(pagdf[start:(guess - 1), "trailing_sep"]))
+    if (reflines > 0) reflines <- reflines + if (have_col_fnotes) 0L else div_height + 1L
     lines <- rowlines + reflines  + sectlines # guess - start + 1 because inclusive of start
-    if(rowlines > rlpp) {
-        if(verbose)
+    if (rowlines > rlpp) {
+        if (verbose)
             message(sprintf("\t....................... FAIL: %s take up too much space (%d %s)",
                             ifelse(row, "rows", "columns"), rowlines,
                             ifelse(row, "lines", "characters")))
         return(FALSE)
     }
-    if(lines > rlpp) {
-        if(verbose)
+    if (lines > rlpp) {
+        if (verbose)
             message("\t....................... FAIL: Referential footnotes (",
                     reflines,
                     ") or section dividers (",
@@ -147,50 +148,53 @@ valid_pag = function(pagdf,
                     ") take up too much space.")
         return(FALSE)
     }
-    if(rw[["node_class"]] %in% c("LabelRow", "ContentRow")) {
-        if(verbose)
+    if (rw[["node_class"]] %in% c("LabelRow", "ContentRow")) {
+        if (verbose)
             message("\t....................... FAIL: last row is a label or content row")
         return(FALSE)
     }
 
     sibpos <- rw[["pos_in_siblings"]]
     nsib <- rw[["n_siblings"]]
-    okpos <- min(min_sibs + 1, rw[["n_siblings"]])
-    if( sibpos != nsib){
+    # okpos <- min(min_sibs + 1, rw[["n_siblings"]])
+    if (sibpos != nsib) {
         retfalse <- FALSE
-        if(sibpos < min_sibs + 1) {
+        if (sibpos < min_sibs + 1) {
             retfalse <- TRUE
-            if(verbose)
-                message("\t....................... FAIL: last row had only ", sibpos - 1, " preceeding siblings, needed ", min_sibs)
+            if (verbose)
+                message("\t....................... FAIL: last row had only ", sibpos - 1,
+                        " preceeding siblings, needed ", min_sibs)
         } else if (nsib - sibpos < min_sibs + 1) {
             retfalse <- TRUE
-            if(verbose)
-                message("\t....................... FAIL: last row had only ", nsib - sibpos - 1, " following siblings, needed ", min_sibs)
+            if (verbose)
+                message("\t....................... FAIL: last row had only ", nsib - sibpos - 1,
+                        " following siblings, needed ", min_sibs)
         }
-        if(retfalse)
+        if (retfalse)
             return(FALSE)
     }
-    if(guess < nrow(pagdf)) {
+    if (guess < nrow(pagdf)) {
         curpth <- unlist(rw$path)
-        nxtpth <- unlist(pagdf$path[[guess+1]])
+        nxtpth <- unlist(pagdf$path[[guess + 1]])
         inplay <- nosplit[(nosplit %in% intersect(curpth, nxtpth))]
-        if(length(inplay) > 0) {
+        if (length(inplay) > 0) {
             curvals <- curpth[match(inplay, curpth) + 1]
             nxtvals <- nxtpth[match(inplay, nxtpth) + 1]
-            if(identical(curvals, nxtvals)) {
-                if(verbose)
-                    message("\t....................... FAIL: values of unsplitable vars before [", curvals, "] and after [", nxtvals, "] match")
+            if (identical(curvals, nxtvals)) {
+                if (verbose)
+                    message("\t....................... FAIL: values of unsplitable vars before [", curvals,
+                            "] and after [", nxtvals, "] match")
                 return(FALSE)
             }
         }
     }
-    if(verbose)
+    if (verbose)
         message("\t....................... OK")
     TRUE
 }
 
 
-find_pag = function(pagdf,
+find_pag <- function(pagdf,
                     start,
                     guess,
                     rlpp,
@@ -200,11 +204,13 @@ find_pag = function(pagdf,
                     row = TRUE,
                     have_col_fnotes = FALSE,
                     div_height = 1L) {
-    origuess = guess
-    while(guess >= start && !valid_pag(pagdf, guess, start = start, rlpp  = rlpp, min_sibs = min_siblings, nosplit = nosplitin, verbose, row = row, have_col_fnotes = have_col_fnotes, div_height = div_height)) {
-        guess = guess - 1
+    origuess <- guess
+    while (guess >= start && !valid_pag(pagdf, guess, start = start, rlpp  = rlpp, min_sibs = min_siblings,
+                                        nosplit = nosplitin, verbose, row = row, have_col_fnotes = have_col_fnotes,
+                                        div_height = div_height)) {
+        guess <- guess - 1
     }
-    if(guess < start)
+    if (guess < start)
         stop("Unable to find any valid pagination between ", start, " and ", origuess)
     guess
 }
@@ -218,7 +224,8 @@ find_pag = function(pagdf,
 #'
 #' @param pagdf data.frame. A pagination info data.frame as created by
 #' either `make_rows_df` or `make_cols_df`.
-#' @param rlpp numeric. Maximum number of \emph{row} lines per page (not including header materials), including (re)printed header and context rows
+#' @param rlpp numeric. Maximum number of \emph{row} lines per page (not including header materials), including
+#'   (re)printed header and context rows
 #' @param min_siblings  numeric. Minimum sibling rows which must appear on either side of pagination row for a
 #'   mid-subtable split to be valid. Defaults to 2.
 #' @param nosplitin character. List of names of sub-tables where page-breaks are not allowed, regardless of other
@@ -248,20 +255,20 @@ pag_indices_inner <- function(pagdf, rlpp,
                               have_col_fnotes = FALSE,
                               div_height = 1L) {
 
-    start = 1
-    nr = nrow(pagdf)
-    ret = list()
-    while(start <= nr) {
-        adjrlpp = rlpp - pagdf$par_extent[start]
-        if(adjrlpp <= 0) {
-            if(row) {
-                stop( "Lines of repeated context (plus header materials) larger than specified lines per page")
+    start <- 1
+    nr <- nrow(pagdf)
+    ret <- list()
+    while (start <= nr) {
+        adjrlpp <- rlpp - pagdf$par_extent[start]
+        if (adjrlpp <= 0) {
+            if (row) {
+                stop("Lines of repeated context (plus header materials) larger than specified lines per page")
             } else {
                 stop("Width of row labels equal to or larger than specified characters per page.")
             }
         }
-        guess = min(nr, start + adjrlpp - 1)
-        end = find_pag(pagdf, start, guess,
+        guess <- min(nr, start + adjrlpp - 1)
+        end <- find_pag(pagdf, start, guess,
                        rlpp = adjrlpp,
                        min_siblings = min_siblings,
                        nosplitin = nosplitin,
@@ -269,9 +276,9 @@ pag_indices_inner <- function(pagdf, rlpp,
                        row = row,
                        have_col_fnotes = have_col_fnotes,
                        div_height = div_height)
-        ret = c(ret, list(c(pagdf$reprint_inds[[start]],
+        ret <- c(ret, list(c(pagdf$reprint_inds[[start]],
                             start:end)))
-        start = end + 1
+        start <- end + 1
     }
     ret
 }
@@ -297,15 +304,16 @@ vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE) {
     clwds <- colwidths %||% propose_column_widths(strm)
 
     pdfrows <- lapply(2:ncol(strm$strings),
-                      function(i) {pagdfrow(row = NA,
-                                            nm = i-1,
-                                            lab = i-1,
-                                            rnum = i-1,
-                                            pth = NA,
-                                            extent = clwds[i] + strm$col_gap,
-                                            rclass = "stuff",
-                                            sibpos = 1-1,
-                                            nsibs = 1-1)
+                      function(i) {
+                          pagdfrow(row = NA,
+                                   nm = i - 1,
+                                   lab = i - 1,
+                                   rnum = i - 1,
+                                   pth = NA,
+                                   extent = clwds[i] + strm$col_gap,
+                                   rclass = "stuff",
+                                   sibpos = 1 - 1,
+                                   nsibs = 1 - 1)
     })
 
     pdf <- do.call(rbind, pdfrows)

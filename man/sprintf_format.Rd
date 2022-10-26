@@ -10,7 +10,8 @@ sprintf_format(format)
 \item{format}{character(1). A format string passed to sprintf.}
 }
 \value{
-A formating function which wraps and will apply the specified \code{printf} style format string \code{format}.
+A formating function which wraps and will apply the specified \code{printf} style format
+  string \code{format}.
 }
 \description{
 Specify text format via a sprintf format string

@@ -18,4 +18,4 @@
 #' NULL %||% "hi"
 #'@return `a`, unless it  is length 0, in which case  `b` (even in the
 #'     case `b` is also length 0)
-`%||%` <- function(a, b) if(length(a) == 0) b else a
+`%||%` <- function(a, b) if (length(a) == 0) b else a

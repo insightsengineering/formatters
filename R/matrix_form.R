@@ -16,7 +16,7 @@ mform_handle_newlines <- function(matform, has_topleft = TRUE) {
     strmat <- mf_strings(matform)
     frmmat <- mf_formats(matform)
     row_nlines <- apply(strmat, 1, function(x) max(vapply(x, nlines, 1L), 1L))
-    nlines_header <- mf_nlheader(matform) ##attr(matform, "nlines_header")
+    nlines_header <- mf_nlheader(matform) ##attr(matform, "nlines_header") # nolint
     nr_header <- mf_nrheader(matform) ## attr(matform, "nrow_header")
     nrows <- nrow(strmat) #matform$strings)
     if (any(row_nlines > 1)) {
@@ -24,23 +24,25 @@ mform_handle_newlines <- function(matform, has_topleft = TRUE) {
         hdr_inds <- 1:nr_header
         new_nlines_hdr <- sum(row_nlines[hdr_inds])
         ## groundwork for sad haxx to get tl to not be messed up
-        if(has_topleft)
+        if (has_topleft)
             tl <- strmat[hdr_inds, 1]
         else
             tl <- character()
-        ##matform$strings <- rbind(expand_mat_rows(matform$strings[hdr_inds, , drop = FALSE], row_nlines[hdr_inds], cpadder = pad_vert_bottom),
-        newstrmat <- rbind(expand_mat_rows(strmat[hdr_inds, , drop = FALSE], row_nlines[hdr_inds], cpadder = pad_vert_bottom),
-                           expand_mat_rows(strmat[-1*hdr_inds,, drop = FALSE], row_nlines[-hdr_inds]))
-        newfrmmat <- rbind(expand_mat_rows(frmmat[hdr_inds, , drop = FALSE], row_nlines[hdr_inds], cpadder = pad_vert_bottom),
-                           expand_mat_rows(frmmat[-1*hdr_inds,, drop = FALSE], row_nlines[-hdr_inds]))
+        ##matform$strings <- rbind(expand_mat_rows(matform$strings[hdr_inds, , drop = FALSE], row_nlines[hdr_inds], cpadder = pad_vert_bottom), # nolint
+        newstrmat <- rbind(expand_mat_rows(strmat[hdr_inds, , drop = FALSE],
+                                           row_nlines[hdr_inds], cpadder = pad_vert_bottom),
+                           expand_mat_rows(strmat[-1 * hdr_inds, , drop = FALSE], row_nlines[-hdr_inds]))
+        newfrmmat <- rbind(expand_mat_rows(frmmat[hdr_inds, , drop = FALSE],
+                                           row_nlines[hdr_inds], cpadder = pad_vert_bottom),
+                           expand_mat_rows(frmmat[-1 * hdr_inds, , drop = FALSE], row_nlines[-hdr_inds]))
         ## sad haxx :(
-        if(has_topleft) {
+        if (has_topleft) {
             newtl <- unlist(strsplit(tl, "\n"))
-            if(length(newtl) > new_nlines_hdr)
+            if (length(newtl) > new_nlines_hdr)
                 stop("Expanding top-left material resulted in more lines (", length(newtl),
                      "than fit in the header.")
-            newstrmat[1:new_nlines_hdr,1] <- c(tl, rep("", new_nlines_hdr - length(tl)))
-            newfrmmat[1:new_nlines_hdr,1] <- "xx"
+            newstrmat[1:new_nlines_hdr, 1] <- c(tl, rep("", new_nlines_hdr - length(tl)))
+            newfrmmat[1:new_nlines_hdr, 1] <- "xx"
         }
         mf_strings(matform) <- newstrmat
         mf_formats(matform) <- newfrmmat
@@ -171,11 +173,11 @@ MatrixPrintForm <- function(strings = NULL,
     display <- matrix(rep(TRUE, length(strings)), ncol = ncol(strings))
 
     print_cells_mat <- spans == 1L
-    if(!all(print_cells_mat)) {
+    if (!all(print_cells_mat)) {
         display_rws  <- lapply(seq_len(nrow(spans)),
                                function(i) {
-            print_cells <- print_cells_mat[i,]
-            row <- spans[i,]
+            print_cells <- print_cells_mat[i, ]
+            row <- spans[i, ]
             ##         display <- t(apply(spans, 1, function(row) {
             ## print_cells <- row == 1
 
@@ -189,7 +191,7 @@ MatrixPrintForm <- function(strings = NULL,
     }
 
 
-    ncs <- if(has_rowlabs) ncol(strings) - 1 else ncol(strings)
+    ncs <- if (has_rowlabs) ncol(strings) - 1 else ncol(strings)
     ret <- structure(
         list(
             strings = strings,
@@ -198,7 +200,7 @@ MatrixPrintForm <- function(strings = NULL,
             display = display,
             formats = formats,
             row_info = row_info,
-            line_grouping =line_grouping,
+            line_grouping = line_grouping,
             ref_footnotes = ref_fnotes,
             main_title = main_title,
             subtitles = subtitles,
@@ -213,7 +215,7 @@ MatrixPrintForm <- function(strings = NULL,
         ncols = ncs,
         class = c("MatrixPrintForm", "list"))
     ## .do_mat_expand(ret)
-    if(expand_newlines)
+    if (expand_newlines)
         ret <- mform_handle_newlines(ret, has_topleft = has_topleft)
     ret
 }
@@ -286,11 +288,11 @@ mf_nrheader <- function(mf) attr(mf, "nrow_header", exact = TRUE)
 .chkdim_and_replace <- function(mf, value, component) {
     strdim <- dim(mf_strings(mf))
     vdim <- dim(value)
-    if(!is.null(strdim) && !identical(strdim, vdim))
+    if (!is.null(strdim) && !identical(strdim, vdim))
         stop("Dimensions of new '", component, "' value (",
              vdim[1], ", ", vdim[2],
              ") do not match dimensions of existing 'strings' component (",
-             strdim[1], , ", ", strdim[2], ").")
+             strdim[1], ", ", strdim[2], ").")
     mf[[component]] <- value
     mf
 }
@@ -329,7 +331,7 @@ mf_nrheader <- function(mf) attr(mf, "nrow_header", exact = TRUE)
 .chknrow_and_replace <- function(mf, value, component) {
     strdim <- NROW(mf_strings(mf))
     vdim <- NROW(value)
-    if(!is.null(strdim) && !identical(strdim, vdim))
+    if (!is.null(strdim) && !identical(strdim, vdim))
         stop("Number of rows/length of new '", component, "' value (",
              vdim[1],
              ") does not match existing 'strings' component (",
@@ -394,14 +396,14 @@ setMethod("ncol", "MatrixPrintForm",
 #' @export
 basic_matrix_form <- function(df) {
 
-    fmts <- lapply(df, function(x) if(is.null(obj_format(x))) "xx" else obj_format(x))
+    fmts <- lapply(df, function(x) if (is.null(obj_format(x))) "xx" else obj_format(x))
 
     bodystrs <- mapply(function(x, fmt) {
         sapply(x, format_value, format = fmt)
     }, x = df, fmt = fmts)
 
     rnms <- row.names(df)
-    if(is.null(rnms))
+    if (is.null(rnms))
         rnms <- as.character(seq_len(NROW(df)))
 
     cnms <- names(df)
@@ -419,8 +421,8 @@ basic_matrix_form <- function(df) {
 
     ## build up fake pagination df
     charcols <- which(sapply(df, is.character))
-    if(length(charcols) > 0) {
-        exts <- apply(df[,charcols, drop = FALSE], 1, function(x) max(vapply(x, nlines, 1L)))
+    if (length(charcols) > 0) {
+        exts <- apply(df[, charcols, drop = FALSE], 1, function(x) max(vapply(x, nlines, 1L)))
     } else {
         exts <- rep(1L, NROW(df))
     }

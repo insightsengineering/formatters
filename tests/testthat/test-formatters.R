@@ -25,7 +25,7 @@ expect_identical(format_value(values[1], format = "xx.xxxx"),
                  "5.1235")
 
 expect_identical(format_value(values[1], format = "xx%"),
-                 paste0(values[1]*100, "%"))
+                 paste0(values[1] * 100, "%"))
 
 expect_identical(format_value(values[1], format = "xx.%"),
                  "512%")
@@ -73,7 +73,7 @@ expect_identical(format_value(values, format = "xx.xxx / xx.xxx"),
                  "5.123 / 7.891")
 
 expect_identical(format_value(values, format = "xx (xx%)"),
-                 paste0(values[1], " (", values[2]*100, "%)"))
+                 paste0(values[1], " (", values[2] * 100, "%)"))
 
 expect_identical(format_value(values, format = "xx (xx.%)"),
                  paste0(values[1], " (789%)"))
@@ -124,7 +124,7 @@ expect_identical(format_value(values, format = "xx.xx - xx.xx"),
                  "5.12 - 7.89")
 
 expect_identical(format_value(values, format = "xx (xx%)"),
-                 paste0(values[1], " (", values[2]*100, "%)"))
+                 paste0(values[1], " (", values[2] * 100, "%)"))
 
 expect_identical(format_value(values, format = "xx (xx)"),
                  paste0(values[1], " (", values[2], ")"))
@@ -238,7 +238,7 @@ strout <- toString(dfmf)
 expect_true(any(grepl(ftmsg, strout)))
 
 df2 <- mtcars
-df2$extra <- paste("row", 1:NROW(df2), "haha", sep = "\n")
+df2$extra <- paste("row", seq_len(NROW(df2)), "haha", sep = "\n")
 
 df2mf <- basic_matrix_form(df2)
 
@@ -286,8 +286,11 @@ expect_identical(spread_integer(7, 3),
 
 expect_error(spread_integer(3.5, 2))
 
-expect_error({table_inset(df3mf) <- -1},
-             "invalid value for table_inset")
+expect_error({
+      table_inset(df3mf) <- -1
+  },
+  "invalid value for table_inset"
+)
 
 
 ## matrix_form on a matrix form a no op
@@ -341,7 +344,7 @@ expect_identical(format_value(c(NA, NA), format = "xx.x - xx.x", na_str = "what"
 expect_identical(format_value(c(NA, 5.2), format = "xx.x - xx.x", na_str = "what"),
                  "what - 5.2")
 
-expect_identical(format_value(c(NA, 5.2), format = "xx.x - xx.x", na_str =c("hi", "lo")),
+expect_identical(format_value(c(NA, 5.2), format = "xx.x - xx.x", na_str = c("hi", "lo")),
                  "hi - 5.2")
 
 expect_identical(format_value(NA, format = "xx.x", na_str = character()),

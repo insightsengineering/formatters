@@ -41,7 +41,7 @@ with_label <- function(x, label) {
 #' var_labels(x)
 var_labels <- function(x, fill = FALSE) {
     stopifnot(is.data.frame(x))
-    if(NCOL(x) == 0)
+    if (NCOL(x) == 0)
         return(character())
 
   y <- Map(function(col, colname) {
@@ -101,7 +101,7 @@ var_labels <- function(x, fill = FALSE) {
     ncol(x) == length(value)
   )
 
-  theseq <- if(!is.null(names(value))) names(value) else seq_along(x)
+  theseq <- if (!is.null(names(value))) names(value) else seq_along(x)
   # across columns of x
   for (j in theseq) {
     attr(x[[j]], "label") <- if (!is.na(value[j])) {
@@ -134,7 +134,7 @@ var_labels <- function(x, fill = FALSE) {
 var_relabel <- function(x, ...) {
   # todo: make this function more readable / code easier
   stopifnot(is.data.frame(x))
-  if (missing(...)) {return(x)}
+  if (missing(...)) return(x)
   dots <- list(...)
   varnames <- names(dots)
   stopifnot(!is.null(varnames))
@@ -172,7 +172,7 @@ var_relabel <- function(x, ...) {
 var_labels_remove <- function(x) {
   stopifnot(is.data.frame(x))
 
-  for (i in 1:ncol(x)) {
+  for (i in seq_len(ncol(x))) {
     attr(x[[i]], "label") <- NULL
   }
 
