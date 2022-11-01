@@ -1,16 +1,13 @@
-home:
-  strip_header: true
+---
+url: https://insightsengineering.github.io/formatters
 
 template:
-  params:
-    bootswatch: cerulean
-    
-navbar:
-  type: default
-  right:
-  - icon: fa-github fa-lg
-    href: https://github.com/insightsengineering/formatters
+  package: nesttemplate
 
+navbar:
+  right:
+    - icon: fa-github
+      href: https://github.com/insightsengineering/formatters
 
 reference:
  
@@ -86,3 +83,13 @@ reference:
     contents:
     - print,ANY-method
     - ifnotlen0
+    - basic_matrix_form
+    - basic_pagdf
+    - default_hsep
+    - font_lcpi
+    - mf_strings
+    - mpf_to_rtf
+    - page_lcpp
+    - page_types
+    - table_inset
+    - wrap_string

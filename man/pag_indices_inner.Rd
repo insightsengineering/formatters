@@ -52,6 +52,6 @@ pagination info data.frame.
 mypgdf <- basic_pagdf(row.names(mtcars))
 
 paginds <- pag_indices_inner(mypgdf, rlpp = 15, min_siblings = 0)
-lapply(paginds, function(x) mtcars[x,])
+lapply(paginds, function(x) mtcars[x, ])
 
 }
