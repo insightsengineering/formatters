@@ -1,95 +1,81 @@
----
 url: https://insightsengineering.github.io/formatters
-
 template:
   package: nesttemplate
-
 navbar:
   right:
     - icon: fa-github
       href: https://github.com/insightsengineering/formatters
-
 reference:
- 
   - title: Formatting Values
     desc: Functions related to applying formats to values
     contents:
-    - format_value
-    - round_fmt
-    - is_valid_format
-    - is.wholenumber
-    - list_valid_format_labels
-    - sprintf_format
-
+      - format_value
+      - round_fmt
+      - is_valid_format
+      - is.wholenumber
+      - list_valid_format_labels
+      - sprintf_format
   - title: Generics Interface For Pagination
     desc: Generics requried for pagination machinery
     contents:
-    - make_row_df
-    - pagdfrow
-    - nlines
-    - divider_height
-    - main_title
-
+      - make_row_df
+      - pagdfrow
+      - nlines
+      - divider_height
+      - main_title
   - title: Generics Interface for ASCII Rendering
     desc: Generics required for rendering table-like object to ASCII
     contents:
-    - matrix_form
-    
+      - matrix_form
   - title: MatrixPrintForm
     desc: MatrixPrintForm class and constructor
     contents:
-    - matrix_print_form
-    - MatrixPrintForm-class
-
+      - matrix_print_form
+      - MatrixPrintForm-class
   - title: ASCII Rendering of MatrixPrintForm objects
     desc: ASCII rendering-related functions which operate on MatrixPrintForm objects
     contents:
-    - toString,MatrixPrintForm-method
-    - spans_to_viscell
-    - propose_column_widths
-    - padstr
-    - spread_integer
-    - is.wholenumber
-
+      - toString,MatrixPrintForm-method
+      - spans_to_viscell
+      - propose_column_widths
+      - padstr
+      - spread_integer
+      - is.wholenumber
   - title: Pagination
     desc: Pagination functionality
     contents:
-    - pag_indices_inner
-    - vert_pag_indices
-    - pagdfrow
-
+      - pag_indices_inner
+      - vert_pag_indices
+      - pagdfrow
   - title: Variable Labels
     desc: Functions for Assigning Labels to Variables In Data
     contents:
-    - var_labels<-
-    - var_labels
-    - var_labels_remove
-    - var_relabel
-    - with_label
-
+      - var_labels<-
+      - var_labels
+      - var_labels_remove
+      - var_relabel
+      - with_label
   - title: General Accessors
     desc: General accessors
     contents:
-    - starts_with("obj_")
-
+      - starts_with("obj_")
   - title: Data
     desc: Data included with the package
     contents:
-    - ex_adsl
-    - DM
-
+      - ex_adsl
+      - DM
   - title: Miscellany
     desc: Other documented functions not interesting to end users
     contents:
-    - print,ANY-method
-    - ifnotlen0
-    - basic_matrix_form
-    - basic_pagdf
-    - default_hsep
-    - font_lcpi
-    - mf_strings
-    - mpf_to_rtf
-    - page_lcpp
-    - page_types
-    - table_inset
-    - wrap_string
+      - print,ANY-method
+      - ifnotlen0
+      - basic_matrix_form
+      - basic_pagdf
+      - default_hsep
+      - font_lcpi
+      - mf_strings
+      - mpf_to_rtf
+      - page_lcpp
+      - page_types
+      - table_inset
+      - wrap_string
