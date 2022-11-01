@@ -1,5 +1,12 @@
 # formatters
 
+<!-- start badges -->
+[![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![CRAN status](https://www.r-pkg.org/badges/version-last-release/formatters)](https://www.r-pkg.org/badges/version-last-release/formatters)
+[![CRAN monthly downloads](https://cranlogs.r-pkg.org/badges/formatters)](https://cranlogs.r-pkg.org/badges/formatters)
+[![Code Coverage](https://raw.githubusercontent.com/insightsengineering/formatters/_xml_coverage_reports/data/main/coverage.xml)](https://raw.githubusercontent.com/insightsengineering/formatters/_xml_coverage_reports/data/main/badge.svg)
+<!-- end badges -->
+
 The `formatters` package provides two core pieces of functionality, both
 relatead to ASCII rendering:
 
