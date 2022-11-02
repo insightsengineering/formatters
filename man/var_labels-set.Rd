@@ -24,7 +24,7 @@ var_labels(x)
 var_labels(x) <- paste("label for", names(iris))
 var_labels(x)
 
-if(interactive()){
-View(x) # in RStudio data viewer labels are displayed
+if (interactive()) {
+  View(x) # in RStudio data viewer labels are displayed
 }
 }

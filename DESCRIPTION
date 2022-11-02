@@ -7,7 +7,9 @@ Authors@R: c(
   person("Adrian", "Waddell", email = "adrian.waddell@gene.com", role = "aut"),
   person("Davide", "Garolini", email = "davide.garolini@roche.com", role = "ctb"),
   person("F. Hoffmann-La Roche AG", role = c("cph", "fnd")))
+Config/Needs/website: insightsengineering/nesttemplate
 Description: We provide a framework for rendering complex tables to ASCII, and a set of formatters for transforming values or sets of values into ASCII-ready display strings.
+Language: en-US
 License: Apache License 2.0
 Depends: methods, R (>= 2.10)
 Imports: 

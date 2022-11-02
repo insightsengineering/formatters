@@ -17,6 +17,10 @@ mpf_to_rtf(
 )
 }
 \arguments{
+\item{mpf}{MatrixPrintForm. MatrixPrintForm object.}
+
+\item{colwidths}{character(1). Column widths.}
+
 \item{page_type}{character(1).   Name   of  a  page  type.   See
 `page_types`.   Ignored when  `pg_width` and  `pg_height`
 are set directly.}
