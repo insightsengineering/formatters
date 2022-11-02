@@ -72,7 +72,7 @@ places, `xx.x` indicates rounding to 1 decimal place, etc.
 
 Values are formatted via calls to `format_value`, like so:
 
-```
+```R
 format_value(5.1235, format = "xx.xx")
 
 [1] "5.12"
