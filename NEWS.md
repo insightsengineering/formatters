@@ -1,4 +1,4 @@
-## formatters 0.3.4.3
+## formatters 0.3.4.4
  * placeholder
 
 ## formatters 0.3.4
