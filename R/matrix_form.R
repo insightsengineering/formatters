@@ -10,7 +10,8 @@
 setOldClass(c("MatrixPrintForm", "list"))
 
 
-mform_handle_newlines <- function(matform, has_topleft = TRUE) {
+mform_handle_newlines <- function(matform) {
+    has_topleft <- mf_has_topleft(matform)
   ## row_nlines <- apply(matform$strings, 1, nlines)
   strmat <- mf_strings(matform)
   frmmat <- mf_formats(matform)
@@ -219,7 +220,8 @@ MatrixPrintForm <- function(strings = NULL,
       main_footer = main_footer,
       prov_footer = prov_footer,
       col_gap = col_gap,
-      table_inset = as.integer(table_inset)
+      table_inset = as.integer(table_inset),
+      has_topleft = has_topleft
     ),
     nlines_header = nlines_header, ## this is done for real in .do_mat_expand nownlines_header,
     nrow_header = nrow_header,
@@ -228,7 +230,7 @@ MatrixPrintForm <- function(strings = NULL,
   )
   ## .do_mat_expand(ret)
   if (expand_newlines) {
-    ret <- mform_handle_newlines(ret, has_topleft = has_topleft)
+    ret <- mform_handle_newlines(ret)
   }
   ret
 }
@@ -276,7 +278,11 @@ mf_rinfo <- function(mf) mf$row_info
 
 #' @export
 #' @rdname mpf_accessors
-mf_lgrouping <- function(mf) mf$linegrouping
+mf_has_topleft <- function(mf) mf$has_topleft
+
+#' @export
+#' @rdname mpf_accessors
+mf_lgrouping <- function(mf) mf$line_grouping
 
 #' @export
 #' @rdname mpf_accessors

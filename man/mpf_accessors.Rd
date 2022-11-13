@@ -7,6 +7,7 @@
 \alias{mf_display}
 \alias{mf_formats}
 \alias{mf_rinfo}
+\alias{mf_has_topleft}
 \alias{mf_lgrouping}
 \alias{mf_rfnotes}
 \alias{mf_nlheader}
@@ -34,6 +35,8 @@ mf_display(mf)
 mf_formats(mf)
 
 mf_rinfo(mf)
+
+mf_has_topleft(mf)
 
 mf_lgrouping(mf)
 
