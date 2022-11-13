@@ -37,31 +37,31 @@ d_hsep_factory <- function() {
 default_hsep <- d_hsep_factory()
 
 .calc_cell_widths <- function(mat, colwidths, col_gap) {
-    spans <- mat$spans
-    keep_mat <- mat$display
-    body <- mat$strings
+  spans <- mat$spans
+  keep_mat <- mat$display
+  body <- mat$strings
 
-    nr <- nrow(body)
+  nr <- nrow(body)
 
-    cell_widths_mat <- matrix(rep(colwidths, nr), nrow = nr, byrow = TRUE)
-    nc <- ncol(cell_widths_mat)
+  cell_widths_mat <- matrix(rep(colwidths, nr), nrow = nr, byrow = TRUE)
+  nc <- ncol(cell_widths_mat)
 
-    for (i in seq_len(nrow(body))) {
-        if (any(!keep_mat[i, ])) { # any spans?
-            j <- 1
-            while (j <= nc) {
-                nj <- spans[i, j]
-                j <- if (nj > 1) {
-                         js <- seq(j, j + nj - 1)
-                         cell_widths_mat[i, js] <- sum(cell_widths_mat[i, js]) + col_gap * (nj - 1)
-                         j + nj
-                     } else {
-                         j + 1
-                     }
-            }
+  for (i in seq_len(nrow(body))) {
+    if (any(!keep_mat[i, ])) { # any spans?
+      j <- 1
+      while (j <= nc) {
+        nj <- spans[i, j]
+        j <- if (nj > 1) {
+          js <- seq(j, j + nj - 1)
+          cell_widths_mat[i, js] <- sum(cell_widths_mat[i, js]) + col_gap * (nj - 1)
+          j + nj
+        } else {
+          j + 1
         }
+      }
     }
-    cell_widths_mat
+  }
+  cell_widths_mat
 }
 
 #' @rdname tostring
@@ -136,19 +136,21 @@ setMethod("toString", "MatrixPrintForm", function(x,
   cell_widths_mat <- .calc_cell_widths(mat, widths, col_gap)
   ## wrap_string calls strwrap, which destroys whitespace so we need to make sure to put the indents back in
 
-  old_indent <- gsub("^([[:space:]]*).*","\\1", mat$strings[,1])
+  old_indent <- gsub("^([[:space:]]*).*", "\\1", mat$strings[, 1])
   need_reindent <- nzchar(old_indent)
   reindent_old_idx <- mf_lgrouping(mat)[need_reindent]
   new_strings <- matrix(unlist(mapply(wrap_string, str = mat$strings, max_width = cell_widths_mat, hard = TRUE)),
-                        ncol = ncol(mat$strings))
+    ncol = ncol(mat$strings)
+  )
   mat$strings <- new_strings
-  ##XXXXX this is wrong and will break for listings cause we don't know when
+  ## XXXXX this is wrong and will break for listings cause we don't know when
   ## we need has_topleft to be FALSE!!!!!!!!!!
   mat <- mform_handle_newlines(mat)
   reindent_new_idx <- match(reindent_old_idx, mf_lgrouping(mat))
-  if(anyNA(reindent_new_idx))
-      stop("Unable to remap indenting after cell content text wrapping. Please contact the maintainer, this should not happen") # nocov
-  mat$strings[reindent_new_idx,1] <- paste0(old_indent[need_reindent], mat$strings[reindent_new_idx,1])
+  if (anyNA(reindent_new_idx)) {
+    stop("Unable to remap indenting after cell content text wrapping. Please contact the maintainer, this should not happen")
+  } # nocov
+  mat$strings[reindent_new_idx, 1] <- paste0(old_indent[need_reindent], mat$strings[reindent_new_idx, 1])
   body <- mat$strings
   aligns <- mat$aligns
   keep_mat <- mat$display
@@ -401,8 +403,9 @@ wrap_string <- function(str, max_width, hard = FALSE) {
     str <- paste(good, collapse = " ")
     naive <- strwrap(str, max_width + 1)
   }
-  if(hard)
-      naive <- paste(naive, collapse = "\n")
+  if (hard) {
+    naive <- paste(naive, collapse = "\n")
+  }
   naive
 }
 

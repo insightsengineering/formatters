@@ -11,7 +11,7 @@ setOldClass(c("MatrixPrintForm", "list"))
 
 
 mform_handle_newlines <- function(matform) {
-    has_topleft <- mf_has_topleft(matform)
+  has_topleft <- mf_has_topleft(matform)
   ## row_nlines <- apply(matform$strings, 1, nlines)
   strmat <- mf_strings(matform)
   frmmat <- mf_formats(matform)
