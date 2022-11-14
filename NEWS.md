@@ -1,3 +1,7 @@
+## formatters 0.3.4.6
+ * `vert_pag_indices` now accepts `rep_cols` to control how many columns act as 'row-label-like', as
+   required by `rlistings`
+
 ## formatters 0.3.4.5
  * `toString` `MatrixPrintForm` method now uses `widths` to wrap formatted strings, effectively wrapping
    cell values, row labels and column labels of table-like objects.
