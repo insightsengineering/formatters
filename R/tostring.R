@@ -36,6 +36,33 @@ d_hsep_factory <- function() {
 #' default_hsep()
 default_hsep <- d_hsep_factory()
 
+.calc_cell_widths <- function(mat, colwidths, col_gap) {
+  spans <- mat$spans
+  keep_mat <- mat$display
+  body <- mat$strings
+
+  nr <- nrow(body)
+
+  cell_widths_mat <- matrix(rep(colwidths, nr), nrow = nr, byrow = TRUE)
+  nc <- ncol(cell_widths_mat)
+
+  for (i in seq_len(nrow(body))) {
+    if (any(!keep_mat[i, ])) { # any spans?
+      j <- 1
+      while (j <= nc) {
+        nj <- spans[i, j]
+        j <- if (nj > 1) {
+          js <- seq(j, j + nj - 1)
+          cell_widths_mat[i, js] <- sum(cell_widths_mat[i, js]) + col_gap * (nj - 1)
+          j + nj
+        } else {
+          j + 1
+        }
+      }
+    }
+  }
+  cell_widths_mat
+}
 
 #' @rdname tostring
 #'
@@ -102,8 +129,28 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
 
   stopifnot(length(widths) == ncol(mat$strings))
+  nl_header <- attr(mat, "nlines_header")
+
 
   ## format the to ASCII
+  cell_widths_mat <- .calc_cell_widths(mat, widths, col_gap)
+  ## wrap_string calls strwrap, which destroys whitespace so we need to make sure to put the indents back in
+
+  old_indent <- gsub("^([[:space:]]*).*", "\\1", mat$strings[, 1])
+  need_reindent <- nzchar(old_indent)
+  reindent_old_idx <- mf_lgrouping(mat)[need_reindent]
+  new_strings <- matrix(unlist(mapply(wrap_string, str = mat$strings, max_width = cell_widths_mat, hard = TRUE)),
+    ncol = ncol(mat$strings)
+  )
+  mat$strings <- new_strings
+  ## XXXXX this is wrong and will break for listings cause we don't know when
+  ## we need has_topleft to be FALSE!!!!!!!!!!
+  mat <- mform_handle_newlines(mat)
+  reindent_new_idx <- match(reindent_old_idx, mf_lgrouping(mat))
+  if (anyNA(reindent_new_idx)) {
+    stop("Unable to remap indenting after cell content text wrapping. Please contact the maintainer, this should not happen")
+  } # nocov
+  mat$strings[reindent_new_idx, 1] <- paste0(old_indent[need_reindent], mat$strings[reindent_new_idx, 1])
   body <- mat$strings
   aligns <- mat$aligns
   keep_mat <- mat$display
@@ -111,29 +158,27 @@ setMethod("toString", "MatrixPrintForm", function(x,
   ##    ri <- mat$row_info
   ref_fnotes <- mat$ref_footnotes
 
+  cell_widths_mat <- .calc_cell_widths(mat, widths, col_gap)
 
+  ## nr <- nrow(body)
+  ## cell_widths_mat <- matrix(rep(widths, nr), nrow = nr, byrow = TRUE)
+  ## nc <- ncol(cell_widths_mat)
 
-  nr <- nrow(body)
-  nl_header <- attr(mat, "nlines_header")
-
-  cell_widths_mat <- matrix(rep(widths, nr), nrow = nr, byrow = TRUE)
-  nc <- ncol(cell_widths_mat)
-
-  for (i in seq_len(nrow(body))) {
-    if (any(!keep_mat[i, ])) { # any spans?
-      j <- 1
-      while (j <= nc) {
-        nj <- spans[i, j]
-        j <- if (nj > 1) {
-          js <- seq(j, j + nj - 1)
-          cell_widths_mat[i, js] <- sum(cell_widths_mat[i, js]) + col_gap * (nj - 1)
-          j + nj
-        } else {
-          j + 1
-        }
-      }
-    }
-  }
+  ## for (i in seq_len(nrow(body))) {
+  ##   if (any(!keep_mat[i, ])) { # any spans?
+  ##     j <- 1
+  ##     while (j <= nc) {
+  ##       nj <- spans[i, j]
+  ##       j <- if (nj > 1) {
+  ##         js <- seq(j, j + nj - 1)
+  ##         cell_widths_mat[i, js] <- sum(cell_widths_mat[i, js]) + col_gap * (nj - 1)
+  ##         j + nj
+  ##       } else {
+  ##         j + 1
+  ##       }
+  ##     }
+  ##   }
+  ## }
 
 
   content <- matrix(mapply(padstr, body, cell_widths_mat, aligns), ncol = ncol(body))
@@ -303,6 +348,9 @@ new_line_warning <- function(str_v) {
 #' @param str character(1). String to be wrapped
 #' @param max_width numeric(1). Maximum width, in characters, that the
 #' text should be wrapped at.
+#' @param hard logical(1). Should hard wrapping (embedding newlines in
+#' the incoming strings) or soft (breaking wrapped strings into vectors
+#' of length >1) be used. Defaults to `FALSE` (ie soft wrapping).
 #'
 #' @details      word      wrapping     happens      as      with
 #'     \link[base:strwrap]{base::strwrap}    with     the    following
@@ -311,9 +359,9 @@ new_line_warning <- function(str_v) {
 #'     wordwrapping.
 #'
 #' @return a string (`wrap_string` or character vector (`wrap_txt`) containing
-#' the word-wrapped content.
+#' the hard or soft word-wrapped content.
 #' @export
-wrap_string <- function(str, max_width) {
+wrap_string <- function(str, max_width, hard = FALSE) {
   stopifnot(is.character(str) && length(str) == 1)
   naive <- strwrap(str, max_width + 1)
   while (any(nchar(naive) > max_width)) {
@@ -355,6 +403,9 @@ wrap_string <- function(str, max_width) {
     str <- paste(good, collapse = " ")
     naive <- strwrap(str, max_width + 1)
   }
+  if (hard) {
+    naive <- paste(naive, collapse = "\n")
+  }
   naive
 }
 
@@ -362,8 +413,8 @@ wrap_string <- function(str, max_width) {
 #' text-wrapped.
 #' @rdname wrap_string
 #' @export
-wrap_txt <- function(txt, max_width) {
-  unlist(lapply(txt, wrap_string, max_width = max_width), use.names = FALSE)
+wrap_txt <- function(txt, max_width, hard = FALSE) {
+  unlist(lapply(txt, wrap_string, max_width = max_width, hard = hard), use.names = FALSE)
 }
 
 ## #' Wrap title and footer materials on a table-like object

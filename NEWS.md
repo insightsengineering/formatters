@@ -1,5 +1,10 @@
-## formatters 0.3.4.4
- * placeholder
+## formatters 0.3.4.5
+ * `toString` `MatrixPrintForm` method now uses `widths` to wrap formatted strings, effectively wrapping
+   cell values, row labels and column labels of table-like objects.
+ * `MatrixPrintForm` class now carries around `has_topleft` information explicitly, getter `mf_has_topleft`
+ * Bug rendering `mf_lgrouping` non-functional has been fixed
+ * `wrap_text` and `wrap_string` now accept the `hard` argument (default `FALSE`) indicating whether 'hard'
+   word-wrapping (ie explicit embedding of newline characters) should be performed.
 
 ## formatters 0.3.4
  * `nlines` now accepts both `colwidths` and `max_width`, defaulting to `NULL` for both
