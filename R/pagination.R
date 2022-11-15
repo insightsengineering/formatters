@@ -312,25 +312,29 @@ pag_indices_inner <- function(pagdf, rlpp,
 
 #' Find Column Indicies for Vertical Pagination
 #' @param obj ANY. object to be paginated. Must have a \code{\link{matrix_form}} method.
-#' @param cpp numeric(1). Number of columns per page
-#' @param colwidths numeric vector. Column widths for use with vertical pagination.
+#' @param cpp numeric(1). Number of characters per page (width)
+#' @param colwidths numeric vector. Column widths (in characters) for use with vertical pagination.
+#' @param rep_cols numeric(1). Number of 'columns' to be repeated on every page. Defaults to 1
+#'   (e.g., row labels).
 #' @inheritParams pag_indices_inner
 #'
 #' @return A list partitioning the vector of column indices
-#' into subsets for 1 or more vertically paginated pages.
+#' into subsets for 1 or more horizontally paginated pages.
 #'
 #' @examples
 #' mf <- basic_matrix_form(df = mtcars)
 #' colpaginds <- vert_pag_indices(mf)
 #' lapply(colpaginds, function(j) mtcars[, j, drop = FALSE])
 #' @export
-vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE) {
+vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, rep_cols = 1L) {
   strm <- matrix_form(obj, TRUE)
 
   clwds <- colwidths %||% propose_column_widths(strm)
-
+  if (!is(rep_cols, "numeric") || is.na(rep_cols) || rep_cols <= 0) {
+    stop("got invalid number of columns to be repeated: ", rep_cols)
+  }
   pdfrows <- lapply(
-    2:ncol(strm$strings),
+    (rep_cols + 1L):ncol(strm$strings),
     function(i) {
       pagdfrow(
         row = NA,
@@ -348,7 +352,7 @@ vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE) {
 
   pdf <- do.call(rbind, pdfrows)
   res <- pag_indices_inner(pdf,
-    rlpp = cpp - clwds[1],
+    rlpp = cpp - sum(clwds[seq_len(rep_cols)]),
     verbose = verbose,
     min_siblings = 1,
     row = FALSE
