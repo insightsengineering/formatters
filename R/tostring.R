@@ -129,7 +129,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
 
   stopifnot(length(widths) == ncol(mat$strings))
-  nl_header <- attr(mat, "nlines_header")
+
 
 
   ## format the to ASCII
@@ -157,6 +157,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
   spans <- mat$spans
   ##    ri <- mat$row_info
   ref_fnotes <- mat$ref_footnotes
+  nl_header <- mf_nlheader(mat)
 
   cell_widths_mat <- .calc_cell_widths(mat, widths, col_gap)
 
@@ -194,7 +195,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
     bdy_cont <- tail(content, -nl_header)
     ## unfortunately we count "header rows" wrt lihnegrouping so it
     ## doesn't match the real (ie body) rows as is
-    row_grouping <- tail(x$line_grouping, -nl_header) - attr(x, "nrow_header")
+    row_grouping <- tail(x$line_grouping, -nl_header) - mf_nrheader(x)
     nrbody <- NROW(bdy_cont)
     stopifnot(length(row_grouping) == nrbody)
     sec_seps_df <- sec_seps_df[!is.na(sec_seps_df$trailing_sep), ]

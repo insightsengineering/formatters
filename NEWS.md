@@ -1,3 +1,8 @@
+## formatters 0.3.4.7
+ * number of header lines (`mf_nlheader`) is now a computed attribute rather than a stored one.
+ * `mf_nlheader<-` has been removed for the reason above.
+ * Fix bug in position of header separator when columns have wordwrapping (#68)
+
 ## formatters 0.3.4.6
  * `vert_pag_indices` now accepts `rep_cols` to control how many columns act as 'row-label-like', as
    required by `rlistings`
