@@ -12,15 +12,14 @@ setOldClass(c("MatrixPrintForm", "list"))
 
 mform_handle_newlines <- function(matform) {
   has_topleft <- mf_has_topleft(matform)
-  ## row_nlines <- apply(matform$strings, 1, nlines)
   strmat <- mf_strings(matform)
   frmmat <- mf_formats(matform)
   row_nlines <- apply(strmat, 1, function(x) max(vapply(x, nlines, 1L), 1L))
-  nlines_header <- mf_nlheader(matform) ## attr(matform, "nlines_header") # nolint
-  nr_header <- mf_nrheader(matform) ## attr(matform, "nrow_header")
-  nrows <- nrow(strmat) # matform$strings)
+  nr_header <- mf_nrheader(matform)
+  nrows <- nrow(strmat)
   if (any(row_nlines > 1)) {
     hdr_inds <- 1:nr_header
+    ## used below even though we don't store it on the resulting object
     new_nlines_hdr <- sum(row_nlines[hdr_inds])
     ## groundwork for sad haxx to get tl to not be messed up
     if (has_topleft) {
@@ -28,7 +27,6 @@ mform_handle_newlines <- function(matform) {
     } else {
       tl <- character()
     }
-    ## matform$strings <- rbind(expand_mat_rows(matform$strings[hdr_inds, , drop = FALSE], row_nlines[hdr_inds], cpadder = pad_vert_bottom), # nolint
     newstrmat <- rbind(
       expand_mat_rows(strmat[hdr_inds, , drop = FALSE],
         row_nlines[hdr_inds],
@@ -57,17 +55,10 @@ mform_handle_newlines <- function(matform) {
     }
     mf_strings(matform) <- newstrmat
     mf_formats(matform) <- newfrmmat
-    ## matform$spans <- expand_mat_rows(matform$spans, row_nlines, rep_vec_to_len)
     mf_spans(matform) <- expand_mat_rows(mf_spans(matform), row_nlines, rep_vec_to_len)
-    ## matform$aligns <- expand_mat_rows(matform$aligns, row_nlines, rep_vec_to_len)
     mf_aligns(matform) <- expand_mat_rows(mf_aligns(matform), row_nlines, rep_vec_to_len)
-    ## matform$display <- expand_mat_rows(matform$display, row_nlines, rep_vec_to_len)
     mf_display(matform) <- expand_mat_rows(mf_display(matform), row_nlines, rep_vec_to_len)
-    ## matform$line_grouping <- rep(1:nrows, times = row_nlines)
     mf_lgrouping(matform) <- rep(1:nrows, times = row_nlines)
-
-    ## attr(matform, "nlines_header") <- sum(row_nlines[1:nr_header])
-    mf_nlheader(matform) <- new_nlines_hdr
   }
 
   matform
@@ -223,7 +214,6 @@ MatrixPrintForm <- function(strings = NULL,
       table_inset = as.integer(table_inset),
       has_topleft = has_topleft
     ),
-    nlines_header = nlines_header, ## this is done for real in .do_mat_expand nownlines_header,
     nrow_header = nrow_header,
     ncols = ncs,
     class = c("MatrixPrintForm", "list")
@@ -290,7 +280,7 @@ mf_rfnotes <- function(mf) mf$ref_footnotes
 
 #' @export
 #' @rdname mpf_accessors
-mf_nlheader <- function(mf) attr(mf, "nlines_header", exact = TRUE)
+mf_nlheader <- function(mf) sum(mf_lgrouping(mf) <= mf_nrheader(mf))
 
 #' @export
 #' @rdname mpf_accessors
@@ -385,12 +375,6 @@ mf_nrheader <- function(mf) attr(mf, "nrow_header", exact = TRUE)
 }
 
 
-#' @export
-#' @rdname mpf_accessors
-`mf_nlheader<-` <- function(mf, value) {
-  attr(mf, "nlines_header") <- value
-  mf
-}
 
 #' @export
 #' @rdname mpf_accessors
