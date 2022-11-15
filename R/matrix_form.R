@@ -59,7 +59,6 @@ mform_handle_newlines <- function(matform) {
     mf_aligns(matform) <- expand_mat_rows(mf_aligns(matform), row_nlines, rep_vec_to_len)
     mf_display(matform) <- expand_mat_rows(mf_display(matform), row_nlines, rep_vec_to_len)
     mf_lgrouping(matform) <- rep(1:nrows, times = row_nlines)
-
   }
 
   matform
