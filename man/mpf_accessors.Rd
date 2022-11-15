@@ -20,7 +20,6 @@
 \alias{mf_rinfo<-}
 \alias{mf_lgrouping<-}
 \alias{mf_rfnotes<-}
-\alias{mf_nlheader<-}
 \alias{mf_nrheader<-}
 \title{Setters and Getters for aspects of MatrixPrintForm Objects}
 \usage{
@@ -61,8 +60,6 @@ mf_rinfo(mf) <- value
 mf_lgrouping(mf) <- value
 
 mf_rfnotes(mf) <- value
-
-mf_nlheader(mf) <- value
 
 mf_nrheader(mf) <- value
 }
