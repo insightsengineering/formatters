@@ -330,8 +330,9 @@ vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, r
   strm <- matrix_form(obj, TRUE)
 
   clwds <- colwidths %||% propose_column_widths(strm)
-  if(!is(rep_cols, "numeric") || is.na(rep_cols) || rep_cols <= 0)
-      stop("got invalid number of columns to be repeated: ", rep_cols)
+  if (!is(rep_cols, "numeric") || is.na(rep_cols) || rep_cols <= 0) {
+    stop("got invalid number of columns to be repeated: ", rep_cols)
+  }
   pdfrows <- lapply(
     (rep_cols + 1L):ncol(strm$strings),
     function(i) {
