@@ -1,4 +1,4 @@
-## formatters 0.3.4.7
+## formatters 0.3.4.8
  * number of header lines (`mf_nlheader`) is now a computed attribute rather than a stored one.
  * `mf_nlheader<-` has been removed for the reason above.
  * Fix bug in position of header separator when columns have wordwrapping (#68)
