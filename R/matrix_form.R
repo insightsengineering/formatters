@@ -390,6 +390,10 @@ setMethod(
   function(x) attr(x, "ncols", exact = TRUE)
 )
 
+#' @export
+#' @rdname mpf_accessors
+mpf_has_rlabels <- function(mf) ncol(mf$strings) > ncol(mf)
+
 #' Create spoof matrix form from a data.frame
 #'
 #' This is  useful primarily  for writing  testing/examples, and as a
@@ -459,6 +463,7 @@ basic_matrix_form <- function(df) {
     row_info = rowdf,
     has_topleft = FALSE,
     nlines_header = 1,
-    nrow_header = 1
+    nrow_header = 1,
+    has_rowlabs = TRUE
   )
 }

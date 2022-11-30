@@ -21,6 +21,7 @@
 \alias{mf_lgrouping<-}
 \alias{mf_rfnotes<-}
 \alias{mf_nrheader<-}
+\alias{mpf_has_rlabels}
 \title{Setters and Getters for aspects of MatrixPrintForm Objects}
 \usage{
 mf_strings(mf)
@@ -62,6 +63,8 @@ mf_lgrouping(mf) <- value
 mf_rfnotes(mf) <- value
 
 mf_nrheader(mf) <- value
+
+mpf_has_rlabels(mf)
 }
 \arguments{
 \item{mf}{MatrixPrintForm(1). A MatrixPrintForm object}

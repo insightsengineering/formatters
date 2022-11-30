@@ -9,21 +9,23 @@ vert_pag_indices(
   cpp = 40,
   colwidths = NULL,
   verbose = FALSE,
-  rep_cols = 1L
+  rep_cols = 0L
 )
 }
 \arguments{
-\item{obj}{ANY. object to be paginated. Must have a \code{\link{matrix_form}} method.}
+\item{obj}{ANY.  object   to   be  paginated.   Must  have   a
+\code{\link{matrix_form}} method.}
 
 \item{cpp}{numeric(1). Number of characters per page (width)}
 
-\item{colwidths}{numeric vector. Column widths (in characters) for use with vertical pagination.}
+\item{colwidths}{numeric vector.  Column widths (in characters) for
+use with vertical pagination.}
 
 \item{verbose}{logical(1). Should additional informative messages about the search for
 pagination breaks be shown. Defaults to \code{FALSE}.}
 
-\item{rep_cols}{numeric(1). Number of 'columns' to be repeated on every page. Defaults to 1
-(e.g., row labels).}
+\item{rep_cols}{numeric(1). Number of \emph{columns} (not including
+row labels) to be repeated on every page. Defaults to 0}
 }
 \value{
 A list partitioning the vector of column indices

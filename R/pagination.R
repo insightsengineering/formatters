@@ -136,11 +136,12 @@ valid_pag <- function(pagdf,
   sectlines <- if (start == guess) 0L else sum(!is.na(pagdf[start:(guess - 1), "trailing_sep"]))
   if (reflines > 0) reflines <- reflines + if (have_col_fnotes) 0L else div_height + 1L
   lines <- rowlines + reflines + sectlines # guess - start + 1 because inclusive of start
+  rep_ext <- pagdf$par_extent[start]
   if (rowlines > rlpp) {
     if (verbose) {
       message(sprintf(
         "\t....................... FAIL: %s take up too much space (%d %s)",
-        ifelse(row, "rows", "columns"), rowlines,
+        ifelse(row, "rows", "columns"), rowlines + rep_ext,
         ifelse(row, "lines", "characters")
       ))
     }
@@ -210,7 +211,7 @@ valid_pag <- function(pagdf,
     }
   }
   if (verbose) {
-    message("\t....................... OK")
+    message("\t....................... OK [", lines + rep_ext, if(row) " lines]" else " chars]")
   }
   TRUE
 }
@@ -311,11 +312,13 @@ pag_indices_inner <- function(pagdf, rlpp,
 }
 
 #' Find Column Indicies for Vertical Pagination
-#' @param obj ANY. object to be paginated. Must have a \code{\link{matrix_form}} method.
+#' @param  obj   ANY.  object   to   be  paginated.   Must  have   a
+#'     \code{\link{matrix_form}} method.
 #' @param cpp numeric(1). Number of characters per page (width)
-#' @param colwidths numeric vector. Column widths (in characters) for use with vertical pagination.
-#' @param rep_cols numeric(1). Number of 'columns' to be repeated on every page. Defaults to 1
-#'   (e.g., row labels).
+#' @param colwidths numeric vector.  Column widths (in characters) for
+#'     use with vertical pagination.
+#' @param rep_cols numeric(1). Number of \emph{columns} (not including
+#'     row labels) to be repeated on every page. Defaults to 0
 #' @inheritParams pag_indices_inner
 #'
 #' @return A list partitioning the vector of column indices
@@ -326,33 +329,54 @@ pag_indices_inner <- function(pagdf, rlpp,
 #' colpaginds <- vert_pag_indices(mf)
 #' lapply(colpaginds, function(j) mtcars[, j, drop = FALSE])
 #' @export
-vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, rep_cols = 1L) {
+vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, rep_cols = 0L) {
   strm <- matrix_form(obj, TRUE)
 
   clwds <- colwidths %||% propose_column_widths(strm)
-  if (!is(rep_cols, "numeric") || is.na(rep_cols) || rep_cols <= 0) {
+  if (!is(rep_cols, "numeric") || is.na(rep_cols) || rep_cols < 0) {
     stop("got invalid number of columns to be repeated: ", rep_cols)
   }
+  has_rlabs <- mpf_has_rlabels(strm)
+  rlabs_flag <- as.integer(has_rlabs)
+  rlab_extent <- if(has_rlabs) clwds[1] else 0L
+  has_repc <- rep_cols > 0L
+  sqstart <- rlabs_flag + 1L #rep_cols + 1L
+  rep_extent <- 0L
+  ## if(has_repc) {
+  ##     rep_extent <- sum(clwds[rlabs_flag + seq_len(rep_cols)]) +
+  ##         strm$col_gap * rep_cols
+  ## }
   pdfrows <- lapply(
-    (rep_cols + 1L):ncol(strm$strings),
+    (sqstart):ncol(strm$strings),
     function(i) {
+      rownum <- i - rlabs_flag
+      rep_inds <- seq_len(rep_cols)[seq_len(rep_cols) < rownum]
+      rep_extent_i <- sum(0L, clwds[rlabs_flag + rep_inds]) + strm$col_gap * length(rep_inds)
       pagdfrow(
         row = NA,
-        nm = i - 1,
-        lab = i - 1,
-        rnum = i - 1,
+        nm = rownum,
+        lab = rownum,
+        rnum = rownum,
         pth = NA,
         extent = clwds[i] + strm$col_gap,
+        repext = rep_extent_i, #sum(clwds[rep_cols]) + strm$col_gap * max(0, (length(rep_cols) - 1)),
+        repind = rep_inds, #rep_cols,
         rclass = "stuff",
         sibpos = 1 - 1,
         nsibs = 1 - 1
       )
     }
   )
-
   pdf <- do.call(rbind, pdfrows)
+  rep_extent <- pdf$par_extent[nrow(pdf)]
+  rcpp <- cpp - table_inset(strm) - rlab_extent #rep_extent - table_inset(strm) - rlab_extent
+  if(verbose)
+      message("Adjusted characters per page: ", rcpp,
+              " [original: ", cpp,## if(has_repc) paste0(", exent of ", rep_cols, " rep cols: ", rep_extent),
+              ", table inset: ", table_inset(strm), if(has_rlabs) paste0(", row labels: ", clwds[1]),
+              "]")
   res <- pag_indices_inner(pdf,
-    rlpp = cpp - sum(clwds[seq_len(rep_cols)]),
+    rlpp = rcpp, #cpp - sum(clwds[seq_len(rep_cols)]),
     verbose = verbose,
     min_siblings = 1,
     row = FALSE
