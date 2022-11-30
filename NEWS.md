@@ -1,3 +1,11 @@
+## formatters 0.3.4.9
+ * Fixed off-by-one error in basic pagination machinery
+ * Pagination with `verbose = TRUE` is now more informative
+ * New `MatrixPrintForm` accessor: `mpf_has_rlabels` determines whether the MPF$strings has a column which are label rows (ie no column index in originating object).
+ * 
+ 
+ 
+ 
 ## formatters 0.3.4.8
  * number of header lines (`mf_nlheader`) is now a computed attribute rather than a stored one.
  * `mf_nlheader<-` has been removed for the reason above.

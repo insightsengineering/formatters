@@ -376,7 +376,7 @@ hpaginds <- pag_indices_inner(mf_rinfo(df2mf),
 
 expect_true(all(lengths(hpaginds) == 2L))
 
-vpaginds <- vert_pag_indices(df2mf, cpp = 40)
+vpaginds <- vert_pag_indices(df2mf, cpp = 40, verbose = TRUE)
 
 expect_identical(
   lengths(vpaginds),
@@ -390,6 +390,23 @@ expect_identical(
   c(2L, 2L, 2L, 3L, 2L, 1L)
 )
 
+vpaginds3 <- vert_pag_indices(df2mf, cpp = 44, verbose = TRUE, rep_cols = 1L)
+
+## make sure it was repeated as requested
+expect_identical(sapply(vpaginds3, function(x) x[1]),
+                 rep(1L, 5))
+
+## make sure it doesn't appear more than once
+expect_identical(sapply(vpaginds3, function(x) sum(x == 1L)),
+                 rep(1L, 5))
+
+
+## they all appear
+expect_equal(sort(unique(unlist(vpaginds3))),
+             1:12)
+
+expect_identical(lengths(vpaginds3),
+                 c(3L, 3L, 3L, 4L, 3L))
 
 df3 <- data.frame(
   x = 1:5, y = c(1:3, 8, 9),
