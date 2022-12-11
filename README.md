@@ -1,34 +1,24 @@
 # formatters
 
 <!-- start badges -->
-[![Check 🛠](https://github.com/insightsengineering//actions/workflows/check.yaml/badge.svg)](https://github.com/insightsengineering//actions/workflows/check.yaml)
-[![Docs 📚](https://github.com/insightsengineering//actions/workflows/docs.yaml/badge.svg)](https://insightsengineering.github.io//)
-[![Code Coverage 📔](https://raw.githubusercontent.com/insightsengineering//_xml_coverage_reports/data/main/badge.svg)](https://raw.githubusercontent.com/insightsengineering//_xml_coverage_reports/data/main/coverage.xml)
+[![Check 🛠](https://github.com/insightsengineering/formatters/actions/workflows/check.yaml/badge.svg)](https://github.com/insightsengineering/formatters/actions/workflows/check.yaml)
+[![Docs 📚](https://github.com/insightsengineering/formatters/actions/workflows/docs.yaml/badge.svg)](https://insightsengineering.github.io/formatters/)
+[![Code Coverage 📔](https://raw.githubusercontent.com/insightsengineering/formatters/_xml_coverage_reports/data/main/badge.svg)](https://raw.githubusercontent.com/insightsengineering/formatters/_xml_coverage_reports/data/main/coverage.xml)
 
-![GitHub forks](https://img.shields.io/github/forks/insightsengineering/?style=social)
-![GitHub Repo stars](https://img.shields.io/github/stars/insightsengineering/?style=social)
+![GitHub forks](https://img.shields.io/github/forks/insightsengineering/formatters?style=social)
+![GitHub Repo stars](https://img.shields.io/github/stars/insightsengineering/formatters?style=social)
 
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/insightsengineering/)
-![GitHub contributors](https://img.shields.io/github/contributors/insightsengineering/)
-![GitHub last commit](https://img.shields.io/github/last-commit/insightsengineering/)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/insightsengineering/)
-![GitHub repo size](https://img.shields.io/github/repo-size/insightsengineering/)
-![GitHub language count](https://img.shields.io/github/languages/count/insightsengineering/)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/insightsengineering/formatters)
+![GitHub contributors](https://img.shields.io/github/contributors/insightsengineering/formatters)
+![GitHub last commit](https://img.shields.io/github/last-commit/insightsengineering/formatters)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/insightsengineering/formatters)
+![GitHub repo size](https://img.shields.io/github/repo-size/insightsengineering/formatters)
+![GitHub language count](https://img.shields.io/github/languages/count/insightsengineering/formatters)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![Current Version](https://img.shields.io/github/r-package/v/insightsengineering//main?color=purple\&label=package%20version)](https://github.com/insightsengineering//tree/main)
-[![Open Issues](https://img.shields.io/github/issues-raw/insightsengineering/?color=red\&label=open%20issues)](https://github.com/insightsengineering//issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
+[![Current Version](https://img.shields.io/github/r-package/v/insightsengineering/formatters/main?color=purple\&label=package%20version)](https://github.com/insightsengineering/formatters/tree/main)
+[![Open Issues](https://img.shields.io/github/issues-raw/insightsengineering/formatters?color=red\&label=open%20issues)](https://github.com/insightsengineering/formatters/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
 <!-- end badges -->
 
-# formatters
-
-<!-- start badges -->
-
-[![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![CRAN status](https://www.r-pkg.org/badges/version-last-release/formatters)](https://www.r-pkg.org/badges/version-last-release/formatters)
-[![CRAN monthly downloads](https://cranlogs.r-pkg.org/badges/formatters)](https://cranlogs.r-pkg.org/badges/formatters)
-[![Code Coverage](https://raw.githubusercontent.com/insightsengineering/formatters/_xml_coverage_reports/data/main/badge.svg)](https://raw.githubusercontent.com/insightsengineering/formatters/_xml_coverage_reports/data/main/coverage.xml)
-
-<!-- end badges -->
 
 The `formatters` package provides two core pieces of functionality, both
 relatead to ASCII rendering:
@@ -156,8 +146,6 @@ matrix_form.data.frame <- function(df) {
     ## center alignment for column labels, left alignment for everything else
     aligns <- rbind("center",
                     matrix("left", nrow = NROW(df), ncol = fnc))
-
-
     ## build up fake pagination df,
     rowdf <- basic_pagdf(row.names(df))
     matrix_print_form(strings = strings,
@@ -169,8 +157,6 @@ matrix_form.data.frame <- function(df) {
                       nlines_header = 1,
                       nrow_header = 1)
 }
-
-
 cat(toString(matrix_form.data.frame(mtcars)))
 
                       mpg    cyl   disp    hp    drat    wt     qsec    vs   am   gear   carb
