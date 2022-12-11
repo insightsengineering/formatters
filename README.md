@@ -19,7 +19,6 @@
 [![Open Issues](https://img.shields.io/github/issues-raw/insightsengineering/formatters?color=red\&label=open%20issues)](https://github.com/insightsengineering/formatters/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
 <!-- end badges -->
 
-
 The `formatters` package provides two core pieces of functionality, both
 relatead to ASCII rendering:
 
