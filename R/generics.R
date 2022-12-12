@@ -297,8 +297,8 @@ setGeneric("obj_na_str<-", function(obj, value) standardGeneric("obj_na_str<-"))
 #' @exportMethod obj_na_str<-
 #' @rdname lab_name
 setMethod("obj_na_str<-", "ANY", function(obj, value) {
-    attr(obj, "format_na_str") <- value
-    obj
+  attr(obj, "format_na_str") <- value
+  obj
 })
 
 
