@@ -349,6 +349,13 @@ expect_identical(
 )
 
 
+## https://github.com/insightsengineering/formattesr/issues/77
+
+dfmf3 <- dfmf
+mf_rinfo(dfmf3)$trailing_sep[31] <- "-"
+str <- toString(dfmf3)
+expect_true(grepl("Volvo 142E", str))
+
 
 
 

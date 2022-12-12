@@ -1,10 +1,14 @@
+## formatters 0.3.4.11
+ * fix bug where portions of table after last section div (e.g., non-nested further analyses) were omitted (#77)
+ * fix bug in `mf_rinfo<-` checked the new value against the wrong dimensions.
+
 ## formatters 0.3.4.10
+ * New generic getter and setter for na-string (`obj_na_str` and `obj_na_str<-`, migrated from `rtables`)
+
+## formatters 0.3.4.9
  * Fixed off-by-one error in basic pagination machinery
  * Pagination with `verbose = TRUE` is now more informative
  * New `MatrixPrintForm` accessor: `mpf_has_rlabels` determines whether the MPF$strings has a column which are label rows (ie no column index in originating object).
- * 
- 
- 
  
 ## formatters 0.3.4.8
  * number of header lines (`mf_nlheader`) is now a computed attribute rather than a stored one.
