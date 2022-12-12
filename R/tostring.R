@@ -198,7 +198,10 @@ setMethod("toString", "MatrixPrintForm", function(x,
     row_grouping <- tail(x$line_grouping, -nl_header) - mf_nrheader(x)
     nrbody <- NROW(bdy_cont)
     stopifnot(length(row_grouping) == nrbody)
-    sec_seps_df <- sec_seps_df[!is.na(sec_seps_df$trailing_sep), ]
+    ## all rows with non-NA section divs and the final row (regardless of NA status)
+    ## fixes #77
+    sec_seps_df <- sec_seps_df[unique(c(which(!is.na(sec_seps_df$trailing_sep)),
+                                      NROW(sec_seps_df))), ]
     txt_body <- character()
     sec_strt <- 1
     section_rws <- sec_seps_df$abs_rownumber
@@ -214,6 +217,8 @@ setMethod("toString", "MatrixPrintForm", function(x,
         ),
         ## don't print section dividers if they would be the last thing before the
         ## footer divider
+        ## this also ensures an extraneous sec div won't be printed if we have non-sec-div
+        ## rows after the last sec div row (#77)
         if (sec_end < nrbody) {
           substr(
             strrep(sec_seps_df$trailing_sep[i], ncchar), 1,
