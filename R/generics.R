@@ -285,6 +285,21 @@ setMethod("obj_format<-", "ANY", function(obj, value) {
   obj
 })
 
+#' @rdname lab_name
+#' @export
+setGeneric("obj_na_str", function(obj) standardGeneric("obj_na_str"))
+#' @rdname lab_name
+#' @exportMethod obj_na_str
+setMethod("obj_na_str", "ANY", function(obj) attr(obj, "format_na_str", exact = TRUE))
+#' @rdname lab_name
+#' @export
+setGeneric("obj_na_str<-", function(obj, value) standardGeneric("obj_na_str<-"))
+#' @exportMethod obj_na_str<-
+#' @rdname lab_name
+setMethod("obj_na_str<-", "ANY", function(obj, value) {
+  attr(obj, "format_na_str") <- value
+  obj
+})
 
 
 #' General title/footer accessors
@@ -472,8 +487,7 @@ setGeneric("table_inset", function(obj) standardGeneric("table_inset"))
 
 #' @rdname table_inset
 #' @export
-setMethod(
-  "table_inset", "MatrixPrintForm",
+setMethod("table_inset", "MatrixPrintForm",
   function(obj) obj$table_inset
 )
 
@@ -484,8 +498,7 @@ setGeneric("table_inset<-", function(obj, value) standardGeneric("table_inset<-"
 
 #' @rdname table_inset
 #' @export
-setMethod(
-  "table_inset<-", "MatrixPrintForm",
+setMethod("table_inset<-", "MatrixPrintForm",
   function(obj, value) {
     newval <- as.integer(value)
     if (is.na(newval) || newval < 0) {
