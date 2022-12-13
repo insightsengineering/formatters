@@ -487,7 +487,8 @@ setGeneric("table_inset", function(obj) standardGeneric("table_inset"))
 
 #' @rdname table_inset
 #' @export
-setMethod("table_inset", "MatrixPrintForm",
+setMethod(
+  "table_inset", "MatrixPrintForm",
   function(obj) obj$table_inset
 )
 
@@ -498,7 +499,8 @@ setGeneric("table_inset<-", function(obj, value) standardGeneric("table_inset<-"
 
 #' @rdname table_inset
 #' @export
-setMethod("table_inset<-", "MatrixPrintForm",
+setMethod(
+  "table_inset<-", "MatrixPrintForm",
   function(obj, value) {
     newval <- as.integer(value)
     if (is.na(newval) || newval < 0) {
