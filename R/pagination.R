@@ -211,7 +211,7 @@ valid_pag <- function(pagdf,
     }
   }
   if (verbose) {
-    message("\t....................... OK [", lines + rep_ext, if(row) " lines]" else " chars]")
+    message("\t....................... OK [", lines + rep_ext, if (row) " lines]" else " chars]")
   }
   TRUE
 }
@@ -338,10 +338,10 @@ vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, r
   }
   has_rlabs <- mpf_has_rlabels(strm)
   rlabs_flag <- as.integer(has_rlabs)
-  rlab_extent <- if(has_rlabs) clwds[1] else 0L
-  has_repc <- rep_cols > 0L
+  rlab_extent <- if (has_rlabs) clwds[1] else 0L
+  #has_repc <- rep_cols > 0L
   sqstart <- rlabs_flag + 1L #rep_cols + 1L
-  rep_extent <- 0L
+  ## rep_extent <- 0L
   ## if(has_repc) {
   ##     rep_extent <- sum(clwds[rlabs_flag + seq_len(rep_cols)]) +
   ##         strm$col_gap * rep_cols
@@ -368,12 +368,12 @@ vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, r
     }
   )
   pdf <- do.call(rbind, pdfrows)
-  rep_extent <- pdf$par_extent[nrow(pdf)]
+  # rep_extent <- pdf$par_extent[nrow(pdf)]
   rcpp <- cpp - table_inset(strm) - rlab_extent #rep_extent - table_inset(strm) - rlab_extent
-  if(verbose)
+  if (verbose)
       message("Adjusted characters per page: ", rcpp,
-              " [original: ", cpp,## if(has_repc) paste0(", exent of ", rep_cols, " rep cols: ", rep_extent),
-              ", table inset: ", table_inset(strm), if(has_rlabs) paste0(", row labels: ", clwds[1]),
+              " [original: ", cpp,
+              ", table inset: ", table_inset(strm), if (has_rlabs) paste0(", row labels: ", clwds[1]),
               "]")
   res <- pag_indices_inner(pdf,
     rlpp = rcpp, #cpp - sum(clwds[seq_len(rep_cols)]),
