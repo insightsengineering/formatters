@@ -339,8 +339,8 @@ vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, r
   has_rlabs <- mpf_has_rlabels(strm)
   rlabs_flag <- as.integer(has_rlabs)
   rlab_extent <- if (has_rlabs) clwds[1] else 0L
-  #has_repc <- rep_cols > 0L
-  sqstart <- rlabs_flag + 1L #rep_cols + 1L
+  # has_repc <- rep_cols > 0L
+  sqstart <- rlabs_flag + 1L # rep_cols + 1L
   ## rep_extent <- 0L
   ## if(has_repc) {
   ##     rep_extent <- sum(clwds[rlabs_flag + seq_len(rep_cols)]) +
@@ -359,8 +359,8 @@ vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, r
         rnum = rownum,
         pth = NA,
         extent = clwds[i] + strm$col_gap,
-        repext = rep_extent_i, #sum(clwds[rep_cols]) + strm$col_gap * max(0, (length(rep_cols) - 1)),
-        repind = rep_inds, #rep_cols,
+        repext = rep_extent_i, # sum(clwds[rep_cols]) + strm$col_gap * max(0, (length(rep_cols) - 1)),
+        repind = rep_inds, # rep_cols,
         rclass = "stuff",
         sibpos = 1 - 1,
         nsibs = 1 - 1
@@ -369,14 +369,17 @@ vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, r
   )
   pdf <- do.call(rbind, pdfrows)
   # rep_extent <- pdf$par_extent[nrow(pdf)]
-  rcpp <- cpp - table_inset(strm) - rlab_extent #rep_extent - table_inset(strm) - rlab_extent
-  if (verbose)
-      message("Adjusted characters per page: ", rcpp,
-              " [original: ", cpp,
-              ", table inset: ", table_inset(strm), if (has_rlabs) paste0(", row labels: ", clwds[1]),
-              "]")
+  rcpp <- cpp - table_inset(strm) - rlab_extent # rep_extent - table_inset(strm) - rlab_extent
+  if (verbose) {
+    message(
+      "Adjusted characters per page: ", rcpp,
+      " [original: ", cpp,
+      ", table inset: ", table_inset(strm), if (has_rlabs) paste0(", row labels: ", clwds[1]),
+      "]"
+    )
+  }
   res <- pag_indices_inner(pdf,
-    rlpp = rcpp, #cpp - sum(clwds[seq_len(rep_cols)]),
+    rlpp = rcpp, # cpp - sum(clwds[seq_len(rep_cols)]),
     verbose = verbose,
     min_siblings = 1,
     row = FALSE

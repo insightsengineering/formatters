@@ -145,8 +145,10 @@ setMethod("toString", "MatrixPrintForm", function(x,
   mat <- mform_handle_newlines(mat)
   reindent_new_idx <- match(reindent_old_idx, mf_lgrouping(mat))
   if (anyNA(reindent_new_idx)) {
-      stop("Unable to remap indenting after cell content text wrapping. ",  # nocov
-           "Please contact the maintainer, this should not happen")  # nocov
+    stop(
+      "Unable to remap indenting after cell content text wrapping. ", # nocov
+      "Please contact the maintainer, this should not happen"
+    ) # nocov
   }
   mat$strings[reindent_new_idx, 1] <- paste0(old_indent[need_reindent], mat$strings[reindent_new_idx, 1])
   body <- mat$strings
@@ -198,8 +200,10 @@ setMethod("toString", "MatrixPrintForm", function(x,
     stopifnot(length(row_grouping) == nrbody)
     ## all rows with non-NA section divs and the final row (regardless of NA status)
     ## fixes #77
-    sec_seps_df <- sec_seps_df[unique(c(which(!is.na(sec_seps_df$trailing_sep)),
-                                      NROW(sec_seps_df))), ]
+    sec_seps_df <- sec_seps_df[unique(c(
+      which(!is.na(sec_seps_df$trailing_sep)),
+      NROW(sec_seps_df)
+    )), ]
     txt_body <- character()
     sec_strt <- 1
     section_rws <- sec_seps_df$abs_rownumber
