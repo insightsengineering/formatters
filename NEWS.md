@@ -1,3 +1,6 @@
+## formatters 0.3.4.12
+ * Reintroduce `obj_na_str` and `obj_na_str<-` after regression removed them.
+
 ## formatters 0.3.4.11
  * fix bug where portions of table after last section div (e.g., non-nested further analyses) were omitted (#77)
  * fix bug in `mf_rinfo<-` checked the new value against the wrong dimensions.

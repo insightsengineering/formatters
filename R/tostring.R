@@ -108,9 +108,6 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
   inset <- table_inset(mat)
 
-  ## if(tf_wrap)
-  ##     mat <- wrap_title_footer(mat, max_width = max_width, inset = inset)
-
   if (is.null(widths)) {
     widths <- propose_column_widths(x)
   }
@@ -148,13 +145,16 @@ setMethod("toString", "MatrixPrintForm", function(x,
   mat <- mform_handle_newlines(mat)
   reindent_new_idx <- match(reindent_old_idx, mf_lgrouping(mat))
   if (anyNA(reindent_new_idx)) {
-    stop("Unable to remap indenting after cell content text wrapping. Please contact the maintainer, this should not happen")
-  } # nocov
+    stop(
+      "Unable to remap indenting after cell content text wrapping. ", # nocov
+      "Please contact the maintainer, this should not happen"
+    ) # nocov
+  }
   mat$strings[reindent_new_idx, 1] <- paste0(old_indent[need_reindent], mat$strings[reindent_new_idx, 1])
   body <- mat$strings
   aligns <- mat$aligns
   keep_mat <- mat$display
-  spans <- mat$spans
+  ## spans <- mat$spans
   ##    ri <- mat$row_info
   ref_fnotes <- mat$ref_footnotes
   nl_header <- mf_nlheader(mat)
@@ -200,8 +200,10 @@ setMethod("toString", "MatrixPrintForm", function(x,
     stopifnot(length(row_grouping) == nrbody)
     ## all rows with non-NA section divs and the final row (regardless of NA status)
     ## fixes #77
-    sec_seps_df <- sec_seps_df[unique(c(which(!is.na(sec_seps_df$trailing_sep)),
-                                      NROW(sec_seps_df))), ]
+    sec_seps_df <- sec_seps_df[unique(c(
+      which(!is.na(sec_seps_df$trailing_sep)),
+      NROW(sec_seps_df)
+    )), ]
     txt_body <- character()
     sec_strt <- 1
     section_rws <- sec_seps_df$abs_rownumber
@@ -326,17 +328,6 @@ setMethod("toString", "MatrixPrintForm", function(x,
   footer_txt
 }
 
-## pad_vert_center <- function(x, len) {
-##     needed <- len - length(x)
-##     if(needed < 0) stop("got vector already longer than target length this shouldn't happen")
-##     if(needed > 0) {
-##         bf <- ceiling(needed/2)
-##         af <- needed - bf
-##         x <- c(if(bf > 0) rep("", bf), x, if(af > 0) rep("", af))
-##     }
-##     x
-## }
-
 new_line_warning <- function(str_v) {
   if (any(unlist(sapply(str_v, grepl, pattern = "\n")))) {
     msg <- c(
@@ -422,78 +413,6 @@ wrap_string <- function(str, max_width, hard = FALSE) {
 wrap_txt <- function(txt, max_width, hard = FALSE) {
   unlist(lapply(txt, wrap_string, max_width = max_width, hard = hard), use.names = FALSE)
 }
-
-## #' Wrap title and footer materials on a table-like object
-## #'
-## #' @inheritParams wrap_string
-## #' @param obj. Table-like object. The MatrixPrintForm or Table-like object to modify
-## #' @param inset numeric(1). Inset amount in characters for the body. Defaults to
-## #' `table_inset(obj)` and so generally should not be set manually for objects that
-## #' whose class has a defined `table_inset` method.
-## #' @return `obj` with the main title, subtitles, referential footnotes, main footer
-## #' and prov footers word-wrapped.
-## #' @export
-## wrap_title_footer <- function(obj, max_width = NULL, inset = table_inset(obj) %||% 0L) {
-
-##     if(is.null(max_width))
-##         return(obj)
-
-##     main_title(obj) <- wrap_txt(main_title(obj), max_width = max_width)
-##     subtitles(obj) <- wrap_txt(subtitles(obj), max_width = max_width)
-##     ref_footnotes(obj) <- wrap_txt(ref_footnotes(obj), max_width = max_width - inset)
-##     main_footer(obj) <- wrap_txt(main_footer(obj), max_width = max_width - inset)
-##     prov_footer(obj) <- wrap_txt(prov_footer(obj), max_width = max_width)
-##     obj
-## }
-
-##   if (any(sapply(txt, function(x) nchar(x) > max_width))) {
-
-##     # Checking if any word is larger than max_width
-##     spl_txt_l <- unname(sapply(txt, function(x) {
-##       if (nchar(x) > 0) {
-##         strsplit(x, split = " ")
-##       } else {
-##         x
-##       }
-##     }))
-##     which_large_txt <- sapply(spl_txt_l, function(x) any(nchar(x) > max_width))
-
-##     if (any(which_large_txt)) {
-##       warning(
-##         "Found the following txt that could not be wrapped with max_width of ",
-##         max_width,
-##         ":\n- ",
-##         paste0(txt[which_large_txt], collapse = "\n- "),
-##         "\nAttempting at a split after ", max_width, " characters."
-##       )
-
-##       spl_txt_l[which_large_txt] <- lapply(
-##         spl_txt_l[which_large_txt],
-##         function(x) {
-##           unname(unlist(lapply(x, function(y) {
-##             sapply(
-##               seq(from = 1, to = nchar(y), by = max_width),
-##               function(i) substr(y, i, i + max_width - 1)
-##             )
-##           })))
-##         }
-##       )
-##       # Paste everything back together
-##       txt <- lapply(spl_txt_l, paste, collapse = " ")
-##     }
-##     # Main wrapper
-##     txt_out <- lapply(txt,
-##       strwrap,
-##       width = max_width + 1
-##     )
-##     names(txt_out) <- NULL
-##     txt_out <- unlist(txt_out)
-
-##     txt_out
-##   } else {
-##     unlist(txt)
-##   }
-## }
 
 pad_vert_top <- function(x, len) {
   c(x, rep("", len - length(x)))
