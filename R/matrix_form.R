@@ -340,7 +340,7 @@ mf_nrheader <- function(mf) attr(mf, "nrow_header", exact = TRUE)
 
 ## NB NROW(v) == length(v) for atomic vectors so this is ok for lgrouping as wellas rinfo
 .chknrow_and_replace <- function(mf, value, component, noheader = FALSE) {
-  strdim <- NROW(mf_strings(mf)) - if(noheader) mf_nlheader(mf) else 0L
+  strdim <- NROW(mf_strings(mf)) - if (noheader) mf_nlheader(mf) else 0L
   vdim <- NROW(value)
   if (!is.null(strdim) && !identical(strdim, vdim)) {
     stop(
