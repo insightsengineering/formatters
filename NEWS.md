@@ -1,5 +1,5 @@
 ## formatters 0.3.4.12
- * reintroduce `obj_na_str` and `obj_na_str<-` after regression removed them.
+ * Reintroduce `obj_na_str` and `obj_na_str<-` after regression removed them.
 
 ## formatters 0.3.4.11
  * fix bug where portions of table after last section div (e.g., non-nested further analyses) were omitted (#77)
