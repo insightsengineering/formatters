@@ -122,15 +122,15 @@ character vector.}
 \code{\link{table_inset}}}
 }
 \value{
-An object of class `MatrixPrintForm`. Currently this is
+An object of class \code{MatrixPrintForm}. Currently this is
 implemented as an S3 class inheriting from list with the following
 elements:
 \describe{
 \item{\code{strings}}{see argument}
 \item{\code{spans}}{see argument}
 \item{\code{aligns}}{see argument}
-\item{\code{display}}{logical matrix of same dimension as `strings`
-that specifies whether an element in `strings` will be displayed
+\item{\code{display}}{logical matrix of same dimension as \code{strings}
+that specifies whether an element in \code{strings} will be displayed
 when the table is rendered}
 \item{\code{formats}}{see arugment}
 \item{\code{row_info}}{see argument}
@@ -154,6 +154,6 @@ any row names/row labels}
 }
 }
 \description{
-This should generally only be called by `matrix_form` custom
+This should generally only be called by \code{matrix_form} custom
 methods, and almost never from other code.
 }

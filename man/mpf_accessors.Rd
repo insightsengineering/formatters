@@ -77,6 +77,6 @@ the modified MatrixPrintForm object in the case of a setter.
 }
 \description{
 Most of these functions, particularly the settters, are intended
-almost exclusively for internal use in, e.g., `matrix_form` methods,
+almost exclusively for internal use in, e.g., \code{matrix_form} methods,
 and should generally not be called by end users.
 }

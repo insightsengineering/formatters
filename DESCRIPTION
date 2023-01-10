@@ -31,7 +31,8 @@ Suggests:
 VignetteBuilder: 
     knitr
 Config/Needs/website: insightsengineering/nesttemplate
+Roxygen: list(markdown = TRUE)
 Encoding: UTF-8
 Language: en-US
 LazyData: true
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3

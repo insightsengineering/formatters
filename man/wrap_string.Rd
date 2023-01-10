@@ -17,22 +17,23 @@ text should be wrapped at.}
 
 \item{hard}{logical(1). Should hard wrapping (embedding newlines in
 the incoming strings) or soft (breaking wrapped strings into vectors
-of length >1) be used. Defaults to `FALSE` (ie soft wrapping).}
+of length >1) be used. Defaults to \code{FALSE} (ie soft wrapping).}
 
 \item{txt}{character. Vector of strings that should be (independently)
 text-wrapped.}
 }
 \value{
-a string (`wrap_string` or character vector (`wrap_txt`) containing
+a string (\code{wrap_string} or character vector (\code{wrap_txt}) containing
 the hard or soft word-wrapped content.
 }
 \description{
 Wrap a string to within a maximum width
 }
 \details{
-word      wrapping     happens      as      with
-    \link[base:strwrap]{base::strwrap}    with     the    following
-    exception: individual  words which are longer  than `max_width`
-    are  broken  up  in a  way  that  fits  with  the rest  of  the
-    wordwrapping.
+\if{html}{\out{<div class="sourceCode">}}\preformatted{ word      wrapping     happens      as      with
+\link[base:strwrap]\{base::strwrap\}    with     the    following
+exception: individual  words which are longer  than `max_width`
+are  broken  up  in a  way  that  fits  with  the rest  of  the
+wordwrapping.
+}\if{html}{\out{</div>}}
 }

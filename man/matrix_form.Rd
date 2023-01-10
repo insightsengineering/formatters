@@ -12,17 +12,17 @@ matrix_form(obj, indent_rownames = FALSE, indent_size = 2)
 \arguments{
 \item{obj}{ANY. Object to be transformed into a ready-to-render form (a MatrixPrintForm object)}
 
-\item{indent_rownames}{logical(1), if TRUE the column with the row names in the `strings` matrix of has indented row
+\item{indent_rownames}{logical(1), if TRUE the column with the row names in the \code{strings} matrix of has indented row
 names (strings pre-fixed)}
 
 \item{indent_size}{numeric(1). Number of spaces to be used per level of indent (if supported by
 the relevant method). Defaults to 2.}
 }
 \value{
-A `MatrixPrintForm` classed list with the following elements:
+A \code{MatrixPrintForm} classed list with the following elements:
 \describe{
 \item{strings}{The content, as it should be printed, of the top-left material, column headers, row labels, and
-  cell values of \code{tt}}
+cell values of \code{tt}}
 \item{spans}{The column-span information for each print-string in the strings matrix}
 \item{aligns}{The text alignment for each print-string in the strings matrix}
 \item{display}{Whether each print-string in the strings matrix should be printed or not}.

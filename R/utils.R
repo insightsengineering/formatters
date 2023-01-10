@@ -2,7 +2,7 @@
 ## this one tiny utility function is NOT worth a dependency.
 ## modified it so any length 0 x grabs y
 
-#' '\%||\%' If length-0 alternative operator
+#' `%||%` If length-0 alternative operator
 #' @name ifnotlen0
 #'
 #'

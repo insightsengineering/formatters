@@ -68,7 +68,7 @@ after pagination.}
 \item{page_title}{logical(1). Currently Ignored.}
 
 \item{trailing_sep}{character(1). The string to used as a separator below this row during printing (or
-`NA_character_` for no separator).}
+\code{NA_character_} for no separator).}
 }
 \value{
 a single row data.frame with the columns appropriate for a pagination info data frame.

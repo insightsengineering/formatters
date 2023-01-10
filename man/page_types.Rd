@@ -11,11 +11,11 @@ page_dim(page_type)
 }
 \arguments{
 \item{page_type}{character(1). The name of a page size specification. Call
-`page_types` for supported values.}
+\code{page_types} for supported values.}
 }
 \value{
-for `page_types` a character vector of supported page types,
-for `page_dim` the dimensions (width, then height) of the selected page type.
+for \code{page_types} a character vector of supported page types,
+for \code{page_dim} the dimensions (width, then height) of the selected page type.
 }
 \description{
 Supported Named Page TypesList supported named page types

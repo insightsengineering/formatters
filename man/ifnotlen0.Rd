@@ -3,7 +3,7 @@
 \name{ifnotlen0}
 \alias{ifnotlen0}
 \alias{\%||\%}
-\title{'\%||\%' If length-0 alternative operator}
+\title{\verb{\%||\%} If length-0 alternative operator}
 \usage{
 a \%||\% b
 }
@@ -13,11 +13,11 @@ a \%||\% b
 \item{b}{ANY. Element to select if \code{a} is length 0}
 }
 \value{
-`a`, unless it  is length 0, in which case  `b` (even in the
-    case `b` is also length 0)
+\code{a}, unless it  is length 0, in which case  \code{b} (even in the
+case \code{b} is also length 0)
 }
 \description{
-'\%||\%' If length-0 alternative operator
+\verb{\%||\%} If length-0 alternative operator
 }
 \examples{
 6 \%||\% 10

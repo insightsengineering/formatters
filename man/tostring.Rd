@@ -23,7 +23,7 @@ toString(x, ...)
 
 \item{widths}{numeric (or  NULL). (proposed) widths for the columns
 of \code{x}. The expected length  of this numeric vector can be
-retrieved with  `ncol() + 1`  as the  column of row  names must
+retrieved with  \code{ncol() + 1}  as the  column of row  names must
 also be considered.}
 
 \item{tf_wrap}{logical(1). Should  the texts for  title, subtitle,
@@ -32,9 +32,9 @@ and footnotes be wrapped?}
 \item{max_width}{integer(1), character(1) or NULL. Width that title
 and   footer   (including   footnotes)  materials   should   be
 word-wrapped to. If NULL, it is  set to the current print width
-of the  session (`getOption("width")`). If set to `"auto"`,
+of the  session (\code{getOption("width")}). If set to \code{"auto"},
 the width of the table (plus any table inset) is used. Ignored
-completely if `tf_wrap` is `FALSE`.}
+completely if \code{tf_wrap} is \code{FALSE}.}
 
 \item{col_gap}{numeric(1). Space (in characters) between columns}
 
@@ -43,14 +43,14 @@ header/body separator line.}
 }
 \value{
 A character string containing the ASCII rendering
-of the table-like object represented by `x`
+of the table-like object represented by \code{x}
 }
 \description{
 Transform a complex object into a string representation ready
 to be printed or written to a plain-text file
 }
 \details{
-Manual insertion of newlines is not supported when `tf_wrap` is on
+Manual insertion of newlines is not supported when \code{tf_wrap} is on
 and will result in a warning and undefined wrapping behavior. Passing
 vectors of already split strings remains supported, however in this
 case each string is word-wrapped separately with the behavior

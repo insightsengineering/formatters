@@ -11,7 +11,7 @@ spans_to_viscell(spans)
 for the cells it covers.}
 }
 \value{
-a logical vector the same length as `spans` indicating
+a logical vector the same length as \code{spans} indicating
 whether the contents of a string vector with those spans
 }
 \description{

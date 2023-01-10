@@ -9,14 +9,13 @@ padstr(x, n, just = c("center", "left", "right"))
 \arguments{
 \item{x}{string}
 
-\item{n}{number  of  character  of the  output  string,  if `n  <
-nchar(x)` an error is thrown}
+\item{n}{number  of  character  of the  output  string,  if \code{n  < nchar(x)} an error is thrown}
 
 \item{just}{character(1).   Text  alignment   justification  to
 use. Defaults to center. Must be center, right or left.}
 }
 \value{
-`x`, padded to be a string of `n` characters
+\code{x}, padded to be a string of \code{n} characters
 }
 \description{
 Pad a string and align within string
