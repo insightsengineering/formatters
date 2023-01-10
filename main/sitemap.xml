@@ -1,126 +1,153 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/404.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/404.html</loc>
   </url>
   <url>
-    <loc>/articles/formatters.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/CONTRIBUTING.html</loc>
   </url>
   <url>
-    <loc>/articles/index.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>/authors.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/articles/formatters.html</loc>
   </url>
   <url>
-    <loc>/index.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/articles/index.html</loc>
   </url>
   <url>
-    <loc>/news/index.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/authors.html</loc>
   </url>
   <url>
-    <loc>/pull_request_template.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/index.html</loc>
   </url>
   <url>
-    <loc>/reference/DM.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/MatrixPrintForm.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/DM.html</loc>
   </url>
   <url>
-    <loc>/reference/basemethods.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/MatrixPrintForm.html</loc>
   </url>
   <url>
-    <loc>/reference/basic_matrix_form.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/basemethods.html</loc>
   </url>
   <url>
-    <loc>/reference/basic_pagdf.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/basic_matrix_form.html</loc>
   </url>
   <url>
-    <loc>/reference/cdisc_data.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/basic_pagdf.html</loc>
   </url>
   <url>
-    <loc>/reference/default_hsep.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/cdisc_data.html</loc>
   </url>
   <url>
-    <loc>/reference/divider_height.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/default_hsep.html</loc>
   </url>
   <url>
-    <loc>/reference/format_value.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/divider_height.html</loc>
   </url>
   <url>
-    <loc>/reference/ifnotlen0.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/font_lcpi.html</loc>
   </url>
   <url>
-    <loc>/reference/index.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/format_value.html</loc>
   </url>
   <url>
-    <loc>/reference/is.wholenumber.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/ifnotlen0.html</loc>
   </url>
   <url>
-    <loc>/reference/is_valid_format.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/lab_name.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/is.wholenumber.html</loc>
   </url>
   <url>
-    <loc>/reference/list_valid_format_labels.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/is_valid_format.html</loc>
   </url>
   <url>
-    <loc>/reference/make_row_df.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/lab_name.html</loc>
   </url>
   <url>
-    <loc>/reference/matrix_form.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/list_valid_format_labels.html</loc>
   </url>
   <url>
-    <loc>/reference/nlines.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/make_row_df.html</loc>
   </url>
   <url>
-    <loc>/reference/padstr.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/matrix_form.html</loc>
   </url>
   <url>
-    <loc>/reference/pag_indices_inner.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/mpf_accessors.html</loc>
   </url>
   <url>
-    <loc>/reference/pagdfrow.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/mpf_to_rtf.html</loc>
   </url>
   <url>
-    <loc>/reference/propose_column_widths.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/nlines.html</loc>
   </url>
   <url>
-    <loc>/reference/round_fmt.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/padstr.html</loc>
   </url>
   <url>
-    <loc>/reference/spans_to_viscell.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/pag_indices_inner.html</loc>
   </url>
   <url>
-    <loc>/reference/spread_integer.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/pagdfrow.html</loc>
   </url>
   <url>
-    <loc>/reference/sprintf_format.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/page_lcpp.html</loc>
   </url>
   <url>
-    <loc>/reference/title_footer.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/page_types.html</loc>
   </url>
   <url>
-    <loc>/reference/tostring.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/pagination_algo.html</loc>
   </url>
   <url>
-    <loc>/reference/var_labels-set.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/propose_column_widths.html</loc>
   </url>
   <url>
-    <loc>/reference/var_labels.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/round_fmt.html</loc>
   </url>
   <url>
-    <loc>/reference/var_labels_remove.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/spans_to_viscell.html</loc>
   </url>
   <url>
-    <loc>/reference/var_relabel.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/spread_integer.html</loc>
   </url>
   <url>
-    <loc>/reference/vert_pag_indices.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/sprintf_format.html</loc>
   </url>
   <url>
-    <loc>/reference/with_label.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/table_inset.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/title_footer.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/tostring.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/var_labels-set.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/var_labels.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/var_labels_remove.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/var_relabel.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/vert_pag_indices.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/with_label.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/wrap_string.html</loc>
   </url>
 </urlset>
