@@ -44,6 +44,7 @@ reference:
   - title: Pagination
     desc: Pagination functionality
     contents:
+      - pagination_algo
       - pag_indices_inner
       - vert_pag_indices
       - pagdfrow

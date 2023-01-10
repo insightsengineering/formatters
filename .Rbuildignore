@@ -2,6 +2,7 @@
 (^|/)\.[#][^/]*$
 ^.*\.Rproj$
 ^.lintr$
+^LICENSE$
 ^README-.*\.png$
 ^README\.Rmd$
 ^[^/]*.R$

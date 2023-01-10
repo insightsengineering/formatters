@@ -22,20 +22,20 @@ mpf_to_rtf(
 \item{colwidths}{character(1). Column widths.}
 
 \item{page_type}{character(1).   Name   of  a  page  type.   See
-`page_types`.   Ignored when  `pg_width` and  `pg_height`
+\code{page_types}.   Ignored when  \code{pg_width} and  \code{pg_height}
 are set directly.}
 
 \item{pg_width}{numeric(1). Page width in inches.}
 
 \item{pg_height}{numeric(1). Page height in inches.}
 
-\item{landscape}{logical(1). Should the  dimensions of `page_type`
-be inverted  for landscape?  Defaults to  `FALSE`, ignored when
-`pg_width` and `pg_height` are set directly.}
+\item{landscape}{logical(1). Should the  dimensions of \code{page_type}
+be inverted  for landscape?  Defaults to  \code{FALSE}, ignored when
+\code{pg_width} and \code{pg_height} are set directly.}
 
-\item{margins}{numeric(4). Named numeric vector containing `'top'`,
-`'bottom'`, `'left'`, and `'right'` margins in inches. Defaults
-to `.5` inches for both vertical margins and `.75` for both
+\item{margins}{numeric(4). Named numeric vector containing \code{'top'},
+\code{'bottom'}, \code{'left'}, and \code{'right'} margins in inches. Defaults
+to \code{.5} inches for both vertical margins and \code{.75} for both
 horizontal margins.}
 
 \item{font_size}{numeric(1). Fontsize, defaults to 12.}
@@ -46,12 +46,11 @@ horizontal margins.}
 An rtf object
 }
 \description{
-Experimental export to RTF via the `r2rtf` package
+Experimental export to RTF via the \code{r2rtf} package
 }
 \details{
 This function provides a low-level coercion of a
-`MatrixPrintForm object into text containing the corresponding
-table in `RTF`. Currently, no pagination is done at this level,
+\verb{MatrixPrintForm object into text containing the corresponding table in }RTF`. Currently, no pagination is done at this level,
 and should be done prior to calling this function, though that
 may change in the future.
 }

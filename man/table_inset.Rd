@@ -22,11 +22,11 @@ table inset for.}
 \item{value}{character(1). String to use as new header/body separator.}
 }
 \value{
-for `table_inset` the integer value that the table body
+for \code{table_inset} the integer value that the table body
 (including column heading information and section dividers),
 referential footnotes, and main footer should be inset from the
 left alignment of the titles and provenance footers during rendering.
-For `table_inset<-`, the `obj`, with the new table_inset value
+For \verb{table_inset<-}, the \code{obj}, with the new table_inset value
 applied recursively to it and all its subtables.
 }
 \description{

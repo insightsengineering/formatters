@@ -23,8 +23,8 @@ formatted text representing the cell \code{x}.
 Converts a (possibly compound) value into a string using the \code{format} information
 }
 \details{
-A length-zero value for `na_str` will be interpreted as `"NA"`, as will any
-missing values within a non-length-zero `na_str` vector.
+A length-zero value for \code{na_str} will be interpreted as \code{"NA"}, as will any
+missing values within a non-length-zero \code{na_str} vector.
 }
 \examples{
 
@@ -35,5 +35,5 @@ format_value(x, output = "ascii")
 
 }
 \seealso{
-[round_fmt()]
+\code{\link[=round_fmt]{round_fmt()}}
 }

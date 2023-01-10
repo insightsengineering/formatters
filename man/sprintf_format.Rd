@@ -11,7 +11,7 @@ sprintf_format(format)
 }
 \value{
 A formating function which wraps and will apply the specified \code{printf} style format
-  string \code{format}.
+string \code{format}.
 }
 \description{
 Specify text format via a sprintf format string

@@ -16,7 +16,7 @@ to Courier.}
 \item{lineheight}{numeric(1). Lineheight, defaults to 1.}
 }
 \value{
-named list with `cpi` and `lpi`, the characters and lines per
+named list with \code{cpi} and \code{lpi}, the characters and lines per
 inch, respectively.
 }
 \description{
@@ -24,12 +24,12 @@ Calculate lines per inch and characters per inch for font
 }
 \details{
 This function creates opens pdf graphics device  writing to an temporary file,
-then utilizes [grid::convertWidth()] and [grid::convertHeight()] to calculate
+then utilizes \code{\link[grid:grid.convert]{grid::convertWidth()}} and \code{\link[grid:grid.convert]{grid::convertHeight()}} to calculate
 lines per inch and characters per inch for the specified font family, size, and
 line height.
 
 An error is thrown if the font is not monospaced (determined by comparing
-the effective widths of the `M` and `.` glyphs).
+the effective widths of the \code{M} and \code{.} glyphs).
 }
 \examples{
 font_lcpi()

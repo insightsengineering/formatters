@@ -17,12 +17,12 @@ page_lcpp(
 }
 \arguments{
 \item{page_type}{character(1).   Name   of  a  page  type.   See
-`page_types`.   Ignored when  `pg_width` and  `pg_height`
+\code{page_types}.   Ignored when  \code{pg_width} and  \code{pg_height}
 are set directly.}
 
-\item{landscape}{logical(1). Should the  dimensions of `page_type`
-be inverted  for landscape?  Defaults to  `FALSE`, ignored when
-`pg_width` and `pg_height` are set directly.}
+\item{landscape}{logical(1). Should the  dimensions of \code{page_type}
+be inverted  for landscape?  Defaults to  \code{FALSE}, ignored when
+\code{pg_width} and \code{pg_height} are set directly.}
 
 \item{font_family}{character(1). Name of a font family. An error
 will be thrown if the family named is not monospaced. Defaults
@@ -32,9 +32,9 @@ to Courier.}
 
 \item{lineheight}{numeric(1). Lineheight, defaults to 1.}
 
-\item{margins}{numeric(4). Named numeric vector containing `'top'`,
-`'bottom'`, `'left'`, and `'right'` margins in inches. Defaults
-to `.5` inches for both vertical margins and `.75` for both
+\item{margins}{numeric(4). Named numeric vector containing \code{'top'},
+\code{'bottom'}, \code{'left'}, and \code{'right'} margins in inches. Defaults
+to \code{.5} inches for both vertical margins and \code{.75} for both
 horizontal margins.}
 
 \item{pg_width}{numeric(1). Page width in inches.}
@@ -42,7 +42,7 @@ horizontal margins.}
 \item{pg_height}{numeric(1). Page height in inches.}
 }
 \value{
-a named list containing `lpp` and `cpp` elements suitable
+a named list containing \code{lpp} and \code{cpp} elements suitable
 for use by the pagination machinery.
 }
 \description{

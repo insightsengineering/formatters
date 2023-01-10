@@ -10,12 +10,12 @@ basic_matrix_form(df)
 \item{df}{data.frame}
 }
 \value{
-A valid `MatrixPrintForm` object representing `df`,
+A valid \code{MatrixPrintForm} object representing \code{df},
 ready for ASCII rendering
 }
 \description{
 This is  useful primarily  for writing  testing/examples, and as a
-starting point for more sophisticated custom `matrix_form` methods
+starting point for more sophisticated custom \code{matrix_form} methods
 }
 \examples{
 mform <- basic_matrix_form(mtcars)
