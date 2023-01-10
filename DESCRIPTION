@@ -1,7 +1,7 @@
 Package: formatters
 Title: ASCII Formatting for Values and Tables
-Version: 0.3.4.13
-Date: 2022-12-14
+Version: 0.3.4.14
+Date: 2023-01-10
 Authors@R: c(
     person("Gabriel", "Becker", , "gabembecker@gmail.com", role = c("aut", "cre")),
     person("Adrian", "Waddell", , "adrian.waddell@gene.com", role = "aut"),
@@ -31,8 +31,8 @@ Suggests:
 VignetteBuilder: 
     knitr
 Config/Needs/website: insightsengineering/nesttemplate
-Roxygen: list(markdown = TRUE)
 Encoding: UTF-8
 Language: en-US
 LazyData: true
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
