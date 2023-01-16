@@ -131,3 +131,36 @@ test_that("regression tests for rtables empty title underlying issue", {
   expect_identical(nlines("", max_width = 6), 1L)
   expect_identical(wrap_string("", max_width = 6), "")
 })
+
+test_that("row label wrapping has identical indentation", {
+  if (F) {
+set.seed(1)
+tiris <- iris[sample(seq_len(nrow(iris)), 100), ]
+
+    library(rtables)
+    a <- basic_table() %>%
+      analyze("Petal.Width",
+              function(x) list("what a long string" = rcell(1.2),
+                               "also very long long" = rcell(1.3))) %>%
+      build_table(tiris)
+    b <- matrix_form(a, indent_rownames = T)
+    cat(toString(b, widths = c(15, 5)))
+
+    b$row_info$indent
+  }
+
+  fakedf <- data.frame(all_obs = c(3, 4), row.names = c("Something to wrap", "Also here it is"))
+  matform <- basic_matrix_form(fakedf)
+
+  # Inset because why not
+  table_inset(matform) <- 1
+
+  # Adding indentation -> it is done before in $strings
+  rinfo <- mf_rinfo(matform)
+  rinfo$indent <- c(1, 2)
+  matform$strings[2, 1] <- paste0(" ", matform$strings[2, 1])
+  matform$strings[3, 1] <- paste0("  ", matform$strings[3, 1])
+  catform <- toString(matform, widths = c(15, 5))
+
+  cat(catform)
+})

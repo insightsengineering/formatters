@@ -105,7 +105,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   col_gap = x$col_gap,
                                                   hsep = default_hsep()) {
   mat <- matrix_form(x, TRUE)
-
+  browser()
   inset <- table_inset(mat)
 
   if (is.null(widths)) {
@@ -136,21 +136,26 @@ setMethod("toString", "MatrixPrintForm", function(x,
   old_indent <- gsub("^([[:space:]]*).*", "\\1", mat$strings[, 1])
   need_reindent <- nzchar(old_indent)
   reindent_old_idx <- mf_lgrouping(mat)[need_reindent]
-  new_strings <- matrix(unlist(mapply(wrap_string, str = mat$strings, max_width = cell_widths_mat, hard = TRUE)),
+  new_strings <- matrix(unlist(mapply(wrap_string,
+                                      str = mat$strings,
+                                      max_width = cell_widths_mat,
+                                      hard = TRUE)),
     ncol = ncol(mat$strings)
   )
   mat$strings <- new_strings
   ## XXXXX this is wrong and will break for listings cause we don't know when
   ## we need has_topleft to be FALSE!!!!!!!!!!
   mat <- mform_handle_newlines(mat)
-  reindent_new_idx <- match(reindent_old_idx, mf_lgrouping(mat))
+  reindent_new_idx <- which(mf_lgrouping(mat) %in% reindent_old_idx)
   if (anyNA(reindent_new_idx)) {
     stop(
       "Unable to remap indenting after cell content text wrapping. ", # nocov
       "Please contact the maintainer, this should not happen"
     ) # nocov
   }
-  mat$strings[reindent_new_idx, 1] <- paste0(old_indent[need_reindent], mat$strings[reindent_new_idx, 1])
+  need_reindent <- mf_lgrouping(mat)[mf_lgrouping(mat) %in% reindent_old_idx]
+  mat$strings[reindent_new_idx, 1] <- paste0(old_indent[need_reindent],
+                                             mat$strings[reindent_new_idx, 1])
   body <- mat$strings
   aligns <- mat$aligns
   keep_mat <- mat$display
