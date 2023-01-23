@@ -105,7 +105,6 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   col_gap = x$col_gap,
                                                   hsep = default_hsep()) {
   mat <- matrix_form(x, TRUE)
-  browser()
   inset <- table_inset(mat)
 
   if (is.null(widths)) {
@@ -124,10 +123,8 @@ setMethod("toString", "MatrixPrintForm", function(x,
     stopifnot(is.numeric(max_width), max_width > 0)
   }
 
-
+  # Check for having the right number of widths
   stopifnot(length(widths) == ncol(mat$strings))
-
-
 
   ## format the to ASCII
   cell_widths_mat <- .calc_cell_widths(mat, widths, col_gap)
@@ -136,6 +133,8 @@ setMethod("toString", "MatrixPrintForm", function(x,
   old_indent <- gsub("^([[:space:]]*).*", "\\1", mat$strings[, 1])
   need_reindent <- nzchar(old_indent)
   reindent_old_idx <- mf_lgrouping(mat)[need_reindent]
+  cell_widths_mat[need_reindent, 1] <- cell_widths_mat[need_reindent, 1] - nchar(old_indent)[need_reindent]
+
   new_strings <- matrix(unlist(mapply(wrap_string,
                                       str = mat$strings,
                                       max_width = cell_widths_mat,
@@ -146,16 +145,19 @@ setMethod("toString", "MatrixPrintForm", function(x,
   ## XXXXX this is wrong and will break for listings cause we don't know when
   ## we need has_topleft to be FALSE!!!!!!!!!!
   mat <- mform_handle_newlines(mat)
-  reindent_new_idx <- which(mf_lgrouping(mat) %in% reindent_old_idx)
+
+  # Adding again the indentation
+  reindent_new_idx <- mf_lgrouping(mat) %in% reindent_old_idx
   if (anyNA(reindent_new_idx)) {
     stop(
       "Unable to remap indenting after cell content text wrapping. ", # nocov
       "Please contact the maintainer, this should not happen"
     ) # nocov
   }
-  need_reindent <- mf_lgrouping(mat)[mf_lgrouping(mat) %in% reindent_old_idx]
-  mat$strings[reindent_new_idx, 1] <- paste0(old_indent[need_reindent],
-                                             mat$strings[reindent_new_idx, 1])
+
+  new_indent <- old_indent[mf_lgrouping(mat)[reindent_new_idx]]
+  mat$strings[which(reindent_new_idx), 1] <- paste0(new_indent,
+                                                    mat$strings[reindent_new_idx, 1])
   body <- mat$strings
   aligns <- mat$aligns
   keep_mat <- mat$display
@@ -354,14 +356,14 @@ new_line_warning <- function(str_v) {
 #' the incoming strings) or soft (breaking wrapped strings into vectors
 #' of length >1) be used. Defaults to `FALSE` (ie soft wrapping).
 #'
-#' @details      word      wrapping     happens      as      with
-#'     \link[base:strwrap]{base::strwrap}    with     the    following
-#'     exception: individual  words which are longer  than `max_width`
-#'     are  broken  up  in a  way  that  fits  with  the rest  of  the
-#'     wordwrapping.
+#' @details Word wrapping happens as with \link[base:strwrap]{base::strwrap}
+#'   with the following exception: individual words which are longer
+#'   than `max_width` are broken up in a way that fits with the rest of the
+#'   word wrapping.
 #'
-#' @return a string (`wrap_string` or character vector (`wrap_txt`) containing
-#' the hard or soft word-wrapped content.
+#' @return A string (`wrap_string` or character vector (`wrap_txt`) containing
+#'   the hard or soft word-wrapped content.
+#'
 #' @export
 wrap_string <- function(str, max_width, hard = FALSE) {
   stopifnot(is.character(str) && length(str) == 1)
