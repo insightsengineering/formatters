@@ -106,11 +106,12 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   hsep = default_hsep()) {
   mat <- matrix_form(x, TRUE)
   inset <- table_inset(mat)
+
   if (is.null(widths)) {
     widths <- propose_column_widths(x)
   }
-
   ncchar <- sum(widths) + (length(widths) - 1) * col_gap
+
   ## Text wrapping checks
   stopifnot(is.logical(tf_wrap))
   if (tf_wrap) {
@@ -127,8 +128,8 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
   ## format the to ASCII
   cell_widths_mat <- .calc_cell_widths(mat, widths, col_gap)
-  ## wrap_string calls strwrap, which destroys whitespace so we need to make sure to put the indents back in
-
+  ## wrap_string calls strwrap, which destroys whitespace so we need to make
+  ## sure to put the indents back in
   old_indent <- gsub("^([[:space:]]*).*", "\\1", mat$strings[, 1])
   need_reindent <- nzchar(old_indent)
   reindent_old_idx <- mf_lgrouping(mat)[need_reindent]
@@ -153,10 +154,13 @@ setMethod("toString", "MatrixPrintForm", function(x,
       "Please contact the maintainer, this should not happen"
     ) # nocov
   }
-
+  # Adding the indentation back in
   new_indent <- old_indent[mf_lgrouping(mat)[reindent_new_idx]]
-  mat$strings[which(reindent_new_idx), 1] <- paste0(new_indent,
-                                                    mat$strings[reindent_new_idx, 1])
+  mat$strings[which(reindent_new_idx), 1] <- paste0(
+    new_indent,
+    mat$strings[reindent_new_idx, 1]
+  )
+
   body <- mat$strings
   aligns <- mat$aligns
   keep_mat <- mat$display
