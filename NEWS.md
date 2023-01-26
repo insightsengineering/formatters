@@ -1,4 +1,4 @@
-## formatters 0.3.4.14
+## formatters 0.3.4.15
  * Reintroduce `obj_na_str` and `obj_na_str<-` after regression removed them.
 
 ## formatters 0.3.4.11
