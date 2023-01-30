@@ -132,13 +132,12 @@ setMethod("toString", "MatrixPrintForm", function(x,
   ## sure to put the indents back in
 
   # See if indentation is properly set
-  inner_tbl_indent <- mf_rinfo(mat)$indent
+  ind_from_mf <- mf_rinfo(mat)$indent
   nlh <- mf_nlheader(mat)
   old_indent <- gsub("^([[:space:]]*).*", "\\1", mat$strings[, 1])
   need_reindent <- nzchar(old_indent)
   # Check for which row has indent
-  ind_from_strings <- as.integer(need_reindent)[-seq_len(nlh)]
-  ind_from_mf <- inner_tbl_indent
+  ind_from_strings <- nchar(old_indent)[-seq_len(nlh)]
   if (!checkmate::check_set_equal(ind_from_strings, ind_from_mf)) {
     stop("Row-info and string indentations are different.", # nocov
          "Please contact the maintainer, this should not happen.") # nocov
