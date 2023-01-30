@@ -38,7 +38,7 @@ be inverted  for landscape?  Defaults to  \code{FALSE}, ignored when
 to \code{.5} inches for both vertical margins and \code{.75} for both
 horizontal margins.}
 
-\item{font_size}{numeric(1). Fontsize, defaults to 12.}
+\item{font_size}{numeric(1). Font size, defaults to 12.}
 
 \item{...}{Passed to individual methods.}
 }

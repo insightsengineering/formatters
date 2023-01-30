@@ -78,13 +78,13 @@ necessary for pagination (XXX document exactly what that is).}
 \item{line_grouping}{integer. Sequence of  integers indicating how
 print  lines  correspond  to   semantic  rows  in  the  object.
 Typically   this   should   not    be   set   manually   unless
-expact_newlines is set to \code{FALSE}.}
+\code{expact_newlines} is set to \code{FALSE}.}
 
 \item{ref_fnotes}{list.   Referential  footnote  information  if
 applicable.}
 
 \item{nlines_header}{numeric(1). Number  of lines taken up  by the
-values of the header (ie not including the divider).}
+values of the header (i.e. not including the divider).}
 
 \item{nrow_header}{numeric(1).  Number of \emph{rows} corresponding
 to the header.}
@@ -132,7 +132,7 @@ elements:
 \item{\code{display}}{logical matrix of same dimension as \code{strings}
 that specifies whether an element in \code{strings} will be displayed
 when the table is rendered}
-\item{\code{formats}}{see arugment}
+\item{\code{formats}}{see argument}
 \item{\code{row_info}}{see argument}
 \item{\code{line_grouping}}{see argument}
 \item{\code{ref_footnotes}}{see argument}

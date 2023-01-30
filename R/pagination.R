@@ -91,9 +91,9 @@ NULL
 #' @param lab character(1). Label
 #' @param rnum numeric(1). Absolute rownumber
 #' @param pth character or NULL. Path within larger table
-#' @param sibpos integer(1). Position amongst sibling rows
+#' @param sibpos integer(1). Position among sibling rows
 #' @param nsibs integer(1). Number of siblings (including self).
-#' @param extent numberic(1). Number of lines required to print the row
+#' @param extent numeric(1). Number of lines required to print the row
 #' @param colwidths numeric. Column widths
 #' @param repext integer(1). Number of lines required to reprint all context for this row if it appears directly
 #'   after pagination.
@@ -365,7 +365,7 @@ pag_indices_inner <- function(pagdf, rlpp,
   ret
 }
 
-#' Find Column Indicies for Vertical Pagination
+#' Find Column Indices for Vertical Pagination
 #' @param  obj   ANY.  object   to   be  paginated.   Must  have   a
 #'     \code{\link{matrix_form}} method.
 #' @param cpp numeric(1). Number of characters per page (width)
@@ -449,7 +449,7 @@ vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, r
 #' @param rnames character. Vector of row names
 #' @param labs character. Vector of row labels (defaults to names)
 #' @param rnums integer. Vector of row numbers. Defaults to `seq_along(rnames)`.
-#' @param extents integer. Number of lines each row will take to print,d efaults to 1 for all rows
+#' @param extents integer. Number of lines each row will take to print, defaults to 1 for all rows
 #' @param rclass character. Class(es) for the rows. Defaults to "NA"
 #'
 #' @return A data.frame suitable for use in both the `matrix_print_form` constructor and the pagination machinery

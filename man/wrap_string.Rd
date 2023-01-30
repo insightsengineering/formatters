@@ -17,7 +17,7 @@ text should be wrapped at.}
 
 \item{hard}{logical(1). Should hard wrapping (embedding newlines in
 the incoming strings) or soft (breaking wrapped strings into vectors
-of length >1) be used. Defaults to \code{FALSE} (ie soft wrapping).}
+of length >1) be used. Defaults to \code{FALSE} (i.e. soft wrapping).}
 
 \item{txt}{character. Vector of strings that should be (independently)
 text-wrapped.}

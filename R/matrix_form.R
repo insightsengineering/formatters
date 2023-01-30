@@ -92,11 +92,11 @@ mform_handle_newlines <- function(matform) {
 #' @param  line_grouping integer. Sequence of  integers indicating how
 #'     print  lines  correspond  to   semantic  rows  in  the  object.
 #'     Typically   this   should   not    be   set   manually   unless
-#'     expact_newlines is set to \code{FALSE}.
+#'     `expact_newlines` is set to \code{FALSE}.
 #' @param  ref_fnotes  list.   Referential  footnote  information  if
 #'     applicable.
 #' @param  nlines_header numeric(1). Number  of lines taken up  by the
-#'     values of the header (ie not including the divider).
+#'     values of the header (i.e. not including the divider).
 #' @param nrow_header numeric(1).  Number of \emph{rows} corresponding
 #'     to the header.
 #' @param  has_topleft logical(1).  Does the  corresponding table have
@@ -132,7 +132,7 @@ mform_handle_newlines <- function(matform) {
 #' \item{\code{display}}{logical matrix of same dimension as `strings`
 #' that specifies whether an element in `strings` will be displayed
 #' when the table is rendered}
-#' \item{\code{formats}}{see arugment}
+#' \item{\code{formats}}{see argument}
 #' \item{\code{row_info}}{see argument}
 #' \item{\code{line_grouping}}{see argument}
 #' \item{\code{ref_footnotes}}{see argument}

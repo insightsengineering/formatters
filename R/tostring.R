@@ -204,7 +204,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
   if (!is.null(sec_seps_df) && any(!is.na(sec_seps_df$trailing_sep))) {
     bdy_cont <- tail(content, -nl_header)
     ## unfortunately we count "header rows" wrt lihnegrouping so it
-    ## doesn't match the real (ie body) rows as is
+    ## doesn't match the real (i.e. body) rows as is
     row_grouping <- tail(x$line_grouping, -nl_header) - mf_nrheader(x)
     nrbody <- NROW(bdy_cont)
     stopifnot(length(row_grouping) == nrbody)
@@ -357,7 +357,7 @@ new_line_warning <- function(str_v) {
 #' text should be wrapped at.
 #' @param hard logical(1). Should hard wrapping (embedding newlines in
 #' the incoming strings) or soft (breaking wrapped strings into vectors
-#' of length >1) be used. Defaults to `FALSE` (ie soft wrapping).
+#' of length >1) be used. Defaults to `FALSE` (i.e. soft wrapping).
 #'
 #' @details Word wrapping happens as with \link[base:strwrap]{base::strwrap}
 #'   with the following exception: individual words which are longer
@@ -471,7 +471,7 @@ expand_mat_rows <- function(mat, row_nlines = apply(mat, 1, nlines), expfun = pa
 }
 
 
-#' Transform vectors of spans (with dupblication) to Visibility vector
+#' Transform vectors of spans (with duplication) to Visibility vector
 #'
 #' @param spans numeric. Vector of spans, with each span value repeated
 #' for the cells it covers.
@@ -482,10 +482,10 @@ expand_mat_rows <- function(mat, row_nlines = apply(mat, 1, nlines), expfun = pa
 #' each individual position covered by the span has the repeated value.
 #'
 #' This means that each block of values in \code{span} must be of a length
-#' at least equal to its value (ie two 2s, three 3s, etc).
+#' at least equal to its value (i.e. two 2s, three 3s, etc).
 #'
 #' This function correctly handles cases where two spans of the same size
-#' are next to eachother; i.e., a block of four 2s represents two large
+#' are next to each other; i.e., a block of four 2s represents two large
 #' cells each of which span two individual cells.
 #' @export
 #' @note
@@ -522,7 +522,7 @@ spans_to_viscell <- function(spans) {
 #'
 #' @param x MatrixPrintForm object, or an object with a `matrix_form`
 #' method.
-#' @param indent_size numeric(1). Indent size in characters. Ingored
+#' @param indent_size numeric(1). Indent size in characters. Ignored
 #' when `x` is already a MatrixPrintForm object in favor of information
 #' there.
 #'
