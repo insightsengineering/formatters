@@ -16,7 +16,7 @@
 ## formatters 0.3.4.8
  * number of header lines (`mf_nlheader`) is now a computed attribute rather than a stored one.
  * `mf_nlheader<-` has been removed for the reason above.
- * Fix bug in position of header separator when columns have wordwrapping (#68)
+ * Fix bug in position of header separator when columns have word wrapping (#68)
 
 ## formatters 0.3.4.6
  * `vert_pag_indices` now accepts `rep_cols` to control how many columns act as 'row-label-like', as
@@ -34,11 +34,11 @@
  * `nlines` now accepts both `colwidths` and `max_width`, defaulting to `NULL` for both
  * `pag_indices_inner`, `find_pag` and `valid_pag` now accept `have_col_fnotes` and `div_height` arguments
  * fix bug which lead to Roche/rtables#414 (`nlines("", <non-null>)` threw an error
- * paginate related generics now accept max_width for use in ensuring pagination now takes wordwrapping into account for titles and footers.
+ * paginate related generics now accept max_width for use in ensuring pagination now takes word wrapping into account for titles and footers.
  * nlines character method has changed, not takes the sum of the nlines of its elements instead of the max in the case of a vector of length > 1
  * new `wrap_title_footer` function for use on everything which implements the generic interface we design.
  * export new `page_dim` function which returns values of page dims for a named type.
- * `tf_wrap` functionality now breaks up words that are too large with respect to surrounding wordwrapping.
+ * `tf_wrap` functionality now breaks up words that are too large with respect to surrounding word wrapping.
  * `tf_wrap` behavior no longer emits a warning when breaking up 'words' larger than `max_width`
  * `tf_wrap` `max_width = "auto"` now sets the `max_width` to `sum(widths) + table_inset(x)` instead of `sum(widths)`
  * Experimental `tf_wrap` functionality added to `toString` `MatrixPrintForm` method
