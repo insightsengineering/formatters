@@ -7,6 +7,7 @@
 #' @rdname MatrixPrintForm
 #' @aliases MatrixPrintForm-class
 #' @exportClass MatrixPrintForm
+#' @keyword internal
 setOldClass(c("MatrixPrintForm", "list"))
 
 
