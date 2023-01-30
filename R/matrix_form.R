@@ -96,7 +96,7 @@ mform_handle_newlines <- function(matform) {
 #' @param  ref_fnotes  list.   Referential  footnote  information  if
 #'     applicable.
 #' @param  nlines_header numeric(1). Number  of lines taken up  by the
-#'     values of the header (ie not including the divider).
+#'     values of the header (i.e. not including the divider).
 #' @param nrow_header numeric(1).  Number of \emph{rows} corresponding
 #'     to the header.
 #' @param  has_topleft logical(1).  Does the  corresponding table have

@@ -365,7 +365,7 @@ pag_indices_inner <- function(pagdf, rlpp,
   ret
 }
 
-#' Find Column Indicies for Vertical Pagination
+#' Find Column Indices for Vertical Pagination
 #' @param  obj   ANY.  object   to   be  paginated.   Must  have   a
 #'     \code{\link{matrix_form}} method.
 #' @param cpp numeric(1). Number of characters per page (width)

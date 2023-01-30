@@ -24,7 +24,7 @@ The `formatters` package provides two core pieces of functionality, both relatea
 1. `format_value` provides the ability to format single- and multi-valued elements into ASCII display-ready strings
 2. the `matrix_form` framework provides generics for implementing ASCII rendering support for display tables
 
-Both of these featuresets are used in the `rtables` package.
+Both of these feature sets are used in the `rtables` package.
 
 # Formatting values
 
@@ -44,7 +44,7 @@ calling the `list_valid_format_labels` function:
 list_valid_format_labels()
 ```
 
-Each of these labels desceribes how the incoming (possibly
+Each of these labels describes how the incoming (possibly
 multi-element) raw value will be formatted. `xx` indicates that an
 element of the value will be printed as is, with no
 modification. `xx.` indicates that a numeric value element will be

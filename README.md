@@ -27,7 +27,7 @@ relatead to ASCII rendering:
 1. the `matrix_form` framework provides generics for implementing ASCII
    rendering support for display tables
 
-Both of these featuresets are used in the `rtables` package.
+Both of these feature sets are used in the `rtables` package.
 
 ## Motivation
 
@@ -72,7 +72,7 @@ attr(,"info")
 [1] "xx does not modify the element, and xx. rounds a number to 0 digits"
 ```
 
-Each of these labels desceribes how the incoming (possibly
+Each of these labels describes how the incoming (possibly
 multi-element) raw value will be formatted. `xx` indicates that an
 element of the value will be printed as is, with no modification. `xx.`
 indicates that a numeric value element will be rounded to 0 decimal
