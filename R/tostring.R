@@ -106,7 +106,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   hsep = default_hsep()) {
   mat <- matrix_form(x, TRUE)
   inset <- table_inset(mat)
-
+  browser()
   if (is.null(widths)) {
     widths <- propose_column_widths(x)
   }
@@ -130,9 +130,22 @@ setMethod("toString", "MatrixPrintForm", function(x,
   cell_widths_mat <- .calc_cell_widths(mat, widths, col_gap)
   ## wrap_string calls strwrap, which destroys whitespace so we need to make
   ## sure to put the indents back in
+
+  # See if indentation is properly set
+  inner_tbl_indent <- mf_rinfo(mat)$indent
+  nlh <- mf_nlheader(mat)
   old_indent <- gsub("^([[:space:]]*).*", "\\1", mat$strings[, 1])
   need_reindent <- nzchar(old_indent)
+  # Check for which row has indent
+  ind_from_strings <- as.integer(need_reindent)[-seq_len(nlh)]
+  ind_from_mf <- inner_tbl_indent
+  if (!checkmate::check_set_equal(ind_from_strings, ind_from_mf)) {
+    stop("Row-info and string indentations are different.", # nocov
+         "Please contact the maintainer, this should not happen.") # nocov
+  }
+
   reindent_old_idx <- mf_lgrouping(mat)[need_reindent]
+  # Taking care in advance of indented word wrappings
   cell_widths_mat[need_reindent, 1] <- cell_widths_mat[need_reindent, 1] - nchar(old_indent)[need_reindent]
 
   new_strings <- matrix(unlist(mapply(wrap_string,
@@ -151,12 +164,12 @@ setMethod("toString", "MatrixPrintForm", function(x,
   if (anyNA(reindent_new_idx)) {
     stop(
       "Unable to remap indenting after cell content text wrapping. ", # nocov
-      "Please contact the maintainer, this should not happen"
+      "Please contact the maintainer, this should not happen."
     ) # nocov
   }
   # Adding the indentation back in
-  new_indent <- old_indent[mf_lgrouping(mat)[reindent_new_idx]]
-  mat$strings[which(reindent_new_idx), 1] <- paste0(
+  new_indent <- old_indent[reindent_new_idx]
+  mat$strings[reindent_new_idx, 1] <- paste0(
     new_indent,
     mat$strings[reindent_new_idx, 1]
   )
