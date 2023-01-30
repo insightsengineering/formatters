@@ -106,7 +106,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   hsep = default_hsep()) {
   mat <- matrix_form(x, TRUE)
   inset <- table_inset(mat)
-  browser()
+
   if (is.null(widths)) {
     widths <- propose_column_widths(x)
   }
