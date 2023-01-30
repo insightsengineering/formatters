@@ -44,7 +44,7 @@ be retrieved, respectively.}
 
 \item{nsibs}{integer(1). Number of siblings (including self).}
 
-\item{extent}{numberic(1). Number of lines required to print the row}
+\item{extent}{numeric(1). Number of lines required to print the row}
 
 \item{colwidths}{numeric. Column widths}
 

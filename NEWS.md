@@ -53,7 +53,7 @@
    and characters per page.
  * getters and setters for the components of `MatrixPrintForm` objects are now exported 
    (i.e., `mf_spans` and friends).
- * `na_str` can now be length >1, and is matched positionally to NAs in that case.
+ * `na_str` can now be length >1, and is matched in position to NAs in that case.
  * `format_value` now returns solely the `na_str` value when all-NA values are formatted with certain formats 
     (currently`"(N=xx)"`, `">999.9"`, `">999.99"`, `"x.xxxx | (<0.0001)"`)
 
@@ -79,7 +79,7 @@
  * calling `var_labels` on a data.frame with no columns is no longer an error (roche/rtables#224)
 
 ## formatters 0.3.2
- * Change warning when non-UTF line sep default is used to message, and display it only during interactive sessions (once per sessoin).
+ * Change warning when non-UTF line sep default is used to message, and display it only during interactive sessions (once per session).
 
 ## formatters 0.3.1
  * Released on CRAN

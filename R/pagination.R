@@ -93,7 +93,7 @@ NULL
 #' @param pth character or NULL. Path within larger table
 #' @param sibpos integer(1). Position among sibling rows
 #' @param nsibs integer(1). Number of siblings (including self).
-#' @param extent numberic(1). Number of lines required to print the row
+#' @param extent numeric(1). Number of lines required to print the row
 #' @param colwidths numeric. Column widths
 #' @param repext integer(1). Number of lines required to reprint all context for this row if it appears directly
 #'   after pagination.

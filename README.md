@@ -20,7 +20,7 @@
 <!-- end badges -->
 
 The `formatters` package provides two core pieces of functionality, both
-relatead to ASCII rendering:
+related to ASCII rendering:
 
 1. `format_value` provides the ability to format single- and
    multi-valued elements into ASCII display-ready strings
@@ -32,7 +32,7 @@ Both of these feature sets are used in the `rtables` package.
 ## Motivation
 
 The core motivation for `formatters` is the rendering of reporting
-tables into ASCII. In this context a ‘value’ is the raw content that to
+tables into ASCII. In this context a "value" is the raw content that to
 appear in a single table cell. Most commonly this is a numeric vector of
 length 1, 2 or – occasionally – 3.
 

@@ -19,7 +19,7 @@ library(formatters)
 
 # formatters
 
-The `formatters` package provides two core pieces of functionality, both relatead to ASCII rendering:
+The `formatters` package provides two core pieces of functionality, both related to ASCII rendering:
 
 1. `format_value` provides the ability to format single- and multi-valued elements into ASCII display-ready strings
 2. the `matrix_form` framework provides generics for implementing ASCII rendering support for display tables
