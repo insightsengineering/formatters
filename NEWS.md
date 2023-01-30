@@ -1,5 +1,6 @@
 ## formatters 0.3.4.15
  * Reintroduce `obj_na_str` and `obj_na_str<-` after regression removed them.
+ * Fixing spelling and improving `WORDLIST` file.
 
 ## formatters 0.3.4.11
  * fix bug where portions of table after last section div (e.g., non-nested further analyses) were omitted (#77)
