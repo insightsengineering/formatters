@@ -38,7 +38,7 @@
 #' `make_row_df` methods can call `make_row_df` recursively and retain information,
 #' and should not be set during a top-level call
 #'
-#' @note the technically present root tree node is excluded from the summary returne dby
+#' @note the technically present root tree node is excluded from the summary returned dby
 #' both \code{make_row_df} and \code{make_col_df}, as it is simply the
 #' row/column structure of \code{tt} and thus not useful for pathing or pagination.
 #' @export
@@ -77,7 +77,7 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
 #'
 #' The strings in the return object are defined as follows: row labels are those determined by \code{summarize_rows} and
 #' cell values are determined using \code{get_formatted_cells}.
-#' (Column labels are calculated using a non-exported internal funciton.
+#' (Column labels are calculated using a non-exported internal function.
 #'
 #' @return A `MatrixPrintForm` classed list with the following elements:
 #' \describe{

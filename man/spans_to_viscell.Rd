@@ -2,7 +2,7 @@
 % Please edit documentation in R/tostring.R
 \name{spans_to_viscell}
 \alias{spans_to_viscell}
-\title{Transform vectors of spans (with dupblication) to Visibility vector}
+\title{Transform vectors of spans (with duplication) to Visibility vector}
 \usage{
 spans_to_viscell(spans)
 }
@@ -15,17 +15,17 @@ a logical vector the same length as \code{spans} indicating
 whether the contents of a string vector with those spans
 }
 \description{
-Transform vectors of spans (with dupblication) to Visibility vector
+Transform vectors of spans (with duplication) to Visibility vector
 }
 \details{
 The values of \code{spans} are assumed to be repeated to such that
 each individual position covered by the span has the repeated value.
 
 This means that each block of values in \code{span} must be of a length
-at least equal to its value (ie two 2s, three 3s, etc).
+at least equal to its value (i.e. two 2s, three 3s, etc).
 
 This function correctly handles cases where two spans of the same size
-are next to eachother; i.e., a block of four 2s represents two large
+are next to each other; i.e., a block of four 2s represents two large
 cells each of which span two individual cells.
 }
 \note{

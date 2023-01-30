@@ -40,11 +40,11 @@ be retrieved, respectively.}
 
 \item{pth}{character or NULL. Path within larger table}
 
-\item{sibpos}{integer(1). Position amongst sibling rows}
+\item{sibpos}{integer(1). Position among sibling rows}
 
 \item{nsibs}{integer(1). Number of siblings (including self).}
 
-\item{extent}{numberic(1). Number of lines required to print the row}
+\item{extent}{numeric(1). Number of lines required to print the row}
 
 \item{colwidths}{numeric. Column widths}
 

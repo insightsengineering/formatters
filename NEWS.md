@@ -1,5 +1,6 @@
-## formatters 0.3.4.15
+## formatters 0.3.4.16
  * Reintroduce `obj_na_str` and `obj_na_str<-` after regression removed them.
+ * Fixing spelling and improving `WORDLIST` file.
 
 ## formatters 0.3.4.11
  * fix bug where portions of table after last section div (e.g., non-nested further analyses) were omitted (#77)
@@ -11,12 +12,12 @@
 ## formatters 0.3.4.9
  * Fixed off-by-one error in basic pagination machinery
  * Pagination with `verbose = TRUE` is now more informative
- * New `MatrixPrintForm` accessor: `mpf_has_rlabels` determines whether the MPF$strings has a column which are label rows (ie no column index in originating object).
+ * New `MatrixPrintForm` accessor: `mpf_has_rlabels` determines whether the MPF$strings has a column which are label rows (i.e. no column index in originating object).
  
 ## formatters 0.3.4.8
  * number of header lines (`mf_nlheader`) is now a computed attribute rather than a stored one.
  * `mf_nlheader<-` has been removed for the reason above.
- * Fix bug in position of header separator when columns have wordwrapping (#68)
+ * Fix bug in position of header separator when columns have word wrapping (#68)
 
 ## formatters 0.3.4.6
  * `vert_pag_indices` now accepts `rep_cols` to control how many columns act as 'row-label-like', as
@@ -28,17 +29,17 @@
  * `MatrixPrintForm` class now carries around `has_topleft` information explicitly, getter `mf_has_topleft`
  * Bug rendering `mf_lgrouping` non-functional has been fixed
  * `wrap_text` and `wrap_string` now accept the `hard` argument (default `FALSE`) indicating whether 'hard'
-   word-wrapping (ie explicit embedding of newline characters) should be performed.
+   word-wrapping (i.e. explicit embedding of newline characters) should be performed.
 
 ## formatters 0.3.4
  * `nlines` now accepts both `colwidths` and `max_width`, defaulting to `NULL` for both
  * `pag_indices_inner`, `find_pag` and `valid_pag` now accept `have_col_fnotes` and `div_height` arguments
  * fix bug which lead to Roche/rtables#414 (`nlines("", <non-null>)` threw an error
- * paginate related generics now accept max_width for use in ensuring pagination now takes wordwrapping into account for titles and footers.
+ * paginate related generics now accept max_width for use in ensuring pagination now takes word wrapping into account for titles and footers.
  * nlines character method has changed, not takes the sum of the nlines of its elements instead of the max in the case of a vector of length > 1
  * new `wrap_title_footer` function for use on everything which implements the generic interface we design.
  * export new `page_dim` function which returns values of page dims for a named type.
- * `tf_wrap` functionality now breaks up words that are too large with respect to surrounding wordwrapping.
+ * `tf_wrap` functionality now breaks up words that are too large with respect to surrounding word wrapping.
  * `tf_wrap` behavior no longer emits a warning when breaking up 'words' larger than `max_width`
  * `tf_wrap` `max_width = "auto"` now sets the `max_width` to `sum(widths) + table_inset(x)` instead of `sum(widths)`
  * Experimental `tf_wrap` functionality added to `toString` `MatrixPrintForm` method
@@ -53,7 +54,7 @@
    and characters per page.
  * getters and setters for the components of `MatrixPrintForm` objects are now exported 
    (i.e., `mf_spans` and friends).
- * `na_str` can now be length >1, and is matched positionally to NAs in that case.
+ * `na_str` can now be length >1, and is matched in position to NAs in that case.
  * `format_value` now returns solely the `na_str` value when all-NA values are formatted with certain formats 
     (currently`"(N=xx)"`, `">999.9"`, `">999.99"`, `"x.xxxx | (<0.0001)"`)
 
@@ -79,7 +80,7 @@
  * calling `var_labels` on a data.frame with no columns is no longer an error (roche/rtables#224)
 
 ## formatters 0.3.2
- * Change warning when non-UTF line sep default is used to message, and display it only during interactive sessions (once per sessoin).
+ * Change warning when non-UTF line sep default is used to message, and display it only during interactive sessions (once per session).
 
 ## formatters 0.3.1
  * Released on CRAN
