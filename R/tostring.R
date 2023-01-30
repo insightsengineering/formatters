@@ -132,18 +132,20 @@ setMethod("toString", "MatrixPrintForm", function(x,
   ## sure to put the indents back in
 
   # See if indentation is properly set
-  ind_from_mf <- mf_rinfo(mat)$indent
+  ind_from_mf <- mf_rinfo(mat)$indent > 0
   nlh <- mf_nlheader(mat)
   old_indent <- gsub("^([[:space:]]*).*", "\\1", mat$strings[, 1])
   need_reindent <- nzchar(old_indent)
   # Check for which row has indent
-  ind_from_strings <- nchar(old_indent)[-seq_len(nlh)]
+  ind_from_strings <- nchar(old_indent)[-seq_len(nlh)] > 0
   if (!checkmate::check_set_equal(ind_from_strings, ind_from_mf)) {
     stop("Row-info and string indentations are different.", # nocov
          "Please contact the maintainer, this should not happen.") # nocov
   }
 
-  reindent_old_idx <- mf_lgrouping(mat)[need_reindent]
+  ori_mflg <- mf_lgrouping(mat) # Original groups
+  reindent_old_idx <- mf_lgrouping(mat)[need_reindent] # Indent groups bf wrap
+
   # Taking care in advance of indented word wrappings
   cell_widths_mat[need_reindent, 1] <- cell_widths_mat[need_reindent, 1] - nchar(old_indent)[need_reindent]
 
@@ -153,12 +155,15 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                       hard = TRUE)),
     ncol = ncol(mat$strings)
   )
+
   mat$strings <- new_strings
+
   ## XXXXX this is wrong and will break for listings cause we don't know when
   ## we need has_topleft to be FALSE!!!!!!!!!!
   mat <- mform_handle_newlines(mat)
 
   # Adding again the indentation
+  # Indent groups after newline
   reindent_new_idx <- mf_lgrouping(mat) %in% reindent_old_idx
   if (anyNA(reindent_new_idx)) {
     stop(
@@ -166,8 +171,13 @@ setMethod("toString", "MatrixPrintForm", function(x,
       "Please contact the maintainer, this should not happen."
     ) # nocov
   }
+
   # Adding the indentation back in
-  new_indent <- old_indent[reindent_new_idx]
+  ind_v <- NULL
+  for (i in mf_lgrouping(mat)[reindent_new_idx]) {
+    ind_v <- c(ind_v, which(i == ori_mflg))
+  }
+  new_indent <- old_indent[ind_v]
   mat$strings[reindent_new_idx, 1] <- paste0(
     new_indent,
     mat$strings[reindent_new_idx, 1]
