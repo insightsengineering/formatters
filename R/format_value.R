@@ -79,10 +79,10 @@ is_valid_format <- function(x, stop_otherwise = FALSE) {
 #' Specify text format via a sprintf format string
 #'
 #'
-#' @param format character(1). A format string passed to sprintf.
+#' @param format character(1). A format string passed to `sprintf`.
 #'
 #' @export
-#' @return A formating function which wraps and will apply the specified \code{printf} style format
+#' @return A formatting function which wraps and will apply the specified \code{printf} style format
 #'   string \code{format}.
 #' @seealso \code{\link[base]{sprintf}}
 #'

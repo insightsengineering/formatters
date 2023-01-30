@@ -522,7 +522,7 @@ spans_to_viscell <- function(spans) {
 #'
 #' @param x MatrixPrintForm object, or an object with a `matrix_form`
 #' method.
-#' @param indent_size numeric(1). Indent size in characters. Ingored
+#' @param indent_size numeric(1). Indent size in characters. Ignored
 #' when `x` is already a MatrixPrintForm object in favor of information
 #' there.
 #'

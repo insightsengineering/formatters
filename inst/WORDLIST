@@ -24,9 +24,7 @@ DM
 dplyr
 fmt
 fnd
-Fontsize
 formatter
-funciton
 gabembecker
 Garolini
 garolini
@@ -44,7 +42,6 @@ htmltools
 https
 huxtable
 IEC
-ifnotlen
 insightsengineering
 io
 knitr

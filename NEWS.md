@@ -11,7 +11,7 @@
 ## formatters 0.3.4.9
  * Fixed off-by-one error in basic pagination machinery
  * Pagination with `verbose = TRUE` is now more informative
- * New `MatrixPrintForm` accessor: `mpf_has_rlabels` determines whether the MPF$strings has a column which are label rows (ie no column index in originating object).
+ * New `MatrixPrintForm` accessor: `mpf_has_rlabels` determines whether the MPF$strings has a column which are label rows (i.e. no column index in originating object).
  
 ## formatters 0.3.4.8
  * number of header lines (`mf_nlheader`) is now a computed attribute rather than a stored one.
@@ -28,7 +28,7 @@
  * `MatrixPrintForm` class now carries around `has_topleft` information explicitly, getter `mf_has_topleft`
  * Bug rendering `mf_lgrouping` non-functional has been fixed
  * `wrap_text` and `wrap_string` now accept the `hard` argument (default `FALSE`) indicating whether 'hard'
-   word-wrapping (ie explicit embedding of newline characters) should be performed.
+   word-wrapping (i.e. explicit embedding of newline characters) should be performed.
 
 ## formatters 0.3.4
  * `nlines` now accepts both `colwidths` and `max_width`, defaulting to `NULL` for both

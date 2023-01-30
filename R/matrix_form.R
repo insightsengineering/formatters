@@ -92,7 +92,7 @@ mform_handle_newlines <- function(matform) {
 #' @param  line_grouping integer. Sequence of  integers indicating how
 #'     print  lines  correspond  to   semantic  rows  in  the  object.
 #'     Typically   this   should   not    be   set   manually   unless
-#'     expact_newlines is set to \code{FALSE}.
+#'     `expact_newlines` is set to \code{FALSE}.
 #' @param  ref_fnotes  list.   Referential  footnote  information  if
 #'     applicable.
 #' @param  nlines_header numeric(1). Number  of lines taken up  by the

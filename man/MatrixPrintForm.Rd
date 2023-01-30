@@ -78,7 +78,7 @@ necessary for pagination (XXX document exactly what that is).}
 \item{line_grouping}{integer. Sequence of  integers indicating how
 print  lines  correspond  to   semantic  rows  in  the  object.
 Typically   this   should   not    be   set   manually   unless
-expact_newlines is set to \code{FALSE}.}
+\code{expact_newlines} is set to \code{FALSE}.}
 
 \item{ref_fnotes}{list.   Referential  footnote  information  if
 applicable.}
