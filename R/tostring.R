@@ -471,7 +471,7 @@ expand_mat_rows <- function(mat, row_nlines = apply(mat, 1, nlines), expfun = pa
 }
 
 
-#' Transform vectors of spans (with dupblication) to Visibility vector
+#' Transform vectors of spans (with duplication) to Visibility vector
 #'
 #' @param spans numeric. Vector of spans, with each span value repeated
 #' for the cells it covers.
@@ -485,7 +485,7 @@ expand_mat_rows <- function(mat, row_nlines = apply(mat, 1, nlines), expfun = pa
 #' at least equal to its value (i.e. two 2s, three 3s, etc).
 #'
 #' This function correctly handles cases where two spans of the same size
-#' are next to eachother; i.e., a block of four 2s represents two large
+#' are next to each other; i.e., a block of four 2s represents two large
 #' cells each of which span two individual cells.
 #' @export
 #' @note

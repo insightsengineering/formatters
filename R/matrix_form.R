@@ -132,7 +132,7 @@ mform_handle_newlines <- function(matform) {
 #' \item{\code{display}}{logical matrix of same dimension as `strings`
 #' that specifies whether an element in `strings` will be displayed
 #' when the table is rendered}
-#' \item{\code{formats}}{see arugment}
+#' \item{\code{formats}}{see argument}
 #' \item{\code{row_info}}{see argument}
 #' \item{\code{line_grouping}}{see argument}
 #' \item{\code{ref_footnotes}}{see argument}

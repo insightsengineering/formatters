@@ -2,7 +2,7 @@
 % Please edit documentation in R/pagination.R
 \name{vert_pag_indices}
 \alias{vert_pag_indices}
-\title{Find Column Indicies for Vertical Pagination}
+\title{Find Column Indices for Vertical Pagination}
 \usage{
 vert_pag_indices(
   obj,
@@ -32,7 +32,7 @@ A list partitioning the vector of column indices
 into subsets for 1 or more horizontally paginated pages.
 }
 \description{
-Find Column Indicies for Vertical Pagination
+Find Column Indices for Vertical Pagination
 }
 \examples{
 mf <- basic_matrix_form(df = mtcars)
