@@ -138,11 +138,10 @@ setMethod("toString", "MatrixPrintForm", function(x,
   need_reindent <- nzchar(old_indent)
   # Check for which row has indent
   ind_from_strings <- nchar(old_indent)[-seq_len(nlh)] > 0
-  if (!checkmate::check_set_equal(ind_from_strings, ind_from_mf)) {
+  if (!checkmate::test_set_equal(ind_from_strings, ind_from_mf)) {
     stop("Row-info and string indentations are different.", # nocov
          "Please contact the maintainer, this should not happen.") # nocov
   }
-
   ori_mflg <- mf_lgrouping(mat) # Original groups
   reindent_old_idx <- mf_lgrouping(mat)[need_reindent] # Indent groups bf wrap
 
