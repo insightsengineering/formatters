@@ -48,7 +48,6 @@ pg_dim_names <- list(
 #' @return for `page_types` a character vector of supported page types,
 #' for `page_dim` the dimensions (width, then height) of the selected page type.
 #'
-#' @keyword internal
 #' @export
 #' @examples
 #' page_types()
@@ -87,7 +86,6 @@ page_dim <- function(page_type) {
 #' @return named list with `cpi` and `lpi`, the characters and lines per
 #' inch, respectively.
 #'
-#' @keyword internal
 #' @export
 #' @examples
 #' font_lcpi()
@@ -138,7 +136,6 @@ font_lcpi <- function(font_family = "Courier", font_size = 12, lineheight = 1) {
 #'
 #' @return a named list containing `lpp` and `cpp` elements suitable
 #' for use by the pagination machinery.
-#' @keyword internal
 #' @export
 #'
 #' @examples
