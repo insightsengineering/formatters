@@ -5,15 +5,30 @@
 \alias{matrix_form,MatrixPrintForm-method}
 \title{Transform rtable to a list of matrices which can be used for outputting}
 \usage{
-matrix_form(obj, indent_rownames = FALSE, indent_size = 2)
+matrix_form(
+  obj,
+  indent_rownames = FALSE,
+  expand_newlines = TRUE,
+  indent_size = 2
+)
 
-\S4method{matrix_form}{MatrixPrintForm}(obj, indent_rownames = FALSE, indent_size = 2)
+\S4method{matrix_form}{MatrixPrintForm}(
+  obj,
+  indent_rownames = FALSE,
+  expand_newlines = TRUE,
+  indent_size = 2
+)
 }
 \arguments{
 \item{obj}{ANY. Object to be transformed into a ready-to-render form (a MatrixPrintForm object)}
 
 \item{indent_rownames}{logical(1), if TRUE the column with the row names in the \code{strings} matrix of has indented row
 names (strings pre-fixed)}
+
+\item{expand_newlines}{logical(1). Should the matrix form generated
+expand  rows  whose  values   contain  newlines  into  multiple
+'physical'  rows  (as  they  will  appear  when  rendered  into
+ASCII). Defaults to \code{TRUE}}
 
 \item{indent_size}{numeric(1). Number of spaces to be used per level of indent (if supported by
 the relevant method). Defaults to 2.}

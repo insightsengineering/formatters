@@ -121,7 +121,7 @@ mform_handle_newlines <- function(matform) {
 #' @param expand_newlines logical(1). Should the matrix form generated
 #'     expand  rows  whose  values   contain  newlines  into  multiple
 #'     'physical'  rows  (as  they  will  appear  when  rendered  into
-#'     ASCII). Defaults to \code{FALSE}
+#'     ASCII). Defaults to \code{TRUE}
 #' @param col_gap numeric(1). Space (in characters) between columns
 #' @param table_inset numeric(1). Table inset. See
 #' \code{\link{table_inset}}

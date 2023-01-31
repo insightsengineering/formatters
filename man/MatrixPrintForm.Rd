@@ -18,7 +18,7 @@ MatrixPrintForm(
   nrow_header,
   has_topleft = TRUE,
   has_rowlabs = has_topleft,
-  expand_newlines = FALSE,
+  expand_newlines = TRUE,
   main_title = "",
   subtitles = character(),
   page_titles = character(),
@@ -40,7 +40,7 @@ matrix_print_form(
   nrow_header,
   has_topleft = TRUE,
   has_rowlabs = has_topleft,
-  expand_newlines = FALSE,
+  expand_newlines = TRUE,
   main_title = "",
   subtitles = character(),
   page_titles = character(),
@@ -102,7 +102,7 @@ values).  Defaults to \code{TRUE}.}
 \item{expand_newlines}{logical(1). Should the matrix form generated
 expand  rows  whose  values   contain  newlines  into  multiple
 'physical'  rows  (as  they  will  appear  when  rendered  into
-ASCII). Defaults to \code{FALSE}}
+ASCII). Defaults to \code{TRUE}}
 
 \item{main_title}{character(1). Main title as a string.}
 

@@ -69,6 +69,10 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
 #' @param obj ANY. Object to be transformed into a ready-to-render form (a MatrixPrintForm object)
 #' @param indent_rownames logical(1), if TRUE the column with the row names in the `strings` matrix of has indented row
 #' names (strings pre-fixed)
+#' @param expand_newlines logical(1). Should the matrix form generated
+#'     expand  rows  whose  values   contain  newlines  into  multiple
+#'     'physical'  rows  (as  they  will  appear  when  rendered  into
+#'     ASCII). Defaults to \code{TRUE}
 #' @param indent_size numeric(1). Number of spaces to be used per level of indent (if supported by
 #' the relevant method). Defaults to 2.
 #' @export
