@@ -77,3 +77,8 @@ reference:
       - print,ANY-method
       - ifnotlen0
       - table_inset
+      - default_hsep
+      - font_lcpi
+      - mf_strings
+      - page_lcpp
+      - page_types
