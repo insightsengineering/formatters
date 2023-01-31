@@ -11,9 +11,9 @@ font_lcpi(font_family = "Courier", font_size = 12, lineheight = 1)
 will be thrown if the family named is not monospaced. Defaults
 to Courier.}
 
-\item{font_size}{numeric(1). Fontsize, defaults to 12.}
+\item{font_size}{numeric(1). Font size, defaults to 12.}
 
-\item{lineheight}{numeric(1). Lineheight, defaults to 1.}
+\item{lineheight}{numeric(1). Line height, defaults to 1.}
 }
 \value{
 named list with \code{cpi} and \code{lpi}, the characters and lines per

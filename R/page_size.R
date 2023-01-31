@@ -125,8 +125,8 @@ font_lcpi <- function(font_family = "Courier", font_size = 12, lineheight = 1) {
 #' @param font_family character(1). Name of a font family. An error
 #'     will be thrown if the family named is not monospaced. Defaults
 #'     to Courier.
-#' @param font_size numeric(1). Fontsize, defaults to 12.
-#' @param lineheight numeric(1). Lineheight, defaults to 1.
+#' @param font_size numeric(1). Font size, defaults to 12.
+#' @param lineheight numeric(1). Line height, defaults to 1.
 #' @param margins numeric(4). Named numeric vector containing `'top'`,
 #'     `'bottom'`, `'left'`, and `'right'` margins in inches. Defaults
 #'     to `.5` inches for both vertical margins and `.75` for both

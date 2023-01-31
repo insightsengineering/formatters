@@ -19,7 +19,7 @@ basic_pagdf(
 
 \item{rnums}{integer. Vector of row numbers. Defaults to \code{seq_along(rnames)}.}
 
-\item{extents}{integer. Number of lines each row will take to print,d efaults to 1 for all rows}
+\item{extents}{integer. Number of lines each row will take to print, defaults to 1 for all rows}
 
 \item{rclass}{character. Class(es) for the rows. Defaults to "NA"}
 }

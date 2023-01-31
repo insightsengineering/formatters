@@ -39,5 +39,5 @@ map the rtable to an in between state with the formatted cells in a matrix form.
 \details{
 The strings in the return object are defined as follows: row labels are those determined by \code{summarize_rows} and
 cell values are determined using \code{get_formatted_cells}.
-(Column labels are calculated using a non-exported internal funciton.
+(Column labels are calculated using a non-exported internal function.
 }

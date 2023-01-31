@@ -7,10 +7,10 @@
 sprintf_format(format)
 }
 \arguments{
-\item{format}{character(1). A format string passed to sprintf.}
+\item{format}{character(1). A format string passed to \code{sprintf}.}
 }
 \value{
-A formating function which wraps and will apply the specified \code{printf} style format
+A formatting function which wraps and will apply the specified \code{printf} style format
 string \code{format}.
 }
 \description{
