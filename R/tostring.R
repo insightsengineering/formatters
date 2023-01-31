@@ -104,7 +104,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   max_width = NULL,
                                                   col_gap = x$col_gap,
                                                   hsep = default_hsep()) {
-  mat <- matrix_form(x, TRUE)
+  mat <- matrix_form(x, indent_rownames = TRUE)
   inset <- table_inset(mat)
 
   if (is.null(widths)) {
@@ -134,7 +134,12 @@ setMethod("toString", "MatrixPrintForm", function(x,
   # See if indentation is properly set
   ind_from_mf <- mf_rinfo(mat)$indent > 0
   nlh <- mf_nlheader(mat)
-  old_indent <- gsub("^([[:space:]]*).*", "\\1", mat$strings[, 1])
+  # Body indentation
+  old_indent <- sapply(mf_rinfo(mat)$indent, function(i) paste0(rep(" ", i), collapse = ""))
+  # Header indentation (it happens with toplefts, not \n in titles, dealt afterwards)
+  # NB: what about \n in topleft? -> not supported
+  header_indent <- gsub("^([[:space:]]*).*", "\\1", mat$strings[1:nlh, 1]) # Supposedly never with empty strings " "
+  old_indent <- c(header_indent, old_indent)
   need_reindent <- nzchar(old_indent)
   # Check for which row has indent
   ind_from_strings <- nchar(old_indent)[-seq_len(nlh)] > 0
@@ -143,7 +148,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
          "Please contact the maintainer, this should not happen.") # nocov
   }
   ori_mflg <- mf_lgrouping(mat) # Original groups
-  reindent_old_idx <- mf_lgrouping(mat)[need_reindent] # Indent groups bf wrap
+  reindent_old_idx <- ori_mflg[need_reindent] # Indent groups bf wrap
 
   # Taking care in advance of indented word wrappings
   cell_widths_mat[need_reindent, 1] <- cell_widths_mat[need_reindent, 1] - nchar(old_indent)[need_reindent]
@@ -174,9 +179,26 @@ setMethod("toString", "MatrixPrintForm", function(x,
   # Adding the indentation back in
   ind_v <- NULL
   for (i in mf_lgrouping(mat)[reindent_new_idx]) {
-    ind_v <- c(ind_v, which(i == ori_mflg))
+    ind_v <- c(ind_v, which(i == ori_mflg)[1])
   }
   new_indent <- old_indent[ind_v]
+
+  # Additional safety check
+  if (length(new_indent) > 0 && !all(nzchar(new_indent))) {
+    stop("Recovered indentation contains empty strings. This is an",
+         " indexing problem, please contact the maintainer, this should not happen.")
+  }
+
+  # Indentation is different for topleft material
+  if (isTRUE(mf_has_topleft(mat))) {
+    # mf_nlheader counts actual header lines while mf_nrheader is 'virtual'
+    # A bit of an hack, we should see what happens if there are \n in topleft
+    # This still suppose that we dealt with \n in the cols before
+    indx_topleft <- which(reindent_new_idx[1:nlh])
+    new_indent[seq_along(indx_topleft)] <- old_indent[indx_topleft]
+  }
+
+  # Main addition of the 'saved' indentation
   mat$strings[reindent_new_idx, 1] <- paste0(
     new_indent,
     mat$strings[reindent_new_idx, 1]

@@ -11,13 +11,17 @@ setOldClass(c("MatrixPrintForm", "list"))
 
 
 mform_handle_newlines <- function(matform) {
+  # Retrieving relevant information
   has_topleft <- mf_has_topleft(matform)
   strmat <- mf_strings(matform)
   frmmat <- mf_formats(matform)
+  # nlines detects if there is a newline character
   row_nlines <- apply(strmat, 1, function(x) max(vapply(x, nlines, 1L), 1L))
   nr_header <- mf_nrheader(matform)
-  nrows <- nrow(strmat)
+
+  # There is something to change
   if (any(row_nlines > 1)) {
+    # Header indices
     hdr_inds <- 1:nr_header
     ## used below even though we don't store it on the resulting object
     new_nlines_hdr <- sum(row_nlines[hdr_inds])
@@ -51,14 +55,14 @@ mform_handle_newlines <- function(matform) {
         )
       }
       newstrmat[1:new_nlines_hdr, 1] <- c(tl, rep("", new_nlines_hdr - length(tl)))
-      newfrmmat[1:new_nlines_hdr, 1] <- "xx"
+      newfrmmat[1:new_nlines_hdr, 1] <- "xx" # Why is this needed?
     }
     mf_strings(matform) <- newstrmat
     mf_formats(matform) <- newfrmmat
     mf_spans(matform) <- expand_mat_rows(mf_spans(matform), row_nlines, rep_vec_to_len)
     mf_aligns(matform) <- expand_mat_rows(mf_aligns(matform), row_nlines, rep_vec_to_len)
     mf_display(matform) <- expand_mat_rows(mf_display(matform), row_nlines, rep_vec_to_len)
-    mf_lgrouping(matform) <- rep(1:nrows, times = row_nlines)
+    mf_lgrouping(matform) <- rep(mf_lgrouping(matform), times = row_nlines)
   }
 
   matform
@@ -117,7 +121,7 @@ mform_handle_newlines <- function(matform) {
 #' @param expand_newlines logical(1). Should the matrix form generated
 #'     expand  rows  whose  values   contain  newlines  into  multiple
 #'     'physical'  rows  (as  they  will  appear  when  rendered  into
-#'     ASCII). Defaults to \code{TRUE}
+#'     ASCII). Defaults to \code{FALSE}
 #' @param col_gap numeric(1). Space (in characters) between columns
 #' @param table_inset numeric(1). Table inset. See
 #' \code{\link{table_inset}}

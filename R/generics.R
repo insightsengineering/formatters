@@ -91,7 +91,9 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
 #'
 #' With an additional \code{nrow_header} attribute indicating the number of pseudo "rows"  the
 #' column structure defines.
-setGeneric("matrix_form", function(obj, indent_rownames = FALSE,
+setGeneric("matrix_form", function(obj,
+                                   indent_rownames = FALSE,
+                                   expand_newlines = TRUE,
                                    indent_size = 2) {
   standardGeneric("matrix_form")
 })
@@ -100,6 +102,7 @@ setGeneric("matrix_form", function(obj, indent_rownames = FALSE,
 #' @export
 setMethod("matrix_form", "MatrixPrintForm", function(obj,
                                                      indent_rownames = FALSE,
+                                                     expand_newlines = TRUE,
                                                      indent_size = 2) {
   obj
 })
