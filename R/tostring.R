@@ -109,9 +109,60 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   indent_size = NULL) {
 
   checkmate::assert_integerish(indent_size, null.ok = TRUE)
+  checkmate::assert_flag(tf_wrap)
 
-  mat <- matrix_form(x, indent_rownames = TRUE)
+  mat <- matrix_form(x, indent_rownames = TRUE) # Fix for indent_size should be here
   inset <- table_inset(mat)
+
+  # Standard indentation size and inserted one
+  # NB: Header can be avoided here because it is not affected by size (?)
+  if (!is.null(indent_size) && (mat$indent_size != indent_size)) {
+    diff_indent_size <- indent_size - mat$indent_size
+    # Add space if inserted indentation_size is larger
+    if (diff_indent_size > 0) {
+      mat$strings[-seq_len(mf_nlheader(mat)), 1] <-
+        paste(
+          sapply(mf_rinfo(mat)$indent, function(i) {
+            paste0(rep(" ", i * diff_indent_size), collapse = "")
+          }),
+          mat$strings[-seq_len(mf_nlheader(mat)), 1]
+        )
+      # formats
+      mat$formats[-seq_len(mf_nlheader(mat)), 1] <-
+        paste(
+          sapply(mf_rinfo(mat)$indent, function(i) {
+            paste0(rep(" ", i * diff_indent_size), collapse = "")
+          }),
+          mat$formats[-seq_len(mf_nlheader(mat)), 1]
+        )
+    } else {
+      # Take out a space if inserted indentation is smaller
+      mat$strings[-seq_len(mf_nlheader(mat)), 1] <- sapply(
+        seq_along(mf_rinfo(mat)$indent),
+        function(i) {
+          how_many <- mf_rinfo(mat)$indent[i] * abs(diff_indent_size)
+          sub(
+            paste0(rep(" ", how_many), collapse = ""), "",
+            mat$strings[-seq_len(mf_nlheader(mat)), 1][i]
+          )
+        }
+      )
+
+      # formats
+      mat$formats[-seq_len(mf_nlheader(mat)), 1] <- sapply(
+        seq_along(mf_rinfo(mat)$indent),
+        function(i) {
+          how_many <- mf_rinfo(mat)$indent[i] * abs(diff_indent_size)
+          sub(
+            paste0(rep(" ", how_many), collapse = ""), "",
+            mat$formats[-seq_len(mf_nlheader(mat)), 1][i]
+          )
+        }
+      )
+    }
+    # This is needed further down the line
+    mat$indent_size <- indent_size
+  }
 
   if (is.null(widths)) {
     widths <- propose_column_widths(x)
@@ -119,14 +170,13 @@ setMethod("toString", "MatrixPrintForm", function(x,
   ncchar <- sum(widths) + (length(widths) - 1) * col_gap
 
   ## Text wrapping checks
-  stopifnot(is.logical(tf_wrap))
   if (tf_wrap) {
     if (is.null(max_width)) {
       max_width <- getOption("width", 80L)
     } else if (is.character(max_width) && identical(max_width, "auto")) {
       max_width <- ncchar + inset
     }
-    stopifnot(is.numeric(max_width), max_width > 0)
+    checkmate::assert_number(max_width, lower =  0)
   }
 
   # Check for having the right number of widths
@@ -140,13 +190,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
   # See if indentation is properly set
   ind_from_mf <- mf_rinfo(mat)$indent > 0
   nlh <- mf_nlheader(mat)
-  # Standard indentation
-  if (is.null(indent_size)) {
-    ind_std <- mat$indent_size
-  } else {
-    ind_std <- indent_size
-  }
-  ind_std <- paste0(rep(" ", ind_std), collapse = "")
+  ind_std <- paste0(rep(" ", mat$indent_size), collapse = "")
   # Body indentation
   old_indent <- sapply(mf_rinfo(mat)$indent, function(i) paste0(rep(ind_std, i), collapse = ""))
   # Header indentation (it happens with toplefts, not \n in titles, dealt afterwards)
@@ -179,7 +223,6 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                       hard = TRUE)),
     ncol = ncol(mat$strings)
   )
-
   mat$strings <- new_strings
 
   ## XXXXX this is wrong and will break for listings cause we don't know when
