@@ -13,7 +13,8 @@ toString(x, ...)
   tf_wrap = FALSE,
   max_width = NULL,
   col_gap = x$col_gap,
-  hsep = default_hsep()
+  hsep = default_hsep(),
+  indent_size = NULL
 )
 }
 \arguments{
@@ -40,6 +41,9 @@ completely if \code{tf_wrap} is \code{FALSE}.}
 
 \item{hsep}{character(1).   Characters  to  repeat   to  create
 header/body separator line.}
+
+\item{indent_size}{numeric(1). Number of spaces to be used per level of indent (if supported by
+the relevant method). If \code{NULL} it uses the value stored into the matrix_form (defaults to 2).}
 }
 \value{
 A character string containing the ASCII rendering

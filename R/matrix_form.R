@@ -125,6 +125,8 @@ mform_handle_newlines <- function(matform) {
 #' @param col_gap numeric(1). Space (in characters) between columns
 #' @param table_inset numeric(1). Table inset. See
 #' \code{\link{table_inset}}
+#' @param indent_size numeric(1). Number of spaces to be used per level of indent (if supported by
+#' the relevant method). Defaults to 2.
 #' @export
 #' @return An object of class `MatrixPrintForm`. Currently this is
 #' implemented as an S3 class inheriting from list with the following
@@ -174,7 +176,8 @@ MatrixPrintForm <- function(strings = NULL,
                             main_footer = "",
                             prov_footer = character(),
                             col_gap = 3,
-                            table_inset = 0L) {
+                            table_inset = 0L,
+                            indent_size = 2) {
   display <- matrix(rep(TRUE, length(strings)), ncol = ncol(strings))
 
   print_cells_mat <- spans == 1L
@@ -216,7 +219,8 @@ MatrixPrintForm <- function(strings = NULL,
       prov_footer = prov_footer,
       col_gap = col_gap,
       table_inset = as.integer(table_inset),
-      has_topleft = has_topleft
+      has_topleft = has_topleft,
+      indent_size = indent_size
     ),
     nrow_header = nrow_header,
     ncols = ncs,

@@ -81,6 +81,8 @@ default_hsep <- d_hsep_factory()
 #'     of the  session (`getOption("width")`). If set to `"auto"`,
 #'     the width of the table (plus any table inset) is used. Ignored
 #'     completely if `tf_wrap` is `FALSE`.
+#' @param indent_size numeric(1). Number of spaces to be used per level of indent (if supported by
+#' the relevant method). If `NULL` it uses the value stored into the matrix_form (defaults to 2).
 #'
 #' @details
 #'
@@ -103,7 +105,8 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   tf_wrap = FALSE,
                                                   max_width = NULL,
                                                   col_gap = x$col_gap,
-                                                  hsep = default_hsep()) {
+                                                  hsep = default_hsep(),
+                                                  indent_size = NULL) {
   mat <- matrix_form(x, indent_rownames = TRUE)
   inset <- table_inset(mat)
 
@@ -132,10 +135,13 @@ setMethod("toString", "MatrixPrintForm", function(x,
   ## sure to put the indents back in
 
   # See if indentation is properly set
+  browser()
   ind_from_mf <- mf_rinfo(mat)$indent > 0
   nlh <- mf_nlheader(mat)
   # Body indentation
-  old_indent <- sapply(mf_rinfo(mat)$indent, function(i) paste0(rep(" ", i), collapse = ""))
+  if (is.null(indent_size)) ind_std <- mat$indent_size
+  ind_std <- paste0(rep(" ", ind_std), collapse = "")
+  old_indent <- sapply(mf_rinfo(mat)$indent, function(i) paste0(rep(ind_std, i), collapse = ""))
   # Header indentation (it happens with toplefts, not \n in titles, dealt afterwards)
   # NB: what about \n in topleft? -> not supported
   header_indent <- gsub("^([[:space:]]*).*", "\\1", mat$strings[1:nlh, 1]) # Supposedly never with empty strings " "
