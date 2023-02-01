@@ -107,6 +107,9 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   col_gap = x$col_gap,
                                                   hsep = default_hsep(),
                                                   indent_size = NULL) {
+
+  checkmate::assert_integerish(indent_size, null.ok = TRUE)
+
   mat <- matrix_form(x, indent_rownames = TRUE)
   inset <- table_inset(mat)
 
@@ -135,12 +138,16 @@ setMethod("toString", "MatrixPrintForm", function(x,
   ## sure to put the indents back in
 
   # See if indentation is properly set
-  browser()
   ind_from_mf <- mf_rinfo(mat)$indent > 0
   nlh <- mf_nlheader(mat)
-  # Body indentation
-  if (is.null(indent_size)) ind_std <- mat$indent_size
+  # Standard indentation
+  if (is.null(indent_size)) {
+    ind_std <- mat$indent_size
+  } else {
+    ind_std <- indent_size
+  }
   ind_std <- paste0(rep(" ", ind_std), collapse = "")
+  # Body indentation
   old_indent <- sapply(mf_rinfo(mat)$indent, function(i) paste0(rep(ind_std, i), collapse = ""))
   # Header indentation (it happens with toplefts, not \n in titles, dealt afterwards)
   # NB: what about \n in topleft? -> not supported
@@ -151,13 +158,20 @@ setMethod("toString", "MatrixPrintForm", function(x,
   ind_from_strings <- nchar(old_indent)[-seq_len(nlh)] > 0
   if (!checkmate::test_set_equal(ind_from_strings, ind_from_mf)) {
     stop("Row-info and string indentations are different.", # nocov
-         "Please contact the maintainer, this should not happen.") # nocov
+         " Please contact the maintainer, this should not happen.") # nocov
   }
   ori_mflg <- mf_lgrouping(mat) # Original groups
   reindent_old_idx <- ori_mflg[need_reindent] # Indent groups bf wrap
 
   # Taking care in advance of indented word wrappings
   cell_widths_mat[need_reindent, 1] <- cell_widths_mat[need_reindent, 1] - nchar(old_indent)[need_reindent]
+
+  # Case in which the indentation is taking too much space vs desired wrapping
+  if (any(cell_widths_mat < 0)) {
+    col_culprits <- apply(cell_widths_mat, 2, function(i) any(i < 0))
+    stop("Inserted width(s) for column(s) ", which(col_culprits),
+         " is(are) not wide enough for the desired indentation.")
+  }
 
   new_strings <- matrix(unlist(mapply(wrap_string,
                                       str = mat$strings,
@@ -191,8 +205,8 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
   # Additional safety check
   if (length(new_indent) > 0 && !all(nzchar(new_indent))) {
-    stop("Recovered indentation contains empty strings. This is an",
-         " indexing problem, please contact the maintainer, this should not happen.")
+    stop("Recovered indentation contains empty strings. This is an", # nocov
+         " indexing problem, please contact the maintainer, this should not happen.") # nocov
   }
 
   # Indentation is different for topleft material
