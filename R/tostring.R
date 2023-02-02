@@ -81,8 +81,6 @@ default_hsep <- d_hsep_factory()
 #'     of the  session (`getOption("width")`). If set to `"auto"`,
 #'     the width of the table (plus any table inset) is used. Ignored
 #'     completely if `tf_wrap` is `FALSE`.
-#' @param indent_size numeric(1). Number of spaces to be used per level of indent (if supported by
-#' the relevant method). If `NULL` it uses the value stored into the matrix_form (defaults to 2).
 #'
 #' @details
 #'
