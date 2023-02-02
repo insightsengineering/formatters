@@ -105,64 +105,12 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   tf_wrap = FALSE,
                                                   max_width = NULL,
                                                   col_gap = x$col_gap,
-                                                  hsep = default_hsep(),
-                                                  indent_size = NULL) {
+                                                  hsep = default_hsep()) {
 
-  checkmate::assert_integerish(indent_size, null.ok = TRUE)
   checkmate::assert_flag(tf_wrap)
 
-  mat <- matrix_form(x, indent_rownames = TRUE) # Fix for indent_size should be here
+  mat <- matrix_form(x, indent_rownames = TRUE)
   inset <- table_inset(mat)
-
-  # Standard indentation size and inserted one
-  # NB: Header can be avoided here because it is not affected by size (?)
-  if (!is.null(indent_size) && (mat$indent_size != indent_size)) {
-    diff_indent_size <- indent_size - mat$indent_size
-    # Add space if inserted indentation_size is larger
-    if (diff_indent_size > 0) {
-      mat$strings[-seq_len(mf_nlheader(mat)), 1] <-
-        paste(
-          sapply(mf_rinfo(mat)$indent, function(i) {
-            paste0(rep(" ", i * diff_indent_size), collapse = "")
-          }),
-          mat$strings[-seq_len(mf_nlheader(mat)), 1]
-        )
-      # formats
-      mat$formats[-seq_len(mf_nlheader(mat)), 1] <-
-        paste(
-          sapply(mf_rinfo(mat)$indent, function(i) {
-            paste0(rep(" ", i * diff_indent_size), collapse = "")
-          }),
-          mat$formats[-seq_len(mf_nlheader(mat)), 1]
-        )
-    } else {
-      # Take out a space if inserted indentation is smaller
-      mat$strings[-seq_len(mf_nlheader(mat)), 1] <- sapply(
-        seq_along(mf_rinfo(mat)$indent),
-        function(i) {
-          how_many <- mf_rinfo(mat)$indent[i] * abs(diff_indent_size)
-          sub(
-            paste0(rep(" ", how_many), collapse = ""), "",
-            mat$strings[-seq_len(mf_nlheader(mat)), 1][i]
-          )
-        }
-      )
-
-      # formats
-      mat$formats[-seq_len(mf_nlheader(mat)), 1] <- sapply(
-        seq_along(mf_rinfo(mat)$indent),
-        function(i) {
-          how_many <- mf_rinfo(mat)$indent[i] * abs(diff_indent_size)
-          sub(
-            paste0(rep(" ", how_many), collapse = ""), "",
-            mat$formats[-seq_len(mf_nlheader(mat)), 1][i]
-          )
-        }
-      )
-    }
-    # This is needed further down the line
-    mat$indent_size <- indent_size
-  }
 
   if (is.null(widths)) {
     widths <- propose_column_widths(x)
@@ -229,13 +177,12 @@ setMethod("toString", "MatrixPrintForm", function(x,
   ## we need has_topleft to be FALSE!!!!!!!!!!
   mat <- mform_handle_newlines(mat)
 
-  # Adding again the indentation
   # Indent groups after newline
   reindent_new_idx <- mf_lgrouping(mat) %in% reindent_old_idx
   if (anyNA(reindent_new_idx)) {
-    stop(
+    stop( # nocov
       "Unable to remap indenting after cell content text wrapping. ", # nocov
-      "Please contact the maintainer, this should not happen."
+      "Please contact the maintainer, this should not happen." # nocov
     ) # nocov
   }
 
@@ -255,13 +202,13 @@ setMethod("toString", "MatrixPrintForm", function(x,
   # Indentation is different for topleft material
   if (isTRUE(mf_has_topleft(mat))) {
     # mf_nlheader counts actual header lines while mf_nrheader is 'virtual'
-    # A bit of an hack, we should see what happens if there are \n in topleft
-    # This still suppose that we dealt with \n in the cols before
+    # A bit of an hack, but unforeseen behavior, related to \n in topleft is not supported
+    # Therefore, this still suppose that we dealt with \n in the cols before
     indx_topleft <- which(reindent_new_idx[1:nlh])
     new_indent[seq_along(indx_topleft)] <- old_indent[indx_topleft]
   }
 
-  # Main addition of the 'saved' indentation
+  # Main addition of the 'saved' indentation to strings
   mat$strings[reindent_new_idx, 1] <- paste0(
     new_indent,
     mat$strings[reindent_new_idx, 1]

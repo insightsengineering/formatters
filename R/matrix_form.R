@@ -55,7 +55,7 @@ mform_handle_newlines <- function(matform) {
         )
       }
       newstrmat[1:new_nlines_hdr, 1] <- c(tl, rep("", new_nlines_hdr - length(tl)))
-      newfrmmat[1:new_nlines_hdr, 1] <- "xx" # Why is this needed?
+      newfrmmat[1:new_nlines_hdr, 1] <- "xx" # Fixing its format
     }
     mf_strings(matform) <- newstrmat
     mf_formats(matform) <- newfrmmat

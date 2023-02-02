@@ -13,8 +13,7 @@ toString(x, ...)
   tf_wrap = FALSE,
   max_width = NULL,
   col_gap = x$col_gap,
-  hsep = default_hsep(),
-  indent_size = NULL
+  hsep = default_hsep()
 )
 }
 \arguments{
