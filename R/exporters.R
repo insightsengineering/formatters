@@ -9,7 +9,7 @@
 #' @inheritParams rtables::paginate_table
 #' @param file character(1). File to write.
 #' @param paginate logical(1). Should \code{tt} be paginated before writing the file. Defaults to `TRUE` if any sort of page dimension is specified.
-#' @param \dots Passed directly to \code{\link{paginate_table}}
+#' @param \dots Passed directly to \code{\link[rtables]{paginate_table}}
 #' @param page_break character(1). Page break symbol (defaults to outputting \code{"\\s"}).
 #' @return \code{file} (this function is called for the side effect of writing the file.
 #'
@@ -133,6 +133,7 @@ pos_to_path <- function(pos) {
 #'   flextable(s). Defaults to 5.
 #' @return a flextable object
 #'
+#' @importFrom stats setNames
 #' @export
 #'
 #' @examples

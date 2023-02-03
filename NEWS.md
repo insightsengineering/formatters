@@ -1,6 +1,7 @@
 ## formatters 0.3.4.17
  * Reintroduce `obj_na_str` and `obj_na_str<-` after regression removed them.
  * Fixing spelling and improving `WORDLIST` file.
+ * Exporters `export_as_txt`, `tt_to_flextable`, `export_as_pdf`, and `export_as_rtf` migrated from `rtables` to `formatters`. `tt_to_flextable` renamed to `export_as_flextable`.
 
 ## formatters 0.3.4.11
  * fix bug where portions of table after last section div (e.g., non-nested further analyses) were omitted (#77)
