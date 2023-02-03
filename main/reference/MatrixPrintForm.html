@@ -12,7 +12,7 @@ methods, and almost never from other code."><!-- mathjax --><script src="https:/
     
     <a class="navbar-brand me-2" href="../index.html">formatters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.4.15</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.4.16</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,14 +29,6 @@ methods, and almost never from other code."><!-- mathjax --><script src="https:/
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.3.3">v0.3.3</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -84,7 +76,8 @@ methods, and almost never from other code.</p>
 <span>  main_footer <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  prov_footer <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  col_gap <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>  table_inset <span class="op">=</span> <span class="fl">0L</span></span>
+<span>  table_inset <span class="op">=</span> <span class="fl">0L</span>,</span>
+<span>  indent_size <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">matrix_print_form</span><span class="op">(</span></span>
@@ -106,7 +99,8 @@ methods, and almost never from other code.</p>
 <span>  main_footer <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  prov_footer <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  col_gap <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>  table_inset <span class="op">=</span> <span class="fl">0L</span></span>
+<span>  table_inset <span class="op">=</span> <span class="fl">0L</span>,</span>
+<span>  indent_size <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -218,6 +212,11 @@ character vector.</p></dd>
 <dt>table_inset</dt>
 <dd><p>numeric(1). Table inset. See
 <code><a href="table_inset.html">table_inset</a></code></p></dd>
+
+
+<dt>indent_size</dt>
+<dd><p>numeric(1). Number of spaces to be used per level of indent (if supported by
+the relevant method). Defaults to 2.</p></dd>
 
 </dl></div>
     <div class="section level2">
