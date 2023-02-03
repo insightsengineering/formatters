@@ -19,33 +19,14 @@ export_as_rtf(
 )
 }
 \arguments{
-\item{tt}{TableTree (or related class). A TableTree object representing a
-populated table.}
+\item{tt}{TableTree (or related class). A TableTree object representing a populated table.}
 
 \item{file}{character(1). File to write.}
 
-\item{colwidths}{numeric vector. Column widths for use with vertical pagination.}
-
-\item{page_type}{character(1).   Name   of  a  page  type.   See
-\code{page_types}.   Ignored when  \code{pg_width} and  \code{pg_height}
-are set directly.}
-
-\item{pg_width}{numeric(1). Page width in inches.}
-
-\item{pg_height}{numeric(1). Page height in inches.}
-
-\item{landscape}{logical(1). Should the  dimensions of \code{page_type}
-be inverted  for landscape?  Defaults to  \code{FALSE}, ignored when
-\code{pg_width} and \code{pg_height} are set directly.}
+\item{colwidths}{numeric vector. Column widths for use with vertical pagination. Currently ignored.}
 
 \item{margins}{ A numeric vector interpreted in the same way
     as \code{par(mar)} in base graphics. }
-
-\item{font_size}{numeric(1). Font size, defaults to 12.}
-
-\item{font_family}{character(1). Name of a font family. An error
-will be thrown if the family named is not monospaced. Defaults
-to Courier.}
 
 \item{...}{Passed directly to \code{\link[rtables]{paginate_table}}}
 }

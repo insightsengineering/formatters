@@ -17,31 +17,18 @@ export_as_flextable(
 )
 }
 \arguments{
-\item{tt}{TableTree (or related class). A TableTree object representing a
-populated table.}
+\item{tt}{TableTree (or related class). A TableTree object representing a populated table.}
 
 \item{paginate}{logical(1). Should \code{tt} be paginated and exported as
 multiple flextables. Defaults to \code{FALSE}}
 
 \item{lpp}{numeric. Maximum lines per page including (re)printed header and context rows}
 
-\item{cpp}{numeric(1) or NULL. Width (in characters) of the pages for
-horizontal pagination. \code{NULL} (the default) indicates no horizontal
-pagination should be done.}
+\item{cpp}{numeric(1). Number of columns per page}
 
 \item{...}{Passed directly to \code{\link[rtables]{paginate_table}}}
 
-\item{colwidths}{numeric vector. Column widths for use with vertical pagination.}
-
-\item{tf_wrap}{logical(1). Should  the texts for  title, subtitle,
-and footnotes be wrapped?}
-
-\item{max_width}{integer(1), character(1) or NULL. Width that title
-and   footer   (including   footnotes)  materials   should   be
-word-wrapped to. If NULL, it is  set to the current print width
-of the  session (\code{getOption("width")}). If set to \code{"auto"},
-the width of the table (plus any table inset) is used. Ignored
-completely if \code{tf_wrap} is \code{FALSE}.}
+\item{colwidths}{numeric vector. Column widths for use with vertical pagination. Currently ignored.}
 
 \item{total_width}{numeric(1). Total width in inches for the resulting
 flextable(s). Defaults to 5.}
