@@ -41,6 +41,10 @@ reference:
       - padstr
       - spread_integer
       - is.wholenumber
+  - title: Output Functions
+    desc: These functions create ascii or html representations of the table
+    contents:
+      - starts_with("export_as")
   - title: Pagination
     desc: Pagination functionality
     contents:
