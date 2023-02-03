@@ -25,7 +25,8 @@ MatrixPrintForm(
   main_footer = "",
   prov_footer = character(),
   col_gap = 3,
-  table_inset = 0L
+  table_inset = 0L,
+  indent_size = 2
 )
 
 matrix_print_form(
@@ -47,7 +48,8 @@ matrix_print_form(
   main_footer = "",
   prov_footer = character(),
   col_gap = 3,
-  table_inset = 0L
+  table_inset = 0L,
+  indent_size = 2
 )
 }
 \arguments{
@@ -120,6 +122,9 @@ character vector.}
 
 \item{table_inset}{numeric(1). Table inset. See
 \code{\link{table_inset}}}
+
+\item{indent_size}{numeric(1). Number of spaces to be used per level of indent (if supported by
+the relevant method). Defaults to 2.}
 }
 \value{
 An object of class \code{MatrixPrintForm}. Currently this is

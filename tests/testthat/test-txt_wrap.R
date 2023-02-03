@@ -141,20 +141,19 @@ test_that("row label wrapping has identical indentation", {
   table_inset(matform) <- 1
 
   # Adding indentation -> it is done before in $strings
-  rinfo <- mf_rinfo(matform)
-  rinfo$indent <- c(1, 2)
-  matform$strings[2, 1] <- paste0(" ", matform$strings[2, 1])
-  matform$strings[3, 1] <- paste0("  ", matform$strings[3, 1])
-  catform <- toString(matform, widths = c(15, 5))
+  mf_rinfo(matform)$indent <- c(1, 2)
+  matform$strings[2, 1] <- paste0(" ", matform$strings[2, 1]) # Does not respect indent_size
+  matform$strings[3, 1] <- paste0("  ", matform$strings[3, 1]) # Does not respect indent_size
+  catform <- toString(matform, widths = c(15, 5)) # This reindent (correctly) the rows
   res_vec <- strsplit(catform, "\n")[[1]]
   exp_vec <- c(
     "                   all_o",
     "                    bs  ",
     " ———————————————————————",
-    "  Something to     3    ",
-    "  wrap                  ",
-    "   Also here it    4    ",
-    "   is                   "
+    "   Something to    3    ",
+    "   wrap                 ",
+    "     Also here     4    ",
+    "     it is              "
   )
   expect_identical(res_vec, exp_vec)
 })
