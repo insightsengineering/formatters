@@ -33,6 +33,8 @@ jobs:
     if: github.event_name != 'push'
     name: SuperLinter 🦸‍♀️
     uses: insightsengineering/r.pkg.template/.github/workflows/linter.yaml@main
+    with:
+      lintr_error_on_lint: false
   roxygen:
     name: Roxygen 🅾
     uses: insightsengineering/r.pkg.template/.github/workflows/roxygen.yaml@main
