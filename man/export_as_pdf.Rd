@@ -29,22 +29,9 @@ export_as_pdf(
 )
 }
 \arguments{
-\item{tt}{TableTree (or related class). A TableTree object representing a
-populated table.}
+\item{tt}{TableTree (or related class). A TableTree object representing a populated table.}
 
 \item{file}{file to write, must have \code{.pdf} extension}
-
-\item{page_type}{character(1).   Name   of  a  page  type.   See
-\code{page_types}.   Ignored when  \code{pg_width} and  \code{pg_height}
-are set directly.}
-
-\item{landscape}{logical(1). Should the  dimensions of \code{page_type}
-be inverted  for landscape?  Defaults to  \code{FALSE}, ignored when
-\code{pg_width} and \code{pg_height} are set directly.}
-
-\item{pg_width}{numeric(1). Page width in inches.}
-
-\item{pg_height}{numeric(1). Page height in inches.}
 
 \item{width}{Deprecated,  please  use   \code{pg_width}  or  specify
 \code{page_type}.  The width of  the graphics  region in inches}
@@ -56,42 +43,23 @@ inches}
 \item{margins}{numeric(4). The number of lines/characters of margin on the
 bottom, left, top, and right sides of the page.}
 
-\item{font_family}{character(1). Name of a font family. An error
-will be thrown if the family named is not monospaced. Defaults
-to Courier.}
-
 \item{fontsize}{Deprecated,  please use  \code{font_size}. the  size of
 text (in points)}
-
-\item{font_size}{numeric(1). Font size, defaults to 12.}
 
 \item{paginate}{logical(1). Should \code{tt} be paginated before writing the file. Defaults to \code{TRUE} if any sort of page dimension is specified.}
 
 \item{lpp}{numeric. Maximum lines per page including (re)printed header and context rows}
 
-\item{cpp}{numeric(1) or NULL. Width (in characters) of the pages for
-horizontal pagination. \code{NULL} (the default) indicates no horizontal
-pagination should be done.}
+\item{cpp}{numeric(1). Number of columns per page}
 
-\item{hsep}{character(1). Set of character(s) to be repeated as the separator
-between the header and body of the table when rendered as text. Defaults to
-a connected horizontal line (unicode 2014) in locals that use a UTF
-charset, and to \code{-} elsewhere (with a once per session warning).}
+\item{hsep}{character(1). Set of character(s) to be repeated as the separator between
+the header and body of the table when rendered as text. Defaults to a connected horrizontal
+line (unicode 2014) in locals that use a UTF charset, and to \code{-} elsewhere (with a
+once per session warning).}
 
-\item{indent_size}{numeric(1). Number of spaces to use per indent level.
-Defaults to 2}
+\item{indent_size}{numeric(1). Number of spaces to use per indent level. Defaults to 2}
 
-\item{tf_wrap}{logical(1). Should  the texts for  title, subtitle,
-and footnotes be wrapped?}
-
-\item{max_width}{integer(1), character(1) or NULL. Width that title
-and   footer   (including   footnotes)  materials   should   be
-word-wrapped to. If NULL, it is  set to the current print width
-of the  session (\code{getOption("width")}). If set to \code{"auto"},
-the width of the table (plus any table inset) is used. Ignored
-completely if \code{tf_wrap} is \code{FALSE}.}
-
-\item{colwidths}{numeric vector. Column widths for use with vertical pagination.}
+\item{colwidths}{numeric vector. Column widths for use with vertical pagination. Currently ignored.}
 
 \item{...}{arguments passed on to \code{paginate_table}}
 }
