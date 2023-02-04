@@ -356,14 +356,6 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
           wrap = c("(", ")")
         )
       ),
-      "xx.xx (xx.xx - xx.xx)" = paste0(
-        round_fmt(x[1], digits = 2, na_str = na_str[1]), " ",
-        sep_2d_helper(x[2:3],
-          dig1 = 2, dig2 = 2,
-          sep = " - ", na_str = na_str[2:3],
-          wrap = c("(", ")")
-        )
-      ),
       "xx.xxx (xx.xxx - xx.xxx)" = paste0(
         round_fmt(x[1], digits = 3, na_str = na_str[1]), " ",
         sep_2d_helper(x[2:3],

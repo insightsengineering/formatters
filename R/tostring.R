@@ -1,7 +1,10 @@
 # toString ----
 
+## this can't be tested from within R
+# nocov start
 #' @importFrom stats na.omit
 #' @importFrom utils head tail localeToCharset
+#' @import checkmate
 
 d_hsep_factory <- function() {
   warn_sent <- FALSE
@@ -35,6 +38,8 @@ d_hsep_factory <- function() {
 #' @examples
 #' default_hsep()
 default_hsep <- d_hsep_factory()
+
+# nocov end
 
 .calc_cell_widths <- function(mat, colwidths, col_gap) {
   spans <- mat$spans
@@ -105,7 +110,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   col_gap = x$col_gap,
                                                   hsep = default_hsep()) {
 
-  checkmate::assert_flag(tf_wrap)
+  assert_flag(tf_wrap)
 
   mat <- matrix_form(x, indent_rownames = TRUE)
   inset <- table_inset(mat)
@@ -122,7 +127,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
     } else if (is.character(max_width) && identical(max_width, "auto")) {
       max_width <- ncchar + inset
     }
-    checkmate::assert_number(max_width, lower =  0)
+    assert_number(max_width, lower =  0)
   }
 
   # Check for having the right number of widths
@@ -146,7 +151,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
   need_reindent <- nzchar(old_indent)
   # Check for which row has indent
   ind_from_strings <- nchar(old_indent)[-seq_len(nlh)] > 0
-  if (!checkmate::test_set_equal(ind_from_strings, ind_from_mf)) {
+  if (!all(ind_from_strings == ind_from_mf)) {
     stop("Row-info and string indentations are different.", # nocov
          " Please contact the maintainer, this should not happen.") # nocov
   }

@@ -9,7 +9,8 @@ basic_pagdf(
   labs = rnames,
   rnums = seq_along(rnames),
   extents = 1L,
-  rclass = "NA"
+  rclass = "NA",
+  parent_path = "root"
 )
 }
 \arguments{
@@ -22,6 +23,9 @@ basic_pagdf(
 \item{extents}{integer. Number of lines each row will take to print, defaults to 1 for all rows}
 
 \item{rclass}{character. Class(es) for the rows. Defaults to "NA"}
+
+\item{parent_path}{character. parent path that all rows should be "children of",
+defaults to \code{"root"}, and generally should not matter to end users.}
 }
 \value{
 A data.frame suitable for use in both the \code{matrix_print_form} constructor and the pagination machinery

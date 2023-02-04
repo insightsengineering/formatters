@@ -43,6 +43,12 @@ test_that("tf_wordwrap and table inset work (including together)", {
     "\nppppp ppppp\nppppp\n"
   )
   expect_identical(printform3, expected3)
+
+  ## coverage for allfooter
+  expect_identical(all_footers(matform),
+                   c(main_footer(matform),
+                     prov_footer(matform)))
+
 })
 
 test_that("toString() throws a warning when newline is in string", {

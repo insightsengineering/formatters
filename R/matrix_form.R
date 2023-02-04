@@ -23,14 +23,17 @@ mform_handle_newlines <- function(matform) {
   if (any(row_nlines > 1)) {
     # Header indices
     hdr_inds <- 1:nr_header
-    ## used below even though we don't store it on the resulting object
-    new_nlines_hdr <- sum(row_nlines[hdr_inds])
     ## groundwork for sad haxx to get tl to not be messed up
     if (has_topleft) {
-      tl <- strmat[hdr_inds, 1]
+        tl <- strmat[hdr_inds, 1]
+        strmat[hdr_inds,1] <- ""
+        ## recalc them without topleft cause thats handled separately
+        row_nlines <- apply(strmat, 1, function(x) max(vapply(x, nlines, 1L), 1L))
     } else {
       tl <- character()
     }
+    ## used below even though we don't store it on the resulting object
+    new_nlines_hdr <- sum(row_nlines[hdr_inds])
     newstrmat <- rbind(
       expand_mat_rows(strmat[hdr_inds, , drop = FALSE],
         row_nlines[hdr_inds],
@@ -51,11 +54,11 @@ mform_handle_newlines <- function(matform) {
       if (length(newtl) > new_nlines_hdr) {
         stop(
           "Expanding top-left material resulted in more lines (", length(newtl),
-          "than fit in the header."
+          "than fit in the header." #nocov
         )
       }
-      newstrmat[1:new_nlines_hdr, 1] <- c(tl, rep("", new_nlines_hdr - length(tl)))
-      newfrmmat[1:new_nlines_hdr, 1] <- "xx" # Fixing its format
+      newstrmat[1:new_nlines_hdr, 1] <- c(newtl, rep("", new_nlines_hdr - length(newtl)))
+      newfrmmat[1:new_nlines_hdr, 1] <- "xx"
     }
     mf_strings(matform) <- newstrmat
     mf_formats(matform) <- newfrmmat
@@ -308,9 +311,9 @@ mf_nrheader <- function(mf) attr(mf, "nrow_header", exact = TRUE)
   if (!is.null(strdim) && !identical(strdim, vdim)) {
     stop(
       "Dimensions of new '", component, "' value (",
-      vdim[1], ", ", vdim[2],
-      ") do not match dimensions of existing 'strings' component (",
-      strdim[1], ", ", strdim[2], ")."
+      vdim[1], ", ", vdim[2], # nocov
+      ") do not match dimensions of existing 'strings' component (", # nocov
+      strdim[1], ", ", strdim[2], ")." # nocov
     )
   }
   mf[[component]] <- value
@@ -408,6 +411,8 @@ mpf_has_rlabels <- function(mf) ncol(mf$strings) > ncol(mf)
 #' starting point for more sophisticated custom `matrix_form` methods
 #'
 #' @param df data.frame
+#' @param parent_path character. parent path that all rows should be "children of",
+#' defaults to `"root"`, and generally should not matter to end users.
 #'
 #' @return A valid `MatrixPrintForm` object representing `df`,
 #' ready for ASCII rendering
@@ -416,7 +421,7 @@ mpf_has_rlabels <- function(mf) ncol(mf$strings) > ncol(mf)
 #' mform <- basic_matrix_form(mtcars)
 #' cat(toString(mform))
 #' @export
-basic_matrix_form <- function(df) {
+basic_matrix_form <- function(df, parent_path = "root") {
   fmts <- lapply(df, function(x) if (is.null(obj_format(x))) "xx" else obj_format(x))
 
   bodystrs <- mapply(function(x, fmt) {
@@ -453,7 +458,8 @@ basic_matrix_form <- function(df) {
     exts <- rep(1L, NROW(df))
   }
   rowdf <- basic_pagdf(row.names(df),
-    extents = exts
+                       extents = exts,
+                       parent_path = parent_path
   )
   formats <- cbind(
     "",
