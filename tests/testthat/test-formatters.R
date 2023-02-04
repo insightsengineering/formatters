@@ -325,141 +325,6 @@ expect_identical(
 
 
 
-
-## https://github.com/insightsengineering/formatters/issues/18
-dfmf <- basic_matrix_form(mtcars)
-expect_identical(main_footer(dfmf), "")
-ftmsg <- "my footer is here"
-main_footer(dfmf) <- ftmsg
-expect_identical(
-  main_footer(dfmf),
-  ftmsg
-)
-
-
-## https://github.com/Roche/rtables/issues/318
-dfmf2 <- dfmf
-dfmf2$strings[1, 2] <- "m\npg"
-dfmf2$strings[1, 1] <- "tleft mats"
-dfmf2$has_topleft <- TRUE
-dfmf2 <- formatters:::mform_handle_newlines(dfmf2)
-expect_identical(
-  dfmf2$strings[1:2, 1:2],
-  matrix(c("tleft mats", "", "m", "pg"), nrow = 2, ncol = 2)
-)
-
-
-## https://github.com/insightsengineering/formattesr/issues/77
-
-dfmf3 <- dfmf
-mf_rinfo(dfmf3)$trailing_sep[31] <- "-"
-str <- toString(dfmf3)
-expect_true(grepl("Volvo 142E", str))
-
-
-
-
-strout <- toString(dfmf)
-expect_true(any(grepl(ftmsg, strout)))
-
-df2 <- mtcars
-df2$extra <- paste("row", seq_len(NROW(df2)), "haha", sep = "\n")
-
-df2mf <- basic_matrix_form(df2)
-
-mf_rinfo <- formatters:::mf_rinfo
-
-expect_identical(
-  basic_pagdf(row.names(df2),
-    extents = 3L
-  ),
-  mf_rinfo(df2mf)
-)
-
-hpaginds <- pag_indices_inner(mf_rinfo(df2mf),
-  8,
-  min_siblings = 0
-)
-
-expect_true(all(lengths(hpaginds) == 2L))
-
-vpaginds <- vert_pag_indices(df2mf, cpp = 40, verbose = TRUE)
-
-expect_identical(
-  lengths(vpaginds),
-  c(3L, 3L, 3L, 2L, 1L)
-)
-
-vpaginds2 <- vert_pag_indices(df2mf, cpp = 39, verbose = TRUE)
-
-expect_identical(
-  lengths(vpaginds2),
-  c(2L, 2L, 2L, 3L, 2L, 1L)
-)
-
-vpaginds3 <- vert_pag_indices(df2mf, cpp = 44, verbose = TRUE, rep_cols = 1L)
-
-## make sure it was repeated as requested
-expect_identical(sapply(vpaginds3, function(x) x[1]),
-                 rep(1L, 5))
-
-## make sure it doesn't appear more than once
-expect_identical(sapply(vpaginds3, function(x) sum(x == 1L)),
-                 rep(1L, 5))
-
-
-## they all appear
-expect_equal(sort(unique(unlist(vpaginds3))),
-             1:12)
-
-expect_identical(lengths(vpaginds3),
-                 c(3L, 3L, 3L, 4L, 3L))
-
-df3 <- data.frame(
-  x = 1:5, y = c(1:3, 8, 9),
-  row.names = c("spna", "spnb", "spnc", "sep1", "sep2")
-)
-
-df3mf <- basic_matrix_form(df3)
-
-spnmat <- formatters:::mf_spans(df3mf)
-
-spnmat[2:3, 2:3] <- 2
-
-df3mf$spans <- spnmat
-df3mf$display[2:3, 3] <- FALSE
-df3mf$aligns[2:6, 2:3] <- "center"
-strout <- toString(df3mf)
-expect_false(grepl("1[[:space:]]*1", strout))
-expect_true(grepl("3[[:space:]]*3", strout))
-
-
-expect_identical(
-  spread_integer(7, 3),
-  c(3, 2, 2)
-)
-
-expect_error(spread_integer(3.5, 2))
-
-expect_error(
-  {
-    table_inset(df3mf) <- -1
-  },
-  "invalid value for table_inset"
-)
-
-
-## matrix_form on a matrix form a no op
-expect_identical(df3mf, matrix_form(df3mf))
-expect_identical(divider_height(df3mf), 1L)
-expect_identical(subtitles(df3mf), character())
-expect_identical(page_titles(df3mf), character())
-prov_footer(df3mf) <- "file: myfile.txt"
-expect_identical(prov_footer(df3mf), "file: myfile.txt")
-expect_identical(nlines(NULL), 0L)
-expect_identical(nlines("hi\nthere"), 2L)
-
-
 thing <- 5.1234
 expect_true(is.null(obj_label(thing)))
 obj_label(thing) <- "hi thing"
@@ -596,3 +461,93 @@ expect_identical(
     pg_height = formatters:::pg_dim_names$a4[[2]]
   )
 )
+
+## silly coverage things
+expect_identical(padstr("hi", 4, "center"),
+                 " hi ")
+expect_identical(padstr("hi", 4, "left"),
+                 "hi  ")
+expect_identical(padstr("hi", 4, "right"),
+                 "  hi")
+expect_identical(padstr(NA, 4, "center"),
+                 "<NA>")
+
+expect_error(padstr(c("hi", "lo"), 5))
+expect_error(padstr(5, "hi"))
+
+
+expect_identical(spans_to_viscell(c(2, 2, 2, 2, 1, 3, 3, 3)),
+                 c(TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE))
+
+expect_equal(nlines(character()), 0)
+
+expect_error(page_dim("wakawakawaka"))
+
+## XXX this is a very stupid test that has NO VALUE
+stupidobj <- NA_real_
+obj_na_str(stupidobj) <- "wat"
+obj_format(stupidobj) <- "xx.x"
+expect_identical(format_value(stupidobj,
+                              format = obj_format(stupidobj),
+                              na_str = obj_na_str(stupidobj)),
+                 "wat")
+
+## XXX I'm not sure if we use this functionality anywhere
+## and as I note in the code implementing it its dangerous and I'm
+## not convinced we want it. Remove this test once we learn our lesson
+## and remove the list method
+mylst <- list("hi",
+              c("there\nyou", "person", "ahoy"))
+expect_equal(nlines(mylst), 5)
+expect_equal(nlines(list()),
+             0)
+
+
+
+## testing mf_* roundtrip
+
+
+dfmf <- basic_matrix_form(mtcars)
+
+dfmf_wrong <- dfmf
+
+mf_nrheader(dfmf_wrong) <- 2
+expect_equal(mf_nrheader(dfmf_wrong), 2)
+mf_nrheader(dfmf_wrong) <- 1
+mf_rfnotes(dfmf_wrong) <- c("silly", "stuff")
+expect_identical(mf_rfnotes(dfmf_wrong), c("silly", "stuff"))
+
+## test indent to big breakage
+## note this is a *very* artificial example and I'm not sure how much
+## value it has beyodn increasing coverage
+cwths <- propose_column_widths(dfmf_wrong)
+cwths[1] <- 10
+dfmf_wrong$indent_size <- 15
+mf_rinfo(dfmf_wrong)$indent <- 1L
+expect_error(toString(dfmf_wrong, widths = cwths))
+## annoying direct constructor calls to ensure full coverage
+
+strs <- matrix(byrow = TRUE, ncol = 2,
+               c("lab1", "lab2",
+                 "spn_val", "spn_val")
+               )
+
+spans <- matrix(byrow = TRUE, ncol = 2,
+                c(1, 1,
+                  2, 2)
+                )
+
+aligns <- matrix(byrow = TRUE, ncol = 2,
+                 "center")
+fmts <- matrix(byrow = TRUE, ncol = 2,
+                 "xx")
+
+rinfo <- formatters:::pagdfrow(nm = "row", lab = "row", rnum = 1,
+                                   pth = "row", extent = 1, rclass = "silly")
+
+mpf <- MatrixPrintForm(strings = strs, spans = spans, aligns = aligns,
+                       formats = fmts, row_info = rinfo,
+                       nlines_header = 1, nrow_header = 1, has_topleft = FALSE)
+
+expect_equal(length(grep("spn_val", toString(mpf))),
+             1L)
