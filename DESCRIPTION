@@ -19,7 +19,8 @@ Depends:
     R (>= 2.10)
 Imports: 
     grid,
-    htmltools
+    htmltools,
+    checkmate
 Suggests:
     dplyr,
     gt (>= 0.7.0),

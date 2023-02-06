@@ -4,10 +4,13 @@
 \alias{basic_matrix_form}
 \title{Create spoof matrix form from a data.frame}
 \usage{
-basic_matrix_form(df)
+basic_matrix_form(df, parent_path = "root")
 }
 \arguments{
 \item{df}{data.frame}
+
+\item{parent_path}{character. parent path that all rows should be "children of",
+defaults to \code{"root"}, and generally should not matter to end users.}
 }
 \value{
 A valid \code{MatrixPrintForm} object representing \code{df},

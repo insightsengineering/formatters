@@ -240,13 +240,16 @@ setMethod("print", "ANY", base::print) ## nocov
 #' for setters.
 #' @aliases obj_name
 #' @export
+
+## no exported methods so we do nocov
+# nocov start
 setGeneric("obj_name", function(obj) standardGeneric("obj_name"))
 
 
 #' @rdname lab_name
 #' @export
 setGeneric("obj_name<-", function(obj, value) standardGeneric("obj_name<-"))
-
+# nocov end
 
 #' @seealso with_label
 #' @rdname lab_name

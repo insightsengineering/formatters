@@ -27,12 +27,13 @@ std_margins <- list(
   right = std_marg_wd
 )
 
-to_inches_num <- function(x) {
-  if (is(x, "unit")) {
-    x <- unclass(convertUnit(x, "inches"))
-  }
-  x
-}
+## does not appear to be used anywhere
+## to_inches_num <- function(x) {
+##   if (is(x, "unit")) {
+##     x <- unclass(convertUnit(x, "inches"))
+##   }
+##   x
+## }
 
 ## Physical size, does not take margins into account
 pg_dim_names <- list(

@@ -156,7 +156,6 @@ pagdfrow <- function(row,
   )
 }
 
-
 valid_pag <- function(pagdf,
                       guess,
                       start,
@@ -182,7 +181,8 @@ valid_pag <- function(pagdf,
   ## self extent does ***not*** currently include trailing sep
   ## we don't include the trailing_sep for guess because if we paginate here it won't be printed
   sectlines <- if (start == guess) 0L else sum(!is.na(pagdf[start:(guess - 1), "trailing_sep"]))
-  if (reflines > 0) reflines <- reflines + if (have_col_fnotes) 0L else div_height + 1L
+  if (reflines > 0 && !have_col_fnotes)
+      reflines <- reflines + div_height + 1L
   lines <- rowlines + reflines + sectlines # guess - start + 1 because inclusive of start
   rep_ext <- pagdf$par_extent[start]
   if (rowlines > rlpp) {
@@ -240,19 +240,43 @@ valid_pag <- function(pagdf,
       return(FALSE)
     }
   }
-  if (guess < nrow(pagdf)) {
-    curpth <- unlist(rw$path)
-    nxtpth <- unlist(pagdf$path[[guess + 1]])
+  if (guess < nrow(pagdf) && length(nosplit > 0)) {
+    ## paths end at the leaf name which is *always* different
+    curpth <- head(unlist(rw$path), -1)
+    nxtpth <- head(unlist(pagdf$path[[guess + 1]]), -1)
+
+    ## posvec_in_curpth <- vapply(nosplit, function(x) match(x, curpth), 1L)
+    ## if(any(!is.na(posvec_in_curpth))) {
+    ##     pos_in_curpth <- max(posvec_in_curpth, na.rm = TRUE)
+    ##     if(identical(curpth[seq_len(pos_in_curpth)],
+    ##                  nxtpth[seq_len(pos_in_curpth)])) {
+    ##         if(verbose) {
+    ##             message(
+    ##                 "\t....................... FAIL: values of unsplitable vars before [", curvals,
+    ##                 "] and after [", nxtvals, "] match"
+    ##             )
+    ##         }
+    ##         return(FALSE)
+    ##     }
+
+    ## }
     inplay <- nosplit[(nosplit %in% intersect(curpth, nxtpth))]
     if (length(inplay) > 0) {
+      ok_split <- vapply(inplay,
+                   function(var) {
+          !identical(curpth[match(var, curpth) + 1],
+                     nxtpth[match(var, nxtpth) +1])
+      },
+      TRUE)
+
       curvals <- curpth[match(inplay, curpth) + 1]
       nxtvals <- nxtpth[match(inplay, nxtpth) + 1]
-      if (identical(curvals, nxtvals)) {
+      if (!all(ok_split)) {
         if (verbose) {
           message(
-            "\t....................... FAIL: values of unsplitable vars before [", curvals,
-            "] and after [", nxtvals, "] match"
-          )
+              "\t....................... FAIL: nosplit variable [",
+              inplay[min(which(!ok_split))], "] would be constant [",
+              curvals, "] across this pagebreak.")
         }
         return(FALSE)
       }
@@ -445,7 +469,7 @@ vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, r
 #' Basic/spoof pagination info dataframe
 #'
 #' Returns a minimal pagination info data.frame (with no sibling/footnote/etc info).
-#'
+#' @inheritParams basic_matrix_form
 #' @param rnames character. Vector of row names
 #' @param labs character. Vector of row labels (defaults to names)
 #' @param rnums integer. Vector of row numbers. Defaults to `seq_along(rnames)`.
@@ -460,11 +484,15 @@ vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, r
 #' @export
 basic_pagdf <- function(rnames, labs = rnames, rnums = seq_along(rnames),
                         extents = 1L,
-                        rclass = "NA") {
+                        rclass = "NA",
+                        parent_path = "root") {
   rws <- mapply(pagdfrow,
     nm = rnames, lab = labs, extent = extents,
-    rclass = rclass, rnum = rnums, pth = rnames,
+    rclass = rclass, rnum = rnums, pth = lapply(rnames, function(x) c(parent_path, x)),
     SIMPLIFY = FALSE, nsibs = 1, sibpos = 1
   )
-  do.call(rbind.data.frame, rws)
+  res <- do.call(rbind.data.frame, rws)
+  res$n_siblings <- nrow(res)
+  res$pos_in_siblings <- seq_along(res$n_siblings)
+  res
 }
