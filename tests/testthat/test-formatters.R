@@ -275,15 +275,15 @@ expect_identical(
   "5.123 (7.891 - 10.124)"
 )
 
-
 expect_identical(format_value(NULL, "xx"), "")
-
 
 expect_identical(
   format_value(5.123, "xx.x", output = "html"),
   list("5.1" = htmltools::tagList(format_value(5.123, "xx.x"), NULL))
 )
 
+expect_identical(format_value(c(500,1), "N=xx (xx%)"),
+                 "N=500 (100%)")
 
 ## errors
 

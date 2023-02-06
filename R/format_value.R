@@ -9,7 +9,7 @@ formats_1d <- c(
 
 formats_2d <- c(
   "xx / xx", "xx. / xx.", "xx.x / xx.x", "xx.xx / xx.xx", "xx.xxx / xx.xxx",
-  "xx (xx%)", "xx (xx.%)", "xx (xx.x%)", "xx (xx.xx%)",
+  "N=xx (xx%)", "xx (xx%)", "xx (xx.%)", "xx (xx.x%)", "xx (xx.xx%)",
   "xx. (xx.%)", "xx.x (xx.x%)", "xx.xx (xx.xx%)",
   "(xx, xx)", "(xx., xx.)", "(xx.x, xx.x)", "(xx.xx, xx.xx)",
   "(xx.xxx, xx.xxx)", "(xx.xxxx, xx.xxxx)",
@@ -289,6 +289,7 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
       "xx.x / xx.x" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = " / ", na_str = na_str),
       "xx.xx / xx.xx" = sep_2d_helper(x, dig1 = 2, dig2 = 2, sep = " / ", na_str = na_str),
       "xx.xxx / xx.xxx" = sep_2d_helper(x, dig1 = 3, dig2 = 3, sep = " / ", na_str = na_str),
+      "N=xx (xx%)" = paste0("N=", val_pct_helper(x, dig1 = NA, dig2 = NA, na_str = na_str)),
       "xx (xx%)" = val_pct_helper(x, dig1 = NA, dig2 = NA, na_str = na_str),
       "xx (xx.%)" = val_pct_helper(x, dig1 = NA, dig2 = 0, na_str = na_str),
       "xx (xx.x%)" = val_pct_helper(x, dig1 = NA, dig2 = 1, na_str = na_str),
