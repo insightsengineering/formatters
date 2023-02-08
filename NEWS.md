@@ -1,4 +1,4 @@
-## formatters 0.3.4.17
+## formatters 0.3.4.18
  * Reintroduce `obj_na_str` and `obj_na_str<-` after regression removed them.
  * Fixing spelling and improving `WORDLIST` file.
 
