@@ -75,6 +75,7 @@ reference:
     desc: Other documented functions not interesting to end users
     contents:
       - print,ANY-method
+      - wrap_string
       - ifnotlen0
       - table_inset
       - default_hsep
