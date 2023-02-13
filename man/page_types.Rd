@@ -23,4 +23,5 @@ Supported Named Page TypesList supported named page types
 \examples{
 page_types()
 page_dim("a4")
+
 }
