@@ -25,10 +25,10 @@ mform_handle_newlines <- function(matform) {
     hdr_inds <- 1:nr_header
     ## groundwork for sad haxx to get tl to not be messed up
     if (has_topleft) {
-        tl <- strmat[hdr_inds, 1]
-        strmat[hdr_inds,1] <- ""
-        ## recalc them without topleft cause thats handled separately
-        row_nlines <- apply(strmat, 1, function(x) max(vapply(x, nlines, 1L), 1L))
+      tl <- strmat[hdr_inds, 1]
+      strmat[hdr_inds, 1] <- ""
+      ## recalc them without topleft cause thats handled separately
+      row_nlines <- apply(strmat, 1, function(x) max(vapply(x, nlines, 1L), 1L))
     } else {
       tl <- character()
     }
@@ -54,7 +54,7 @@ mform_handle_newlines <- function(matform) {
       if (length(newtl) > new_nlines_hdr) {
         stop(
           "Expanding top-left material resulted in more lines (", length(newtl),
-          "than fit in the header." #nocov
+          "than fit in the header." # nocov
         )
       }
       newstrmat[1:new_nlines_hdr, 1] <- c(newtl, rep("", new_nlines_hdr - length(newtl)))
@@ -459,8 +459,8 @@ basic_matrix_form <- function(df, parent_path = "root") {
     exts <- rep(1L, NROW(df))
   }
   rowdf <- basic_pagdf(row.names(df),
-                       extents = exts,
-                       parent_path = parent_path
+    extents = exts,
+    parent_path = parent_path
   )
   formats <- cbind(
     "",
