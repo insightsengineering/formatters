@@ -423,6 +423,7 @@ new_line_warning <- function(str_v) {
 #' @return A string (`wrap_string` or character vector (`wrap_txt`) containing
 #'   the hard or soft word-wrapped content.
 #'
+#' @keyword internal
 #' @export
 wrap_string <- function(str, max_width, hard = FALSE) {
   stopifnot(is.character(str) && length(str) == 1)
