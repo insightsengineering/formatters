@@ -256,6 +256,7 @@ matrix_print_form <- MatrixPrintForm
 #' @export
 #' @rdname mpf_accessors
 mf_strings <- function(mf) mf$strings
+
 #' @export
 #' @rdname mpf_accessors
 

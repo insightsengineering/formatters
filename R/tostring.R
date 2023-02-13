@@ -34,9 +34,10 @@ d_hsep_factory <- function() {
 #' if in a locale that uses a UTF character set, otherwise an ASCII hyphen
 #' with a once-per-session warning.
 #'
-#' @export
 #' @examples
 #' default_hsep()
+#'
+#' @export
 default_hsep <- d_hsep_factory()
 
 # nocov end
@@ -430,7 +431,6 @@ new_line_warning <- function(str_v) {
 #' @return A string (`wrap_string` or character vector (`wrap_txt`) containing
 #'   the hard or soft word-wrapped content.
 #'
-#' @keyword internal
 #' @export
 wrap_string <- function(str, max_width, hard = FALSE) {
   stopifnot(is.character(str) && length(str) == 1)
