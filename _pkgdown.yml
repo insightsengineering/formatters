@@ -27,6 +27,7 @@ reference:
     desc: Generics required for rendering table-like object to ASCII
     contents:
       - matrix_form
+      - basic_matrix_form
   - title: MatrixPrintForm
     desc: MatrixPrintForm class and constructor
     contents:
@@ -48,6 +49,7 @@ reference:
       - pag_indices_inner
       - vert_pag_indices
       - pagdfrow
+      - basic_pagdf
   - title: Variable Labels
     desc: Functions for Assigning Labels to Variables In Data
     contents:
@@ -65,18 +67,18 @@ reference:
     contents:
       - ex_adsl
       - DM
+  - title: Export
+    desc: Export into different object
+    contents:
+      - mpf_to_rtf
   - title: Miscellany
     desc: Other documented functions not interesting to end users
     contents:
       - print,ANY-method
       - ifnotlen0
-      - basic_matrix_form
-      - basic_pagdf
+      - table_inset
       - default_hsep
       - font_lcpi
       - mf_strings
-      - mpf_to_rtf
       - page_lcpp
       - page_types
-      - table_inset
-      - wrap_string

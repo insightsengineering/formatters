@@ -34,9 +34,10 @@ d_hsep_factory <- function() {
 #' if in a locale that uses a UTF character set, otherwise an ASCII hyphen
 #' with a once-per-session warning.
 #'
-#' @export
 #' @examples
 #' default_hsep()
+#'
+#' @export
 default_hsep <- d_hsep_factory()
 
 # nocov end
@@ -109,7 +110,6 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   max_width = NULL,
                                                   col_gap = x$col_gap,
                                                   hsep = default_hsep()) {
-
   assert_flag(tf_wrap)
 
   mat <- matrix_form(x, indent_rownames = TRUE)
@@ -127,7 +127,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
     } else if (is.character(max_width) && identical(max_width, "auto")) {
       max_width <- ncchar + inset
     }
-    assert_number(max_width, lower =  0)
+    assert_number(max_width, lower = 0)
   }
 
   # Check for having the right number of widths
@@ -152,8 +152,10 @@ setMethod("toString", "MatrixPrintForm", function(x,
   # Check for which row has indent
   ind_from_strings <- nchar(old_indent)[-seq_len(nlh)] > 0
   if (!all(ind_from_strings == ind_from_mf)) {
-    stop("Row-info and string indentations are different.", # nocov
-         " Please contact the maintainer, this should not happen.") # nocov
+    stop(
+      "Row-info and string indentations are different.", # nocov
+      " Please contact the maintainer, this should not happen."
+    ) # nocov
   }
   ori_mflg <- mf_lgrouping(mat) # Original groups
   reindent_old_idx <- ori_mflg[need_reindent] # Indent groups bf wrap
@@ -164,14 +166,18 @@ setMethod("toString", "MatrixPrintForm", function(x,
   # Case in which the indentation is taking too much space vs desired wrapping
   if (any(cell_widths_mat < 0)) {
     col_culprits <- apply(cell_widths_mat, 2, function(i) any(i < 0))
-    stop("Inserted width(s) for column(s) ", which(col_culprits),
-         " is(are) not wide enough for the desired indentation.")
+    stop(
+      "Inserted width(s) for column(s) ", which(col_culprits),
+      " is(are) not wide enough for the desired indentation."
+    )
   }
 
-  new_strings <- matrix(unlist(mapply(wrap_string,
-                                      str = mat$strings,
-                                      max_width = cell_widths_mat,
-                                      hard = TRUE)),
+  new_strings <- matrix(
+    unlist(mapply(wrap_string,
+      str = mat$strings,
+      max_width = cell_widths_mat,
+      hard = TRUE
+    )),
     ncol = ncol(mat$strings)
   )
   mat$strings <- new_strings
@@ -198,8 +204,10 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
   # Additional safety check
   if (length(new_indent) > 0 && !all(nzchar(new_indent))) {
-    stop("Recovered indentation contains empty strings. This is an", # nocov
-         " indexing problem, please contact the maintainer, this should not happen.") # nocov
+    stop(
+      "Recovered indentation contains empty strings. This is an", # nocov
+      " indexing problem, please contact the maintainer, this should not happen."
+    ) # nocov
   }
 
   # Indentation is different for topleft material

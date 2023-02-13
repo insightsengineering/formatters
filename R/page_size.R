@@ -49,10 +49,11 @@ pg_dim_names <- list(
 #' @return for `page_types` a character vector of supported page types,
 #' for `page_dim` the dimensions (width, then height) of the selected page type.
 #'
-#' @export
 #' @examples
 #' page_types()
 #' page_dim("a4")
+#'
+#' @export
 page_types <- function() {
   names(pg_dim_names)
 }
@@ -87,13 +88,14 @@ page_dim <- function(page_type) {
 #' @return named list with `cpi` and `lpi`, the characters and lines per
 #' inch, respectively.
 #'
-#' @export
 #' @examples
 #' font_lcpi()
 #'
 #' font_lcpi(font_size = 8)
 #'
 #' font_lcpi(font_size = 8, lineheight = 1.1)
+#'
+#' @export
 font_lcpi <- function(font_family = "Courier", font_size = 12, lineheight = 1) {
   tmppdf <- tempfile(fileext = ".pdf")
   pdf(tmppdf)
@@ -137,7 +139,6 @@ font_lcpi <- function(font_family = "Courier", font_size = 12, lineheight = 1) {
 #'
 #' @return a named list containing `lpp` and `cpp` elements suitable
 #' for use by the pagination machinery.
-#' @export
 #'
 #' @examples
 #' page_lcpp()
@@ -146,6 +147,8 @@ font_lcpi <- function(font_family = "Courier", font_size = 12, lineheight = 1) {
 #'
 #' page_lcpp(margins = c(top = 1, bottom = 1, left = 1, right = 1))
 #' page_lcpp(pg_width = 10, pg_height = 15)
+#'
+#' @export
 page_lcpp <- function(page_type = page_types(),
                       landscape = FALSE,
                       font_family = "Courier",
