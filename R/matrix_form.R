@@ -25,10 +25,10 @@ mform_handle_newlines <- function(matform) {
     hdr_inds <- 1:nr_header
     ## groundwork for sad haxx to get tl to not be messed up
     if (has_topleft) {
-      tl <- strmat[hdr_inds, 1]
-      strmat[hdr_inds, 1] <- ""
-      ## recalc them without topleft cause thats handled separately
-      row_nlines <- apply(strmat, 1, function(x) max(vapply(x, nlines, 1L), 1L))
+        tl <- strmat[hdr_inds, 1]
+        strmat[hdr_inds, 1] <- ""
+        ## recalc them without topleft cause thats handled separately
+        row_nlines <- apply(strmat, 1, function(x) max(vapply(x, nlines, 1L), 1L))
     } else {
       tl <- character()
     }
