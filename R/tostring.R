@@ -34,10 +34,9 @@ d_hsep_factory <- function() {
 #' if in a locale that uses a UTF character set, otherwise an ASCII hyphen
 #' with a once-per-session warning.
 #'
+#' @export
 #' @examples
 #' default_hsep()
-#'
-#' @export
 default_hsep <- d_hsep_factory()
 
 # nocov end

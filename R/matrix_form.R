@@ -459,8 +459,8 @@ basic_matrix_form <- function(df, parent_path = "root") {
     exts <- rep(1L, NROW(df))
   }
   rowdf <- basic_pagdf(row.names(df),
-    extents = exts,
-    parent_path = parent_path
+                       extents = exts,
+                       parent_path = parent_path
   )
   formats <- cbind(
     "",
