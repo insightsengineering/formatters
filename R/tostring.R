@@ -491,7 +491,6 @@ pad_vert_top <- function(x, len) {
   c(x, rep("", len - length(x)))
 }
 
-#' @keywords internal
 pad_vert_bottom <- function(x, len) {
   c(rep("", len - length(x)), x)
 }
@@ -523,7 +522,6 @@ safe_strsplit <- function(x, split, ...) {
   expfun(rw, len = leni, ...)
 }
 
-#' @keywords internal
 expand_mat_rows <- function(mat, row_nlines = apply(mat, 1, nlines), expfun = pad_vec_to_len, ...) {
   rinds <- seq_len(nrow(mat))
   exprows <- lapply(rinds, .expand_mat_rows_inner,
