@@ -52,10 +52,8 @@ mform_handle_newlines <- function(matform) {
     if (has_topleft) {
       newtl <- unlist(strsplit(tl, "\n"))
       if (length(newtl) > new_nlines_hdr) {
-        stop(
-          "Expanding top-left material resulted in more lines (", length(newtl),
-          "than fit in the header." # nocov
-        )
+        stop("Expanding top-left material resulted in more lines (", length(newtl), # nocov
+             "than fit in the header.") # nocov
       }
       newstrmat[1:new_nlines_hdr, 1] <- c(newtl, rep("", new_nlines_hdr - length(newtl)))
       newfrmmat[1:new_nlines_hdr, 1] <- "xx"
