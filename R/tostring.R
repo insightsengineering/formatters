@@ -151,10 +151,8 @@ setMethod("toString", "MatrixPrintForm", function(x,
   # Check for which row has indent
   ind_from_strings <- nchar(old_indent)[-seq_len(nlh)] > 0
   if (!all(ind_from_strings == ind_from_mf)) {
-    stop(
-      "Row-info and string indentations are different.", # nocov
-      " Please contact the maintainer, this should not happen."
-    ) # nocov
+    stop("Row-info and string indentations are different.", # nocov
+         " Please contact the maintainer, this should not happen.") # nocov
   }
   ori_mflg <- mf_lgrouping(mat) # Original groups
   reindent_old_idx <- ori_mflg[need_reindent] # Indent groups bf wrap
@@ -188,10 +186,8 @@ setMethod("toString", "MatrixPrintForm", function(x,
   # Indent groups after newline
   reindent_new_idx <- mf_lgrouping(mat) %in% reindent_old_idx
   if (anyNA(reindent_new_idx)) {
-    stop( # nocov
-      "Unable to remap indenting after cell content text wrapping. ", # nocov
-      "Please contact the maintainer, this should not happen." # nocov
-    ) # nocov
+    stop("Unable to remap indenting after cell content text wrapping. ", # nocov
+         "Please contact the maintainer, this should not happen.") # nocov
   }
 
   # Adding the indentation back in
@@ -203,10 +199,9 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
   # Additional safety check
   if (length(new_indent) > 0 && !all(nzchar(new_indent))) {
-    stop(
-      "Recovered indentation contains empty strings. This is an", # nocov
-      " indexing problem, please contact the maintainer, this should not happen."
-    ) # nocov
+    stop("Recovered indentation contains empty strings. This is an", # nocov
+         " indexing problem, please contact the maintainer, this should not happen."
+         ) # nocov
   }
 
   # Indentation is different for topleft material
