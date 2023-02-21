@@ -200,8 +200,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
   # Additional safety check
   if (length(new_indent) > 0 && !all(nzchar(new_indent))) {
     stop("Recovered indentation contains empty strings. This is an", # nocov
-         " indexing problem, please contact the maintainer, this should not happen."
-         ) # nocov
+         " indexing problem, please contact the maintainer, this should not happen.") # nocov
   }
 
   # Indentation is different for topleft material
