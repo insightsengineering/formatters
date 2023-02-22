@@ -6,8 +6,8 @@ downstream_repos:
   insightsengineering/rlistings:
     repo: insightsengineering/rlistings
     host: https://github.com
-  Roche/rtables:
-    repo: Roche/rtables
+  insightsengineering/rtables:
+    repo: insightsengineering/rtables
     host: https://github.com
   insightsengineering/tern:
     repo: insightsengineering/tern
@@ -41,4 +41,7 @@ downstream_repos:
     host: https://github.com
   insightsengineering/citril:
     repo: insightsengineering/citril
+    host: https://github.com
+  insightsengineering/scda.test:
+    repo: insightsengineering/scda.test
     host: https://github.com
