@@ -26,7 +26,7 @@ mform_handle_newlines <- function(matform) {
     ## groundwork for sad haxx to get tl to not be messed up
     if (has_topleft) {
         tl <- strmat[hdr_inds, 1]
-        strmat[hdr_inds,1] <- ""
+        strmat[hdr_inds, 1] <- ""
         ## recalc them without topleft cause thats handled separately
         row_nlines <- apply(strmat, 1, function(x) max(vapply(x, nlines, 1L), 1L))
     } else {
@@ -52,10 +52,8 @@ mform_handle_newlines <- function(matform) {
     if (has_topleft) {
       newtl <- unlist(strsplit(tl, "\n"))
       if (length(newtl) > new_nlines_hdr) {
-        stop(
-          "Expanding top-left material resulted in more lines (", length(newtl),
-          "than fit in the header." #nocov
-        )
+        stop("Expanding top-left material resulted in more lines (", length(newtl), # nocov
+             "than fit in the header.") # nocov
       }
       newstrmat[1:new_nlines_hdr, 1] <- c(newtl, rep("", new_nlines_hdr - length(newtl)))
       newfrmmat[1:new_nlines_hdr, 1] <- "xx"
@@ -256,6 +254,7 @@ matrix_print_form <- MatrixPrintForm
 #' @export
 #' @rdname mpf_accessors
 mf_strings <- function(mf) mf$strings
+
 #' @export
 #' @rdname mpf_accessors
 

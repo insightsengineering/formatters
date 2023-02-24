@@ -109,7 +109,6 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   max_width = NULL,
                                                   col_gap = x$col_gap,
                                                   hsep = default_hsep()) {
-
   assert_flag(tf_wrap)
 
   mat <- matrix_form(x, indent_rownames = TRUE)
@@ -127,7 +126,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
     } else if (is.character(max_width) && identical(max_width, "auto")) {
       max_width <- ncchar + inset
     }
-    assert_number(max_width, lower =  0)
+    assert_number(max_width, lower = 0)
   }
 
   # Check for having the right number of widths
@@ -164,14 +163,18 @@ setMethod("toString", "MatrixPrintForm", function(x,
   # Case in which the indentation is taking too much space vs desired wrapping
   if (any(cell_widths_mat < 0)) {
     col_culprits <- apply(cell_widths_mat, 2, function(i) any(i < 0))
-    stop("Inserted width(s) for column(s) ", which(col_culprits),
-         " is(are) not wide enough for the desired indentation.")
+    stop(
+      "Inserted width(s) for column(s) ", which(col_culprits),
+      " is(are) not wide enough for the desired indentation."
+    )
   }
 
-  new_strings <- matrix(unlist(mapply(wrap_string,
-                                      str = mat$strings,
-                                      max_width = cell_widths_mat,
-                                      hard = TRUE)),
+  new_strings <- matrix(
+    unlist(mapply(wrap_string,
+      str = mat$strings,
+      max_width = cell_widths_mat,
+      hard = TRUE
+    )),
     ncol = ncol(mat$strings)
   )
   mat$strings <- new_strings
@@ -183,10 +186,8 @@ setMethod("toString", "MatrixPrintForm", function(x,
   # Indent groups after newline
   reindent_new_idx <- mf_lgrouping(mat) %in% reindent_old_idx
   if (anyNA(reindent_new_idx)) {
-    stop( # nocov
-      "Unable to remap indenting after cell content text wrapping. ", # nocov
-      "Please contact the maintainer, this should not happen." # nocov
-    ) # nocov
+    stop("Unable to remap indenting after cell content text wrapping. ", # nocov
+         "Please contact the maintainer, this should not happen.") # nocov
   }
 
   # Adding the indentation back in

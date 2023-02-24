@@ -137,8 +137,8 @@ font_lcpi <- function(font_family = "Courier", font_size = 12, lineheight = 1) {
 #'
 #' @return a named list containing `lpp` and `cpp` elements suitable
 #' for use by the pagination machinery.
-#' @export
 #'
+#' @export
 #' @examples
 #' page_lcpp()
 #' page_lcpp(font_size = 10)
