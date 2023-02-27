@@ -34,7 +34,7 @@
 ## formatters 0.3.4
  * `nlines` now accepts both `colwidths` and `max_width`, defaulting to `NULL` for both
  * `pag_indices_inner`, `find_pag` and `valid_pag` now accept `have_col_fnotes` and `div_height` arguments
- * fix bug which lead to Roche/rtables#414 (`nlines("", <non-null>)` threw an error
+ * fix bug which lead to insightsengineering/rtables#414 (`nlines("", <non-null>)` threw an error
  * paginate related generics now accept max_width for use in ensuring pagination now takes word wrapping into account for titles and footers.
  * nlines character method has changed, not takes the sum of the nlines of its elements instead of the max in the case of a vector of length > 1
  * new `wrap_title_footer` function for use on everything which implements the generic interface we design.
@@ -77,7 +77,7 @@
  * `vert_pag_indices` fixed to correctly take gap between printed columns into account
 
 ## formatters 0.3.2.1
- * calling `var_labels` on a data.frame with no columns is no longer an error (roche/rtables#224)
+ * calling `var_labels` on a data.frame with no columns is no longer an error (insightsengineering/rtables#224)
 
 ## formatters 0.3.2
  * Change warning when non-UTF line sep default is used to message, and display it only during interactive sessions (once per session).

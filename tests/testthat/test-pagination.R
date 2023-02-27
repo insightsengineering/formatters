@@ -50,7 +50,7 @@ expect_error(pag_indices_inner(mf_rinfo(dfmf_cont),
                                min_siblings = 0,
                                verbose = TRUE))
 
-## https://github.com/Roche/rtables/issues/318
+## https://github.com/insightsengineering/rtables/issues/318
 dfmf2 <- dfmf
 dfmf2$strings[1, 2] <- "m\npg"
 dfmf2$strings[1, 1] <- "tleft mats"
@@ -62,7 +62,7 @@ expect_identical(
 )
 
 
-## https://github.com/insightsengineering/formattesr/issues/77
+## https://github.com/insightsengineering/formatters/issues/77
 
 dfmf3 <- dfmf
 mf_rinfo(dfmf3)$trailing_sep[31] <- "-"
