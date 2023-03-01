@@ -37,3 +37,14 @@ Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+Collate: 
+    'data.R'
+    'format_value.R'
+    'matrix_form.R'
+    'generics.R'
+    'labels.R'
+    'mpf_exporters.R'
+    'page_size.R'
+    'pagination.R'
+    'tostring.R'
+    'utils.R'

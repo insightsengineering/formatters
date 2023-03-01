@@ -1,4 +1,5 @@
 #' @import methods
+#' @include matrix_form.R
 
 #' @title Make row and column layout summary data.frames for use during pagination
 #' @name make_row_df
