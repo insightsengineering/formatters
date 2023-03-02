@@ -1,35 +1,22 @@
-## formatters 0.3.4.22
- * Reintroduce `obj_na_str` and `obj_na_str<-` after regression removed them.
- * Fixing spelling and improving `WORDLIST` file.
-
-## formatters 0.3.4.11
- * fix bug where portions of table after last section div (e.g., non-nested further analyses) were omitted (#77)
- * fix bug in `mf_rinfo<-` checked the new value against the wrong dimensions.
-
-## formatters 0.3.4.10
+## formatters 0.4.0
+ * Cell values and row labels are now word-wrapped based on column widths (`widths` in `toString` and `colwidths` in pagination and exporters
+ * New "N=xx (xx%)" format support (https://github.com/insightsengineering/rtables/issues/516)
  * New generic getter and setter for na-string (`obj_na_str` and `obj_na_str<-`, migrated from `rtables`)
-
-## formatters 0.3.4.9
- * Fixed off-by-one error in basic pagination machinery
- * Pagination with `verbose = TRUE` is now more informative
- * New `MatrixPrintForm` accessor: `mpf_has_rlabels` determines whether the MPF$strings has a column which are label rows (i.e. no column index in originating object).
- 
-## formatters 0.3.4.8
- * number of header lines (`mf_nlheader`) is now a computed attribute rather than a stored one.
- * `mf_nlheader<-` has been removed for the reason above.
- * Fix bug in position of header separator when columns have word wrapping (#68)
-
-## formatters 0.3.4.6
- * `vert_pag_indices` now accepts `rep_cols` to control how many columns act as 'row-label-like', as
-   required by `rlistings`
-
-## formatters 0.3.4.5
- * `toString` `MatrixPrintForm` method now uses `widths` to wrap formatted strings, effectively wrapping
-   cell values, row labels and column labels of table-like objects.
  * `MatrixPrintForm` class now carries around `has_topleft` information explicitly, getter `mf_has_topleft`
- * Bug rendering `mf_lgrouping` non-functional has been fixed
+ * Number of header lines in a MatrixPrintForm object (`mf_nlheader`) is now a computed attribute rather than a stored one, `mf_nlheader<-` has been removed
+ * New `MatrixPrintForm` accessor: `mpf_has_rlabels` determines whether the MPF$strings has a column which are label rows (i.e. no column index in originating object).
  * `wrap_text` and `wrap_string` now accept the `hard` argument (default `FALSE`) indicating whether 'hard'
    word-wrapping (i.e. explicit embedding of newline characters) should be performed.
+ * `vert_pag_indices` now accepts `rep_cols` to control how many columns act as 'row-label-like', as
+   required by `rlistings`
+ * Documentation of pagination algorithm greatly expanded.
+ * Pagination with `verbose = TRUE` is now significnatly more informative
+ * fix bug where indenting was not correct when row-labels were word wrapped (#84, #85)
+ * fix bug where portions of table after last section div (e.g., non-nested further analyses) were omitted (#77)
+ * fix bug in `mf_rinfo<-` checked the new value against the wrong dimensions.
+ * Fixed off-by-one error in basic pagination machinery
+ * Fix bug in position of header separator when columns have word wrapping (#68)
+ * Bug rendering `mf_lgrouping` non-functional has been fixed
 
 ## formatters 0.3.4
  * `nlines` now accepts both `colwidths` and `max_width`, defaulting to `NULL` for both
