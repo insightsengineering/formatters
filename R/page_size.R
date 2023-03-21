@@ -115,7 +115,7 @@ font_lcpi <- function(font_family = "Courier", font_size = 12, lineheight = 1) {
   )
 }
 
-#' Determine LPP and CPP based on font and page type
+#' Determine lines per page (LPP) and characters per page (CPP) based on font and page type
 #'
 #' @param  page_type  character(1).   Name   of  a  page  type.   See
 #'     `page_types`.   Ignored when  `pg_width` and  `pg_height`
@@ -135,8 +135,8 @@ font_lcpi <- function(font_family = "Courier", font_size = 12, lineheight = 1) {
 #' @param pg_width numeric(1). Page width in inches.
 #' @param pg_height numeric(1). Page height in inches.
 #'
-#' @return a named list containing `lpp` and `cpp` elements suitable
-#' for use by the pagination machinery.
+#' @return a named list containing `lpp` (lines per page) and `cpp` (characters per page)
+#' elements suitable for use by the pagination machinery.
 #'
 #' @export
 #' @examples

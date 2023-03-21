@@ -1,4 +1,4 @@
-## formatters 0.4.0
+## formatters 0.4.0.9000
  * Cell values and row labels are now word-wrapped based on column widths (`widths` in `toString` and `colwidths` in pagination and exporters
  * New "N=xx (xx%)" format support (https://github.com/insightsengineering/rtables/issues/516)
  * New generic getter and setter for na-string (`obj_na_str` and `obj_na_str<-`, migrated from `rtables`)
@@ -10,7 +10,7 @@
  * `vert_pag_indices` now accepts `rep_cols` to control how many columns act as 'row-label-like', as
    required by `rlistings`
  * Documentation of pagination algorithm greatly expanded.
- * Pagination with `verbose = TRUE` is now significnatly more informative
+ * Pagination with `verbose = TRUE` is now significantly more informative
  * fix bug where indenting was not correct when row-labels were word wrapped (#84, #85)
  * fix bug where portions of table after last section div (e.g., non-nested further analyses) were omitted (#77)
  * fix bug in `mf_rinfo<-` checked the new value against the wrong dimensions.
