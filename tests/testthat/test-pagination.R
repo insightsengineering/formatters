@@ -56,9 +56,11 @@ dfmf2$strings[1, 2] <- "m\npg"
 dfmf2$strings[1, 1] <- "tleft mats"
 dfmf2$has_topleft <- TRUE
 dfmf2 <- formatters:::mform_handle_newlines(dfmf2)
+dfmf_colnms <- c("rnms", "mpg","cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am", "gear", "carb")
+expect_identical(colnames(dfmf2$strings), dfmf_colnms)
 expect_identical(
   dfmf2$strings[1:2, 1:2],
-  matrix(c("tleft mats", "", "m", "pg"), nrow = 2, ncol = 2)
+  matrix(c("tleft mats", "", "m", "pg"), nrow = 2, ncol = 2, dimnames = list(NULL, dfmf_colnms[1:2]))
 )
 
 
