@@ -1,4 +1,4 @@
-# formatters <a href='https://github.com/insightsengineering/rlistings'><img src="man/figures/formatters_hexSticker.pdf" align="right" alt="" width="180"></a>
+# formatters <a href='https://github.com/insightsengineering/rlistings'><img src="man/figures/formatters_hexSticker.png" align="right" alt="" width="180"></a>
 
 <!-- start badges -->
 [![Check 🛠](https://github.com/insightsengineering/formatters/actions/workflows/check.yaml/badge.svg)](https://github.com/insightsengineering/formatters/actions/workflows/check.yaml)
