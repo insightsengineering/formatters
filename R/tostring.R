@@ -767,7 +767,7 @@ propose_column_widths <- function(x, indent_size = 2) {
 #' @param n number  of  character  of the  output  string,  if `n  <
 #'     nchar(x)` an error is thrown
 #' @param just  character(1).   Text  alignment   justification  to
-#'     use. Defaults to center. Must be center, right, left, dec_right, dec_left or decimal.
+#'     use. Defaults to center. Must be center, right, left, `dec_right`, `dec_left` or decimal.
 #'
 #' @export
 #' @examples

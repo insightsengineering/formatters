@@ -36,6 +36,7 @@ reference:
   - title: ASCII Rendering of MatrixPrintForm objects
     desc: ASCII rendering-related functions which operate on MatrixPrintForm objects
     contents:
+      - decimal_align
       - toString,MatrixPrintForm-method
       - spans_to_viscell
       - propose_column_widths
