@@ -551,3 +551,41 @@ mpf <- MatrixPrintForm(strings = strs, spans = spans, aligns = aligns,
 
 expect_equal(length(grep("spn_val", toString(mpf))),
              1L)
+
+
+# testing if error is returned when provided widths argument
+# is narrower than decimal aligned values
+
+df_error <- dfmf
+df_error$aligns[,-c(1)] <- "dec_left"
+
+expect_error(toString(df_error, widths = c(25,4,4,4,4,4,4,4,4,4,4,4)))
+
+
+# test if padstr works with "dec_left", "dec_right" and "decimal"
+
+test_that("padstr works with dec_left", {
+  bmf <- basic_matrix_form(mtcars[,c(1,6)])
+  bmf$aligns[,-c(1)] <- "dec_left"
+  result <- toString(bmf)
+  expected <- c("                      mpg    wt   \n——————————————————————————————————\nMazda RX4             21     2.62 \nMazda RX4 Wag         21     2.875\nDatsun 710            22.8   2.32 \nHornet 4 Drive        21.4   3.215\nHornet Sportabout     18.7   3.44 \nValiant               18.1   3.46 \nDuster 360            14.3   3.57 \nMerc 240D             24.4   3.19 \nMerc 230              22.8   3.15 \nMerc 280              19.2   3.44 \nMerc 280C             17.8   3.44 \nMerc 450SE            16.4   4.07 \nMerc 450SL            17.3   3.73 \nMerc 450SLC           15.2   3.78 \nCadillac Fleetwood    10.4   5.25 \nLincoln Continental   10.4   5.424\nChrysler Imperial     14.7   5.345\nFiat 128              32.4   2.2  \nHonda Civic           30.4   1.615\nToyota Corolla        33.9   1.835\nToyota Corona         21.5   2.465\nDodge Challenger      15.5   3.52 \nAMC Javelin           15.2   3.435\nCamaro Z28            13.3   3.84 \nPontiac Firebird      19.2   3.845\nFiat X1-9             27.3   1.935\nPorsche 914-2         26     2.14 \nLotus Europa          30.4   1.513\nFord Pantera L        15.8   3.17 \nFerrari Dino          19.7   2.77 \nMaserati Bora         15     3.57 \nVolvo 142E            21.4   2.78 \n")
+  expect_identical(result, expected)
+})
+
+test_that("padstr works with dec_right", {
+  bmf <- basic_matrix_form(mtcars[,c(1,6)])
+  bmf$aligns[,-c(1)] <- "dec_right"
+  result <- toString(bmf)
+  expected <- c("                       mpg      wt\n——————————————————————————————————\nMazda RX4               21   2.62 \nMazda RX4 Wag           21   2.875\nDatsun 710            22.8   2.32 \nHornet 4 Drive        21.4   3.215\nHornet Sportabout     18.7   3.44 \nValiant               18.1   3.46 \nDuster 360            14.3   3.57 \nMerc 240D             24.4   3.19 \nMerc 230              22.8   3.15 \nMerc 280              19.2   3.44 \nMerc 280C             17.8   3.44 \nMerc 450SE            16.4   4.07 \nMerc 450SL            17.3   3.73 \nMerc 450SLC           15.2   3.78 \nCadillac Fleetwood    10.4   5.25 \nLincoln Continental   10.4   5.424\nChrysler Imperial     14.7   5.345\nFiat 128              32.4   2.2  \nHonda Civic           30.4   1.615\nToyota Corolla        33.9   1.835\nToyota Corona         21.5   2.465\nDodge Challenger      15.5   3.52 \nAMC Javelin           15.2   3.435\nCamaro Z28            13.3   3.84 \nPontiac Firebird      19.2   3.845\nFiat X1-9             27.3   1.935\nPorsche 914-2           26   2.14 \nLotus Europa          30.4   1.513\nFord Pantera L        15.8   3.17 \nFerrari Dino          19.7   2.77 \nMaserati Bora           15   3.57 \nVolvo 142E            21.4   2.78 \n")
+  expect_identical(result, expected)
+})
+
+
+test_that("padstr works with dec_right", {
+  bmf <- basic_matrix_form(mtcars[,c(1,6)])
+  bmf$aligns[,-c(1)] <- "decimal"
+  result <- toString(bmf)
+  expected <- c("                      mpg     wt  \n——————————————————————————————————\nMazda RX4              21    2.62 \nMazda RX4 Wag          21    2.875\nDatsun 710            22.8   2.32 \nHornet 4 Drive        21.4   3.215\nHornet Sportabout     18.7   3.44 \nValiant               18.1   3.46 \nDuster 360            14.3   3.57 \nMerc 240D             24.4   3.19 \nMerc 230              22.8   3.15 \nMerc 280              19.2   3.44 \nMerc 280C             17.8   3.44 \nMerc 450SE            16.4   4.07 \nMerc 450SL            17.3   3.73 \nMerc 450SLC           15.2   3.78 \nCadillac Fleetwood    10.4   5.25 \nLincoln Continental   10.4   5.424\nChrysler Imperial     14.7   5.345\nFiat 128              32.4   2.2  \nHonda Civic           30.4   1.615\nToyota Corolla        33.9   1.835\nToyota Corona         21.5   2.465\nDodge Challenger      15.5   3.52 \nAMC Javelin           15.2   3.435\nCamaro Z28            13.3   3.84 \nPontiac Firebird      19.2   3.845\nFiat X1-9             27.3   1.935\nPorsche 914-2          26    2.14 \nLotus Europa          30.4   1.513\nFord Pantera L        15.8   3.17 \nFerrari Dino          19.7   2.77 \nMaserati Bora          15    3.57 \nVolvo 142E            21.4   2.78 \n")
+  expect_identical(result, expected)
+})
+

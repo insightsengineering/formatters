@@ -69,6 +69,81 @@ default_hsep <- d_hsep_factory()
   cell_widths_mat
 }
 
+#' Decimal Alignment
+#'
+#' Aligning decimal values of string matrix. Allowed alignments are: `dec_left`,
+#' `dec_right` and `decimal`.
+#'
+#' @param string_mat string matrix component of matrix print form object
+#' @param align_mat aligns matrix component of matrix print form object.
+#' Should contain either `dec_left`, `dec_right` or `decimal` for values to be decimal aligned.
+#'
+#' @export
+#' @examples
+#'
+#' dfmf <- basic_matrix_form(mtcars)
+#' dfmf$aligns[,-c(1)] <- "dec_left"
+#' decimal_align(dfmf$strings, dfmf$aligns)
+#'
+#' @return Processed string matrix of matrix print form with decimal aligned values
+
+decimal_align <- function(string_mat, align_mat){
+
+  # evaluate if any values are to be decimal aligned
+
+  if(!any(grepl("dec", align_mat))){
+    string_mat <- string_mat
+  }
+
+  else{
+    for(i in seq(1, ncol(string_mat))){
+
+      # if no values are to be decimal aligned in the column (according to the aligns matrix), or there are no numerical values, strings remain as is
+      if (sum(grepl("dec", align_mat[,i])) == 0 | all(grepl("^[0-9]\\.", string_mat[,i])) ){
+        string_mat[,i] <- string_mat[,i]
+      }
+
+      # values to be decimal aligned.
+      if (any(grepl("dec", align_mat[,i]))){
+
+        # Extract values not to be aligned (NAs, non-numbers, non-decimal numbers, doesn't say "decimal" in alignment matrix)
+        nas <- grepl("^NA$", string_mat[,i])
+        nonnum <- !grepl("[0-9]", string_mat[,i]) | grepl("[a-zA-Z]", string_mat[,i]) | !grepl("\\.", string_mat[,i])
+        alignmat <- !grepl("dec", align_mat[,i])
+
+        nonalign <- nas | nonnum | alignmat
+
+        x <- as.character(string_mat[,i])
+
+        if(length(x[!nonalign])> 0){
+
+          splitx <- strsplit(x[!nonalign], ".", fixed = TRUE)
+
+          left <-
+            unlist(lapply(splitx, FUN = function(x) x[1]))
+
+          right <-
+            unlist(lapply(splitx, FUN = function(x) paste0(x[-1], collapse = ".")))
+
+          # modify the piece with spaces
+          left_mod <- paste0(spaces(max(nchar(left), na.rm = T) - nchar(left)), left)
+
+          right_mod <- paste0(right, spaces(max(nchar(right), na.rm = T) - nchar(right)))
+
+          aligned <- ifelse(!grepl("[^0-9]$", left_mod), paste(left_mod, right_mod, sep = "."), paste(left_mod, right_mod))
+
+          x[!nonalign] <- aligned
+          string_mat[,i] <- x
+        }
+        else{
+          string_mat[,i] <- x
+        }
+      }
+    }
+    string_mat
+  }
+}
+
 #' @rdname tostring
 #'
 #' @inheritParams MatrixPrintForm
@@ -113,6 +188,25 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
   mat <- matrix_form(x, indent_rownames = TRUE)
   inset <- table_inset(mat)
+
+  # if cells are decimal aligned, run propose column widths
+  # if the provided widths is less than proposed width, return an error
+
+  if (any(grepl("dec", mat$aligns))){
+
+    aligned <- propose_column_widths(x)
+
+    # catch any columns that require widths more than what is provided
+    if (!is.null(widths)){
+      toowide <- sapply(aligned, function(i) any(i > widths[i]))
+      stop(
+        "Inserted width(s) for column(s) ", paste(names(which(toowide)), collapse = ", "),
+        " is(are) not wide enough for the desired alignment"
+      )
+    }
+
+    widths <- aligned
+  }
 
   if (is.null(widths)) {
     widths <- propose_column_widths(x)
@@ -248,6 +342,10 @@ setMethod("toString", "MatrixPrintForm", function(x,
   ##   }
   ## }
 
+  # decimal alignment
+  if (any(grepl("dec", aligns))){
+    body <- decimal_align(body, aligns)
+  }
 
   content <- matrix(mapply(padstr, body, cell_widths_mat, aligns), ncol = ncol(body))
   content[!keep_mat] <- NA
@@ -260,7 +358,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
   sec_seps_df <- x$row_info[, c("abs_rownumber", "trailing_sep"), drop = FALSE]
   if (!is.null(sec_seps_df) && any(!is.na(sec_seps_df$trailing_sep))) {
     bdy_cont <- tail(content, -nl_header)
-    ## unfortunately we count "header rows" wrt lihnegrouping so it
+    ## unfortunately we count "header rows" wrt line grouping so it
     ## doesn't match the real (i.e. body) rows as is
     row_grouping <- tail(x$line_grouping, -nl_header) - mf_nrheader(x)
     nrbody <- NROW(bdy_cont)
@@ -613,8 +711,14 @@ propose_column_widths <- function(x, indent_size = 2) {
   }
   body <- x$strings
   spans <- x$spans
-  # aligns <- x$aligns
+  aligns <- x$aligns
   display <- x$display
+
+  # compute decimal alignment if asked in alignment matrix
+
+  if(any(grepl("dec", aligns))){
+    body <- decimal_align(body, aligns)
+  }
 
   chars <- nchar(body)
 
@@ -663,7 +767,7 @@ propose_column_widths <- function(x, indent_size = 2) {
 #' @param n number  of  character  of the  output  string,  if `n  <
 #'     nchar(x)` an error is thrown
 #' @param just  character(1).   Text  alignment   justification  to
-#'     use. Defaults to center. Must be center, right or left.
+#'     use. Defaults to center. Must be center, right, left, dec_right, dec_left or decimal.
 #'
 #' @export
 #' @examples
@@ -679,7 +783,7 @@ propose_column_widths <- function(x, indent_size = 2) {
 #' }
 #' @return `x`, padded to be a string of `n` characters
 #'
-padstr <- function(x, n, just = c("center", "left", "right")) {
+padstr <- function(x, n, just = c("center", "left", "right", "dec_right", "dec_left", "decimal")) {
   just <- match.arg(just)
 
   if (length(x) != 1) stop("length of x needs to be 1 and not", length(x))
@@ -697,7 +801,14 @@ padstr <- function(x, n, just = c("center", "left", "right")) {
       paste0(spaces(floor(pad)), x, spaces(ceiling(pad)))
     },
     left = paste0(x, spaces(n - nc)),
-    right = paste0(spaces(n - nc), x)
+    right = paste0(spaces(n - nc), x),
+    decimal = {
+      pad <- (n - nc) / 2
+      paste0(spaces(floor(pad)), x, spaces(ceiling(pad)))
+    },
+    dec_left = paste0(x, spaces(n - nc)),
+    dec_right = paste0(spaces(n - nc), x)
+
   )
 }
 
