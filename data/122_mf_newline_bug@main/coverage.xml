@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage line-rate="0.965394853593611" branch-rate="0" lines-covered="1088" lines-valid="1127" branches-covered="0" branches-valid="0" complexity="0" version="3.6.1" timestamp="2023-03-21 01:55:45">
-  <sources/>
+<!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
+<coverage line-rate="0.965394853593611" branch-rate="0" lines-covered="1088" lines-valid="1127" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-04-11 14:20:07">
+  <sources>
+    <source>/__w/formatters/formatters/formatters</source>
+  </sources>
   <packages>
     <package name="formatters" line-rate="0.965394853593611" branch-rate="0" complexity="0">
       <classes>
         <class name="format_value.R" filename="R/format_value.R" line-rate="0.962765957446808" branch-rate="0" complexity="0">
           <methods>
-            <method name="list_valid_format_labels" signature="" line-rate="1" branch-rate="0">
+            <method name="list_valid_format_labels" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="42" hits="52" branch="false"/>
                 <line number="43" hits="52" branch="false"/>
@@ -18,7 +21,7 @@
                 <line number="49" hits="52" branch="false"/>
               </lines>
             </method>
-            <method name="is_valid_format" signature="" line-rate="0.857142857142857" branch-rate="0">
+            <method name="is_valid_format" signature="" line-rate="0.857142857142857" branch-rate="0" complexity="0">
               <lines>
                 <line number="66" hits="51" branch="false"/>
                 <line number="67" hits="51" branch="false"/>
@@ -29,14 +32,14 @@
                 <line number="75" hits="51" branch="false"/>
               </lines>
             </method>
-            <method name="sprintf_format" signature="" line-rate="1" branch-rate="0">
+            <method name="sprintf_format" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="97" hits="1" branch="false"/>
                 <line number="98" hits="1" branch="false"/>
                 <line number="99" hits="1" branch="false"/>
               </lines>
             </method>
-            <method name="round_fmt" signature="" line-rate="0.875" branch-rate="0">
+            <method name="round_fmt" signature="" line-rate="0.875" branch-rate="0" complexity="0">
               <lines>
                 <line number="155" hits="193" branch="false"/>
                 <line number="156" hits="0" branch="false"/>
@@ -48,7 +51,7 @@
                 <line number="164" hits="148" branch="false"/>
               </lines>
             </method>
-            <method name="val_pct_helper" signature="" line-rate="0.9" branch-rate="0">
+            <method name="val_pct_helper" signature="" line-rate="0.9" branch-rate="0" complexity="0">
               <lines>
                 <line number="171" hits="32" branch="false"/>
                 <line number="172" hits="18" branch="false"/>
@@ -62,7 +65,7 @@
                 <line number="182" hits="32" branch="false"/>
               </lines>
             </method>
-            <method name="sep_2d_helper" signature="" line-rate="1" branch-rate="0">
+            <method name="sep_2d_helper" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="186" hits="43" branch="false"/>
                 <line number="187" hits="43" branch="false"/>
@@ -72,7 +75,7 @@
                 <line number="192" hits="43" branch="false"/>
               </lines>
             </method>
-            <method name="format_value" signature="" line-rate="0.972602739726027" branch-rate="0">
+            <method name="format_value" signature="" line-rate="0.972602739726027" branch-rate="0" complexity="0">
               <lines>
                 <line number="229" hits="3056" branch="false"/>
                 <line number="230" hits="1" branch="false"/>
@@ -416,12 +419,12 @@
         </class>
         <class name="generics.R" filename="R/generics.R" line-rate="0.9375" branch-rate="0" complexity="0">
           <methods>
-            <method name="matrix_form" signature="" line-rate="1" branch-rate="0">
+            <method name="matrix_form" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="103" hits="19" branch="false"/>
               </lines>
             </method>
-            <method name="MatrixPrintForm" signature="" line-rate="0.974619289340102" branch-rate="0">
+            <method name="MatrixPrintForm" signature="" line-rate="0.974619289340102" branch-rate="0" complexity="0">
               <lines>
                 <line number="112" hits="19" branch="false"/>
                 <line number="330" hits="13" branch="false"/>
@@ -622,12 +625,12 @@
                 <line number="341" hits="12" branch="false"/>
               </lines>
             </method>
-            <method name="divider_height" signature="" line-rate="1" branch-rate="0">
+            <method name="divider_height" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="134" hits="1" branch="false"/>
               </lines>
             </method>
-            <method name="ANY" signature="" line-rate="0.909090909090909" branch-rate="0">
+            <method name="ANY" signature="" line-rate="0.909090909090909" branch-rate="0" complexity="0">
               <lines>
                 <line number="140" hits="1" branch="false"/>
                 <line number="267" hits="3" branch="false"/>
@@ -642,12 +645,12 @@
                 <line number="385" hits="0" branch="false"/>
               </lines>
             </method>
-            <method name="nlines" signature="" line-rate="1" branch-rate="0">
+            <method name="nlines" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="153" hits="7651" branch="false"/>
               </lines>
             </method>
-            <method name="list" signature="" line-rate="1" branch-rate="0">
+            <method name="list" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="162" hits="2" branch="false"/>
                 <line number="163" hits="1" branch="false"/>
@@ -657,7 +660,7 @@
                 <line number="168" hits="1" branch="false"/>
               </lines>
             </method>
-            <method name="character" signature="" line-rate="0.928571428571429" branch-rate="0">
+            <method name="character" signature="" line-rate="0.928571428571429" branch-rate="0" complexity="0">
               <lines>
                 <line number="180" hits="7648" branch="false"/>
                 <line number="181" hits="1" branch="false"/>
@@ -675,92 +678,92 @@
                 <line number="195" hits="7647" branch="false"/>
               </lines>
             </method>
-            <method name="obj_label" signature="" line-rate="1" branch-rate="0">
+            <method name="obj_label" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="258" hits="3" branch="false"/>
               </lines>
             </method>
-            <method name="obj_label&lt;-" signature="" line-rate="1" branch-rate="0">
+            <method name="obj_label&lt;-" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="263" hits="2" branch="false"/>
               </lines>
             </method>
-            <method name="obj_format" signature="" line-rate="1" branch-rate="0">
+            <method name="obj_format" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="281" hits="82" branch="false"/>
               </lines>
             </method>
-            <method name="obj_format&lt;-" signature="" line-rate="1" branch-rate="0">
+            <method name="obj_format&lt;-" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="290" hits="2" branch="false"/>
               </lines>
             </method>
-            <method name="obj_na_str" signature="" line-rate="1" branch-rate="0">
+            <method name="obj_na_str" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="301" hits="1" branch="false"/>
               </lines>
             </method>
-            <method name="obj_na_str&lt;-" signature="" line-rate="1" branch-rate="0">
+            <method name="obj_na_str&lt;-" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="307" hits="1" branch="false"/>
               </lines>
             </method>
-            <method name="main_title" signature="" line-rate="1" branch-rate="0">
+            <method name="main_title" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="324" hits="13" branch="false"/>
               </lines>
             </method>
-            <method name="main_title&lt;-" signature="" line-rate="1" branch-rate="0">
+            <method name="main_title&lt;-" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="335" hits="5" branch="false"/>
               </lines>
             </method>
-            <method name="page_titles" signature="" line-rate="1" branch-rate="0">
+            <method name="page_titles" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="375" hits="13" branch="false"/>
               </lines>
             </method>
-            <method name="page_titles&lt;-" signature="" line-rate="1" branch-rate="0">
+            <method name="page_titles&lt;-" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="389" hits="2" branch="false"/>
               </lines>
             </method>
-            <method name="main_footer" signature="" line-rate="1" branch-rate="0">
+            <method name="main_footer" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="408" hits="18" branch="false"/>
               </lines>
             </method>
-            <method name="main_footer&lt;-" signature="" line-rate="1" branch-rate="0">
+            <method name="main_footer&lt;-" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="420" hits="5" branch="false"/>
               </lines>
             </method>
-            <method name="prov_footer" signature="" line-rate="1" branch-rate="0">
+            <method name="prov_footer" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="440" hits="17" branch="false"/>
               </lines>
             </method>
-            <method name="prov_footer&lt;-" signature="" line-rate="1" branch-rate="0">
+            <method name="prov_footer&lt;-" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="451" hits="6" branch="false"/>
               </lines>
             </method>
-            <method name="all_footers" signature="" line-rate="1" branch-rate="0">
+            <method name="all_footers" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="471" hits="1" branch="false"/>
               </lines>
             </method>
-            <method name="all_titles" signature="" line-rate="1" branch-rate="0">
+            <method name="all_titles" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="475" hits="12" branch="false"/>
               </lines>
             </method>
-            <method name="table_inset" signature="" line-rate="1" branch-rate="0">
+            <method name="table_inset" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="497" hits="19" branch="false"/>
               </lines>
             </method>
-            <method name="table_inset&lt;-" signature="" line-rate="1" branch-rate="0">
+            <method name="table_inset&lt;-" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="509" hits="4" branch="false"/>
               </lines>
@@ -851,13 +854,13 @@
         </class>
         <class name="labels.R" filename="R/labels.R" line-rate="0.872727272727273" branch-rate="0" complexity="0">
           <methods>
-            <method name="with_label" signature="" line-rate="1" branch-rate="0">
+            <method name="with_label" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="17" hits="1" branch="false"/>
                 <line number="18" hits="1" branch="false"/>
               </lines>
             </method>
-            <method name="var_labels" signature="" line-rate="0.863636363636364" branch-rate="0">
+            <method name="var_labels" signature="" line-rate="0.863636363636364" branch-rate="0" complexity="0">
               <lines>
                 <line number="43" hits="4" branch="false"/>
                 <line number="44" hits="4" branch="false"/>
@@ -883,7 +886,7 @@
                 <line number="71" hits="3" branch="false"/>
               </lines>
             </method>
-            <method name="var_labels&lt;-" signature="" line-rate="0.923076923076923" branch-rate="0">
+            <method name="var_labels&lt;-" signature="" line-rate="0.923076923076923" branch-rate="0" complexity="0">
               <lines>
                 <line number="97" hits="1" branch="false"/>
                 <line number="98" hits="1" branch="false"/>
@@ -900,7 +903,7 @@
                 <line number="113" hits="1" branch="false"/>
               </lines>
             </method>
-            <method name="var_relabel" signature="" line-rate="0.785714285714286" branch-rate="0">
+            <method name="var_relabel" signature="" line-rate="0.785714285714286" branch-rate="0" complexity="0">
               <lines>
                 <line number="135" hits="1" branch="false"/>
                 <line number="136" hits="1" branch="false"/>
@@ -918,7 +921,7 @@
                 <line number="157" hits="1" branch="false"/>
               </lines>
             </method>
-            <method name="var_labels_remove" signature="" line-rate="1" branch-rate="0">
+            <method name="var_labels_remove" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="174" hits="1" branch="false"/>
                 <line number="176" hits="1" branch="false"/>
@@ -987,7 +990,7 @@
         </class>
         <class name="matrix_form.R" filename="R/matrix_form.R" line-rate="0.994252873563218" branch-rate="0" complexity="0">
           <methods>
-            <method name="mform_handle_newlines" signature="" line-rate="1" branch-rate="0">
+            <method name="mform_handle_newlines" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="15" hits="27" branch="false"/>
                 <line number="16" hits="27" branch="false"/>
@@ -1031,7 +1034,7 @@
                 <line number="70" hits="26" branch="false"/>
               </lines>
             </method>
-            <method name="MatrixPrintForm" signature="" line-rate="0.974619289340102" branch-rate="0">
+            <method name="MatrixPrintForm" signature="" line-rate="0.974619289340102" branch-rate="0" complexity="0">
               <lines>
                 <line number="112" hits="19" branch="false"/>
                 <line number="330" hits="13" branch="false"/>
@@ -1232,68 +1235,68 @@
                 <line number="341" hits="12" branch="false"/>
               </lines>
             </method>
-            <method name="mf_strings" signature="" line-rate="1" branch-rate="0">
+            <method name="mf_strings" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="257" hits="50" branch="false"/>
               </lines>
             </method>
-            <method name="mf_spans" signature="" line-rate="1" branch-rate="0">
+            <method name="mf_spans" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="262" hits="4" branch="false"/>
               </lines>
             </method>
-            <method name="mf_aligns" signature="" line-rate="1" branch-rate="0">
+            <method name="mf_aligns" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="266" hits="3" branch="false"/>
               </lines>
             </method>
-            <method name="mf_display" signature="" line-rate="1" branch-rate="0">
+            <method name="mf_display" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="270" hits="3" branch="false"/>
               </lines>
             </method>
-            <method name="mf_formats" signature="" line-rate="1" branch-rate="0">
+            <method name="mf_formats" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="274" hits="27" branch="false"/>
               </lines>
             </method>
-            <method name="mf_rinfo" signature="" line-rate="1" branch-rate="0">
+            <method name="mf_rinfo" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="278" hits="38" branch="false"/>
               </lines>
             </method>
-            <method name="mf_has_topleft" signature="" line-rate="1" branch-rate="0">
+            <method name="mf_has_topleft" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="282" hits="39" branch="false"/>
               </lines>
             </method>
-            <method name="mf_lgrouping" signature="" line-rate="1" branch-rate="0">
+            <method name="mf_lgrouping" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="286" hits="73" branch="false"/>
               </lines>
             </method>
-            <method name="mf_rfnotes" signature="" line-rate="1" branch-rate="0">
+            <method name="mf_rfnotes" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="290" hits="1" branch="false"/>
               </lines>
             </method>
-            <method name="mf_nlheader" signature="" line-rate="1" branch-rate="0">
+            <method name="mf_nlheader" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="294" hits="33" branch="false"/>
               </lines>
             </method>
-            <method name="mf_nrheader" signature="" line-rate="1" branch-rate="0">
+            <method name="mf_nrheader" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="298" hits="62" branch="false"/>
               </lines>
             </method>
-            <method name="mf_strings&lt;-" signature="" line-rate="1" branch-rate="0">
+            <method name="mf_strings&lt;-" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="304" hits="4" branch="false"/>
                 <line number="305" hits="4" branch="false"/>
               </lines>
             </method>
-            <method name=".chkdim_and_replace" signature="" line-rate="1" branch-rate="0">
+            <method name=".chkdim_and_replace" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="309" hits="13" branch="false"/>
                 <line number="310" hits="13" branch="false"/>
@@ -1308,27 +1311,27 @@
                 <line number="320" hits="12" branch="false"/>
               </lines>
             </method>
-            <method name="mf_spans&lt;-" signature="" line-rate="1" branch-rate="0">
+            <method name="mf_spans&lt;-" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="329" hits="4" branch="false"/>
               </lines>
             </method>
-            <method name="mf_aligns&lt;-" signature="" line-rate="1" branch-rate="0">
+            <method name="mf_aligns&lt;-" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="335" hits="3" branch="false"/>
               </lines>
             </method>
-            <method name="mf_display&lt;-" signature="" line-rate="1" branch-rate="0">
+            <method name="mf_display&lt;-" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="342" hits="3" branch="false"/>
               </lines>
             </method>
-            <method name="mf_formats&lt;-" signature="" line-rate="1" branch-rate="0">
+            <method name="mf_formats&lt;-" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="348" hits="3" branch="false"/>
               </lines>
             </method>
-            <method name=".chknrow_and_replace" signature="" line-rate="1" branch-rate="0">
+            <method name=".chknrow_and_replace" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="354" hits="9" branch="false"/>
                 <line number="355" hits="9" branch="false"/>
@@ -1343,34 +1346,34 @@
                 <line number="365" hits="8" branch="false"/>
               </lines>
             </method>
-            <method name="mf_rinfo&lt;-" signature="" line-rate="1" branch-rate="0">
+            <method name="mf_rinfo&lt;-" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="371" hits="6" branch="false"/>
               </lines>
             </method>
-            <method name="mf_lgrouping&lt;-" signature="" line-rate="1" branch-rate="0">
+            <method name="mf_lgrouping&lt;-" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="377" hits="3" branch="false"/>
               </lines>
             </method>
-            <method name="mf_rfnotes&lt;-" signature="" line-rate="1" branch-rate="0">
+            <method name="mf_rfnotes&lt;-" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="384" hits="2" branch="false"/>
                 <line number="385" hits="2" branch="false"/>
               </lines>
             </method>
-            <method name="mf_nrheader&lt;-" signature="" line-rate="1" branch-rate="0">
+            <method name="mf_nrheader&lt;-" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="393" hits="2" branch="false"/>
                 <line number="394" hits="2" branch="false"/>
               </lines>
             </method>
-            <method name="mpf_has_rlabels" signature="" line-rate="1" branch-rate="0">
+            <method name="mpf_has_rlabels" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="406" hits="3" branch="false"/>
               </lines>
             </method>
-            <method name="basic_matrix_form" signature="" line-rate="0.977272727272727" branch-rate="0">
+            <method name="basic_matrix_form" signature="" line-rate="0.977272727272727" branch-rate="0" complexity="0">
               <lines>
                 <line number="425" hits="12" branch="false"/>
                 <line number="427" hits="12" branch="false"/>
@@ -1598,13 +1601,13 @@
         </class>
         <class name="mpf_exporters.R" filename="R/mpf_exporters.R" line-rate="0.968253968253968" branch-rate="0" complexity="0">
           <methods>
-            <method name="prep_header_line" signature="" line-rate="1" branch-rate="0">
+            <method name="prep_header_line" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="3" hits="1" branch="false"/>
                 <line number="4" hits="1" branch="false"/>
               </lines>
             </method>
-            <method name="mpf_to_dfbody" signature="" line-rate="0.9" branch-rate="0">
+            <method name="mpf_to_dfbody" signature="" line-rate="0.9" branch-rate="0" complexity="0">
               <lines>
                 <line number="29" hits="1" branch="false"/>
                 <line number="30" hits="1" branch="false"/>
@@ -1618,7 +1621,7 @@
                 <line number="41" hits="1" branch="false"/>
               </lines>
             </method>
-            <method name="mpf_to_rtf" signature="" line-rate="0.980392156862745" branch-rate="0">
+            <method name="mpf_to_rtf" signature="" line-rate="0.980392156862745" branch-rate="0" complexity="0">
               <lines>
                 <line number="71" hits="1" branch="false"/>
                 <line number="72" hits="0" branch="false"/>
@@ -1742,12 +1745,12 @@
         </class>
         <class name="page_size.R" filename="R/page_size.R" line-rate="0.975" branch-rate="0" complexity="0">
           <methods>
-            <method name="page_types" signature="" line-rate="1" branch-rate="0">
+            <method name="page_types" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="57" hits="6" branch="false"/>
               </lines>
             </method>
-            <method name="page_dim" signature="" line-rate="0.8" branch-rate="0">
+            <method name="page_dim" signature="" line-rate="0.8" branch-rate="0" complexity="0">
               <lines>
                 <line number="65" hits="3" branch="false"/>
                 <line number="66" hits="0" branch="false"/>
@@ -1756,7 +1759,7 @@
                 <line number="71" hits="2" branch="false"/>
               </lines>
             </method>
-            <method name="font_lcpi" signature="" line-rate="1" branch-rate="0">
+            <method name="font_lcpi" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="98" hits="4" branch="false"/>
                 <line number="99" hits="4" branch="false"/>
@@ -1777,7 +1780,7 @@
                 <line number="115" hits="3" branch="false"/>
               </lines>
             </method>
-            <method name="page_lcpp" signature="" line-rate="1" branch-rate="0">
+            <method name="page_lcpp" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="157" hits="4" branch="false"/>
                 <line number="158" hits="4" branch="false"/>
@@ -1844,7 +1847,7 @@
         </class>
         <class name="pagination.R" filename="R/pagination.R" line-rate="0.979381443298969" branch-rate="0" complexity="0">
           <methods>
-            <method name="pagdfrow" signature="" line-rate="1" branch-rate="0">
+            <method name="pagdfrow" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="136" hits="423" branch="false"/>
                 <line number="137" hits="423" branch="false"/>
@@ -1869,7 +1872,7 @@
                 <line number="156" hits="423" branch="false"/>
               </lines>
             </method>
-            <method name="valid_pag" signature="" line-rate="1" branch-rate="0">
+            <method name="valid_pag" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="169" hits="291" branch="false"/>
                 <line number="172" hits="291" branch="false"/>
@@ -1952,7 +1955,7 @@
                 <line number="288" hits="45" branch="false"/>
               </lines>
             </method>
-            <method name="find_pag" signature="" line-rate="1" branch-rate="0">
+            <method name="find_pag" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="302" hits="48" branch="false"/>
                 <line number="303" hits="48" branch="false"/>
@@ -1967,7 +1970,7 @@
                 <line number="313" hits="45" branch="false"/>
               </lines>
             </method>
-            <method name="pag_indices_inner" signature="" line-rate="0.896551724137931" branch-rate="0">
+            <method name="pag_indices_inner" signature="" line-rate="0.896551724137931" branch-rate="0" complexity="0">
               <lines>
                 <line number="361" hits="9" branch="false"/>
                 <line number="362" hits="9" branch="false"/>
@@ -2000,7 +2003,7 @@
                 <line number="389" hits="6" branch="false"/>
               </lines>
             </method>
-            <method name="vert_pag_indices" signature="" line-rate="0.977777777777778" branch-rate="0">
+            <method name="vert_pag_indices" signature="" line-rate="0.977777777777778" branch-rate="0" complexity="0">
               <lines>
                 <line number="411" hits="3" branch="false"/>
                 <line number="413" hits="3" branch="false"/>
@@ -2049,7 +2052,7 @@
                 <line number="465" hits="3" branch="false"/>
               </lines>
             </method>
-            <method name="basic_pagdf" signature="" line-rate="1" branch-rate="0">
+            <method name="basic_pagdf" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="489" hits="13" branch="false"/>
                 <line number="490" hits="13" branch="false"/>
@@ -2262,7 +2265,7 @@
         </class>
         <class name="tostring.R" filename="R/tostring.R" line-rate="0.963855421686747" branch-rate="0" complexity="0">
           <methods>
-            <method name=".calc_cell_widths" signature="" line-rate="1" branch-rate="0">
+            <method name=".calc_cell_widths" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="45" hits="25" branch="false"/>
                 <line number="46" hits="25" branch="false"/>
@@ -2286,7 +2289,7 @@
                 <line number="69" hits="25" branch="false"/>
               </lines>
             </method>
-            <method name="MatrixPrintForm" signature="" line-rate="0.974619289340102" branch-rate="0">
+            <method name="MatrixPrintForm" signature="" line-rate="0.974619289340102" branch-rate="0" complexity="0">
               <lines>
                 <line number="112" hits="19" branch="false"/>
                 <line number="330" hits="13" branch="false"/>
@@ -2487,7 +2490,7 @@
                 <line number="341" hits="12" branch="false"/>
               </lines>
             </method>
-            <method name=".do_inset" signature="" line-rate="0.75" branch-rate="0">
+            <method name=".do_inset" signature="" line-rate="0.75" branch-rate="0" complexity="0">
               <lines>
                 <line number="345" hits="78" branch="false"/>
                 <line number="346" hits="59" branch="false"/>
@@ -2499,12 +2502,12 @@
                 <line number="354" hits="19" branch="false"/>
               </lines>
             </method>
-            <method name=".inset_div" signature="" line-rate="1" branch-rate="0">
+            <method name=".inset_div" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="359" hits="14" branch="false"/>
               </lines>
             </method>
-            <method name=".footer_inset_helper" signature="" line-rate="1" branch-rate="0">
+            <method name=".footer_inset_helper" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="363" hits="12" branch="false"/>
                 <line number="364" hits="12" branch="false"/>
@@ -2537,7 +2540,7 @@
                 <line number="395" hits="12" branch="false"/>
               </lines>
             </method>
-            <method name="new_line_warning" signature="" line-rate="1" branch-rate="0">
+            <method name="new_line_warning" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="399" hits="12" branch="false"/>
                 <line number="400" hits="2" branch="false"/>
@@ -2550,7 +2553,7 @@
                 <line number="407" hits="2" branch="false"/>
               </lines>
             </method>
-            <method name="wrap_string" signature="" line-rate="0.954545454545455" branch-rate="0">
+            <method name="wrap_string" signature="" line-rate="0.954545454545455" branch-rate="0" complexity="0">
               <lines>
                 <line number="429" hits="2693" branch="false"/>
                 <line number="430" hits="2693" branch="false"/>
@@ -2598,42 +2601,42 @@
                 <line number="473" hits="2693" branch="false"/>
               </lines>
             </method>
-            <method name="wrap_txt" signature="" line-rate="1" branch-rate="0">
+            <method name="wrap_txt" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="481" hits="24" branch="false"/>
               </lines>
             </method>
-            <method name="pad_vert_top" signature="" line-rate="1" branch-rate="0">
+            <method name="pad_vert_top" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="485" hits="2376" branch="false"/>
               </lines>
             </method>
-            <method name="pad_vert_bottom" signature="" line-rate="1" branch-rate="0">
+            <method name="pad_vert_bottom" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="489" hits="78" branch="false"/>
               </lines>
             </method>
-            <method name="pad_vec_to_len" signature="" line-rate="1" branch-rate="0">
+            <method name="pad_vec_to_len" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="493" hits="204" branch="false"/>
                 <line number="494" hits="204" branch="false"/>
                 <line number="495" hits="204" branch="false"/>
               </lines>
             </method>
-            <method name="rep_vec_to_len" signature="" line-rate="1" branch-rate="0">
+            <method name="rep_vec_to_len" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="499" hits="207" branch="false"/>
                 <line number="500" hits="207" branch="false"/>
                 <line number="501" hits="207" branch="false"/>
               </lines>
             </method>
-            <method name="safe_strsplit" signature="" line-rate="1" branch-rate="0">
+            <method name="safe_strsplit" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="506" hits="273" branch="false"/>
                 <line number="507" hits="273" branch="false"/>
               </lines>
             </method>
-            <method name=".expand_mat_rows_inner" signature="" line-rate="1" branch-rate="0">
+            <method name=".expand_mat_rows_inner" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="511" hits="411" branch="false"/>
                 <line number="512" hits="411" branch="false"/>
@@ -2642,7 +2645,7 @@
                 <line number="516" hits="411" branch="false"/>
               </lines>
             </method>
-            <method name="expand_mat_rows" signature="" line-rate="1" branch-rate="0">
+            <method name="expand_mat_rows" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="520" hits="25" branch="false"/>
                 <line number="521" hits="25" branch="false"/>
@@ -2654,7 +2657,7 @@
                 <line number="527" hits="25" branch="false"/>
               </lines>
             </method>
-            <method name="spans_to_viscell" signature="" line-rate="0.928571428571429" branch-rate="0">
+            <method name="spans_to_viscell" signature="" line-rate="0.928571428571429" branch-rate="0" complexity="0">
               <lines>
                 <line number="558" hits="2" branch="false"/>
                 <line number="559" hits="0" branch="false"/>
@@ -2672,7 +2675,7 @@
                 <line number="572" hits="2" branch="false"/>
               </lines>
             </method>
-            <method name="propose_column_widths" signature="" line-rate="0.923076923076923" branch-rate="0">
+            <method name="propose_column_widths" signature="" line-rate="0.923076923076923" branch-rate="0" complexity="0">
               <lines>
                 <line number="611" hits="16" branch="false"/>
                 <line number="612" hits="0" branch="false"/>
@@ -2702,7 +2705,7 @@
                 <line number="654" hits="16" branch="false"/>
               </lines>
             </method>
-            <method name="padstr" signature="" line-rate="0.909090909090909" branch-rate="0">
+            <method name="padstr" signature="" line-rate="0.909090909090909" branch-rate="0" complexity="0">
               <lines>
                 <line number="683" hits="2674" branch="false"/>
                 <line number="685" hits="1" branch="false"/>
@@ -2717,17 +2720,17 @@
                 <line number="700" hits="1" branch="false"/>
               </lines>
             </method>
-            <method name="spaces" signature="" line-rate="1" branch-rate="0">
+            <method name="spaces" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="705" hits="2743" branch="false"/>
               </lines>
             </method>
-            <method name=".paste_no_na" signature="" line-rate="1" branch-rate="0">
+            <method name=".paste_no_na" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="710" hits="394" branch="false"/>
               </lines>
             </method>
-            <method name="spread_integer" signature="" line-rate="0.888888888888889" branch-rate="0">
+            <method name="spread_integer" signature="" line-rate="0.888888888888889" branch-rate="0" complexity="0">
               <lines>
                 <line number="733" hits="2" branch="false"/>
                 <line number="734" hits="2" branch="false"/>
@@ -2749,7 +2752,7 @@
                 <line number="753" hits="1" branch="false"/>
               </lines>
             </method>
-            <method name="is.wholenumber" signature="" line-rate="1" branch-rate="0">
+            <method name="is.wholenumber" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="774" hits="3" branch="false"/>
               </lines>
@@ -3092,7 +3095,7 @@
         </class>
         <class name="utils.R" filename="R/utils.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
-            <method name="%||%" signature="" line-rate="1" branch-rate="0">
+            <method name="%||%" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="21" hits="3" branch="false"/>
               </lines>
