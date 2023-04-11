@@ -1,22 +1,23 @@
 ## formatters 0.4.0.9000
- * Cell values and row labels are now word-wrapped based on column widths (`widths` in `toString` and `colwidths` in pagination and exporters
- * New "N=xx (xx%)" format support (https://github.com/insightsengineering/rtables/issues/516)
- * New generic getter and setter for na-string (`obj_na_str` and `obj_na_str<-`, migrated from `rtables`)
- * `MatrixPrintForm` class now carries around `has_topleft` information explicitly, getter `mf_has_topleft`
- * Number of header lines in a MatrixPrintForm object (`mf_nlheader`) is now a computed attribute rather than a stored one, `mf_nlheader<-` has been removed
+ * Cell values and row labels are now word-wrapped based on column widths (`widths` in `toString` and `colwidths` in pagination and exporters.
+ * New "N=xx (xx%)" format support (https://github.com/insightsengineering/rtables/issues/516).
+ * New generic getter and setter for na-string (`obj_na_str` and `obj_na_str<-`, migrated from `rtables`).
+ * `MatrixPrintForm` class now carries around `has_topleft` information explicitly, getter `mf_has_topleft`.
+ * Number of header lines in a MatrixPrintForm object (`mf_nlheader`) is now a computed attribute rather than a stored one, `mf_nlheader<-` has been removed.
  * New `MatrixPrintForm` accessor: `mpf_has_rlabels` determines whether the MPF$strings has a column which are label rows (i.e. no column index in originating object).
  * `wrap_text` and `wrap_string` now accept the `hard` argument (default `FALSE`) indicating whether 'hard'
    word-wrapping (i.e. explicit embedding of newline characters) should be performed.
  * `vert_pag_indices` now accepts `rep_cols` to control how many columns act as 'row-label-like', as
-   required by `rlistings`
+   required by `rlistings`.
  * Documentation of pagination algorithm greatly expanded.
- * Pagination with `verbose = TRUE` is now significantly more informative
- * fix bug where indenting was not correct when row-labels were word wrapped (#84, #85)
- * fix bug where portions of table after last section div (e.g., non-nested further analyses) were omitted (#77)
+ * Pagination with `verbose = TRUE` is now significantly more informative.
+ * fix bug where indenting was not correct when row-labels were word wrapped (#84, #85).
+ * fix bug where portions of table after last section div (e.g., non-nested further analyses) were omitted (#77).
  * fix bug in `mf_rinfo<-` checked the new value against the wrong dimensions.
- * Fixed off-by-one error in basic pagination machinery
- * Fix bug in position of header separator when columns have word wrapping (#68)
- * Bug rendering `mf_lgrouping` non-functional has been fixed
+ * Fixed off-by-one error in basic pagination machinery.
+ * Fix bug in position of header separator when columns have word wrapping (#68).
+ * Bug rendering `mf_lgrouping` non-functional has been fixed.
+ * Added `hexSticker` logo.
 
 ## formatters 0.3.4
  * `nlines` now accepts both `colwidths` and `max_width`, defaulting to `NULL` for both
