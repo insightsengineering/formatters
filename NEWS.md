@@ -1,4 +1,4 @@
-## formatters 0.4.0.9000
+## formatters 0.4.0.9001
  * Cell values and row labels are now word-wrapped based on column widths (`widths` in `toString` and `colwidths` in pagination and exporters.
  * New "N=xx (xx%)" format support (https://github.com/insightsengineering/rtables/issues/516).
  * New generic getter and setter for na-string (`obj_na_str` and `obj_na_str<-`, migrated from `rtables`).
