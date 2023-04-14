@@ -68,6 +68,7 @@ default_hsep <- d_hsep_factory()
   }
   cell_widths_mat
 }
+
 #' Decimal Alignment
 #'
 #' Aligning decimal values of string matrix. Allowed alignments are: `dec_left`,
