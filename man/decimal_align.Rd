@@ -7,13 +7,13 @@
 decimal_align(string_mat, align_mat)
 }
 \arguments{
-\item{string_mat}{string matrix component of matrix print form object}
+\item{string_mat}{string matrix component of matrix print form object.}
 
 \item{align_mat}{aligns matrix component of matrix print form object.
 Should contain either \code{dec_left}, \code{dec_right} or \code{decimal} for values to be decimal aligned.}
 }
 \value{
-Processed string matrix of matrix print form with decimal aligned values
+Processed string matrix of matrix print form with decimal aligned values.
 }
 \description{
 Aligning decimal values of string matrix. Allowed alignments are: \code{dec_left},
@@ -22,7 +22,7 @@ Aligning decimal values of string matrix. Allowed alignments are: \code{dec_left
 \examples{
 
 dfmf <- basic_matrix_form(mtcars)
-dfmf$aligns[,-c(1)] <- "dec_left"
+dfmf$aligns[, -c(1)] <- "dec_left"
 decimal_align(dfmf$strings, dfmf$aligns)
 
 }
