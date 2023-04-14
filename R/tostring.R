@@ -86,37 +86,30 @@ default_hsep <- d_hsep_factory()
 #' decimal_align(dfmf$strings, dfmf$aligns)
 #'
 #' @return Processed string matrix of matrix print form with decimal aligned values
-
-decimal_align <- function(string_mat, align_mat){
-
+decimal_align <- function(string_mat, align_mat) {
   # evaluate if any values are to be decimal aligned
 
-  if(!any(grepl("dec", align_mat))){
+  if (!any(grepl("dec", align_mat))) {
     string_mat <- string_mat
-  }
-
-  else{
-    for(i in seq(1, ncol(string_mat))){
-
+  } else {
+    for (i in seq(1, ncol(string_mat))) {
       # if no values are to be decimal aligned in the column (according to the aligns matrix), or there are no numerical values, strings remain as is
-      if (sum(grepl("dec", align_mat[,i])) == 0 | all(grepl("^[0-9]\\.", string_mat[,i])) ){
-        string_mat[,i] <- string_mat[,i]
+      if (sum(grepl("dec", align_mat[, i])) == 0 | all(grepl("^[0-9]\\.", string_mat[, i]))) {
+        string_mat[, i] <- string_mat[, i]
       }
 
       # values to be decimal aligned.
-      if (any(grepl("dec", align_mat[,i]))){
-
+      if (any(grepl("dec", align_mat[, i]))) {
         # Extract values not to be aligned (NAs, non-numbers, non-decimal numbers, doesn't say "decimal" in alignment matrix)
-        nas <- grepl("^NA$", string_mat[,i])
-        nonnum <- !grepl("[0-9]", string_mat[,i]) | grepl("[a-zA-Z]", string_mat[,i]) | !grepl("\\.", string_mat[,i])
-        alignmat <- !grepl("dec", align_mat[,i])
+        nas <- grepl("^NA$", string_mat[, i])
+        nonnum <- !grepl("[0-9]", string_mat[, i]) | grepl("[a-zA-Z]", string_mat[, i]) | !grepl("\\.", string_mat[, i])
+        alignmat <- !grepl("dec", align_mat[, i])
 
         nonalign <- nas | nonnum | alignmat
 
-        x <- as.character(string_mat[,i])
+        x <- as.character(string_mat[, i])
 
-        if(length(x[!nonalign])> 0){
-
+        if (length(x[!nonalign]) > 0) {
           splitx <- strsplit(x[!nonalign], ".", fixed = TRUE)
 
           left <-
@@ -133,10 +126,9 @@ decimal_align <- function(string_mat, align_mat){
           aligned <- ifelse(!grepl("[^0-9]$", left_mod), paste(left_mod, right_mod, sep = "."), paste(left_mod, right_mod))
 
           x[!nonalign] <- aligned
-          string_mat[,i] <- x
-        }
-        else{
-          string_mat[,i] <- x
+          string_mat[, i] <- x
+        } else {
+          string_mat[, i] <- x
         }
       }
     }
