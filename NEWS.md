@@ -1,4 +1,4 @@
-## formatters 0.4.1
+## formatters 0.4.1.9000
  * fix to test that failed only on old windows CRAN machine due to imperfect UTF support there.
  * Added `hexSticker` logo.
 
