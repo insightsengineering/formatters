@@ -68,13 +68,12 @@ default_hsep <- d_hsep_factory()
   }
   cell_widths_mat
 }
-
 #' Decimal Alignment
 #'
 #' Aligning decimal values of string matrix. Allowed alignments are: `dec_left`,
 #' `dec_right` and `decimal`.
 #'
-#' @param string_mat string matrix component of matrix print form object
+#' @param string_mat string matrix component of matrix print form object.
 #' @param align_mat aligns matrix component of matrix print form object.
 #' Should contain either `dec_left`, `dec_right` or `decimal` for values to be decimal aligned.
 #'
@@ -82,25 +81,27 @@ default_hsep <- d_hsep_factory()
 #' @examples
 #'
 #' dfmf <- basic_matrix_form(mtcars)
-#' dfmf$aligns[,-c(1)] <- "dec_left"
+#' dfmf$aligns[, -c(1)] <- "dec_left"
 #' decimal_align(dfmf$strings, dfmf$aligns)
 #'
-#' @return Processed string matrix of matrix print form with decimal aligned values
+#' @return Processed string matrix of matrix print form with decimal aligned values.
 decimal_align <- function(string_mat, align_mat) {
-  # evaluate if any values are to be decimal aligned
+  # Evaluate if any values are to be decimal aligned
 
   if (!any(grepl("dec", align_mat))) {
     string_mat <- string_mat
   } else {
     for (i in seq(1, ncol(string_mat))) {
-      # if no values are to be decimal aligned in the column (according to the aligns matrix), or there are no numerical values, strings remain as is
-      if (sum(grepl("dec", align_mat[, i])) == 0 | all(grepl("^[0-9]\\.", string_mat[, i]))) {
+      # If no values are to be decimal aligned in the column (according to the aligns
+      # matrix), or there are no numerical values, strings remain as is
+      if (sum(grepl("dec", align_mat[, i])) == 0 || all(grepl("^[0-9]\\.", string_mat[, i]))) {
         string_mat[, i] <- string_mat[, i]
       }
 
       # values to be decimal aligned.
       if (any(grepl("dec", align_mat[, i]))) {
-        # Extract values not to be aligned (NAs, non-numbers, non-decimal numbers, doesn't say "decimal" in alignment matrix)
+        # Extract values not to be aligned (NAs, non-numbers, non-decimal numbers,
+        # doesn't say "decimal" in alignment matrix)
         nas <- grepl("^NA$", string_mat[, i])
         nonnum <- !grepl("[0-9]", string_mat[, i]) | grepl("[a-zA-Z]", string_mat[, i]) | !grepl("\\.", string_mat[, i])
         alignmat <- !grepl("dec", align_mat[, i])
@@ -119,11 +120,14 @@ decimal_align <- function(string_mat, align_mat) {
             unlist(lapply(splitx, FUN = function(x) paste0(x[-1], collapse = ".")))
 
           # modify the piece with spaces
-          left_mod <- paste0(spaces(max(nchar(left), na.rm = T) - nchar(left)), left)
+          left_mod <- paste0(spaces(max(nchar(left), na.rm = TRUE) - nchar(left)), left)
 
-          right_mod <- paste0(right, spaces(max(nchar(right), na.rm = T) - nchar(right)))
+          right_mod <- paste0(right, spaces(max(nchar(right), na.rm = TRUE) - nchar(right)))
 
-          aligned <- ifelse(!grepl("[^0-9]$", left_mod), paste(left_mod, right_mod, sep = "."), paste(left_mod, right_mod))
+          aligned <- ifelse(!grepl("[^0-9]$", left_mod),
+            paste(left_mod, right_mod, sep = "."),
+            paste(left_mod, right_mod)
+          )
 
           x[!nonalign] <- aligned
           string_mat[, i] <- x
@@ -184,12 +188,12 @@ setMethod("toString", "MatrixPrintForm", function(x,
   # if cells are decimal aligned, run propose column widths
   # if the provided widths is less than proposed width, return an error
 
-  if (any(grepl("dec", mat$aligns))){
+  if (any(grepl("dec", mat$aligns))) {
 
     aligned <- propose_column_widths(x)
 
     # catch any columns that require widths more than what is provided
-    if (!is.null(widths)){
+    if (!is.null(widths)) {
       toowide <- sapply(aligned, function(i) any(i > widths[i]))
       stop(
         "Inserted width(s) for column(s) ", paste(names(which(toowide)), collapse = ", "),
@@ -335,7 +339,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
   ## }
 
   # decimal alignment
-  if (any(grepl("dec", aligns))){
+  if (any(grepl("dec", aligns))) {
     body <- decimal_align(body, aligns)
   }
 
@@ -708,7 +712,7 @@ propose_column_widths <- function(x, indent_size = 2) {
 
   # compute decimal alignment if asked in alignment matrix
 
-  if(any(grepl("dec", aligns))){
+  if (any(grepl("dec", aligns))) {
     body <- decimal_align(body, aligns)
   }
 
