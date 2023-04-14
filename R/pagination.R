@@ -265,12 +265,12 @@ valid_pag <- function(pagdf,
       ok_split <- vapply(inplay,
                    function(var) {
           !identical(curpth[match(var, curpth) + 1],
-                     nxtpth[match(var, nxtpth) +1])
+                     nxtpth[match(var, nxtpth) + 1])
       },
       TRUE)
 
       curvals <- curpth[match(inplay, curpth) + 1]
-      nxtvals <- nxtpth[match(inplay, nxtpth) + 1]
+      # nxtvals <- nxtpth[match(inplay, nxtpth) + 1]
       if (!all(ok_split)) {
         if (verbose) {
           message(
