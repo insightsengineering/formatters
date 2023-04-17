@@ -1,4 +1,8 @@
-## formatters 0.4.0.9002
+## formatters 0.4.1.9000
+ * fix to test that failed only on old windows CRAN machine due to imperfect UTF support there.
+ * Added `hexSticker` logo.
+
+## formatters 0.4.0
  * Cell values and row labels are now word-wrapped based on column widths (`widths` in `toString` and `colwidths` in pagination and exporters.
  * New "N=xx (xx%)" format support (https://github.com/insightsengineering/rtables/issues/516).
  * New generic getter and setter for na-string (`obj_na_str` and `obj_na_str<-`, migrated from `rtables`).
@@ -17,7 +21,6 @@
  * Fixed off-by-one error in basic pagination machinery.
  * Fix bug in position of header separator when columns have word wrapping (#68).
  * Bug rendering `mf_lgrouping` non-functional has been fixed.
- * Added `hexSticker` logo.
 
 ## formatters 0.3.4
  * `nlines` now accepts both `colwidths` and `max_width`, defaulting to `NULL` for both
