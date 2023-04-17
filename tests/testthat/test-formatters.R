@@ -644,3 +644,67 @@ test_that("padstr works with dec_right", {
   expect_identical(result, expected)
 })
 
+test_that("Decimal alignment: a specific case", {
+  hard_c <- c(12345.6, 0.235678, 6.7, 9.26, 1, 11)
+  lhc <- length(hard_c)
+
+  # decimal
+  bmf <- basic_matrix_form(mtcars[1:lhc, c(1, 6)])
+  bmf$aligns[, -1] <- "decimal"
+  bmf$strings[2:c(lhc + 1), 2] <- as.character(hard_c)
+  bmf$strings[2:c(lhc + 1), 3] <- paste0(hard_c, "%")
+  bmf$formats[2:c(lhc + 1), 3] <- rep("xx%", lhc)
+  res_dec <- strsplit(toString(bmf), "\\n")[[1]]
+
+  expected <- c(
+    "                        mpg             wt      ",
+    "————————————————————————————————————————————————",
+    "Mazda RX4           12345.6        12345.6%     ",
+    "Mazda RX4 Wag           0.235678       0.235678%",
+    "Datsun 710              6.7            6.7%     ",
+    "Hornet 4 Drive          9.26           9.26%    ",
+    "Hornet Sportabout        1              1%      ",
+    "Valiant                  11             11%     "
+  )
+  expect_identical(res_dec, expected)
+
+  # dec_right
+  bmf <- basic_matrix_form(mtcars[1:lhc, c(1, 6)])
+  bmf$aligns[, -1] <- "dec_right"
+  bmf$strings[2:c(lhc + 1), 2] <- as.character(hard_c)
+  bmf$strings[2:c(lhc + 1), 3] <- paste0(hard_c, "%")
+  bmf$formats[2:c(lhc + 1), 3] <- rep("xx%", lhc)
+  res_decr <- strsplit(toString(bmf), "\\n")[[1]]
+
+  c(
+    "                             mpg              wt",
+    "————————————————————————————————————————————————",
+    "Mazda RX4           12345.6        12345.6%     ",
+    "Mazda RX4 Wag           0.235678       0.235678%",
+    "Datsun 710              6.7            6.7%     ",
+    "Hornet 4 Drive          9.26           9.26%    ",
+    "Hornet Sportabout              1              1%",
+    "Valiant                       11             11%"
+  )
+  expect_identical(res_decr, expected)
+
+  # dec_left
+  bmf <- basic_matrix_form(mtcars[1:lhc, c(1, 6)])
+  bmf$aligns[, -1] <- "dec_left"
+  bmf$strings[2:c(lhc + 1), 2] <- as.character(hard_c)
+  bmf$strings[2:c(lhc + 1), 3] <- paste0(hard_c, "%")
+  bmf$formats[2:c(lhc + 1), 3] <- rep("xx%", lhc)
+  res_decl <- strsplit(toString(bmf), "\\n")[[1]]
+
+  c(
+    "                    mpg            wt           ",
+    "————————————————————————————————————————————————",
+    "Mazda RX4           12345.6        12345.6%     ",
+    "Mazda RX4 Wag           0.235678       0.235678%",
+    "Datsun 710              6.7            6.7%     ",
+    "Hornet 4 Drive          9.26           9.26%    ",
+    "Hornet Sportabout   1              1%           ",
+    "Valiant             11             11%          "
+  )
+  expect_identical(res_decl, expected)
+})
