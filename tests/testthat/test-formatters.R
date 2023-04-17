@@ -618,7 +618,7 @@ test_that("padstr works with dec_right", {
     expect_identical(result, expected)
 })
 
-test_that("padstr works with dec_right", {
+test_that("padstr works with decimal", {
   bmf <- basic_matrix_form(mtcars[1:15, c(1, 6)])
   bmf$aligns[, -c(1)] <- "decimal"
   result <- strsplit(toString(bmf), "\\n")[[1]]
