@@ -676,7 +676,7 @@ test_that("Decimal alignment: a specific case", {
   bmf$formats[2:c(lhc + 1), 3] <- rep("xx%", lhc)
   res_decr <- strsplit(toString(bmf), "\\n")[[1]]
 
-  c(
+  expected <- c(
     "                             mpg              wt",
     "————————————————————————————————————————————————",
     "Mazda RX4           12345.6        12345.6%     ",
@@ -696,7 +696,7 @@ test_that("Decimal alignment: a specific case", {
   bmf$formats[2:c(lhc + 1), 3] <- rep("xx%", lhc)
   res_decl <- strsplit(toString(bmf), "\\n")[[1]]
 
-  c(
+  expected <- c(
     "                    mpg            wt           ",
     "————————————————————————————————————————————————",
     "Mazda RX4           12345.6        12345.6%     ",
