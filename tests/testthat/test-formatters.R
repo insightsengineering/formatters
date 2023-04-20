@@ -622,9 +622,15 @@ test_that("Decimal alignment: a specific case with larger widths", {
 
   # decimal
   bmf$aligns[, -1] <- "decimal"
-  cw <- propose_column_widths(bmf)
+  cw <- cw_err <- propose_column_widths(bmf)
   expect_equal(sum(cw - cw0), 16) # small check of increased colwidths
+  cw_err[c(2, 3)] <- cw[c(2, 3)] - 6
   cw[c(2, 3)] <- cw[c(2, 3)] + 6
+
+  er_msg <- paste0("Inserted width\\(s\\) for column\\(s\\) mpg \\(-6\\), wt \\(-6\\) ",
+                   "is\\(are\\) not wide enough for the desired alignment.")
+  expect_error(toString(bmf, widths = cw_err), er_msg)
+
   res_dec <- strsplit(toString(bmf, widths = cw, hsep = "-"), "\\n")[[1]]
 
   expected <- c(
