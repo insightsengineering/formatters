@@ -569,10 +569,10 @@ expect_error(
 test_that("padstr works with dec_left", {
   bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
   bmf$aligns[, -c(1)] <- "dec_left"
-  result <- strsplit(toString(bmf), "\\n")[[1]]
+  result <- strsplit(toString(bmf, hsep = "-"), "\\n")[[1]]
   expected <- c(
     "                     mpg    wt   ",
-    "—————————————————————————————————",
+    "---------------------------------",
     "Mazda RX4            21     2.62 ",
     "Mazda RX4 Wag        21     2.875",
     "Datsun 710           22.8   2.32 ",
@@ -584,10 +584,10 @@ test_that("padstr works with dec_left", {
 test_that("padstr works with dec_right", {
   bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
   bmf$aligns[, -c(1)] <- "dec_right"
-  result <- strsplit(toString(bmf), "\\n")[[1]]
+  result <- strsplit(toString(bmf, hsep = "-"), "\\n")[[1]]
   expected <- c(
       "                      mpg      wt",
-      "—————————————————————————————————",
+      "---------------------------------",
       "Mazda RX4              21   2.62 ",
       "Mazda RX4 Wag          21   2.875",
       "Datsun 710           22.8   2.32 ",
@@ -599,10 +599,10 @@ test_that("padstr works with dec_right", {
 test_that("padstr works with decimal", {
   bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
   bmf$aligns[, -c(1)] <- "decimal"
-  result <- strsplit(toString(bmf), "\\n")[[1]]
+  result <- strsplit(toString(bmf, hsep = "-"), "\\n")[[1]]
   expected <- c(
     "                     mpg     wt  ",
-    "—————————————————————————————————",
+    "---------------------------------",
     "Mazda RX4             21    2.62 ",
     "Mazda RX4 Wag         21    2.875",
     "Datsun 710           22.8   2.32 ",
@@ -625,11 +625,11 @@ test_that("Decimal alignment: a specific case with larger widths", {
   cw <- propose_column_widths(bmf)
   expect_equal(sum(cw - cw0), 16) # small check of increased colwidths
   cw[c(2, 3)] <- cw[c(2, 3)] + 4
-  res_dec <- strsplit(toString(bmf, widths = cw), "\\n")[[1]]
+  res_dec <- strsplit(toString(bmf, widths = cw, hsep = "-"), "\\n")[[1]]
 
   expected <- c(
     "                         mpg               wt       ",
-    "————————————————————————————————————————————————————",
+    "----------------------------------------------------",
     "Mazda RX4            12345.6         12345.6%       ",
     "Mazda RX4 Wag            0.235678        0.235678%  ",
     "Datsun 710               6.7             6.7%       ",
