@@ -624,18 +624,18 @@ test_that("Decimal alignment: a specific case with larger widths", {
   bmf$aligns[, -1] <- "decimal"
   cw <- propose_column_widths(bmf)
   expect_equal(sum(cw - cw0), 16) # small check of increased colwidths
-  cw[c(2, 3)] <- cw[c(2, 3)] + 4
+  cw[c(2, 3)] <- cw[c(2, 3)] + 6
   res_dec <- strsplit(toString(bmf, widths = cw, hsep = "-"), "\\n")[[1]]
 
   expected <- c(
-    "                         mpg               wt       ",
-    "----------------------------------------------------",
-    "Mazda RX4            12345.6         12345.6%       ",
-    "Mazda RX4 Wag            0.235678        0.235678%  ",
-    "Datsun 710               6.7             6.7%       ",
-    "Hornet 4 Drive           9.26            9.26%      ",
-    "Hornet Sportabout        1               1%         ",
-    "Valiant                 11              11%         "
+    "                          mpg                 wt         ",
+    "---------------------------------------------------------",
+    "Mazda RX4             12345.6           12345.6%         ",
+    "Mazda RX4 Wag             0.235678          0.235678%    ",
+    "Datsun 710                6.7               6.7%         ",
+    "Hornet 4 Drive            9.26              9.26%        ",
+    "Hornet Sportabout         1                 1%           ",
+    "Valiant                  11                11%           "
   )
   expect_identical(res_dec, expected)
 
