@@ -196,10 +196,12 @@ setMethod("toString", "MatrixPrintForm", function(x,
     # catch any columns that require widths more than what is provided
     if (!is.null(widths)) {
       toowide <- sapply(aligned, function(i) any(i > widths[i]))
-      stop(
-        "Inserted width(s) for column(s) ", paste(names(which(toowide)), collapse = ", "),
-        " is(are) not wide enough for the desired alignment"
-      )
+      if (any(toowide)) {
+        stop(
+          "Inserted width(s) for column(s) ", paste(names(which(toowide)), collapse = ", "),
+          " is(are) not wide enough for the desired alignment"
+        )
+      }
     }
 
     widths <- aligned
