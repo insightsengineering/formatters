@@ -71,21 +71,29 @@ default_hsep <- d_hsep_factory()
 
 #' Decimal Alignment
 #'
-#' Aligning decimal values of string matrix. Allowed alignments are: `dec_left`,
-#' `dec_right` and `decimal`.
+#' @description Aligning decimal values of string matrix. Allowed alignments are: `dec_left`,
+#'  `dec_right` and `decimal`.
 #'
-#' @param string_mat string matrix component of matrix print form object.
-#' @param align_mat aligns matrix component of matrix print form object.
-#' Should contain either `dec_left`, `dec_right` or `decimal` for values to be decimal aligned.
+#' @param string_mat character matrix. String matrix component of matrix print form object.
+#' @param align_mat character matrix. Aligns matrix component of matrix print form object.
+#'  Should contain either `dec_left`, `dec_right` or `decimal` for values to be decimal aligned.
 #'
-#' @export
+#' @details Decimal alignment left and right (`dec_left` and `dec_right`) are different to
+#'  center decimal alignment `decimal` only in the case some padding is present. This may
+#'  happen if column widths are wider by setting parameters `widths` in `toString` or
+#'  `colwidths` in `paginate_*` accordingly. It will be also the case (more common) of
+#'  wider column names. Decimal alignment is not supported along with cell wrapping.
+#'
 #' @examples
-#'
-#' dfmf <- basic_matrix_form(mtcars)
+#' dfmf <- basic_matrix_form(mtcars[1:5,])
 #' dfmf$aligns[, -c(1)] <- "dec_left"
 #' decimal_align(dfmf$strings, dfmf$aligns)
 #'
 #' @return Processed string matrix of matrix print form with decimal aligned values.
+#'
+#' @seealso [`toString`] and [`MatrixPrintForm`]
+#'
+#' @export
 decimal_align <- function(string_mat, align_mat) {
   # Evaluate if any values are to be decimal aligned
 

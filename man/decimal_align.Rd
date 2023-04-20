@@ -7,9 +7,9 @@
 decimal_align(string_mat, align_mat)
 }
 \arguments{
-\item{string_mat}{string matrix component of matrix print form object.}
+\item{string_mat}{character matrix. String matrix component of matrix print form object.}
 
-\item{align_mat}{aligns matrix component of matrix print form object.
+\item{align_mat}{character matrix. Aligns matrix component of matrix print form object.
 Should contain either \code{dec_left}, \code{dec_right} or \code{decimal} for values to be decimal aligned.}
 }
 \value{
@@ -19,10 +19,19 @@ Processed string matrix of matrix print form with decimal aligned values.
 Aligning decimal values of string matrix. Allowed alignments are: \code{dec_left},
 \code{dec_right} and \code{decimal}.
 }
+\details{
+Decimal alignment left and right (\code{dec_left} and \code{dec_right}) are different to
+center decimal alignment \code{decimal} only in the case some padding is present. This may
+happen if column widths are wider by setting parameters \code{widths} in \code{toString} or
+\code{colwidths} in \verb{paginate_*} accordingly. It will be also the case (more common) of
+wider column names. Decimal alignment is not supported along with cell wrapping.
+}
 \examples{
-
-dfmf <- basic_matrix_form(mtcars)
+dfmf <- basic_matrix_form(mtcars[1:5,])
 dfmf$aligns[, -c(1)] <- "dec_left"
 decimal_align(dfmf$strings, dfmf$aligns)
 
+}
+\seealso{
+\code{\link{toString}} and \code{\link{MatrixPrintForm}}
 }
