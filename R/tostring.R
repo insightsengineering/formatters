@@ -188,18 +188,21 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
   # if cells are decimal aligned, run propose column widths
   # if the provided widths is less than proposed width, return an error
-
   if (any(grepl("dec", mat$aligns))) {
-
     aligned <- propose_column_widths(x)
 
     # catch any columns that require widths more than what is provided
     if (!is.null(widths)) {
-      toowide <- sapply(aligned, function(i) any(i > widths[i]))
-      if (any(toowide)) {
+      how_wide <- sapply(seq_along(widths), function(i) c(widths[i] - aligned[i]))
+      too_wide <- how_wide < 0
+      if (any(too_wide)) {
+        desc_width <- paste(paste(
+          names(which(too_wide)),
+          paste0("(", how_wide[too_wide], ")")
+        ), collapse = ", ")
         stop(
-          "Inserted width(s) for column(s) ", paste(names(which(toowide)), collapse = ", "),
-          " is(are) not wide enough for the desired alignment"
+          "Inserted width(s) for column(s) ", desc_width,
+          " is(are) not wide enough for the desired alignment."
         )
       }
     }
