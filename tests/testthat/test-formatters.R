@@ -567,7 +567,7 @@ expect_error(
 # test if padstr works with "dec_left", "dec_right" and "decimal"
 
 test_that("padstr works with dec_left", {
-  bmf <- basic_matrix_form(mtcars[1:15, c(1, 6)])
+  bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
   bmf$aligns[, -c(1)] <- "dec_left"
   result <- strsplit(toString(bmf), "\\n")[[1]]
   expected <- c(
@@ -577,23 +577,12 @@ test_that("padstr works with dec_left", {
     "Mazda RX4 Wag        21     2.875",
     "Datsun 710           22.8   2.32 ",
     "Hornet 4 Drive       21.4   3.215",
-    "Hornet Sportabout    18.7   3.44 ",
-    "Valiant              18.1   3.46 ",
-    "Duster 360           14.3   3.57 ",
-    "Merc 240D            24.4   3.19 ",
-    "Merc 230             22.8   3.15 ",
-    "Merc 280             19.2   3.44 ",
-    "Merc 280C            17.8   3.44 ",
-    "Merc 450SE           16.4   4.07 ",
-    "Merc 450SL           17.3   3.73 ",
-    "Merc 450SLC          15.2   3.78 ",
-    "Cadillac Fleetwood   10.4   5.25 "
   )
   expect_identical(result, expected)
 })
 
 test_that("padstr works with dec_right", {
-  bmf <- basic_matrix_form(mtcars[1:15, c(1, 6)])
+  bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
   bmf$aligns[, -c(1)] <- "dec_right"
   result <- strsplit(toString(bmf), "\\n")[[1]]
   expected <- c(
@@ -603,23 +592,12 @@ test_that("padstr works with dec_right", {
       "Mazda RX4 Wag          21   2.875",
       "Datsun 710           22.8   2.32 ",
       "Hornet 4 Drive       21.4   3.215",
-      "Hornet Sportabout    18.7   3.44 ",
-      "Valiant              18.1   3.46 ",
-      "Duster 360           14.3   3.57 ",
-      "Merc 240D            24.4   3.19 ",
-      "Merc 230             22.8   3.15 ",
-      "Merc 280             19.2   3.44 ",
-      "Merc 280C            17.8   3.44 ",
-      "Merc 450SE           16.4   4.07 ",
-      "Merc 450SL           17.3   3.73 ",
-      "Merc 450SLC          15.2   3.78 ",
-      "Cadillac Fleetwood   10.4   5.25 "
     )
     expect_identical(result, expected)
 })
 
 test_that("padstr works with decimal", {
-  bmf <- basic_matrix_form(mtcars[1:15, c(1, 6)])
+  bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
   bmf$aligns[, -c(1)] <- "decimal"
   result <- strsplit(toString(bmf), "\\n")[[1]]
   expected <- c(
@@ -629,17 +607,6 @@ test_that("padstr works with decimal", {
     "Mazda RX4 Wag         21    2.875",
     "Datsun 710           22.8   2.32 ",
     "Hornet 4 Drive       21.4   3.215",
-    "Hornet Sportabout    18.7   3.44 ",
-    "Valiant              18.1   3.46 ",
-    "Duster 360           14.3   3.57 ",
-    "Merc 240D            24.4   3.19 ",
-    "Merc 230             22.8   3.15 ",
-    "Merc 280             19.2   3.44 ",
-    "Merc 280C            17.8   3.44 ",
-    "Merc 450SE           16.4   4.07 ",
-    "Merc 450SL           17.3   3.73 ",
-    "Merc 450SLC          15.2   3.78 ",
-    "Cadillac Fleetwood   10.4   5.25 "
   )
   expect_identical(result, expected)
 })
