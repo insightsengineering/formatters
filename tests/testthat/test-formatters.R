@@ -569,14 +569,16 @@ expect_error(
 test_that("padstr works with dec_left", {
   bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
   bmf$aligns[, -c(1)] <- "dec_left"
-  result <- strsplit(toString(bmf, hsep = "-"), "\\n")[[1]]
+  cw <- propose_column_widths(bmf)
+  cw[2] <- cw[2] + 1
+  result <- strsplit(toString(bmf, widths = cw, hsep = "-"), "\\n")[[1]]
   expected <- c(
-    "                     mpg    wt   ",
-    "---------------------------------",
-    "Mazda RX4            21     2.62 ",
-    "Mazda RX4 Wag        21     2.875",
-    "Datsun 710           22.8   2.32 ",
-    "Hornet 4 Drive       21.4   3.215",
+    "                 mpg     wt   ",
+    "------------------------------",
+    "Mazda RX4        21      2.62 ",
+    "Mazda RX4 Wag    21      2.875",
+    "Datsun 710       22.8    2.32 ",
+    "Hornet 4 Drive   21.4    3.215"
   )
   expect_identical(result, expected)
 })
@@ -584,29 +586,34 @@ test_that("padstr works with dec_left", {
 test_that("padstr works with dec_right", {
   bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
   bmf$aligns[, -c(1)] <- "dec_right"
-  result <- strsplit(toString(bmf, hsep = "-"), "\\n")[[1]]
+  cw <- propose_column_widths(bmf)
+  cw[2] <- cw[2] + 1
+  result <- strsplit(toString(bmf, widths = cw, hsep = "-"), "\\n")[[1]]
+  cat(paste0('c(\n  "', paste0(result, collapse = '",\n  "'), '"\n)'))
   expected <- c(
-      "                      mpg      wt",
-      "---------------------------------",
-      "Mazda RX4              21   2.62 ",
-      "Mazda RX4 Wag          21   2.875",
-      "Datsun 710           22.8   2.32 ",
-      "Hornet 4 Drive       21.4   3.215",
-    )
-    expect_identical(result, expected)
+    "                   mpg      wt",
+    "------------------------------",
+    "Mazda RX4         21     2.62 ",
+    "Mazda RX4 Wag     21     2.875",
+    "Datsun 710        22.8   2.32 ",
+    "Hornet 4 Drive    21.4   3.215"
+  )
+  expect_identical(result, expected)
 })
 
 test_that("padstr works with decimal", {
   bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
   bmf$aligns[, -c(1)] <- "decimal"
-  result <- strsplit(toString(bmf, hsep = "-"), "\\n")[[1]]
+  cw <- propose_column_widths(bmf)
+  cw[2] <- cw[2] + 2
+  result <- strsplit(toString(bmf, widths = cw, hsep = "-"), "\\n")[[1]]
   expected <- c(
-    "                     mpg     wt  ",
-    "---------------------------------",
-    "Mazda RX4             21    2.62 ",
-    "Mazda RX4 Wag         21    2.875",
-    "Datsun 710           22.8   2.32 ",
-    "Hornet 4 Drive       21.4   3.215",
+    "                      mpg      wt  ",
+    "-----------------------------------",
+    "Mazda RX4             21      2.62 ",
+    "Mazda RX4 Wag         21      2.875",
+    "Datsun 710            22.8    2.32 ",
+    "Hornet 4 Drive        21.4    3.215"
   )
   expect_identical(result, expected)
 })
