@@ -521,3 +521,28 @@ setMethod(
     obj
   }
 )
+
+
+
+
+#' Generic for Performing "Forced Pagination"
+#'
+#' Forced pagination is pagination which happens regardless of
+#' position on page. The object is expected to have all information
+#' necessary to locate such page breaks, and the `do_forced_pag`
+#' method is expected to fully perform those paginations.
+#'
+#' @param obj The object to be paginated. 
+#'
+#' The `ANY` method simply returns a list of length one, containing
+#' `obj`.
+#'
+#' @return a list of subobjects, which will be further paginated
+#' by the standard pagination algorithm.
+#'
+#' 
+#' @export
+setGeneric("do_forced_pag", function(obj) standardGeneric("do_forced_pag"))
+
+#' @export
+setMethod("do_forced_pag", "ANY", function(obj) list(obj))

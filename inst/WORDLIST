@@ -42,6 +42,7 @@ htmltools
 https
 huxtable
 IEC
+ifnotlen
 insightsengineering
 io
 knitr
@@ -66,11 +67,13 @@ padstr
 pag
 pagdf
 pagdfrow
+paginations
 pathing
 pre
 rds
 Repo
 repo
+requried
 rlistings
 rmarkdown
 rnames
@@ -86,6 +89,7 @@ sep
 settters
 sprintf
 str
+subobjects
 subtable
 subtables
 testthat

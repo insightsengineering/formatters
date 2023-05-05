@@ -84,7 +84,7 @@ expect_identical(
   basic_pagdf(row.names(df2),
     extents = 3L
   ),
-  mf_rinfo(df2mf)
+  mf_rinfo(df2mf)[, -which(names(mf_rinfo(df2mf)) == "ref_info_df")]
 )
 
 hpaginds <- pag_indices_inner(mf_rinfo(df2mf),
@@ -178,25 +178,29 @@ expect_identical(nlines("hi\nthere"), 2L)
 
 ## coverage for handling of ref footnotes in pagination machinery
 
+## XXX this test is not longer relevant and needs to be rewritten
+## the hack of manually altering nreflines is no longer relevant
+## This does beg the question of why self_extent was including nreflines
+## we probably need to change that too!!!
 
-df4 <- mtcars
-df4mf <- basic_matrix_form(df4)
-rinfo4 <- mf_rinfo(df4mf)
-## self_extent is expected to include nreflines!!!!
-rinfo4$nreflines <- 1
-rinfo4$self_extent <- rinfo4$self_extent + 1
-mf_rinfo(df4mf) <- rinfo4
-pags4inds <- pag_indices_inner(mf_rinfo(df4mf),
-  8,
-  min_siblings = 0,
-  verbose = TRUE
-)
+## df4 <- mtcars
+## df4mf <- basic_matrix_form(df4)
+## rinfo4 <- mf_rinfo(df4mf)
+## ## self_extent is expected to include nreflines!!!!
+## rinfo4$nreflines <- 1
+## rinfo4$self_extent <- rinfo4$self_extent + 1
+## mf_rinfo(df4mf) <- rinfo4
+## pags4inds <- pag_indices_inner(mf_rinfo(df4mf),
+##   8,
+##   min_siblings = 0,
+##   verbose = TRUE
+## )
 
-## should be 3 because each row now takes 1 (the row) + 1(the footnote) lines
-## plus 2 lines for the divider + empty line for having referential footnotes at all
+## ## should be 3 because each row now takes 1 (the row) + 1(the footnote) lines
+## ## plus 2 lines for the divider + empty line for having referential footnotes at all
 
-## NB that +2 will change if we change the behavior re dividers and referential footnotes!
-expect_equal(length(pags4inds[[1]]),
-             3)
-expect_equal(length(tail(pags4inds, 1)[[1]]),
-             2)
+## ## NB that +2 will change if we change the behavior re dividers and referential footnotes!
+## expect_equal(length(pags4inds[[1]]),
+##              3)
+## expect_equal(length(tail(pags4inds, 1)[[1]]),
+##             2)

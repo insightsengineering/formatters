@@ -94,3 +94,5 @@ reference:
       - mf_strings
       - page_lcpp
       - page_types
+      - do_forced_pag
+      - ref_df_row

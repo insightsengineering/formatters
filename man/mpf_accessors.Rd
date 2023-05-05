@@ -7,20 +7,26 @@
 \alias{mf_display}
 \alias{mf_formats}
 \alias{mf_rinfo}
+\alias{mf_cinfo}
 \alias{mf_has_topleft}
 \alias{mf_lgrouping}
 \alias{mf_rfnotes}
 \alias{mf_nlheader}
 \alias{mf_nrheader}
+\alias{mf_colgap}
 \alias{mf_strings<-}
 \alias{mf_spans<-}
 \alias{mf_aligns<-}
 \alias{mf_display<-}
 \alias{mf_formats<-}
 \alias{mf_rinfo<-}
+\alias{mf_cinfo<-}
 \alias{mf_lgrouping<-}
 \alias{mf_rfnotes<-}
 \alias{mf_nrheader<-}
+\alias{mf_colgap<-}
+\alias{mf_ncol}
+\alias{mf_ncol<-}
 \alias{mpf_has_rlabels}
 \title{Setters and Getters for aspects of MatrixPrintForm Objects}
 \usage{
@@ -36,6 +42,8 @@ mf_formats(mf)
 
 mf_rinfo(mf)
 
+mf_cinfo(mf)
+
 mf_has_topleft(mf)
 
 mf_lgrouping(mf)
@@ -45,6 +53,8 @@ mf_rfnotes(mf)
 mf_nlheader(mf)
 
 mf_nrheader(mf)
+
+mf_colgap(mf)
 
 mf_strings(mf) <- value
 
@@ -58,11 +68,19 @@ mf_formats(mf) <- value
 
 mf_rinfo(mf) <- value
 
+mf_cinfo(mf) <- value
+
 mf_lgrouping(mf) <- value
 
 mf_rfnotes(mf) <- value
 
 mf_nrheader(mf) <- value
+
+mf_colgap(mf) <- value
+
+mf_ncol(mf)
+
+mf_ncol(mf) <- value
 
 mpf_has_rlabels(mf)
 }
