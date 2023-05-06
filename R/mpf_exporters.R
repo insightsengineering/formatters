@@ -1,21 +1,100 @@
+.need_pag <- function(page_type, pg_width, pg_height, cpp, lpp) {
+    !(is.null(page_type) && is.null(pg_width) && is.null(pg_height) && is.null(cpp) && is.null(lpp))
+
+}
+
+#' Export a table-like object to plain (ASCII) text with page break
+#'
+#' This function converts \code{x} to a \code{MatrixPrintForm} object via
+#' \code{matrix_form}, paginates it via \code{paginate}, converts each
+#' page to ASCII text via \code{toString}, and emits the strings to \code{file},
+#' separated by \code{page_break}.
+#'
+#' @inheritParams paginate_indices
+#' @inheritParams toString
+#' @inheritParams propose_column_widths
+#' @param x  ANY.  The  table-like object  to  export.  Must have  an
+#'     applicable \code{matrix_form} method.
+#' @param file character(1) or NULL.  If non-NULL, the path to write a
+#'     text file to containing the \code{x} rendered as ASCII text,
+#' @param page_break  character(1).  Page break  symbol (defaults  to
+#'     outputting \code{"\\n\\s"}).
+#' @param paginate logical(1). Whether pagination should be performed,
+#'     defaults to \code{TRUE} if page size is specified (including
+#'     the default).
+#' @details if  \code{x} has an \code{num_rep_cols}  method, the value
+#'     returned by it will be  used for \code{rep_cols} by default, if
+#'     not, 0 will be used.
+#'
+#' If \code{x} has an applicable \code{do_mand_paginate} method, it will be invoked
+#' during the pagination process.
+#'
+#' @return if \code{file} is NULL, the total paginated and then concatenated
+#' string value, otherwise the file that was written.
+#' @export
+#' @examples
+#' export_as_txt(basic_matrix_form(mtcars), pg_height = 5, pg_width = 4)
+
+export_as_txt <- function(x,
+                          file = NULL,
+                          page_type = NULL,
+                          landscape = FALSE,
+                          pg_width = page_dim(page_type)[if(landscape) 2 else 1],
+                          pg_height = page_dim(page_type)[if(landscape) 1 else 2],
+                          font_family = "Courier",
+                          font_size = 8,  # grid parameters
+                          lineheight = 1L,
+                          margins = c(top = .5, bottom = .5, left = .75, right = .75),
+                          paginate = .need_pag(page_type, pg_width, pg_height, lpp, cpp),
+                          cpp = NULL,
+                          lpp = NULL,
+                          ...,
+                          hsep = default_hsep(),
+                          indent_size = 2,
+                          tf_wrap = paginate,
+                          max_width = cpp,
+                          colwidths = NULL,
+                          min_siblings = 2,
+                          nosplitin = character(),
+                          rep_cols = num_rep_cols(x),
+                          verbose = FALSE,
+                          page_break = "\\s\\n") {
+
+    if(paginate) {
+        pages <- paginate_to_mpfs(x,
+                                  page_type = page_type,
+                                  font_family = font_family,
+                                  font_size = font_size,
+                                  lineheight = lineheight,
+                                  landscape = landscape,
+                                  pg_width = pg_width,
+                                  pg_height = pg_height,
+                                  margins = margins,
+                                  lpp = lpp,
+                                  cpp = cpp,
+                                  min_siblings = min_siblings,
+                                  nosplitin = nosplitin,
+                                  colwidths = colwidths,
+                                  tf_wrap = tf_wrap,
+                                  indent_size = indent_size,
+                                  verbose = verbose)
+    } else {
+        mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size)
+        mf_col_widths(mf) <- colwidths %||% propose_column_widths(mf)
+        pages <- list(mf)
+    }
+    ## we dont' set widths here because we already but that info on mpf
+    ## so its on each of the pages.
+    strings <- vapply(pages, toString, "", hsep = hsep)
+    res <- paste(strings, collapse = page_break)
+
+    if(is.null(file))
+        res
+    else
+        cat(res, file = file)
+}
 
 
-## export_as_txt <- function(x, file = NULL,
-##                           page_type = NULL,
-##                           landscape = FALSE,
-##                           pg_width = page_dim(page_type)[if(landscape) 2 else 1],
-##                           pg_height = page_dim(page_type)[if(landscape) 1 else 2],
-##                           font_family = "Courier",
-##                           font_size = 8,  # grid parameters
-##                           paginate = .need_pag(page_type, pg_width, pg_height, lpp, cpp),
-##                           cpp = NULL,
-##                           lpp = NULL,
-##                           ..., page_break = "\\s\\n",
-##                           hsep = default_hsep(),
-##                           indent_size = 2,
-##                           tf_wrap = paginate,
-##                           max_width = cpp,
-##                           colwidths = propose_column_widths(matrix_form(tt, TRUE))) {
 
 ##     ## TODO this needs to be in terms of a MPF, so ncol(tt) needs to change
 

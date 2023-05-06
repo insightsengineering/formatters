@@ -103,7 +103,6 @@ NULL
 #' @param nrowrefs integer(1). Number of row referential footnotes for this row
 #' @param ncellrefs integer(1). Number of cell referential footnotes for the cells in this row
 #' @param nreflines integer(1). Total number of lines required by all referential footnotes
-#' @param ref_df data.frame or NULL. If specified, a data.frame with symbol and message columns.
 #' @param force_page logical(1). Currently Ignored.
 #' @param page_title logical(1). Currently Ignored.
 #' @param trailing_sep character(1). The string to used as a separator below this row during printing (or
@@ -411,59 +410,72 @@ pag_indices_inner <- function(pagdf, rlpp,
 #' lapply(colpaginds, function(j) mtcars[, j, drop = FALSE])
 #' @export
 vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, rep_cols = 0L) {
-  strm <- matrix_form(obj, TRUE)
+  mf <- matrix_form(obj, TRUE)
+  clwds <- colwidths %||% propose_column_widths(mf)
+  if(is.null(mf_cinfo(mf))) ## like always, ugh.
+      mf <- mpf_infer_cinfo(mf, colwidths = clwds, rep_cols = rep_cols)
 
-  clwds <- colwidths %||% propose_column_widths(strm)
-  if (!is(rep_cols, "numeric") || is.na(rep_cols) || rep_cols < 0) {
-    stop("got invalid number of columns to be repeated: ", rep_cols)
-  }
-  has_rlabs <- mpf_has_rlabels(strm)
+  has_rlabs <- mf_has_rlabels(mf)
   rlabs_flag <- as.integer(has_rlabs)
   rlab_extent <- if (has_rlabs) clwds[1] else 0L
-  sqstart <- rlabs_flag + 1L # rep_cols + 1L
 
-  pdfrows <- lapply(
-    (sqstart):ncol(strm$strings),
-    function(i) {
-      rownum <- i - rlabs_flag
-      rep_inds <- seq_len(rep_cols)[seq_len(rep_cols) < rownum]
-      rep_extent_i <- sum(0L, clwds[rlabs_flag + rep_inds]) + strm$col_gap * length(rep_inds)
-      pagdfrow(
-        row = NA,
-        nm = rownum,
-        lab = rownum,
-        rnum = rownum,
-        pth = NA,
-        extent = clwds[i] + strm$col_gap,
-        repext = rep_extent_i, # sum(clwds[rep_cols]) + strm$col_gap * max(0, (length(rep_cols) - 1)),
-        repind = rep_inds, # rep_cols,
-        rclass = "stuff",
-        sibpos = 1 - 1,
-        nsibs = 1 - 1
-      )
-    }
-  )
-  pdf <- do.call(rbind, pdfrows)
-
-  refdf <- mf_fnote_df(strm)
-  pdf <- splice_fnote_info_in(pdf, refdf, row = FALSE)
   # rep_extent <- pdf$par_extent[nrow(pdf)]
-  rcpp <- cpp - table_inset(strm) - rlab_extent # rep_extent - table_inset(strm) - rlab_extent
+  rcpp <- cpp - table_inset(mf) - rlab_extent # rep_extent - table_inset(mf) - rlab_extent
   if (verbose) {
     message(
       "Adjusted characters per page: ", rcpp,
       " [original: ", cpp,
-      ", table inset: ", table_inset(strm), if (has_rlabs) paste0(", row labels: ", clwds[1]),
+      ", table inset: ", table_inset(mf), if (has_rlabs) paste0(", row labels: ", clwds[1]),
       "]"
     )
   }
-  res <- pag_indices_inner(pdf,
+  res <- pag_indices_inner(mf_cinfo(mf),
     rlpp = rcpp, # cpp - sum(clwds[seq_len(rep_cols)]),
     verbose = verbose,
     min_siblings = 1,
     row = FALSE
   )
   res
+}
+
+mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf)) {
+
+    if (!is(rep_cols, "numeric") || is.na(rep_cols) || rep_cols < 0) {
+        stop("got invalid number of columns to be repeated: ", rep_cols)
+    }
+    clwds <- (colwidths %||% mf_col_widths(mf)) %||% propose_column_widths(mf)
+    has_rlabs <- mf_has_rlabels(mf)
+    rlabs_flag <- as.integer(has_rlabs)
+    rlab_extent <- if (has_rlabs) clwds[1] else 0L
+    sqstart <- rlabs_flag + 1L # rep_cols + 1L
+
+    pdfrows <- lapply(
+    (sqstart):ncol(mf$strings),
+    function(i) {
+        rownum <- i - rlabs_flag
+        rep_inds <- seq_len(rep_cols)[seq_len(rep_cols) < rownum]
+        rep_extent_i <- sum(0L, clwds[rlabs_flag + rep_inds]) + mf$col_gap * length(rep_inds)
+        pagdfrow(
+            row = NA,
+            nm = rownum,
+            lab = rownum,
+            rnum = rownum,
+            pth = NA,
+            extent = clwds[i] + mf$col_gap,
+            repext = rep_extent_i, # sum(clwds[rep_cols]) + mf$col_gap * max(0, (length(rep_cols) - 1)),
+            repind = rep_inds, # rep_cols,
+            rclass = "stuff",
+            sibpos = 1 - 1,
+            nsibs = 1 - 1
+        )
+    }
+    )
+    pdf <- do.call(rbind, pdfrows)
+
+    refdf <- mf_fnote_df(mf)
+    pdf <- splice_fnote_info_in(pdf, refdf, row = FALSE)
+    mf_cinfo(mf) <- pdf
+    mf
 }
 
 
@@ -525,6 +537,7 @@ calc_lcpp <- function(page_type = NULL,
                       lineheight = 1,
                       margins = c(top = .5, bottom = .5, left = .75, right = .75),
                       colwidths,
+                      col_gap,
                       inset
                       ) {
 
@@ -555,7 +568,7 @@ calc_lcpp <- function(page_type = NULL,
         max_width <- cpp
 
     if(is.character(max_width) && identical(max_width, "auto")) {
-        max_width <- inset + sum(colwidths) + (length(colwidths) - 1) * mf_colgap(mf)
+        max_width <- inset + sum(colwidths) + (length(colwidths) - 1) * col_gap
     }
     page_size_spec(lpp = lpp, cpp = cpp, max_width = max_width)
 }
@@ -611,13 +624,158 @@ calc_rcpp <- function(pg_size_spec, mf, colwidths) {
     cpp - table_inset(mf) - colwidths[1] - mf_colgap(mf)
 }
 
-## XXX dummy remove this you cheezeball
-do_mand_paginate <- function(obj) list(obj)
 
-setGeneric("num_rep_cols", function(obj) standardGeneric("num_rep_cols"))
-setMethod("num_rep_cols", "ANY", function(obj) 0L)
+splice_idx_lists <- function(lsts) {
+    list(pag_row_indices = do.call(c, lapply(lsts, function(xi) xi$pag_row_indices)),
+         pag_col_indices = do.call(c, lapply(lsts, function(yi) yi$pag_col_indices)))
 
-paginate <- function(obj,
+}
+
+
+
+#' Paginate a table-like object for rendering
+#'
+#' This functions prepares \code{obj} for paginated rendering,
+#' by paginating it \code{emph} into multiple \code{MatrixPrintForm}
+#' objects representing individual pages.
+#'
+#' @details
+#' `paginate_to_mpfs` supports objects which require 'forced pagination', ie
+#' pagination at points not dictated by page dimensions. It does this by
+#' automatically calling the `do_force_pagination` generic.
+#'
+#' `paginate_indices`,  on  the  other hand,  \emph{does  not  support
+#' forced pagination},  because it returns  only a set of  indices for
+#' row and column subsetting for each page, and thus cannot retain any
+#' changes, e.g., to titles, done within `do_forced_paginate`.
+#' @inheritParams vert_pag_indices
+#' @inheritParams pag_indices_inner
+#' @inheritParams page_lcpp
+#' @inheritParams toString
+#' @inheritParams propose_column_widths
+#' @param lpp numeric(1) or NULL. Lines per page. if NULL (the default,
+#'     this is calculated automatically based on the specified page
+#'     size).
+#' @param pg_size_spec page_size_spec. A pre-calculated page
+#'     size specification. Typically this is not set in end user code.
+#' @return for `paginate_indices` a list with two elements of the same
+#'     length:   `pag_row_indices`,    and   `pag_col_indices`.    For
+#'     `paginate_to_mpfs`,   a  list   of  `MatrixPrintForm` objects
+#'     representing each individual page after pagination (including
+#'     forced pagination if necessary).
+#' @export
+#' @aliases paginate pagination
+#' @examples
+#' mpf <- basic_matrix_form(mtcars)
+#'
+#' paginate_indices(mpf, pg_width = 5, pg_height = 3)
+#'
+#' paginate_to_mpfs(mpf, pg_width = 5, pg_height = 3)
+paginate_indices <- function(obj,
+                     page_type = "letter",
+                     font_family = "Courier",
+                     font_size = 12,
+                     lineheight = 1,
+                     landscape = FALSE,
+                     pg_width = NULL,
+                     pg_height = NULL,
+                     margins = c(top = .5, bottom = .5, left = .75, right = .75),
+                     lpp = NULL,
+                     cpp = NULL,
+                     min_siblings = 2,
+                     nosplitin = character(),
+                     colwidths = NULL,
+                     tf_wrap = FALSE,
+                     max_width = NULL,
+                     indent_size = 2,
+                     pg_size_spec = NULL,
+                     rep_cols = num_rep_cols(obj),
+                     col_gap = 2,
+                     verbose = FALSE) {
+
+    ## We can't support forced pagination here, but we can support calls to,
+    ## e.g., paginate_indices(do_forced_pag(tt))
+    if(is.list(obj) && !is.object(obj)) {
+        res <- lapply(obj, paginate_indices,
+                      page_type = page_type,
+                      font_family = font_family,
+                      font_size = font_size,
+                      lineheight = lineheight,
+                      landscape = landscape,
+                      pg_width = pg_width,
+                      pg_height = pg_height,
+                      margins = margins,
+                      lpp = lpp,
+                      cpp = cpp,
+                      tf_wrap = tf_wrap,
+                      max_width = max_width,
+                      colwidths = colwidths,
+                      min_siblings = min_siblings,
+                      nosplitin = nosplitin,
+                      col_gap = col_gap,
+                      ## not setting num_rep_cols here cause it wont' get it right
+                      verbose = verbose)
+        return(splice_idx_lists(res))
+    }
+     ## order is annoying here, since we won't actually need the mpf if
+    ## we run into forced pagination, but life is short and this should work fine.
+    mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size)
+    if(is.null(colwidths))
+        colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf)
+    else
+        mf_col_widths(mpf) <- colwidths
+    mpf <- mpf_infer_cinfo(mpf, colwidths, rep_cols)
+
+
+    if(is.null(pg_size_spec)) {
+        pg_size_spec <- calc_lcpp(page_type = page_type,
+                        font_family = font_family,
+                        font_size = font_size,
+                        lineheight = lineheight,
+                        landscape = landscape,
+                        pg_width = pg_width,
+                        pg_height = pg_height,
+                        margins = margins,
+                        lpp = lpp,
+                        cpp = cpp,
+                        tf_wrap = tf_wrap,
+                        max_width = max_width,
+                        colwidths = colwidths,
+                        inset = table_inset(mpf),
+                        col_gap = col_gap)
+    }
+
+    ## we can't support forced pagination in paginate_indices because
+    ## forced pagination is generally going to set page titles, which
+    ## we can't preserve when just returning lists of indices.
+    ## Instead we make a hard assumption here that any forced pagination
+    ## has already occured.
+
+
+
+
+
+    ## this wraps the cell contents AND shoves referential footnote
+    ## info into mf_rinfo(mpf)
+    mpf <- do_cell_fnotes_wrap(mpf, colwidths, max_width, tf_wrap = tf_wrap)
+
+    pag_row_indices <- pag_indices_inner(pagdf= mf_rinfo(mpf),
+                                         rlpp = calc_rlpp(pg_size_spec, mpf, colwidths = colwidths, verbose = verbose),
+                                         verbose = verbose,
+                                         min_siblings = min_siblings,
+                                         nosplitin = nosplitin)
+
+
+    pag_col_indices <- vert_pag_indices(mpf, cpp = pg_size_spec$cpp, colwidths = colwidths,
+                                        rep_cols = rep_cols, verbose = verbose)
+
+    list(pag_row_indices = pag_row_indices,
+         pag_col_indices = pag_col_indices)
+}
+
+#' @rdname paginate_indices
+#' @export
+paginate_to_mpfs <- function(obj,
                      page_type = "letter",
                      font_family = "Courier",
                      font_size = 12,
@@ -638,35 +796,10 @@ paginate <- function(obj,
                      rep_cols = num_rep_cols(obj),
                      verbose = FALSE) {
 
-
-    ## order is annoying here, since we won't actually need the mpf if
-    ## we run into forced pagination, but life is short and this should work fine.
-    mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size)
-    if(is.null(colwidths))
-        colwidths <- propose_column_widths(mpf)
-
-
-    if(is.null(pg_size_spec)) {
-        pg_size_spec <- calc_lcpp(page_type = page_type,
-                        font_family = font_family,
-                        font_size = font_size,
-                        lineheight = lineheight,
-                        landscape = landscape,
-                        pg_width = pg_width,
-                        pg_height = pg_height,
-                        margins = margins,
-                        lpp = lpp,
-                        cpp = cpp,
-                        tf_wrap = tf_wrap,
-                        max_width = max_width,
-                        colwidths = colwidths,
-                        inset = table_inset(mpf))
-    }
-
     ## this MUST alsways return a list, inluding list(obj) when
     ## no forced pagination is needed! otherwise stuff breaks for things
     ## based on s3 classes that are lists underneath!!!
-    fpags <- do_mand_paginate(obj)
+    fpags <- do_forced_paginate(obj)
 
     ## if we have more than one forced "page",
     ## paginate each of them individually and return the result.
@@ -675,7 +808,7 @@ paginate <- function(obj,
     ## but we will if we ever allow force_paginate to do horiz
     ## pagination.
     if(length(fpags) > 1) {
-        deep_pag <- lapply(fpags, paginate,
+        deep_pag <- lapply(fpags, paginate_to_mpfs,
                       pg_size_spec = pg_size_spec,
                       colwidths = colwidths,
                       min_siblings = min_siblings,
@@ -685,46 +818,40 @@ paginate <- function(obj,
     }
 
 
+    ## we run into forced pagination, but life is short and this should work fine.
+    mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size)
+    if(is.null(colwidths))
+        colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf)
+    mf_col_widths(mpf) <- colwidths
 
-    ## this wraps the cell contents AND shoves referential footnote
-    ## info into mf_rinfo(mpf)
-    mpf <- do_cell_fnotes_wrap(mpf, colwidths, max_width, tf_wrap = tf_wrap)
+    page_indices <- paginate_indices(obj = obj,
+                                     page_type = page_type,
+                                     font_family = font_family,
+                                     font_size = font_size,
+                                     lineheight = lineheight,
+                                     landscape = landscape,
+                                     pg_width = pg_width,
+                                     pg_height = pg_height,
+                                     margins = margins,
+                                     lpp = lpp,
+                                     cpp = cpp,
+                                     min_siblings = min_siblings,
+                                     nosplitin = nosplitin,
+                                     colwidths = colwidths,
+                                     tf_wrap = tf_wrap,
+                                     max_width = max_width,
+                                     rep_cols = rep_cols,
+                                     verbose = verbose)
 
-    pag_row_indices <- pag_indices_inner(pagdf= mf_rinfo(mpf),
-                                         rlpp = calc_rlpp(pg_size_spec, mpf, colwidths = colwidths, verbose = verbose),
-                                         verbose = verbose,
-                                         min_siblings = min_siblings,
-                                         nosplitin = nosplitin)
-
-    pagmats <- lapply(pag_row_indices, function(ii) {
+    pagmats <- lapply(page_indices$pag_row_indices, function(ii) {
         mpf_subset_rows(mpf, ii)
     })
 
-
-    pag_col_indices <- vert_pag_indices(mpf, cpp = pg_size_spec$cpp, colwidths = colwidths,
-                                        rep_cols = rep_cols, verbose = verbose)
-
+    ## these chunks now carry around their (correctly subset) col widths...
     res <- lapply(pagmats, function(matii) {
-        lapply(pag_col_indices, function(jj) {
+        lapply(page_indices$pag_col_indices, function(jj) {
             mpf_subset_cols(matii, jj)
         })
     })
     unlist(res, recursive = FALSE)
-}
-
-infer_colpag_df <- function(mf) {
-    stopifnot(is(mf, "MatrixPrintForm"))
-    col_indices <- seq_len(ncol(mf))
-    col_nms <- paste0("col", col_indices)
-    propwidths <- propose_column_widths(mf)
-    rws <- lapply(col_indices,
-                  function(i) {
-        pagdfrow(nm = col_nms[i],
-                 lab = col_nms[i],
-                 rnum = i,
-                 pth = list(col_nms[i]),
-                 extent = propwidths[i+1],
-                 rclass = "column")
-    })
-    do.call(rbind.data.frame, rws)
 }

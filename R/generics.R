@@ -1,3 +1,9 @@
+### This file defines the generics which make up the interface formatters offers.
+### Defining methods for these generics for a new table-like class should be fully
+### sufficient for hooking that class up to the formatters pagination and rendering
+### machinery.
+
+
 #' @import methods
 #' @include matrix_form.R
 
@@ -532,7 +538,7 @@ setMethod(
 #' necessary to locate such page breaks, and the `do_forced_pag`
 #' method is expected to fully perform those paginations.
 #'
-#' @param obj The object to be paginated. 
+#' @param obj The object to be paginated.
 #'
 #' The `ANY` method simply returns a list of length one, containing
 #' `obj`.
@@ -540,9 +546,33 @@ setMethod(
 #' @return a list of subobjects, which will be further paginated
 #' by the standard pagination algorithm.
 #'
-#' 
+#'
 #' @export
-setGeneric("do_forced_pag", function(obj) standardGeneric("do_forced_pag"))
+setGeneric("do_forced_paginate", function(obj) standardGeneric("do_forced_paginate"))
 
 #' @export
-setMethod("do_forced_pag", "ANY", function(obj) list(obj))
+#' @rdname do_forced_paginate
+setMethod("do_forced_paginate", "ANY", function(obj) list(obj))
+
+#' Number of repeated columns
+#'
+#' When called on a table-like object using the formatters framework,
+#' this method should return the number of columns which are mandatorily
+#' repeated after each horizontal pagination.
+#'
+#' Absent a class-specific method, this function returns 0, indicating
+#' no always-repeated columns.
+#'
+#' @param obj ANY. A table-like object.
+#' @note This number \emph{does not include row labels}, the repetition
+#' of which is handled separately.
+#'
+#' @return an integer.
+#' @export
+#' @examples
+#' mpf <- basic_matrix_form(mtcars)
+#' num_rep_cols(mpf)
+setGeneric("num_rep_cols", function(obj) standardGeneric("num_rep_cols"))
+#' @export
+#' @rdname num_rep_cols
+setMethod("num_rep_cols", "ANY", function(obj) 0L)

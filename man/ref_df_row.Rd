@@ -20,6 +20,8 @@ ref_df_row(
 
 \item{col_path}{character. column path (\code{NA_character_} for none)}
 
+\item{row}{integer(1). Integer position of the row.}
+
 \item{col}{integer(1). Integer position of the column.}
 
 \item{symbol}{character(1). Symbol for the reference. \code{NA_character_} to use the \code{ref_index} automatically.}

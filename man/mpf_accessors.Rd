@@ -28,6 +28,7 @@
 \alias{mf_ncol}
 \alias{mf_ncol<-}
 \alias{mpf_has_rlabels}
+\alias{mf_has_rlabels}
 \title{Setters and Getters for aspects of MatrixPrintForm Objects}
 \usage{
 mf_strings(mf)
@@ -83,6 +84,8 @@ mf_ncol(mf)
 mf_ncol(mf) <- value
 
 mpf_has_rlabels(mf)
+
+mf_has_rlabels(mf)
 }
 \arguments{
 \item{mf}{MatrixPrintForm(1). A MatrixPrintForm object}

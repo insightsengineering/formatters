@@ -69,8 +69,6 @@ after pagination.}
 
 \item{trailing_sep}{character(1). The string to used as a separator below this row during printing (or
 \code{NA_character_} for no separator).}
-
-\item{ref_df}{data.frame or NULL. If specified, a data.frame with symbol and message columns.}
 }
 \value{
 a single row data.frame with the columns appropriate for a pagination info data frame.

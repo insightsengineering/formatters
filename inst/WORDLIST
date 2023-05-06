@@ -41,6 +41,7 @@ hsep
 htmltools
 https
 huxtable
+ie
 IEC
 ifnotlen
 insightsengineering
@@ -53,6 +54,7 @@ len
 lpi
 LPP
 lpp
+mandatorily
 MatrixPrintForm
 mf
 MPF
@@ -63,6 +65,7 @@ nchar
 ncol
 nesttemplate
 nlines
+num
 padstr
 pag
 pagdf

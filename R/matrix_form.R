@@ -152,6 +152,8 @@ disp_from_spans <- function(spans) {
 #' @param col_gap numeric(1). Space (in characters) between columns
 #' @param table_inset numeric(1). Table inset. See
 #' \code{\link{table_inset}}
+#' @param colwidths numeric. NULL, or a vector of column rendering widths.
+#'     if non-NULL, must have length equal to `ncol(strings)`
 #' @param indent_size numeric(1). Number of spaces to be used per level of indent (if supported by
 #' the relevant method). Defaults to 2.
 #' @export
@@ -204,6 +206,7 @@ MatrixPrintForm <- function(strings = NULL,
                             prov_footer = character(),
                             col_gap = 3,
                             table_inset = 0L,
+                            colwidths = NULL,
                             indent_size = 2) {
     display <- disp_from_spans(spans)
 
@@ -227,7 +230,8 @@ MatrixPrintForm <- function(strings = NULL,
       col_gap = col_gap,
       table_inset = as.integer(table_inset),
       has_topleft = has_topleft,
-      indent_size = indent_size
+      indent_size = indent_size,
+      col_widths = colwidths
     ),
     nrow_header = nrow_header,
     ncols = ncs,
@@ -241,6 +245,9 @@ MatrixPrintForm <- function(strings = NULL,
   }
   ret$ref_fnote_df <- mform_build_refdf(ret)
   ret <- shove_refdf_into_rowinfo(ret)
+  if(is.null(colwidths))
+    colwidths <- propose_column_widths(ret)
+  mf_col_widths(ret) <- colwidths
   ret
 }
 
@@ -250,6 +257,7 @@ MatrixPrintForm <- function(strings = NULL,
 #' @inheritParams nlines
 #' @param row_path character. row path (`NA_character_` for none)
 #' @param col_path character. column path (`NA_character_` for none)
+#' @param row integer(1). Integer position of the row.
 #' @param col integer(1). Integer position of the column.
 #' @param symbol character(1). Symbol for the reference. `NA_character_` to use the `ref_index` automatically.
 #' @param ref_index integer(1). The index of the footnote, used for ordering even when symbol is not NA
@@ -283,8 +291,8 @@ infer_ref_info <- function(mform, colspace_only) {
     else
         idx <- seq_len(nrow(mf_strings(mform)))
 
-    ## this is synonymous with having row labels
-    hastl <- mf_has_topleft(mform)
+
+    hasrlbs <- mf_has_rlabels(mform)
 
     strs <- mf_strings(mform)[idx,]
 
@@ -308,7 +316,7 @@ infer_ref_info <- function(mform, colspace_only) {
     row_index <- as.vector(t(do.call(cbind, replicate(ncol(strs),
                                                       list(mf_lgrouping(mform)[idx] - mf_nlheader(mform))))))[keepem]
     row_index[row_index < 1] <- NA_integer_
-    c_torep <- if(hastl) c(NA_integer_, seq(1, ncol(strs) - 1)) else seq_len(ncol(strs))
+    c_torep <- if(hasrlbs) c(NA_integer_, seq(1, ncol(strs) - 1)) else seq_len(ncol(strs))
     col_index <- rep(c_torep, nrow(strs))[keepem]
 
 
@@ -439,6 +447,18 @@ mf_col_paths <- function(mf) {
         as.list(paste0("col", seq_len(nrow(mf_strings(mf)) - mf_has_topleft(mf))))
 }
 
+
+mf_col_widths <- function(mf) {
+    mf$col_widths
+}
+
+`mf_col_widths<-` <- function(mf, value) {
+    if(!is.null(value) && length(value) != NCOL(mf_strings(mf)))
+        stop("Number of column widths (", length(value), ") does not match ",
+             "number of columns in strings matrix (", NCOL(mf_strings(mf)), ").")
+    mf$col_widths <- value
+    mf
+}
 
 mf_fnote_df <- function(mf) {
     mf$ref_fnote_df
@@ -574,7 +594,11 @@ update_mf_ref_nlines <- function(mform, max_width) {
 #' @export
 #' @rdname mpf_accessors
 `mf_cinfo<-` <- function(mf, value) {
-  .chknrow_and_replace(mf, value, component = "col_info", noheader = TRUE)
+    if(NROW(value) > 0 && NROW(value) != ncol(mf))
+        stop("Number of rows in new cinfo (", NROW(value), ") does not match ",
+             "number of columns (", ncol(mf), ")")
+    mf$col_info <- value
+    mf
 }
 
 
@@ -627,7 +651,14 @@ setMethod(
 
 #' @export
 #' @rdname mpf_accessors
-mpf_has_rlabels <- function(mf) ncol(mf$strings) > ncol(mf)
+mpf_has_rlabels <- function(mf) {
+    .Deprecated("mf_has_rlabels")
+    mf_has_rlabels(mf)
+}
+
+#' @export
+#' @rdname mpf_accessors
+mf_has_rlabels <- function(mf) ncol(mf$strings) > ncol(mf)
 
 #' Create spoof matrix form from a data.frame
 #'
@@ -716,7 +747,10 @@ map_to_new <- function(old, map) {
 
 reconstruct_basic_fnote_list <- function(mf) {
     refdf <- mf_fnote_df(mf)
-    paste0("{", refdf$symbol, "} - ", refdf$msg)
+    if (NROW(refdf) > 0)
+        paste0("{", refdf$symbol, "} - ", refdf$msg)
+    else
+        NULL
 }
 
 
@@ -744,14 +778,14 @@ fix_fnote_df <- function(df) {
         i_mat <- c(seq_len(ncolrows), which(mf_lgrouping(mf) %in% (i + ncolrows)))
         j_mat <- seq_len(ncol(mf_strings(mf)))
     } else {
-        nlabcol <- as.integer(mf_has_topleft(mf))
+        nlabcol <- as.integer(mf_has_rlabels(mf))
         i_mat <- seq_len(nrow(mf_strings(mf)))
         j_mat <- c(seq_len(nlabcol), i + nlabcol)
     }
 
-    mf_lgrouping(mf) <- as.integer(as.factor(mf_lgrouping(mf)[i_mat]))
-    mf_strings(mf) <- mf_strings(mf)[i_mat, j_mat, drop = FALSE]
 
+    mf_strings(mf) <- mf_strings(mf)[i_mat, j_mat, drop = FALSE]
+    mf_lgrouping(mf) <- as.integer(as.factor(mf_lgrouping(mf)[i_mat]))
     if(!row)
         newspans <- truncate_spans(mf_spans(mf), j_mat) #'i' is the columns here, b/c row is FALSE
     else
@@ -760,10 +794,12 @@ fix_fnote_df <- function(df) {
     mf_formats(mf) <- mf_formats(mf)[i_mat, j_mat, drop = FALSE]
 
     mf_aligns(mf) <- mf_aligns(mf)[i_mat, j_mat, drop = FALSE]
-    if(!row)
+    if(!row) {
         mf_ncol(mf) <- length(i)
+        if(!is.null(mf_col_widths(mf)))
+            mf_col_widths(mf) <- mf_col_widths(mf)[j_mat]
+    }
     mf
-
 }
 
 ## ugh. spans are **way** more of a pain than I expected x.x
