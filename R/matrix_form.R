@@ -346,7 +346,9 @@ infer_ref_info <- function(mform, colspace_only) {
 mform_build_refdf <- function(mform) {
     rdf <- mf_rinfo(mform)
     cref_rows <- infer_ref_info(mform, colspace_only = TRUE)
-    if(!is.null(rdf$ref_info_df)) {
+    ## this will recheck sometimes but its safer and shouldn't
+    ## be too prohibitively costly
+    if(NROW(rdf$ref_info_df) > 0 && sum(sapply(rdf$ref_info_df, NROW)) > 0) {
         cref_rows <- infer_ref_info(mform, colspace_only = TRUE)
         rref_rows <- rdf$ref_info_df
     } else {
@@ -473,6 +475,9 @@ mf_fnote_df <- function(mf) {
 
 
 splice_fnote_info_in <- function(df, refdf, row = TRUE) {
+    if(NROW(df) == 0)
+        return(df)
+
     colnm <- ifelse(row, "row", "col")
     refdf <- refdf[!is.na(refdf[[colnm]]),]
 
@@ -644,6 +649,9 @@ mf_ncol <- function(mf) attr(mf, "ncols", exact = TRUE)
     mf
 }
 
+#' @param x MatrixPrintForm. The object.
+#' @export
+#' @rdname mpf_accessors
 setMethod(
   "ncol", "MatrixPrintForm",
   function(x) mf_ncol(x)
@@ -747,10 +755,10 @@ map_to_new <- function(old, map) {
 
 reconstruct_basic_fnote_list <- function(mf) {
     refdf <- mf_fnote_df(mf)
-    if (NROW(refdf) > 0)
-        paste0("{", refdf$symbol, "} - ", refdf$msg)
-    else
-        NULL
+    if(NROW(refdf) == 0)
+        return(NULL)
+    refdf <- refdf[!duplicated(refdf$symbol),]
+    paste0("{", refdf$symbol, "} - ", refdf$msg)
 }
 
 
@@ -877,6 +885,9 @@ mpf_subset_cols <- function(mf, j) {
 #    j_mat <- c(if(mf_has_topleft(mf)) seq_len(nlabcol), j + nlabcol)
     map <- data.frame(old_idx = j, new_idx = order(j))
 
+    ## this has to happen before the remap inher
+    refdf <- mf_fnote_df(mf)
+
     mf <- .mf_subset_core_mats(mf, j, row = FALSE)
 
 
@@ -889,7 +900,7 @@ mpf_subset_cols <- function(mf, j) {
     ##     mf_cinfo(mf) <- mf
     ## }
 
-    refdf <- mf_fnote_df(mf)
+
 
     keep <- is.na(refdf$col) | refdf$col %in% j
     refdf <- refdf[keep, , drop = FALSE]
@@ -897,6 +908,7 @@ mpf_subset_cols <- function(mf, j) {
     refdf$col <- map_to_new(refdf$col, map)
     mf_fnote_df(mf) <- refdf
     mf <- shove_refdf_into_rowinfo(mf)
+    mf_rfnotes(mf) <- reconstruct_basic_fnote_list(mf)
     mf_ncol(mf) <- length(j)
     mf
 }

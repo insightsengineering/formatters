@@ -33,8 +33,8 @@ are set directly.}
 be inverted  for landscape?  Defaults to  \code{FALSE}, ignored when
 \code{pg_width} and \code{pg_height} are set directly.}
 
-\item{margins}{numeric(4). Named numeric vector containing \code{'top'},
-\code{'bottom'}, \code{'left'}, and \code{'right'} margins in inches. Defaults
+\item{margins}{numeric(4). Named numeric vector containing \code{'bottom'},
+\code{'left'}, \code{'top'}, and \code{'right'} margins in inches. Defaults
 to \code{.5} inches for both vertical margins and \code{.75} for both
 horizontal margins.}
 

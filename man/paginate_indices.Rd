@@ -11,7 +11,7 @@ paginate_indices(
   obj,
   page_type = "letter",
   font_family = "Courier",
-  font_size = 12,
+  font_size = 8,
   lineheight = 1,
   landscape = FALSE,
   pg_width = NULL,
@@ -35,7 +35,7 @@ paginate_to_mpfs(
   obj,
   page_type = "letter",
   font_family = "Courier",
-  font_size = 12,
+  font_size = 8,
   lineheight = 1,
   landscape = FALSE,
   pg_width = NULL,
@@ -51,6 +51,7 @@ paginate_to_mpfs(
   indent_size = 2,
   pg_size_spec = NULL,
   rep_cols = num_rep_cols(obj),
+  col_gap = 2,
   verbose = FALSE
 )
 }
@@ -78,8 +79,8 @@ be inverted  for landscape?  Defaults to  \code{FALSE}, ignored when
 
 \item{pg_height}{numeric(1). Page height in inches.}
 
-\item{margins}{numeric(4). Named numeric vector containing \code{'top'},
-\code{'bottom'}, \code{'left'}, and \code{'right'} margins in inches. Defaults
+\item{margins}{numeric(4). Named numeric vector containing \code{'bottom'},
+\code{'left'}, \code{'top'}, and \code{'right'} margins in inches. Defaults
 to \code{.5} inches for both vertical margins and \code{.75} for both
 horizontal margins.}
 

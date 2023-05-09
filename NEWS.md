@@ -1,4 +1,10 @@
 ## formatters 0.4.1.9001
+ * font_size is now 12 across the board, whereas before it was inconsistent between 8 and 12
+ * margins are now correctly interpreted as inches when specified (including the default)
+ * new `export_as_txt` function which can operate on any object with an applicable `matrix_form` method (including pagination)
+ * new `paginate_indices` and `paginate_to_mpfs` functions
+ * `MatrixPrintForm` objects now track referential footnote information much more carefully than before
+ * `MatrixPrintForm` objects will infer detail referential footnotes information from their `strings` element for backwards compatibility
  * fix to test that failed only on old windows CRAN machine due to imperfect UTF support there.
  * Added `hexSticker` logo.
 

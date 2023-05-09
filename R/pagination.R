@@ -192,7 +192,7 @@ valid_pag <- function(pagdf,
   rowlines <- sum(pagdf[start:guess, "self_extent"])
 
 
-  reflines <- calc_ref_nlines(pagdf[start:guess,])
+  reflines <- if(row) calc_ref_nlines(pagdf[start:guess,]) else 0L
 #  reflines <- sum(pagdf[start:guess, "nreflines"])
   rowlines <- sum(pagdf[start:guess, "self_extent"]) - reflines ## self extent includes reflines
   ## self extent does ***not*** currently include trailing sep
@@ -206,8 +206,8 @@ valid_pag <- function(pagdf,
     if (verbose) {
       message(sprintf(
         "\t....................... FAIL: %s take up too much space (%d %s)",
-        ifelse(row, "rows", "columns"), rowlines + rep_ext,
-        ifelse(row, "lines", "characters")
+        ifelse(row, "rows", "columns"), rowlines + rep_ext, # nocov
+        ifelse(row, "lines", "characters") # nocov
       ))
     }
     return(FALSE)
@@ -524,6 +524,7 @@ page_size_spec <- function(lpp, cpp, max_width) {
 }
 
 
+
 calc_lcpp <- function(page_type = NULL,
                       landscape = FALSE,
                       pg_width = page_dim(page_type)[if(landscape) 2 else 1],
@@ -535,34 +536,56 @@ calc_lcpp <- function(page_type = NULL,
                       tf_wrap = TRUE,
                       max_width = NULL,
                       lineheight = 1,
-                      margins = c(top = .5, bottom = .5, left = .75, right = .75),
+                      margins = c(bottom = .5, left = .75, top = .5, right = .75),
                       colwidths,
                       col_gap,
                       inset
                       ) {
 
-    gp_plot <- gpar(fontsize = font_size, fontfamily = font_family,lineheight = lineheight)
+    ## handled in page_lcpp where it belongs
+    ## if(!is.null(names(margins)))
+    ##     margins <- margins[marg_order]
+    ## else
+    ##     names(margins) <- marg_order
+    ## if(any(is.na(names(margins))))
+    ##     stop("margins argument appears to have had names other than 'bottom' 'left' 'top' and 'right'")
+    ## if(is.null(page_type))
+    ##     page_type = "letter"
+    ## pg_width <- pg_width %||% page_dim(page_type)[if(landscape) 2 else 1]
+    ## pg_height <- pg_height %||% page_dim(page_type)[if(landscape) 1 else 2]
 
-    pdf(file = tempfile(), width = pg_width, height = pg_height)
-    on.exit(dev.off())
-    grid.newpage()
-    pushViewport(plotViewport(margins = margins, gp = gp_plot))
+    ## gp_plot <- gpar(fontsize = font_size, fontfamily = font_family,lineheight = lineheight)
 
-    cur_gpar <-  get.gpar()
-    if(is.null(page_type) && is.null(pg_width) && is.null(pg_height) &&
-       (is.null(cpp) || is.null(lpp))) {
-        page_type <- "letter"
-        pg_width <- page_dim(page_type)[if(landscape) 2 else 1]
-        pg_height <- page_dim(page_type)[if(landscape) 1 else 2]
-    }
+    ## pdf(file = tempfile(), width = pg_width, height = pg_height)
+    ## on.exit(dev.off())
+    ## grid.newpage()
+    ## ## margins is documented as being in inches, but the margins
+    ## ## argument to plotViewport expect it in the form par(mar) expects
+    ## ## which is lines!!!
+    ## margs <- unit(margins, "inches")
+
+    ## pushViewport(plotViewport(margins = convertUnit(margs, unitTo = "lines"), #margins,
+    ##                           gp = gp_plot))
+
+    ## cur_gpar <-  get.gpar()
+    pg_lcpp <- page_lcpp(page_type = page_type,
+                      landscape = landscape,
+                      font_family = font_family,
+                      font_size = font_size,
+                      lineheight = lineheight,
+                      margins = margins,
+                      pg_width = pg_width,
+                      pg_height = pg_height)
 
     if (is.null(lpp)) {
-        lpp <- floor(convertHeight(unit(1, "npc"), "lines", valueOnly = TRUE) /
-                     (cur_gpar$cex * cur_gpar$lineheight))
+        lpp <- pg_lcpp$lpp
+        ## floor(convertHeight(unit(1, "npc"), "lines", valueOnly = TRUE) /
+        ##              (cur_gpar$cex * cur_gpar$lineheight))
     }
     if(is.null(cpp)) {
-        cpp <- floor(convertWidth(unit(1, "npc"), "inches", valueOnly = TRUE) *
-                     font_lcpi(font_family, font_size, cur_gpar$lineheight)$cpi)
+        cpp <- pg_lcpp$cpp
+        ## floor(convertWidth(unit(1, "npc"), "inches", valueOnly = TRUE) *
+        ##              font_lcpi(font_family, font_size, cur_gpar$lineheight)$cpi)
     }
     if(tf_wrap && is.null(max_width))
         max_width <- cpp
@@ -581,13 +604,16 @@ calc_rlpp <- function(pg_size_spec, mf, colwidths,  verbose) {
     dh <- divider_height(mf)
     if (any(nzchar(all_titles(mf)))) {
         ## +1 is for blank line between subtitles and divider
+        ## dh is for divider line **between subtitles and column labels**
+        ## other divider line is accounted for in cinfo_lines
         tlines <- sum(nlines(all_titles(mf), colwidths = colwidths,
-                             max_width = max_width)) + divider_height(mf) + 1L
+                             max_width = max_width)) + dh + 1L
     } else {
         tlines <- 0
     }
 
-    cinfo_lines <- mf_nlheader(mf)
+    ## dh for divider line between column labels and table body
+    cinfo_lines <- mf_nlheader(mf) + dh
 
     if(verbose)
         message("Determining lines required for header content: ",
@@ -596,13 +622,22 @@ calc_rlpp <- function(pg_size_spec, mf, colwidths,  verbose) {
     refdf <- mf_fnote_df(mf)
     cfn_df <- refdf[is.na(refdf$row) & is.na(refdf$col),]
 
-    flines <- nlines(main_footer(mf), colwidths = colwidths,
-                     max_width = max_width - table_inset(mf)) +
-        nlines(prov_footer(mf), colwidths = colwidths, max_width = max_width)
-    if(flines > 0) {
-        dl_contrib <- if(NROW(cfn_df) == 0) 0 else dh
-        flines <- flines + dl_contrib + 1L
-    }
+    flines <- 0L
+    mnfoot <- main_footer(mf)
+    if(length(mnfoot) && any(nzchar(mnfoot)))
+        flines <- nlines(mnfoot, colwidths = colwidths,
+                         max_width = max_width - table_inset(mf))
+    prfoot <- prov_footer(mf)
+    if(length(prfoot) && nzchar(prfoot))
+        flines <- flines + nlines(prov_footer(mf), colwidths = colwidths, max_width = max_width)
+    ## this time its for the divider between the footers and whatever is above them
+    ## (either table body or referential footnotes)
+    if(flines > 0)
+        flines <- flines + dh + 1L
+    ## this time its for the divider between the referential footnotes and
+    ## the table body IFF we have any, otherwise that divider+blanks pace doesn't get drawn
+    if(NROW(cfn_df) > 0)
+        flines <- flines + dh + 1L
 
     if(verbose)
         message("Determining lines required for footer content",
@@ -612,7 +647,7 @@ calc_rlpp <- function(pg_size_spec, mf, colwidths,  verbose) {
     ret <- lpp - flines - tlines - cinfo_lines
 
     if(verbose)
-        message("Lines per page available for tables rows: ", ret)
+        message("Lines per page available for tables rows: ", ret,  " (original: ", lpp, ")")
     ret
 }
 
@@ -674,7 +709,7 @@ splice_idx_lists <- function(lsts) {
 paginate_indices <- function(obj,
                      page_type = "letter",
                      font_family = "Courier",
-                     font_size = 12,
+                     font_size = 8,
                      lineheight = 1,
                      landscape = FALSE,
                      pg_width = NULL,
@@ -693,30 +728,50 @@ paginate_indices <- function(obj,
                      col_gap = 2,
                      verbose = FALSE) {
 
-    ## We can't support forced pagination here, but we can support calls to,
-    ## e.g., paginate_indices(do_forced_pag(tt))
-    if(is.list(obj) && !is.object(obj)) {
-        res <- lapply(obj, paginate_indices,
-                      page_type = page_type,
-                      font_family = font_family,
-                      font_size = font_size,
-                      lineheight = lineheight,
-                      landscape = landscape,
-                      pg_width = pg_width,
-                      pg_height = pg_height,
-                      margins = margins,
-                      lpp = lpp,
-                      cpp = cpp,
-                      tf_wrap = tf_wrap,
-                      max_width = max_width,
-                      colwidths = colwidths,
-                      min_siblings = min_siblings,
-                      nosplitin = nosplitin,
-                      col_gap = col_gap,
-                      ## not setting num_rep_cols here cause it wont' get it right
-                      verbose = verbose)
-        return(splice_idx_lists(res))
+
+    ## this MUST alsways return a list, inluding list(obj) when
+    ## no forced pagination is needed! otherwise stuff breaks for things
+    ## based on s3 classes that are lists underneath!!!
+    fpags <- do_forced_paginate(obj)
+
+    ## if we have more than one forced "page",
+    ## paginate each of them individually and return the result.
+    ## forced pagination is ***currently*** only vertical, so
+    ## we don't have to worry about divying up colwidths here,
+    ## but we will if we ever allow force_paginate to do horiz
+    ## pagination.
+    if(length(fpags) > 1) {
+        stop("forced pagination is required for this object (class: ", class(obj)[1],
+             ") this is not supported in paginate_indices. Use paginate_to_mpfs or call ",
+             "do_forced_paginate on your object and paginate each returned section separately.")
     }
+
+
+    ## I'm not sure this is worth doing.
+    ## ## We can't support forced pagination here, but we can support calls to,
+    ## ## e.g., paginate_indices(do_forced_pag(tt))
+    ## if(is.list(obj) && !is.object(obj)) {
+    ##     res <- lapply(obj, paginate_indices,
+    ##                   page_type = page_type,
+    ##                   font_family = font_family,
+    ##                   font_size = font_size,
+    ##                   lineheight = lineheight,
+    ##                   landscape = landscape,
+    ##                   pg_width = pg_width,
+    ##                   pg_height = pg_height,
+    ##                   margins = margins,
+    ##                   lpp = lpp,
+    ##                   cpp = cpp,
+    ##                   tf_wrap = tf_wrap,
+    ##                   max_width = max_width,
+    ##                   colwidths = colwidths,
+    ##                   min_siblings = min_siblings,
+    ##                   nosplitin = nosplitin,
+    ##                   col_gap = col_gap,
+    ##                   ## not setting num_rep_cols here cause it wont' get it right
+    ##                   verbose = verbose)
+    ##     return(splice_idx_lists(res))
+    ## }
      ## order is annoying here, since we won't actually need the mpf if
     ## we run into forced pagination, but life is short and this should work fine.
     mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size)
@@ -778,7 +833,7 @@ paginate_indices <- function(obj,
 paginate_to_mpfs <- function(obj,
                      page_type = "letter",
                      font_family = "Courier",
-                     font_size = 12,
+                     font_size = 8,
                      lineheight = 1,
                      landscape = FALSE,
                      pg_width = NULL,
@@ -794,8 +849,34 @@ paginate_to_mpfs <- function(obj,
                      indent_size = 2,
                      pg_size_spec = NULL,
                      rep_cols = num_rep_cols(obj),
+                     col_gap = 2,
                      verbose = FALSE) {
 
+    mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size)
+    if(is.null(colwidths))
+        colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf)
+    else
+        mf_col_widths(mpf) <- colwidths
+    mpf <- mpf_infer_cinfo(mpf, colwidths, rep_cols)
+
+
+    if(is.null(pg_size_spec)) {
+        pg_size_spec <- calc_lcpp(page_type = page_type,
+                        font_family = font_family,
+                        font_size = font_size,
+                        lineheight = lineheight,
+                        landscape = landscape,
+                        pg_width = pg_width,
+                        pg_height = pg_height,
+                        margins = margins,
+                        lpp = lpp,
+                        cpp = cpp,
+                        tf_wrap = tf_wrap,
+                        max_width = max_width,
+                        colwidths = colwidths,
+                        inset = table_inset(mpf),
+                        col_gap = col_gap)
+    }
     ## this MUST alsways return a list, inluding list(obj) when
     ## no forced pagination is needed! otherwise stuff breaks for things
     ## based on s3 classes that are lists underneath!!!
@@ -825,21 +906,22 @@ paginate_to_mpfs <- function(obj,
     mf_col_widths(mpf) <- colwidths
 
     page_indices <- paginate_indices(obj = obj,
-                                     page_type = page_type,
-                                     font_family = font_family,
-                                     font_size = font_size,
-                                     lineheight = lineheight,
-                                     landscape = landscape,
-                                     pg_width = pg_width,
-                                     pg_height = pg_height,
-                                     margins = margins,
-                                     lpp = lpp,
-                                     cpp = cpp,
+                                     ## page_type = page_type,
+                                     ## font_family = font_family,
+                                     ## font_size = font_size,
+                                     ## lineheight = lineheight,
+                                     ## landscape = landscape,
+                                     ## pg_width = pg_width,
+                                     ## pg_height = pg_height,
+                                     ## margins = margins,
+                                     pg_size_spec = pg_size_spec,
+                                     ## lpp = lpp,
+                                     ## cpp = cpp,
                                      min_siblings = min_siblings,
                                      nosplitin = nosplitin,
                                      colwidths = colwidths,
                                      tf_wrap = tf_wrap,
-                                     max_width = max_width,
+                                     ## max_width = max_width,
                                      rep_cols = rep_cols,
                                      verbose = verbose)
 

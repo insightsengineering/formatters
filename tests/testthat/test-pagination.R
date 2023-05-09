@@ -1,6 +1,4 @@
 
-
-
 ## https://github.com/insightsengineering/formatters/issues/18
 dfmf <- basic_matrix_form(mtcars)
 expect_identical(main_footer(dfmf), "")
@@ -27,13 +25,21 @@ expect_error(pag_indices_inner(mf_rinfo(dfmf),
                                 verbose = TRUE))
 
 
+
 ## silly coverage for bizarre (/impossible) error cases
 dfmf_b <- basic_matrix_form(mtcars,parent_path = c("root_split", "level1"))
-expect_error(pag_indices_inner(mf_rinfo(dfmf_b),
-                               8,
+## expect_error(pag_indices_inner(mf_rinfo(dfmf_b),
+##                                8,
+##                                min_siblings = 0,
+##                                nosplitin = "root_split",
+##                                verbose = TRUE))
+expect_error(paginate_to_mpfs(dfmf_b,
+                               lpp = 8 + 2,
                                min_siblings = 0,
                                nosplitin = "root_split",
-                               verbose = TRUE))
+                              verbose = TRUE),
+             "Unable to find any valid pagination")
+
 expect_error({mf_rinfo(dfmf) <- mtcars[1:3,]})
 dfmf_sillytopleft <- dfmf
 ## XXXX no setter for this so we're doing something terrible. sadface
@@ -45,10 +51,16 @@ expect_error(formatters:::mform_handle_newlines(dfmf_sillytopleft))
 
 dfmf_cont <- dfmf
 mf_rinfo(dfmf_cont)$node_class <- "ContentRow"
-expect_error(pag_indices_inner(mf_rinfo(dfmf_cont),
-                               8,
+## expect_error(pag_indices_inner(mf_rinfo(dfmf_cont),
+##                                8,
+##                                min_siblings = 0,
+##                                verbose = TRUE))
+
+expect_error(paginate_to_mpfs(dfmf_cont,
+                               lpp = 8 + 2,
                                min_siblings = 0,
-                               verbose = TRUE))
+                              verbose = TRUE),
+             "Unable to find any valid pagination")
 
 ## https://github.com/insightsengineering/rtables/issues/318
 dfmf2 <- dfmf
@@ -87,30 +99,54 @@ expect_identical(
   mf_rinfo(df2mf)[, -which(names(mf_rinfo(df2mf)) == "ref_info_df")]
 )
 
-hpaginds <- pag_indices_inner(mf_rinfo(df2mf),
-  8,
-  min_siblings = 0,
-  verbose = TRUE
-)
+## hpaginds <- pag_indices_inner(mf_rinfo(df2mf),
+##   8,
+##   min_siblings = 0,
+##   verbose = TRUE
+## )
 
-expect_true(all(lengths(hpaginds) == 2L))
+## expect_true(all(lengths(hpaginds) == 2L))
+
+hpagmpfs <- paginate_to_mpfs(df2mf,
+                             lpp = 8 + 2,
+                             min_siblings = 0,
+                             verbose = TRUE)
+expect_true(all(sapply(hpagmpfs,
+                       function(x) max(mf_lgrouping(x)) - mf_nrheader(x)) == 2L))
 
 
+## vpaginds <- vert_pag_indices(df2mf, cpp = 40, verbose = TRUE)
+
+## expect_identical(
+##   lengths(vpaginds),
+##   c(3L, 3L, 3L, 2L, 1L)
+## )
+
+vpagmpfs <- paginate_to_mpfs(df2mf,
+                             cpp = 40,
+                             verbose = TRUE,
+                             pg_height = 100000)
+
+expect_identical(sapply(vpagmpfs, ncol),
+                 c(3L, 3L, 3L, 2L, 1L))
 
 
-vpaginds <- vert_pag_indices(df2mf, cpp = 40, verbose = TRUE)
+vpagmpfs2 <- paginate_to_mpfs(df2mf,
+                             cpp = 39,
+                             verbose = TRUE,
+                             pg_height = 100000)
 
 expect_identical(
-  lengths(vpaginds),
-  c(3L, 3L, 3L, 2L, 1L)
+  sapply(vpagmpfs2, ncol),
+  c(2L, 2L, 2L, 3L, 2L, 1L)
 )
 
 vpaginds2 <- vert_pag_indices(df2mf, cpp = 39, verbose = TRUE)
 
-expect_identical(
-  lengths(vpaginds2),
-  c(2L, 2L, 2L, 3L, 2L, 1L)
-)
+## expect_identical(
+##   lengths(vpaginds2),
+##   c(2L, 2L, 2L, 3L, 2L, 1L)
+## )
 
 vpaginds3 <- vert_pag_indices(df2mf, cpp = 44, verbose = TRUE, rep_cols = 1L)
 
@@ -176,31 +212,73 @@ expect_identical(nlines(NULL), 0L)
 expect_identical(nlines("hi\nthere"), 2L)
 
 
+
 ## coverage for handling of ref footnotes in pagination machinery
+## also covered partially in closely related export test
 
-## XXX this test is not longer relevant and needs to be rewritten
-## the hack of manually altering nreflines is no longer relevant
-## This does beg the question of why self_extent was including nreflines
-## we probably need to change that too!!!
+dfmf <- basic_matrix_form(mtcars)
+main_title(dfmf) <- "main title"
+main_footer(dfmf) <- "main footer"
+prov_footer(dfmf) <- "prov footer"
+subtitles(dfmf) <- c("sub", "titles")
 
-## df4 <- mtcars
-## df4mf <- basic_matrix_form(df4)
-## rinfo4 <- mf_rinfo(df4mf)
-## ## self_extent is expected to include nreflines!!!!
-## rinfo4$nreflines <- 1
-## rinfo4$self_extent <- rinfo4$self_extent + 1
-## mf_rinfo(df4mf) <- rinfo4
-## pags4inds <- pag_indices_inner(mf_rinfo(df4mf),
-##   8,
-##   min_siblings = 0,
-##   verbose = TRUE
-## )
+dfmf$strings[2, 2] <- paste(dfmf$strings[2, 2, drop = TRUE], "{*}")
+dfmf$strings[3, 4] <- paste(dfmf$strings[3, 4, drop = TRUE], "{1}")
+dfmf$strings[6, 3] <- paste(dfmf$strings[6, 3, drop = TRUE], "{2}")
+dfmf$strings[10, 1:2] <- paste(dfmf$strings[10, 1:2], "{*}")
+dfmf$strings[11, 4:5] <- paste(dfmf$strings[11, 4:5], "{*}")
 
-## ## should be 3 because each row now takes 1 (the row) + 1(the footnote) lines
-## ## plus 2 lines for the divider + empty line for having referential footnotes at all
+mf_rfnotes(dfmf) <- c("{1} - fnote 1 is the coolest",
+                      "{2} - no way, fnote 2 forever",
+                      "{*} - symbooollllssss")
 
-## ## NB that +2 will change if we change the behavior re dividers and referential footnotes!
-## expect_equal(length(pags4inds[[1]]),
-##              3)
-## expect_equal(length(tail(pags4inds, 1)[[1]]),
-##             2)
+formatters:::mf_fnote_df(dfmf) <- formatters:::mform_build_refdf(dfmf)
+mf_rfnotes(dfmf) <- formatters:::reconstruct_basic_fnote_list(dfmf)
+formatters:::mf_col_widths(dfmf) <- propose_column_widths(dfmf)
+
+expect_error(paginate_indices(dfmf, lpp = 15, cpp = 10000, verbose = TRUE),
+             "Unable to find any valid pagination")
+
+
+expect_error(paginate_indices(dfmf, lpp = 2, cpp = 10000, verbose = TRUE),
+             "Lines of repeated context .* larger than specified lines per page")
+
+
+
+
+## coverage for forced pagination support
+dfmf2 <- structure(dfmf, class = c("fakeclass", class(dfmf)))
+
+mf_subset_rows <- formatters:::mpf_subset_rows
+setOldClass(class(dfmf2))
+setMethod("do_forced_paginate",
+          "fakeclass",
+          function(obj) {
+    pt1 <- mf_subset_rows(obj, 1)
+    class(pt1) <- setdiff(class(obj), "fakeclass")
+    pt2 <- mf_subset_rows(obj, 2:32)
+    class(pt2) <- setdiff(class(obj), "fakeclass")
+    list(pt1, pt2)
+})
+
+res <- paginate_to_mpfs(dfmf2, pg_width = 4, pg_height = 4,
+                        margins = rep(0, 4),
+                        min_siblings = 0, verbose = TRUE)
+
+mf_nrow <- function(mf) max(mf_lgrouping(mf)) - mf_nrheader(mf)
+
+
+## first vertical pagination is "forced" after row 1,
+## 3 horizontal paginations
+expect_true(all(vapply(res[1:3], mf_nrow, 1) == 1))
+expect_true(all(vapply(res[4:6], mf_nrow, 1) == 23))
+expect_true(all(vapply(res[7:9], mf_nrow, 1) == 8))
+expect_identical(length(res), 9L)
+
+
+expect_error(paginate_indices(dfmf2),
+             "forced pagination is required for this object")
+
+
+expect_identical(formatters:::calc_lcpp(),
+                 formatters:::calc_lcpp(page_type = "letter"))

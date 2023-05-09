@@ -45,7 +45,7 @@ export_as_txt <- function(x,
                           font_size = 8,  # grid parameters
                           lineheight = 1L,
                           margins = c(top = .5, bottom = .5, left = .75, right = .75),
-                          paginate = .need_pag(page_type, pg_width, pg_height, lpp, cpp),
+                          paginate = TRUE,
                           cpp = NULL,
                           lpp = NULL,
                           ...,

@@ -27,6 +27,7 @@
 \alias{mf_colgap<-}
 \alias{mf_ncol}
 \alias{mf_ncol<-}
+\alias{ncol,MatrixPrintForm-method}
 \alias{mpf_has_rlabels}
 \alias{mf_has_rlabels}
 \title{Setters and Getters for aspects of MatrixPrintForm Objects}
@@ -83,6 +84,8 @@ mf_ncol(mf)
 
 mf_ncol(mf) <- value
 
+\S4method{ncol}{MatrixPrintForm}(x)
+
 mpf_has_rlabels(mf)
 
 mf_has_rlabels(mf)
@@ -91,6 +94,8 @@ mf_has_rlabels(mf)
 \item{mf}{MatrixPrintForm(1). A MatrixPrintForm object}
 
 \item{value}{ANY. The new value for the component in question.}
+
+\item{x}{MatrixPrintForm. The object.}
 }
 \value{
 The element of the MatrixPrintForm associated with the getter, or
