@@ -46,13 +46,13 @@ export_as_txt <- function(x,
                           lineheight = 1L,
                           margins = c(top = .5, bottom = .5, left = .75, right = .75),
                           paginate = TRUE,
-                          cpp = NULL,
-                          lpp = NULL,
+                          cpp = NA_integer_,
+                          lpp = NA_integer_,
                           ...,
                           hsep = default_hsep(),
                           indent_size = 2,
                           tf_wrap = paginate,
-                          max_width = cpp,
+                          max_width = NULL,
                           colwidths = NULL,
                           min_siblings = 2,
                           nosplitin = character(),
@@ -76,6 +76,7 @@ export_as_txt <- function(x,
                                   nosplitin = nosplitin,
                                   colwidths = colwidths,
                                   tf_wrap = tf_wrap,
+                                  max_width = max_width,
                                   indent_size = indent_size,
                                   verbose = verbose)
     } else {
@@ -85,7 +86,7 @@ export_as_txt <- function(x,
     }
     ## we dont' set widths here because we already but that info on mpf
     ## so its on each of the pages.
-    strings <- vapply(pages, toString, "", hsep = hsep)
+    strings <- vapply(pages, toString, "", hsep = hsep, tf_wrap = tf_wrap, max_width = max_width)
     res <- paste(strings, collapse = page_break)
 
     if(is.null(file))
@@ -368,3 +369,73 @@ mpf_to_rtf <- function(mpf,
 
 ##   ret
 ## }
+
+
+
+#' Export table to RTF
+#'
+#' Experimental export to the RTF format.
+#'
+#' @details RTF export occurs by via the following steps
+#'
+#' \itemize{
+#' \item{the table is paginated to the page size (Vertically and horizontally)}
+#' \item{Each separate page is converted to a MatrixPrintForm and from there to RTF-encoded text}
+#' \item{Separate rtfs text chunks are combined and written out as a single RTF file}
+#' }
+#'
+#' Conversion of `MatrixPrintForm` objects to RTF is done via [formatters::mpf_to_rtf()].
+#' @inheritParams export_as_txt
+#' @inheritParams toString
+#' @inheritParams grid::plotViewport
+#' @inheritParams paginate_to_mpfs
+#' @export
+
+export_as_rtf <- function(x,
+                      file = NULL,
+                      colwidths = propose_column_widths(matrix_form(x, TRUE)),
+                      page_type = "letter",
+                      pg_width = page_dim(page_type)[if(landscape) 2 else 1],
+                      pg_height = page_dim(page_type)[if(landscape) 1 else 2],
+                      landscape = FALSE,
+                      margins = c(bottom = .5, left = .75, top=.5, right = .75),
+                      font_size = 8,
+                      font_family = "Courier",
+                      ...) {
+    if(!requireNamespace("r2rtf"))
+        stop("RTF export requires the r2rtf package, please install it.")
+    if(is.null(names(margins)))
+        names(margins) <- marg_order
+
+    fullmf <- matrix_form(x)
+    req_ncols <- ncol(fullmf) + as.numeric(mf_has_rlabels(fullmf))
+    if(!is.null(colwidths) && length(colwidths) != req_ncols)
+        stop("non-null colwidths argument must have length ncol(x) (+ 1 if row labels are present) [",
+             req_ncols, "], got length ", length(colwidths))
+
+    true_width <- pg_width - sum(margins[c("left", "right")])
+    true_height <- pg_height - sum(margins[c("top", "bottom")])
+
+    mpfs <- paginate_to_mpfs(fullmf, font_family = font_family, font_size = font_size,
+                           pg_width = true_width,
+                           pg_height = true_height,
+                           margins = c(bottom = 0, left = 0, top = 0, right = 0),
+                           lineheight = 1.25,
+                           colwidths = colwidths,
+                           ...)
+
+    rtftxts <- lapply(mpfs, function(mf) r2rtf::rtf_encode(mpf_to_rtf(mf,
+                                                                       colwidths = mf_col_widths(mf),
+                                                                       page_type = page_type,
+                                                                       pg_width = pg_width,
+                                                                       pg_height = pg_height,
+                                                                       font_size = font_size,
+                                                                       margins = c(top = 0, left = 0, bottom = 0, right = 0))))
+    restxt <- paste(rtftxts[[1]]$start,
+                    paste(sapply(rtftxts, function(x) x$body), collapse = "\n{\\pard\\fs2\\par}\\page{\\pard\\fs2\\par}\n"),
+                    rtftxts[[1]]$end)
+    if(!is.null(file))
+        cat(restxt, file = file)
+    else
+        restxt
+}

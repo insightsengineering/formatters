@@ -85,6 +85,7 @@ reference:
     desc: Export into different object
     contents:
       - export_as_txt
+      - export_as_rtf
       - mpf_to_rtf
   - title: Miscellany
     desc: Other documented functions not interesting to end users

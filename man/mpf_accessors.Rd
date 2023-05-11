@@ -26,6 +26,7 @@
 \alias{mf_nrheader<-}
 \alias{mf_colgap<-}
 \alias{mf_ncol}
+\alias{mf_nrow}
 \alias{mf_ncol<-}
 \alias{ncol,MatrixPrintForm-method}
 \alias{mpf_has_rlabels}
@@ -81,6 +82,8 @@ mf_nrheader(mf) <- value
 mf_colgap(mf) <- value
 
 mf_ncol(mf)
+
+mf_nrow(mf)
 
 mf_ncol(mf) <- value
 

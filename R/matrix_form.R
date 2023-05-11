@@ -211,44 +211,46 @@ MatrixPrintForm <- function(strings = NULL,
     display <- disp_from_spans(spans)
 
 
-  ncs <- if (has_rowlabs) ncol(strings) - 1 else ncol(strings)
-  ret <- structure(
-    list(
-      strings = strings,
-      spans = spans,
-      aligns = aligns,
-      display = display,
-      formats = formats,
-      row_info = row_info,
-      line_grouping = line_grouping,
-      ref_footnotes = ref_fnotes,
-      main_title = main_title,
-      subtitles = subtitles,
-      page_titles = page_titles,
-      main_footer = main_footer,
-      prov_footer = prov_footer,
-      col_gap = col_gap,
-      table_inset = as.integer(table_inset),
-      has_topleft = has_topleft,
-      indent_size = indent_size,
-      col_widths = colwidths
-    ),
-    nrow_header = nrow_header,
-    ncols = ncs,
-    class = c("MatrixPrintForm", "list")
-  )
+    ncs <- if (has_rowlabs) ncol(strings) - 1 else ncol(strings)
+    ret <- structure(
+        list(
+            strings = strings,
+            spans = spans,
+            aligns = aligns,
+            display = display,
+            formats = formats,
+            row_info = row_info,
+            line_grouping = line_grouping,
+            ref_footnotes = ref_fnotes,
+            main_title = main_title,
+            subtitles = subtitles,
+            page_titles = page_titles,
+            main_footer = main_footer,
+            prov_footer = prov_footer,
+            col_gap = col_gap,
+            table_inset = as.integer(table_inset),
+            has_topleft = has_topleft,
+            indent_size = indent_size,
+            col_widths = colwidths
+        ),
+        nrow_header = nrow_header,
+        ncols = ncs,
+        class = c("MatrixPrintForm", "list")
+    )
 
 
-  ## .do_mat_expand(ret)
-  if (expand_newlines) {
-    ret <- mform_handle_newlines(ret)
-  }
-  ret$ref_fnote_df <- mform_build_refdf(ret)
-  ret <- shove_refdf_into_rowinfo(ret)
-  if(is.null(colwidths))
-    colwidths <- propose_column_widths(ret)
-  mf_col_widths(ret) <- colwidths
-  ret
+    ## .do_mat_expand(ret)
+    if (expand_newlines) {
+        ret <- mform_handle_newlines(ret)
+    }
+
+
+    ##  ret <- shove_refdf_into_rowinfo(ret)
+    if(is.null(colwidths))
+        colwidths <- propose_column_widths(ret)
+    mf_col_widths(ret) <- colwidths
+    ret <- mform_build_refdf(ret)
+    ret
 }
 
 
@@ -294,7 +296,7 @@ infer_ref_info <- function(mform, colspace_only) {
 
     hasrlbs <- mf_has_rlabels(mform)
 
-    strs <- mf_strings(mform)[idx,]
+    strs <- mf_strings(mform)[idx, , drop = FALSE]
 
     ## they're nested so \\2 is the inner one, without the brackets
     refs <- gsub("^[^{]*([{]([^}]+)[}]){0,1}$", "\\2", strs)
@@ -355,7 +357,8 @@ mform_build_refdf <- function(mform) {
         cref_rows <- infer_ref_info(mform, colspace_only = FALSE)
         rref_rows <- list()
     }
-    do.call(rbind.data.frame, c(list(cref_rows), rref_rows))
+    mf_fnote_df(mform) <- do.call(rbind.data.frame, c(list(cref_rows), rref_rows))
+    update_mf_nlines(mform, colwidths = mf_col_widths(mform), max_width = NULL)
 }
 
 
@@ -490,9 +493,53 @@ splice_fnote_info_in <- function(df, refdf, row = TRUE) {
 
 shove_refdf_into_rowinfo <- function(mform) {
     refdf <- mf_fnote_df(mform)
-
     rowinfo <- mf_rinfo(mform)
     mf_rinfo(mform) <- splice_fnote_info_in(rowinfo, refdf)
+    mform
+}
+
+update_mf_nlines <- function(mform, colwidths, max_width) {
+    mform <- update_mf_ref_nlines(mform, max_width = max_width)
+    mform <- update_mf_rinfo_extents(mform)
+
+    mform
+}
+
+update_mf_rinfo_extents <- function(mform) {
+    rinfo <- mf_rinfo(mform)
+    refdf_all <- mf_fnote_df(mform)
+    refdf_rows <- refdf_all[!is.na(refdf_all$row),]
+    if(NROW(rinfo) == 0)
+        return(mform)
+    lgrp <- mf_lgrouping(mform) - mf_nrheader(mform)
+    lgrp <- lgrp[lgrp > 0]
+    rf_nlines <- vapply(seq_len(max(lgrp)), function(ii) {
+
+        refdfii <- refdf_rows[refdf_rows$row == ii,]
+        refdfii <- refdfii[!duplicated(refdfii$symbol), ]
+        if(NROW(refdfii) == 0L)
+            return(0L)
+        sum(refdfii$nlines)
+    }, 1L)
+
+    raw_self_exts <- vapply(split(lgrp, lgrp), length, 0L)
+    stopifnot(length(raw_self_exts) == length(rf_nlines))
+    new_exts <- raw_self_exts + rf_nlines
+
+    mapdf <- data.frame(row_num = as.integer(names(new_exts)),
+                        raw_extent = raw_self_exts)
+    stopifnot(all(mapdf$row_num == rinfo$abs_rownumber))
+
+
+    new_par_exts <- vapply(rinfo$reprint_inds,
+                           function(idx) {
+        sum(0L, mapdf$raw_extent[mapdf$row_num %in% idx])
+    }, 1L)
+
+    rinfo$self_extent <- new_exts
+    rinfo$par_extent <- new_par_exts
+    rinfo$nreflines <- rf_nlines
+    mf_rinfo(mform) <- rinfo
     mform
 }
 
@@ -587,10 +634,10 @@ update_mf_ref_nlines <- function(mform, max_width) {
     ##.chknrow_and_replace(mf, value, component = "row_info", noheader = TRUE)
     lgrps <- mf_lgrouping(mf)
     nrs <- length(unique(lgrps[-seq_len(mf_nlheader(mf))]))
-    if(nrow(value) != nrs)
+    if(NROW(value) != nrs)
         stop("Rows in new row_info component (",
-             nrow(value),
-             "does not match number of rows reflected in line_grouping component (",
+             NROW(value),
+             ") does not match number of rows reflected in line_grouping component (",
              nrs, ")")
     mf$row_info <- value
     mf
@@ -640,6 +687,12 @@ update_mf_ref_nlines <- function(mform, max_width) {
 #' @export
 #' @rdname mpf_accessors
 mf_ncol <- function(mf) attr(mf, "ncols", exact = TRUE)
+
+#' @export
+#' @rdname mpf_accessors
+mf_nrow <- function(mf) max(mf_lgrouping(mf)) - mf_nrheader(mf)
+
+
 
 #' @export
 #' @rdname mpf_accessors
@@ -732,17 +785,18 @@ basic_matrix_form <- function(df, parent_path = "root") {
     )
   )
 
-  matrix_print_form(
-    strings = strings,
-    aligns = aligns,
-    spans = matrix(1, nrow = fnr, ncol = fnc),
-    formats = formats, ## matrix("xx", nrow = fnr, ncol = fnc),
-    row_info = rowdf,
-    has_topleft = FALSE,
-    nlines_header = 1,
-    nrow_header = 1,
-    has_rowlabs = TRUE
-  )
+ ret <- matrix_print_form(
+     strings = strings,
+     aligns = aligns,
+     spans = matrix(1, nrow = fnr, ncol = fnc),
+     formats = formats, ## matrix("xx", nrow = fnr, ncol = fnc),
+     row_info = rowdf,
+     has_topleft = FALSE,
+     nlines_header = 1,
+     nrow_header = 1,
+     has_rowlabs = TRUE
+ )
+  mform_build_refdf(ret)
 }
 
 
@@ -776,7 +830,7 @@ fix_fnote_df <- function(df) {
 
 
 .mf_subset_core_mats <- function(mf, i, row = TRUE) {
-    fillnum <- if(row) nrow(mf_strings) - mf_nlheader(mf) else ncol(mf)
+    fillnum <- if(row) nrow(mf_strings(mf)) - mf_nlheader(mf) else ncol(mf)
     if(is.logical(i) || all(i < 0))
         i <- seq_len(fillnum)[i]
 

@@ -175,7 +175,8 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
         new_indent,
         mat$strings[reindent_new_idx, 1]
     )
-    mat <- update_mf_ref_nlines(mat, max_width = max_width)
+    ## this updates extents in rinfo AND nlines in ref_fnotes_df
+    mat <- update_mf_nlines(mat, max_width = max_width)
     mat
 }
 
@@ -220,10 +221,10 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   col_gap = mf_colgap(x),
                                                   hsep = default_hsep()) {
     assert_flag(tf_wrap)
-    
+
     mat <- matrix_form(x, indent_rownames = TRUE)
     inset <- table_inset(mat)
-    
+
     if (is.null(widths)) {
         widths <- mf_col_widths(x) %||% propose_column_widths(x)
     } else {
@@ -239,9 +240,9 @@ setMethod("toString", "MatrixPrintForm", function(x,
         }
         assert_number(max_width, lower = 0)
     }
-    
+
     mat <- do_cell_fnotes_wrap(mat, widths, max_width = max_width, tf_wrap = tf_wrap)
-    
+
     body <- mat$strings
     aligns <- mat$aligns
     keep_mat <- mat$display
@@ -249,7 +250,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
     ##    ri <- mat$row_info
     ref_fnotes <- mat$ref_footnotes
     nl_header <- mf_nlheader(mat)
-    
+
     cell_widths_mat <- .calc_cell_widths(mat, widths, col_gap)
 
     content <- matrix(mapply(padstr, body, cell_widths_mat, aligns), ncol = ncol(body))
@@ -257,7 +258,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                         # apply(content, 1, function(x) sum(nchar(x), na.rm = TRUE))
 
     gap_str <- strrep(" ", col_gap)
-    
+
     div <- substr(strrep(hsep, ncchar), 1, ncchar)
     txt_head <- apply(head(content, nl_header), 1, .paste_no_na, collapse = gap_str)
     sec_seps_df <- x$row_info[, c("abs_rownumber", "trailing_sep"), drop = FALSE]
@@ -303,7 +304,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
     } else {
         txt_body <- apply(tail(content, -nl_header), 1, .paste_no_na, collapse = gap_str)
     }
-    
+
 
     allts <- all_titles(x)
 
@@ -313,16 +314,16 @@ setMethod("toString", "MatrixPrintForm", function(x,
         "ref_footnotes" = ref_fnotes
     )
     allfoots <- allfoots[!sapply(allfoots, is.null)]
-    
-    
+
+
     ## Wrapping titles if they go beyond the horizontally allowed space
     if (tf_wrap) {
         new_line_warning(allts)
         allts <- wrap_txt(allts, max_width = max_width)
     }
-    
+
     titles_txt <- if (any(nzchar(allts))) c(allts, "", .do_inset(div, inset)) else NULL
-    
+
                                         # Wrapping footers if they go beyond the horizontally allowed space
     if (tf_wrap) {
         new_line_warning(allfoots)
@@ -331,7 +332,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
         ## no - inset here because the prov_footer is not inset
         allfoots$prov_footer <- wrap_txt(allfoots$prov_footer, max_width)
     }
-    
+
     paste0(paste(
         c(
             titles_txt,

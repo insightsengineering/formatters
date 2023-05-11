@@ -14,15 +14,16 @@ mf_rfnotes(dfmf) <- c("{1} - fnote 1 is the coolest",
                       "{2} - no way, fnote 2 forever",
                       "{*} - symbooollllssss")
 
-formatters:::mf_fnote_df(dfmf) <- formatters:::mform_build_refdf(dfmf)
+dfmf <- formatters:::mform_build_refdf(dfmf)
 mf_rfnotes(dfmf) <- formatters:::reconstruct_basic_fnote_list(dfmf)
 formatters:::mf_col_widths(dfmf) <- propose_column_widths(dfmf)
-fil <- tempfile(fileext = ".rtf")
+## covered below
+## fil <- tempfile(fileext = ".rtf")
 
 
-myrtf <- mpf_to_rtf(dfmf)
-r2rtf::write_rtf(myrtf, fil)
-expect_true(file.exists(fil))
+## myrtf <- mpf_to_rtf(dfmf)
+## r2rtf::write_rtf(myrtf, fil)
+## expect_true(file.exists(fil))
 
 
 fil2 <- tempfile(fileext = ".txt")
@@ -69,3 +70,11 @@ expect_true(msg_1_pos > min(msg_asterisk_pos))
 
 expect_identical(length(grep("~", exptlines, fixed = TRUE)),
                  exp_h_pags * exp_v_pags - 1L)
+
+
+## export_as_rtf rudimentary coverage
+if(requireNamespace("r2rtf")) {
+    fil4 <- tempfile(fileext = ".rtf")
+    export_as_rtf(dfmf, file = fil4)
+    expect_true(file.exists(fil4))
+}

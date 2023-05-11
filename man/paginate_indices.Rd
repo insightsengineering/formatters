@@ -17,8 +17,8 @@ paginate_indices(
   pg_width = NULL,
   pg_height = NULL,
   margins = c(top = 0.5, bottom = 0.5, left = 0.75, right = 0.75),
-  lpp = NULL,
-  cpp = NULL,
+  lpp = NA_integer_,
+  cpp = NA_integer_,
   min_siblings = 2,
   nosplitin = character(),
   colwidths = NULL,
@@ -41,8 +41,8 @@ paginate_to_mpfs(
   pg_width = NULL,
   pg_height = NULL,
   margins = c(top = 0.5, bottom = 0.5, left = 0.75, right = 0.75),
-  lpp = NULL,
-  cpp = NULL,
+  lpp = NA_integer_,
+  cpp = NA_integer_,
   min_siblings = 2,
   nosplitin = character(),
   colwidths = NULL,
@@ -84,11 +84,13 @@ be inverted  for landscape?  Defaults to  \code{FALSE}, ignored when
 to \code{.5} inches for both vertical margins and \code{.75} for both
 horizontal margins.}
 
-\item{lpp}{numeric(1) or NULL. Lines per page. if NULL (the default,
+\item{lpp}{numeric(1) or NULL. Lines per page. if NA (the default,
 this is calculated automatically based on the specified page
-size).}
+size). \code{NULL} indicates no vertical pagination should occur.}
 
-\item{cpp}{numeric(1). Number of characters per page (width)}
+\item{cpp}{numeric(1) or NULL. Width in characters per page. if NA (the default,
+this is calculated automatically based on the specified page
+size). \code{NULL} indicates no horizontal pagination should occur.}
 
 \item{min_siblings}{numeric. Minimum sibling rows which must appear on either side of pagination row for a
 mid-subtable split to be valid. Defaults to 2.}

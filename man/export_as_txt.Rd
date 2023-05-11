@@ -16,13 +16,13 @@ export_as_txt(
   lineheight = 1L,
   margins = c(top = 0.5, bottom = 0.5, left = 0.75, right = 0.75),
   paginate = TRUE,
-  cpp = NULL,
-  lpp = NULL,
+  cpp = NA_integer_,
+  lpp = NA_integer_,
   ...,
   hsep = default_hsep(),
   indent_size = 2,
   tf_wrap = paginate,
-  max_width = cpp,
+  max_width = NULL,
   colwidths = NULL,
   min_siblings = 2,
   nosplitin = character(),
@@ -67,11 +67,13 @@ horizontal margins.}
 defaults to \code{TRUE} if page size is specified (including
 the default).}
 
-\item{cpp}{numeric(1). Number of characters per page (width)}
-
-\item{lpp}{numeric(1) or NULL. Lines per page. if NULL (the default,
+\item{cpp}{numeric(1) or NULL. Width in characters per page. if NA (the default,
 this is calculated automatically based on the specified page
-size).}
+size). \code{NULL} indicates no horizontal pagination should occur.}
+
+\item{lpp}{numeric(1) or NULL. Lines per page. if NA (the default,
+this is calculated automatically based on the specified page
+size). \code{NULL} indicates no vertical pagination should occur.}
 
 \item{...}{Passed to individual methods.}
 

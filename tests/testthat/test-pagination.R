@@ -96,7 +96,7 @@ expect_identical(
   basic_pagdf(row.names(df2),
     extents = 3L
   ),
-  mf_rinfo(df2mf)[, -which(names(mf_rinfo(df2mf)) == "ref_info_df")]
+  mf_rinfo(df2mf)
 )
 
 ## hpaginds <- pag_indices_inner(mf_rinfo(df2mf),
@@ -232,7 +232,7 @@ mf_rfnotes(dfmf) <- c("{1} - fnote 1 is the coolest",
                       "{2} - no way, fnote 2 forever",
                       "{*} - symbooollllssss")
 
-formatters:::mf_fnote_df(dfmf) <- formatters:::mform_build_refdf(dfmf)
+dfmf <- formatters:::mform_build_refdf(dfmf)
 mf_rfnotes(dfmf) <- formatters:::reconstruct_basic_fnote_list(dfmf)
 formatters:::mf_col_widths(dfmf) <- propose_column_widths(dfmf)
 
@@ -243,7 +243,8 @@ expect_error(paginate_indices(dfmf, lpp = 15, cpp = 10000, verbose = TRUE),
 expect_error(paginate_indices(dfmf, lpp = 2, cpp = 10000, verbose = TRUE),
              "Lines of repeated context .* larger than specified lines per page")
 
-
+res <- paginate_to_mpfs(dfmf, pg_width = 4, pg_height = 4, margins = rep(0, 4),
+                        min_siblings = 0, verbose = TRUE)
 
 
 ## coverage for forced pagination support
@@ -265,15 +266,24 @@ res <- paginate_to_mpfs(dfmf2, pg_width = 4, pg_height = 4,
                         margins = rep(0, 4),
                         min_siblings = 0, verbose = TRUE)
 
+expect_identical(page_lcpp( pg_width = 4, pg_height = 4,
+                           margins = rep(0, 4)),
+                 list(cpp = 60, lpp = 36))
 mf_nrow <- function(mf) max(mf_lgrouping(mf)) - mf_nrheader(mf)
 
 
 ## first vertical pagination is "forced" after row 1,
+## 2 additional vertical paginations within second "forced page" (3 total)
 ## 3 horizontal paginations
-expect_true(all(vapply(res[1:3], mf_nrow, 1) == 1))
-expect_true(all(vapply(res[4:6], mf_nrow, 1) == 23))
-expect_true(all(vapply(res[7:9], mf_nrow, 1) == 8))
+## 9 pages
 expect_identical(length(res), 9L)
+nrs <- vapply(res, mf_nrow, 1)
+expect_true(all(nrs[1:3] == 1))
+expect_true(all(nrs[4:6] == 19))
+expect_true(all(nrs[7:9] == 12))
+resnls <- vapply(res, function(x) nlines(toString(x)), 1L)
+expect_true(all(resnls <= 36))
+expect_equal(resnls[4], 36)
 
 
 expect_error(paginate_indices(dfmf2),
