@@ -1,4 +1,4 @@
-## formatters 0.4.1.9001
+## formatters 0.4.1.9002
  * font_size is now 8 across the board, whereas before it was inconsistent between 8 and 12
  * margins are now correctly interpreted as inches when specified (including the default)
  * fix off-by-one error in pagination machinery for certain cases
@@ -10,7 +10,9 @@
  * `MatrixPrintForm` objects will infer detail referential footnotes information from their `strings` element for backwards compatibility
  * fix to test that failed only on old windows CRAN machine due to imperfect UTF support there.
  * when specifying `lpp` and `cpp` in pagination or exporter functions, `NULL` now unambigiously means no pagination in the relevant direction, while the new default of `NA_integer_` now means those values should be inferred from page size.
- * Added `hexSticker` logo.
+
+## formatters 0.4.1.9001
+* Added `hexSticker` logo.
 
 ## formatters 0.4.0
  * Cell values and row labels are now word-wrapped based on column widths (`widths` in `toString` and `colwidths` in pagination and exporters.
