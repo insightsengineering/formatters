@@ -208,25 +208,25 @@ valid_pag <- function(pagdf,
   if(lines > rlpp) {
       if(verbose) {
           structtype <- ifelse(row, "rows", "columns")
+          structtype_abr <- ifelse(row, "rows", "cols")
           spacetype <- ifelse(row, "lines", "chars")
-          message(sprintf("\t....................... FAIL: %s require %d %s [%s: (%d, %d %s), repeated context: %d %s (%d %s), refs: %d (%d %s)  section dividers: %d (%d %s)].",
-                          structtype,
+          spacetype_abr <- ifelse(row, "lns", "chrs")
+          message(sprintf("\t....................... FAIL: requires %d %s [raw: %d %s (%d %s), rep. context: %d %s (%d %s), refs: %d %s (%d)  sect. divs: %d %s].",
                           lines,
                           spacetype,
-                          structtype,
-                          guess - start + 1, # because it includes both start and guess
                           raw_rowlines,
-                          spacetype,
-                          length(pagdf$reprint_inds),
-                          structtype,
+                          spacetype_abr,
+                          guess - start + 1, # because it includes both start and guess
+                          structtype_abr,
                           rep_ext,
-                          spacetype,
-                          NROW(refdf_ii),
+                          spacetype_abr,
+                          length(pagdf$reprint_inds[[start]]),
+                          structtype,
                           reflines,
-                          spacetype,
+                          spacetype_abr,
+                          NROW(refdf_ii),
                           sectlines,
-                          sectlines,
-                          spacetype))
+                          spacetype_abr))
       }
       return(FALSE)
   }
