@@ -5,6 +5,7 @@
 \alias{paginate}
 \alias{pagination}
 \alias{paginate_to_mpfs}
+\alias{diagnose_pagination}
 \title{Paginate a table-like object for rendering}
 \usage{
 paginate_indices(
@@ -27,7 +28,7 @@ paginate_indices(
   indent_size = 2,
   pg_size_spec = NULL,
   rep_cols = num_rep_cols(obj),
-  col_gap = 2,
+  col_gap = 3,
   verbose = FALSE
 )
 
@@ -53,6 +54,31 @@ paginate_to_mpfs(
   rep_cols = num_rep_cols(obj),
   col_gap = 2,
   verbose = FALSE
+)
+
+diagnose_pagination(
+  obj,
+  page_type = "letter",
+  font_family = "Courier",
+  font_size = 8,
+  lineheight = 1,
+  landscape = FALSE,
+  pg_width = NULL,
+  pg_height = NULL,
+  margins = c(top = 0.5, bottom = 0.5, left = 0.75, right = 0.75),
+  lpp = NA_integer_,
+  cpp = NA_integer_,
+  min_siblings = 2,
+  nosplitin = character(),
+  colwidths = propose_column_widths(matrix_form(obj, TRUE)),
+  tf_wrap = FALSE,
+  max_width = NULL,
+  indent_size = 2,
+  pg_size_spec = NULL,
+  rep_cols = num_rep_cols(obj),
+  col_gap = 2,
+  verbose = FALSE,
+  ...
 )
 }
 \arguments{
@@ -121,10 +147,12 @@ size specification. Typically this is not set in end user code.}
 \item{rep_cols}{numeric(1). Number of \emph{columns} (not including
 row labels) to be repeated on every page. Defaults to 0}
 
-\item{col_gap}{numeric(1). Space (in characters) between columns}
+\item{col_gap}{numeric(1). Currently unused.}
 
 \item{verbose}{logical(1). Should additional informative messages about the search for
 pagination breaks be shown. Defaults to \code{FALSE}.}
+
+\item{...}{Passed to individual methods.}
 }
 \value{
 for \code{paginate_indices} a list with two elements of the same
@@ -132,21 +160,90 @@ length:   \code{pag_row_indices},    and   \code{pag_col_indices}.    For
 \code{paginate_to_mpfs},   a  list   of  \code{MatrixPrintForm} objects
 representing each individual page after pagination (including
 forced pagination if necessary).
+
+For \code{diagnose_pagination} a list containing:
+
+\describe{
+\item{\code{lpp_diagnostics}}{diagnostic information regarding lines per page}
+\item{\code{row_diagnostics}}{basic information about rows, whether pagination was attempted after each row, and the final result of such an attempt, if made}
+\item{\verb{cpp_diagnostics\}\{diagnostic information regarding columns per page\} \\item\{}col_diagnostics`}{(very) basic information about leaf columns, whether pagination was attempted after each leaf column, ad the final result of such attempts, if made}
+}
 }
 \description{
-This functions prepares \code{obj} for paginated rendering,
-by paginating it \code{emph} into multiple \code{MatrixPrintForm}
-objects representing individual pages.
+These functions perform or diagnose bi-directional pagination on
+an object.
+
+\code{paginate_to_mpfs} renders \code{obj} into the \code{MatrixPrintForm} (MPF)
+intermediate representation, and then paginates that MPF into
+component MPFs each corresponding to an individual page and
+returns those in a list.
+
+\code{paginate_indices} renders \code{obj} into an MPF, then uses
+that representation to calculate the rows and columns of
+\code{obj} corresponding to each page of the pagination of \code{obj},
+but simply returns these indices rather than paginating
+\code{obj} itself (see details for an important caveat).
+
+\code{diagnose_pagination} attempts pagination via \code{paginate_to_mpfs}
+and then returns diagnostic information which explains why page
+breaks were positioned where they were, or alternatively why
+no valid paginations could be found.
 }
 \details{
-\code{paginate_to_mpfs} supports objects which require 'forced pagination', ie
-pagination at points not dictated by page dimensions. It does this by
-automatically calling the \code{do_force_pagination} generic.
+All three of these functions generally support all classes which have
+a corresponding \code{matrix_form} method which returns a valid \code{MatrixPrintForm}
+object (including \code{MatrixPrintForm} objects themselves).
 
-\code{paginate_indices},  on  the  other hand,  \emph{does  not  support
-forced pagination},  because it returns  only a set of  indices for
-row and column subsetting for each page, and thus cannot retain any
-changes, e.g., to titles, done within \code{do_forced_paginate}.
+\code{paginate_indices} is directly called by \code{paginate_to_mpfs} (and thus
+\code{diagnose_pagination}). For most classes, and most tables represented
+by supported classes, calling \code{paginate_to_mpfs} is equivalent to a
+manual \verb{paginate_indices -> subset obj into pages -> matrix_form}
+workflow.
+
+The exception to this equivalence is objects which support 'forced pagination',
+or pagination logic which built into the object itself rather than being a
+function of space on a page. Forced pagination generally involves the creation
+of, e.g., page-specific titles which apply to these forced paginations.
+\code{paginate_to_mpfs} and \code{diagnose_pagination} support forced pagination by
+automatically calling the \code{do_forced_pagination} generic on the object
+and then paginating each object returned by that generic separately. The
+assumption here, then, is that page-specific titles and such are
+handled by the class' \code{do_forced_pagination} method.
+
+\code{paginate_indices}, on the other hand, \emph{does not support forced pagination},
+because it returns only a set of  indices for row and column subsetting for each page,
+and thus cannot retain any changes, e.g., to titles, done within \code{do_forced_paginate}.
+\code{paginate_indices} does call \code{do_forced_paginate}, but instead of continuing, it
+throws an error in the case that the result is more than a single "page".
+
+\code{diagnose_pagination} attempts pagination and then, regardless of success
+or failure, returns diagnostic information about pagination
+attempts (if any) after each row and column.
+
+The diagnostics data reflects the final time the pagination algorithm
+evaluated a page break at the specified location, regardless of how
+many times the position was assessed total.
+
+To get information about intermediate attempts, perform pagination
+with \code{verbose = TRUE} and inspect the messages in order.
+}
+\note{
+For  \code{diagnose_pagination},   the  column  labels  are  not
+displayed  in  the  \code{col_diagnostics} element  due  to  certain
+internal  implementation details;  rather  the diagnostics  are
+reported in terms of absolute (leaf) column position. This is a
+known  limitation,  and  may  eventually be  changed,  but  the
+information remains useful as it is currently reported.
+
+\code{diagnose_pagination} is intended for interactive debugging
+use and \emph{should not be programmed against}, as the exact
+content and form of the  verbose messages it captures and
+returns is subject to change.
+
+because \code{diagnose_pagination} relies on \code{capture.output(type = "message")},
+it cannot be used within the \code{testthat} (and likely other) testing frameworks,
+and likely cannot be used within \code{knitr}/\code{rmarkdown} contexts either,
+as this clashes with those systems' capture of messages.
 }
 \examples{
 mpf <- basic_matrix_form(mtcars)
@@ -154,4 +251,11 @@ mpf <- basic_matrix_form(mtcars)
 paginate_indices(mpf, pg_width = 5, pg_height = 3)
 
 paginate_to_mpfs(mpf, pg_width = 5, pg_height = 3)
+
+diagnose_pagination(mpf, pg_width = 5, pg_height = 3)
+clws <- propose_column_widths(mpf)
+clws[1] <- floor(clws[1]/3)
+dgnost <- diagnose_pagination(mpf, pg_width = 5, pg_height = 3, colwidths = clws)
+try(diagnose_pagination(mpf, pg_width = 1)) #fails
+
 }

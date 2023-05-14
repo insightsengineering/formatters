@@ -2,7 +2,6 @@
 % Please edit documentation in R/matrix_form.R
 \name{MatrixPrintForm}
 \alias{MatrixPrintForm}
-\alias{MatrixPrintForm-class}
 \alias{matrix_print_form}
 \title{Matrix Print Form - Intermediate Representation for ASCII Table Printing}
 \usage{
@@ -164,6 +163,9 @@ any row names/row labels}
 }
 }
 \description{
-This should generally only be called by \code{matrix_form} custom
-methods, and almost never from other code.
+Matrix Print Form - Intermediate Representation for ASCII Table Printing
+}
+\note{
+The bare constructor for the \code{MatrixPrintForm} should generally
+only be called by \code{matrix_form} custom methods, and almost never from other code.
 }

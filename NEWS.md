@@ -6,6 +6,7 @@
  * referential footnotes with specified (non-number) symbols are now only printed once per page regardless of how many elements on the page they refer to.
  * new `export_as_txt` function which can operate on any object with an applicable `matrix_form` method (including pagination)
  * new `paginate_indices` and `paginate_to_mpfs` functions
+ * new `diagnose_pagination` function which accepts the same arguments as `paginate_to_mpfs` and returns information about the pagination algorithm outcome at both row and column positions.
  * `MatrixPrintForm` objects now track referential footnote information much more carefully than before
  * `MatrixPrintForm` objects will infer detail referential footnotes information from their `strings` element for backwards compatibility
  * fix to test that failed only on old windows CRAN machine due to imperfect UTF support there.

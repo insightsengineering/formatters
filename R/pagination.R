@@ -172,6 +172,42 @@ calc_ref_nlines_df <- function(pagdf) {
     refdf[unqsyms, ,drop = FALSE]
 }
 
+
+build_fail_msg <- function(row, lines, raw_rowlines,
+                           start, guess, rep_ext, n_reprint,
+                           reflines, n_refs, sectlines) {
+    if(row) {
+        spacetype <- "lines"
+        spacetype_abr <- "lns"
+        structtype_abr <- "rws"
+        sprintf("\t....................... FAIL: requires %d %s [raw: %d %s (%d %s), rep. context: %d %s (%d %s), refs: %d %s (%d)  sect. divs: %d %s].",
+                lines,
+                spacetype,
+                raw_rowlines,
+                spacetype_abr,
+                guess - start + 1, # because it includes both start and guess
+                structtype_abr,
+                rep_ext,
+                spacetype_abr,
+                n_reprint,
+                structtype_abr,
+                reflines,
+                spacetype_abr,
+                n_refs,
+                sectlines,
+                spacetype_abr)
+    } else  { ## !row
+        spacetype <- "chars"
+        spacetype_abr <- "chars"
+        structtype_abr <- "cols"
+        sprintf("\t....................... FAIL: requires %d %s (%d %s).",
+                lines,
+                spacetype,
+                guess - start + 1, # because it includes both start and guess
+                structtype_abr)
+   }
+}
+
 valid_pag <- function(pagdf,
                       guess,
                       start,
@@ -211,47 +247,11 @@ valid_pag <- function(pagdf,
           structtype_abr <- ifelse(row, "rows", "cols")
           spacetype <- ifelse(row, "lines", "chars")
           spacetype_abr <- ifelse(row, "lns", "chrs")
-          message(sprintf("\t....................... FAIL: requires %d %s [raw: %d %s (%d %s), rep. context: %d %s (%d %s), refs: %d %s (%d)  sect. divs: %d %s].",
-                          lines,
-                          spacetype,
-                          raw_rowlines,
-                          spacetype_abr,
-                          guess - start + 1, # because it includes both start and guess
-                          structtype_abr,
-                          rep_ext,
-                          spacetype_abr,
-                          length(pagdf$reprint_inds[[start]]),
-                          structtype,
-                          reflines,
-                          spacetype_abr,
-                          NROW(refdf_ii),
-                          sectlines,
-                          spacetype_abr))
+          msg <- build_fail_msg(row, lines, raw_rowlines, start, guess, rep_ext, length(pagdf$reprint_inds[[start]]),reflines, NROW(refdf_ii), sectlines)
+          message(msg)
       }
       return(FALSE)
   }
-  ## if (rowlines > rlpp) {
-  ##   if (verbose) {
-  ##     message(sprintf(
-  ##       "\t....................... FAIL: %s take up too much space (%d %s)",
-  ##       ifelse(row, "rows", "columns"), rowlines + rep_ext, # nocov
-  ##       ifelse(row, "lines", "characters") # nocov
-  ##     ))
-  ##   }
-  ##   return(FALSE)
-  ## }
-  ## if (lines > rlpp) {
-  ##   if (verbose) {
-  ##     message(
-  ##       "\t....................... FAIL: Referential footnotes (",
-  ##       reflines,
-  ##       ") or section dividers (",
-  ##       sectlines,
-  ##       ") take up too much space."
-  ##     )
-  ##   }
-  ##   return(FALSE)
-  ## }
   if (rw[["node_class"]] %in% c("LabelRow", "ContentRow")) {
     if (verbose) {
       message("\t....................... FAIL: last row is a label or content row")
@@ -572,32 +572,6 @@ calc_lcpp <- function(page_type = NULL,
                       inset
                       ) {
 
-    ## handled in page_lcpp where it belongs
-    ## if(!is.null(names(margins)))
-    ##     margins <- margins[marg_order]
-    ## else
-    ##     names(margins) <- marg_order
-    ## if(any(is.na(names(margins))))
-    ##     stop("margins argument appears to have had names other than 'bottom' 'left' 'top' and 'right'")
-    ## if(is.null(page_type))
-    ##     page_type = "letter"
-    ## pg_width <- pg_width %||% page_dim(page_type)[if(landscape) 2 else 1]
-    ## pg_height <- pg_height %||% page_dim(page_type)[if(landscape) 1 else 2]
-
-    ## gp_plot <- gpar(fontsize = font_size, fontfamily = font_family,lineheight = lineheight)
-
-    ## pdf(file = tempfile(), width = pg_width, height = pg_height)
-    ## on.exit(dev.off())
-    ## grid.newpage()
-    ## ## margins is documented as being in inches, but the margins
-    ## ## argument to plotViewport expect it in the form par(mar) expects
-    ## ## which is lines!!!
-    ## margs <- unit(margins, "inches")
-
-    ## pushViewport(plotViewport(margins = convertUnit(margs, unitTo = "lines"), #margins,
-    ##                           gp = gp_plot))
-
-    ## cur_gpar <-  get.gpar()
     pg_lcpp <- page_lcpp(page_type = page_type,
                       landscape = landscape,
                       font_family = font_family,
@@ -609,13 +583,9 @@ calc_lcpp <- function(page_type = NULL,
 
     if (non_null_na(lpp)) {
         lpp <- pg_lcpp$lpp
-        ## floor(convertHeight(unit(1, "npc"), "lines", valueOnly = TRUE) /
-        ##              (cur_gpar$cex * cur_gpar$lineheight))
     }
     if(non_null_na(cpp)) {
         cpp <- pg_lcpp$cpp
-        ## floor(convertWidth(unit(1, "npc"), "inches", valueOnly = TRUE) *
-        ##              font_lcpi(font_family, font_size, cur_gpar$lineheight)$cpi)
     }
     stopifnot(!is.na(cpp))
     if(!tf_wrap && !is.null(max_width)) {
@@ -712,21 +682,56 @@ splice_idx_lists <- function(lsts) {
 
 
 
-#' Paginate a table-like object for rendering
+#' @title Paginate a table-like object for rendering
 #'
-#' This functions prepares \code{obj} for paginated rendering,
-#' by paginating it \code{emph} into multiple \code{MatrixPrintForm}
-#' objects representing individual pages.
+#' @description
+#' These functions perform or diagnose bi-directional pagination on
+#' an object.
+#'
+#' `paginate_to_mpfs` renders `obj` into the `MatrixPrintForm` (MPF)
+#' intermediate representation, and then paginates that MPF into
+#' component MPFs each corresponding to an individual page and
+#' returns those in a list.
+#'
+#' `paginate_indices` renders `obj` into an MPF, then uses
+#' that representation to calculate the rows and columns of
+#' `obj` corresponding to each page of the pagination of `obj`,
+#' but simply returns these indices rather than paginating
+#' \code{obj} itself (see details for an important caveat).
+#'
+#' `diagnose_pagination` attempts pagination via `paginate_to_mpfs`
+#' and then returns diagnostic information which explains why page
+#' breaks were positioned where they were, or alternatively why
+#' no valid paginations could be found.
 #'
 #' @details
-#' `paginate_to_mpfs` supports objects which require 'forced pagination', ie
-#' pagination at points not dictated by page dimensions. It does this by
-#' automatically calling the `do_force_pagination` generic.
 #'
-#' `paginate_indices`,  on  the  other hand,  \emph{does  not  support
-#' forced pagination},  because it returns  only a set of  indices for
-#' row and column subsetting for each page, and thus cannot retain any
-#' changes, e.g., to titles, done within `do_forced_paginate`.
+#' All three of these functions generally support all classes which have
+#' a corresponding `matrix_form` method which returns a valid `MatrixPrintForm`
+#' object (including `MatrixPrintForm` objects themselves).
+#'
+#' `paginate_indices` is directly called by `paginate_to_mpfs` (and thus
+#' `diagnose_pagination`). For most classes, and most tables represented
+#' by supported classes, calling `paginate_to_mpfs` is equivalent to a
+#' manual `paginate_indices -> subset obj into pages -> matrix_form`
+#' workflow.
+#'
+#' The exception to this equivalence is objects which support 'forced pagination',
+#' or pagination logic which built into the object itself rather than being a
+#' function of space on a page. Forced pagination generally involves the creation
+#' of, e.g., page-specific titles which apply to these forced paginations.
+#' `paginate_to_mpfs` and `diagnose_pagination` support forced pagination by
+#' automatically calling the `do_forced_pagination` generic on the object
+#' and then paginating each object returned by that generic separately. The
+#' assumption here, then, is that page-specific titles and such are
+#' handled by the class' `do_forced_pagination` method.
+#'
+#' `paginate_indices`, on the other hand, \emph{does not support forced pagination},
+#' because it returns only a set of  indices for row and column subsetting for each page,
+#' and thus cannot retain any changes, e.g., to titles, done within `do_forced_paginate`.
+#' `paginate_indices` does call `do_forced_paginate`, but instead of continuing, it
+#' throws an error in the case that the result is more than a single "page".
+#'
 #' @inheritParams vert_pag_indices
 #' @inheritParams pag_indices_inner
 #' @inheritParams page_lcpp
@@ -741,6 +746,7 @@ splice_idx_lists <- function(lsts) {
 
 #' @param pg_size_spec page_size_spec. A pre-calculated page
 #'     size specification. Typically this is not set in end user code.
+#' @param col_gap numeric(1). Currently unused.
 #' @return for `paginate_indices` a list with two elements of the same
 #'     length:   `pag_row_indices`,    and   `pag_col_indices`.    For
 #'     `paginate_to_mpfs`,   a  list   of  `MatrixPrintForm` objects
@@ -773,7 +779,7 @@ paginate_indices <- function(obj,
                      indent_size = 2,
                      pg_size_spec = NULL,
                      rep_cols = num_rep_cols(obj),
-                     col_gap = 2,
+                     col_gap = 3,
                      verbose = FALSE) {
 
 
@@ -992,4 +998,165 @@ paginate_to_mpfs <- function(obj,
         })
     })
     unlist(res, recursive = FALSE)
+}
+
+
+#' @importFrom utils capture.output
+#' @details
+#'
+#' `diagnose_pagination` attempts pagination and then, regardless of success
+#' or failure, returns diagnostic information about pagination
+#' attempts (if any) after each row and column.
+#'
+#' The diagnostics data reflects the final time the pagination algorithm
+#' evaluated a page break at the specified location, regardless of how
+#' many times the position was assessed total.
+#'
+#' To get information about intermediate attempts, perform pagination
+#' with `verbose = TRUE` and inspect the messages in order.
+#'
+#' @return For `diagnose_pagination` a list containing:
+#'
+#' \describe{
+#' \item{`lpp_diagnostics`}{diagnostic information regarding lines per page}
+#' \item{`row_diagnostics`}{basic information about rows, whether pagination was attempted after each row, and the final result of such an attempt, if made}
+#' \item{`cpp_diagnostics}{diagnostic information regarding columns per page}
+#' \item{`col_diagnostics`}{(very) basic information about leaf columns, whether pagination was attempted after each leaf column, ad the final result of such attempts, if made}
+#' }
+#'
+#' @note  For  `diagnose_pagination`,   the  column  labels  are  not
+#'     displayed  in  the  `col_diagnostics` element  due  to  certain
+#'     internal  implementation details;  rather  the diagnostics  are
+#'     reported in terms of absolute (leaf) column position. This is a
+#'     known  limitation,  and  may  eventually be  changed,  but  the
+#'     information remains useful as it is currently reported.
+#'
+#' @note `diagnose_pagination` is intended for interactive debugging
+#' use and \emph{should not be programmed against}, as the exact
+#' content and form of the  verbose messages it captures and
+#' returns is subject to change.
+#'
+#' @note because `diagnose_pagination` relies on `capture.output(type = "message")`,
+#' it cannot be used within the `testthat` (and likely other) testing frameworks,
+#' and likely cannot be used within `knitr`/`rmarkdown` contexts either,
+#' as this clashes with those systems' capture of messages.
+#'
+#' @export
+#'
+#' @rdname paginate_indices
+#' @examples
+#'
+#' diagnose_pagination(mpf, pg_width = 5, pg_height = 3)
+#' clws <- propose_column_widths(mpf)
+#' clws[1] <- floor(clws[1]/3)
+#' dgnost <- diagnose_pagination(mpf, pg_width = 5, pg_height = 3, colwidths = clws)
+#' try(diagnose_pagination(mpf, pg_width = 1)) #fails
+#'
+diagnose_pagination <- function(obj,
+                                page_type = "letter",
+                                font_family = "Courier",
+                                font_size = 8,
+                                lineheight = 1,
+                                landscape = FALSE,
+                                pg_width = NULL,
+                                pg_height = NULL,
+                                margins = c(top = .5, bottom = .5, left = .75, right = .75),
+                                lpp = NA_integer_,
+                                cpp = NA_integer_,
+                                min_siblings = 2,
+                                nosplitin = character(),
+                                colwidths = propose_column_widths(matrix_form(obj, TRUE)),
+                                tf_wrap = FALSE,
+                                max_width = NULL,
+                                indent_size = 2,
+                                pg_size_spec = NULL,
+                                rep_cols = num_rep_cols(obj),
+                                col_gap = 2,
+                                verbose = FALSE,
+                                ...) {
+
+
+    fpag <- do_forced_paginate(obj)
+    if(length(fpag) > 1) {
+        return(lapply(fpag,
+                      diagnose_pagination,
+                      page_type = page_type,
+                      font_family = font_family,
+                      font_size = font_size,
+                      lineheight = lineheight,
+                      landscape = landscape,
+                      pg_width = pg_width,
+                      pg_height = pg_height,
+                      margins = margins,
+                      lpp = lpp,
+                      cpp = cpp,
+                      tf_wrap = tf_wrap,
+                      max_width = max_width,
+                      colwidths = colwidths,
+                      col_gap = col_gap,
+                      min_siblings = min_siblings,
+                      nosplitin = nosplitin))
+    }
+
+    mpf <- matrix_form(obj, TRUE)
+    msgres <- capture.output({tmp <- try(paginate_to_mpfs(obj, page_type = page_type,
+                     font_family = font_family,
+                     font_size = font_size,
+                     lineheight = lineheight,
+                     landscape = landscape,
+                     pg_width = pg_width,
+                     pg_height = pg_height,
+                     margins = margins,
+                     lpp = lpp,
+                     cpp = cpp,
+                     tf_wrap = tf_wrap,
+                     max_width = max_width,
+                     colwidths = colwidths,
+                     col_gap = col_gap,
+                     min_siblings = min_siblings,
+                     nosplitin = nosplitin,
+                     verbose = TRUE))},
+                     type = "message")
+    if(is(tmp, "try-error") && grepl("Width of row labels equal to or larger", tmp)) {
+        cond <- attr(tmp, "condition")
+        stop(conditionMessage(cond), call. = conditionCall(cond))
+    }
+
+    lpp_diagnostic <- grep("^(Determining lines|Lines per page available).*$", msgres, value = TRUE)
+    cpp_diagnostic <- unique(grep("^Adjusted characters per page.*$", msgres, value = TRUE))
+
+    mpf  <- do_cell_fnotes_wrap(mpf, widths = colwidths, max_width = max_width, tf_wrap = tf_wrap)
+    mpf <- mpf_infer_cinfo(mpf, colwidths = colwidths)
+
+    rownls <- grep("Checking pagination after row", msgres, fixed = TRUE)
+    rownum <- as.integer(gsub("[^[:digit:]]*(.*)$", "\\1", msgres[rownls]))
+    rowmsgs <- vapply(unique(rownum), function(ii) {
+        idx <- max(which(rownum == ii))
+        gsub("\\t[.]*", "", msgres[rownls[idx] + 1])
+    }, "")
+
+    msgdf <- data.frame(abs_rownumber = unique(rownum),
+                        final_pag_result = rowmsgs, stringsAsFactors = FALSE)
+    rdf <-mf_rinfo(mpf)[, c("abs_rownumber", "label", "self_extent", "par_extent", "node_class")]
+    rdf$pag_attempted <- rdf$abs_rownumber %in% rownum
+    row_diagnose <- merge(rdf, msgdf, by = "abs_rownumber", all.x = TRUE)
+
+    colnls <- grep("Checking pagination after column", msgres, fixed = TRUE)
+    colnum <- as.integer(gsub("[^[:digit:]]*(.*)$", "\\1", msgres[colnls]))
+    colmsgs <- vapply(unique(colnum), function(ii) {
+        idx <- max(which(colnum == ii))
+        gsub("\\t[.]*", "", msgres[colnls[idx] + 1])
+    }, "")
+
+    colmsgdf <- data.frame(abs_rownumber = unique(colnum),
+                           final_pag_result = colmsgs,
+                           stringsAsFactors = FALSE)
+    cdf <- mf_cinfo(mpf)[, c("abs_rownumber", "self_extent")]
+    cdf$pag_attempted <- cdf$abs_rownumber %in% colnum
+    col_diagnose <- merge(cdf, colmsgdf, by = "abs_rownumber", all.x = TRUE)
+    names(col_diagnose) <- gsub("^abs_rownumber$", "abs_colnumber", names(col_diagnose))
+    list(lpp_diagnostics = lpp_diagnostic,
+         row_diagnostics = row_diagnose,
+         cpp_diagnostics = cpp_diagnostic,
+         col_diagnostics = col_diagnose)
 }

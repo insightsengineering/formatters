@@ -269,7 +269,6 @@ res <- paginate_to_mpfs(dfmf2, pg_width = 4, pg_height = 4,
 expect_identical(page_lcpp( pg_width = 4, pg_height = 4,
                            margins = rep(0, 4)),
                  list(cpp = 60, lpp = 36))
-mf_nrow <- function(mf) max(mf_lgrouping(mf)) - mf_nrheader(mf)
 
 
 ## first vertical pagination is "forced" after row 1,
@@ -292,3 +291,23 @@ expect_error(paginate_indices(dfmf2),
 
 expect_identical(formatters:::calc_lcpp(),
                  formatters:::calc_lcpp(page_type = "letter"))
+
+
+## diagnose_pagination smoke test coverage
+## actual functionality cannot be tested because it relies on capturing
+## the message stream which testthat is already doing and
+## cannot be piggybacked on.
+
+## the ;TRUE is a hack becasue expect_success didn't do what it seems like it should
+## this will fail if the forst part befoer the ; throws an error.
+expect_true({diagnose_pagination(dfmf, lpp = NULL, cpp = 60); TRUE})
+expect_true({dgnostic <- diagnose_pagination(dfmf, lpp = 60, cpp = NULL); TRUE})
+expect_true({dgnostic <- diagnose_pagination(dfmf2, pg_width = 4, pg_height = 4,
+                        margins = rep(0, 4),
+                        min_siblings = 0); TRUE})
+
+## diagnose_pagination when no valid pagination is found
+expect_true({dgnostic <- diagnose_pagination(dfmf_b,
+                               lpp = 8 + 2,
+                               min_siblings = 0,
+                               nosplitin = "root_split"); TRUE})

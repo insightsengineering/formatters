@@ -2,10 +2,9 @@
 
 #' @title Matrix Print Form - Intermediate Representation for ASCII Table Printing
 #'
-#' @name MatrixPrintForm
+#' @name MatrixPrintForm-class
 #'
-#' @rdname MatrixPrintForm
-#' @aliases MatrixPrintForm-class
+#' @rdname MatrixPrintForm_class
 #' @exportClass MatrixPrintForm
 setOldClass(c("MatrixPrintForm", "list"))
 
@@ -96,10 +95,10 @@ disp_from_spans <- function(spans) {
 }
 
 ## constructor
-#' MatrixPrintForm object constructor
+#' @title Matrix Print Form - Intermediate Representation for ASCII Table Printing
 #'
-#' This should generally only be called by `matrix_form` custom
-#' methods, and almost never from other code.
+#' @note The bare constructor for the `MatrixPrintForm` should generally
+#' only be called by `matrix_form` custom methods, and almost never from other code.
 #'
 #' @param  strings character  matrix.  Matrix  of formatted,  ready to
 #'     display  strings  organized as  they  will  be positioned  when
