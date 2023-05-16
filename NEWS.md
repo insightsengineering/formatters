@@ -1,9 +1,9 @@
 ## formatters 0.5.0
  * `font_size` is now 8 consistently across the pagination machinery.
- * Margins are interpreted in inches when specified (including the default).
+ * When specified, margins are in inches (including the default).
  * Fix off-by-one error in pagination machinery for certain cases.
- * Refined informative messages when pagination is performed with `verbose = TRUE`.
- * Referential footnotes with specified (non-number) symbols are now printed once per page regardless of how many elements on the page they refer to.
+ * Refined informative messages when pagination is verbose (`verbose = TRUE`).
+ * Referential footnotes with specified (non-number) symbols are now printed once per page regardless of the number of elements on the page they refer to.
  * New `export_as_txt` function operates now on any object with an applicable `matrix_form` method (including pagination).
  * New `paginate_indices` and `paginate_to_mpfs` functions.
  * New `diagnose_pagination` function accepts the same arguments as `paginate_to_mpfs` and returns information about the pagination algorithm outcome at both row and column positions.
