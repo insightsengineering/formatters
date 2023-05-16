@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">formatters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1.9002</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,16 +27,6 @@
 <li class="active nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.1">v0.4.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.0">v0.4.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.3.3">v0.3.3</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -65,9 +55,26 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.4.1.9000" id="formatters-0419000">formatters 0.4.1.9000<a class="anchor" aria-label="anchor" href="#formatters-0419000"></a></h2>
-<ul><li>fix to test that failed only on old windows CRAN machine due to imperfect UTF support there.</li>
-<li>Added <code>hexSticker</code> logo.</li>
+<h2 class="pkg-version" data-toc-text="0.4.1.9002" id="formatters-0419002">formatters 0.4.1.9002<a class="anchor" aria-label="anchor" href="#formatters-0419002"></a></h2>
+<ul><li>font_size is now 8 across the board, whereas before it was inconsistent between 8 and 12</li>
+<li>margins are now correctly interpreted as inches when specified (including the default)</li>
+<li>fix off-by-one error in pagination machinery for certain cases</li>
+<li>refined informative messages when pagination is performed with <code>verbose = TRUE</code>
+</li>
+<li>referential footnotes with specified (non-number) symbols are now only printed once per page regardless of how many elements on the page they refer to.</li>
+<li>new <code>export_as_txt</code> function which can operate on any object with an applicable <code>matrix_form</code> method (including pagination)</li>
+<li>new <code>paginate_indices</code> and <code>paginate_to_mpfs</code> functions</li>
+<li>new <code>diagnose_pagination</code> function which accepts the same arguments as <code>paginate_to_mpfs</code> and returns information about the pagination algorithm outcome at both row and column positions.</li>
+<li>
+<code>MatrixPrintForm</code> objects now track referential footnote information much more carefully than before</li>
+<li>
+<code>MatrixPrintForm</code> objects will infer detailed referential footnote information from their <code>strings</code> element for backward compatibility.</li>
+<li>fix to test that failed on old Windows CRAN machine due to imperfect UTF support there.</li>
+<li>when specifying <code>lpp</code> and <code>cpp</code> in pagination or exporter functions, <code>NULL</code> now unambigiously means no pagination in the relevant direction, while the new default of <code>NA_integer_</code> now means those values should be inferred from page size.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.4.1.9001" id="formatters-0419001">formatters 0.4.1.9001<a class="anchor" aria-label="anchor" href="#formatters-0419001"></a></h2>
+<ul><li>Added <code>hexSticker</code> logo.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.0" id="formatters-040">formatters 0.4.0<a class="anchor" aria-label="anchor" href="#formatters-040"></a></h2><p class="text-muted">CRAN release: 2023-03-02</p>

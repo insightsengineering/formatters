@@ -31,6 +31,9 @@
     <loc>https://insightsengineering.github.io/formatters/main/reference/MatrixPrintForm.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/MatrixPrintForm_class.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/formatters/main/reference/basemethods.html</loc>
   </url>
   <url>
@@ -47,6 +50,15 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/formatters/main/reference/divider_height.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/do_forced_paginate.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/export_as_rtf.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/export_as_txt.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/formatters/main/reference/font_lcpi.html</loc>
@@ -88,6 +100,9 @@
     <loc>https://insightsengineering.github.io/formatters/main/reference/nlines.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/num_rep_cols.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/formatters/main/reference/padstr.html</loc>
   </url>
   <url>
@@ -103,10 +118,16 @@
     <loc>https://insightsengineering.github.io/formatters/main/reference/page_types.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/paginate_indices.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/formatters/main/reference/pagination_algo.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/formatters/main/reference/propose_column_widths.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/ref_df_row.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/formatters/main/reference/round_fmt.html</loc>
