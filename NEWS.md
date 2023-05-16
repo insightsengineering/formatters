@@ -1,6 +1,19 @@
+## formatters 0.4.1.9002
+ * font_size is now 8 across the board, whereas before it was inconsistent between 8 and 12
+ * margins are now correctly interpreted as inches when specified (including the default)
+ * fix off-by-one error in pagination machinery for certain cases
+ * refined informative messages when pagination is performed with `verbose = TRUE`
+ * referential footnotes with specified (non-number) symbols are now only printed once per page regardless of how many elements on the page they refer to.
+ * new `export_as_txt` function which can operate on any object with an applicable `matrix_form` method (including pagination)
+ * new `paginate_indices` and `paginate_to_mpfs` functions
+ * new `diagnose_pagination` function which accepts the same arguments as `paginate_to_mpfs` and returns information about the pagination algorithm outcome at both row and column positions.
+ * `MatrixPrintForm` objects now track referential footnote information much more carefully than before
+ * `MatrixPrintForm` objects will infer detailed referential footnote information from their `strings` element for backward compatibility.
+ * fix to test that failed on old Windows CRAN machine due to imperfect UTF support there.
+ * when specifying `lpp` and `cpp` in pagination or exporter functions, `NULL` now unambigiously means no pagination in the relevant direction, while the new default of `NA_integer_` now means those values should be inferred from page size.
+
 ## formatters 0.4.1.9001
- * fix to test that failed only on old windows CRAN machine due to imperfect UTF support there.
- * Added `hexSticker` logo.
+* Added `hexSticker` logo.
 
 ## formatters 0.4.0
  * Cell values and row labels are now word-wrapped based on column widths (`widths` in `toString` and `colwidths` in pagination and exporters.

@@ -12,7 +12,7 @@ toString(x, ...)
   widths = NULL,
   tf_wrap = FALSE,
   max_width = NULL,
-  col_gap = x$col_gap,
+  col_gap = mf_colgap(x),
   hsep = default_hsep()
 )
 }

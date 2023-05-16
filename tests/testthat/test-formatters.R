@@ -443,7 +443,7 @@ expect_identical(
   page_lcpp(margins = c(
     top = .5, bottom = .5,
     left = .65, right = .65
-  )),
+  ), font_size = 12),
   list(cpp = 72, lpp = 60)
 )
 

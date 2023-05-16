@@ -41,7 +41,9 @@ hsep
 htmltools
 https
 huxtable
+ie
 IEC
+ifnotlen
 insightsengineering
 io
 knitr
@@ -52,6 +54,7 @@ len
 lpi
 LPP
 lpp
+mandatorily
 MatrixPrintForm
 mf
 MPF
@@ -62,15 +65,18 @@ nchar
 ncol
 nesttemplate
 nlines
+num
 padstr
 pag
 pagdf
 pagdfrow
+paginations
 pathing
 pre
 rds
 Repo
 repo
+requried
 rlistings
 rmarkdown
 rnames
@@ -86,6 +92,7 @@ sep
 settters
 sprintf
 str
+subobjects
 subtable
 subtables
 testthat
@@ -94,6 +101,7 @@ toString
 tostring
 trailling
 TypesList
+unambigiously
 unicode
 VignetteBuilder
 viscell

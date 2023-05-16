@@ -4,7 +4,7 @@
 \alias{font_lcpi}
 \title{Calculate lines per inch and characters per inch for font}
 \usage{
-font_lcpi(font_family = "Courier", font_size = 12, lineheight = 1)
+font_lcpi(font_family = "Courier", font_size = 8, lineheight = 1)
 }
 \arguments{
 \item{font_family}{character(1). Name of a font family. An error

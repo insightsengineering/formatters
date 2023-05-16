@@ -34,6 +34,8 @@ reference:
       - nlines
       - divider_height
       - main_title
+      - num_rep_cols
+      - do_forced_paginate
   - title: Generics Interface for ASCII Rendering
     desc: Generics required for rendering table-like object to ASCII
     contents:
@@ -56,6 +58,7 @@ reference:
   - title: Pagination
     desc: Pagination functionality
     contents:
+      - paginate_indices
       - pagination_algo
       - pag_indices_inner
       - vert_pag_indices
@@ -81,6 +84,8 @@ reference:
   - title: Export
     desc: Export into different object
     contents:
+      - export_as_txt
+      - export_as_rtf
       - mpf_to_rtf
   - title: Miscellany
     desc: Other documented functions not interesting to end users
@@ -94,3 +99,4 @@ reference:
       - mf_strings
       - page_lcpp
       - page_types
+      - ref_df_row

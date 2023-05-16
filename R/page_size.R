@@ -94,7 +94,7 @@ page_dim <- function(page_type) {
 #' font_lcpi(font_size = 8)
 #'
 #' font_lcpi(font_size = 8, lineheight = 1.1)
-font_lcpi <- function(font_family = "Courier", font_size = 12, lineheight = 1) {
+font_lcpi <- function(font_family = "Courier", font_size = 8, lineheight = 1) {
   tmppdf <- tempfile(fileext = ".pdf")
   pdf(tmppdf)
   on.exit(dev.off())
@@ -115,6 +115,8 @@ font_lcpi <- function(font_family = "Courier", font_size = 12, lineheight = 1) {
   )
 }
 
+marg_order <- c("bottom", "left", "top", "right")
+
 #' Determine lines per page (LPP) and characters per page (CPP) based on font and page type
 #'
 #' @param  page_type  character(1).   Name   of  a  page  type.   See
@@ -128,8 +130,8 @@ font_lcpi <- function(font_family = "Courier", font_size = 12, lineheight = 1) {
 #'     to Courier.
 #' @param font_size numeric(1). Font size, defaults to 12.
 #' @param lineheight numeric(1). Line height, defaults to 1.
-#' @param margins numeric(4). Named numeric vector containing `'top'`,
-#'     `'bottom'`, `'left'`, and `'right'` margins in inches. Defaults
+#' @param margins numeric(4). Named numeric vector containing `'bottom'`,
+#'     `'left'`, `'top'`, and `'right'` margins in inches. Defaults
 #'     to `.5` inches for both vertical margins and `.75` for both
 #'     horizontal margins.
 #' @param pg_width numeric(1). Page width in inches.
@@ -149,32 +151,39 @@ font_lcpi <- function(font_family = "Courier", font_size = 12, lineheight = 1) {
 page_lcpp <- function(page_type = page_types(),
                       landscape = FALSE,
                       font_family = "Courier",
-                      font_size = 12,
+                      font_size = 8,
                       lineheight = 1,
                       margins = c(top = .5, bottom = .5, left = .75, right = .75),
                       pg_width = NULL,
                       pg_height = NULL) {
-  lcpi <- font_lcpi(
-    font_family = font_family,
-    font_size = font_size,
-    lineheight = lineheight
-  )
-  if (is.null(pg_width) ||
-    is.null(pg_height)) {
-    page_type <- match.arg(page_type)
+    if(is.null(page_type))
+        page_type <- page_types()[1]
+    else
+        page_type <- match.arg(page_type)
+
+    if(is.null(names(margins)))
+        names(margins) <- marg_order
+    else
+        margins <- margins[marg_order]
+    if(any(is.na(margins)))
+        stop("margins argument must have names 'bottom', 'left', 'top' and 'right'.")
+    lcpi <- font_lcpi(
+        font_family = font_family,
+        font_size = font_size,
+        lineheight = lineheight
+    )
+
     wdpos <- ifelse(landscape, 2, 1)
-    pg_width <- pg_dim_names[[page_type]][wdpos]
-    pg_height <- pg_dim_names[[page_type]][-wdpos]
-  }
+    pg_width <- pg_width %||% pg_dim_names[[page_type]][wdpos]
+    pg_height <- pg_height %||% pg_dim_names[[page_type]][-wdpos]
 
+    pg_width <- pg_width - sum(margins[c("left", "right")])
+    pg_height <- pg_height - sum(margins[c("top", "bottom")])
 
-  pg_width <- pg_width - sum(margins[c("left", "right")])
-  pg_height <- pg_height - sum(margins[c("top", "bottom")])
-
-  list(
-    cpp = floor(lcpi[["cpi"]] * pg_width),
-    lpp = floor(lcpi[["lpi"]] * pg_height)
-  )
+    list(
+        cpp = floor(lcpi[["cpi"]] * pg_width),
+        lpp = floor(lcpi[["lpi"]] * pg_height)
+    )
 }
 
 ## pg_types <- list(
