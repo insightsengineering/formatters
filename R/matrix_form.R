@@ -5,6 +5,7 @@
 #' @name MatrixPrintForm-class
 #'
 #' @rdname MatrixPrintForm_class
+#' @aliases MatrixPrintForm-class
 #' @exportClass MatrixPrintForm
 setOldClass(c("MatrixPrintForm", "list"))
 
@@ -835,8 +836,8 @@ fix_fnote_df <- function(df) {
 
     if(row) {
         nlh <- mf_nlheader(mf)
-        ncolrows <- length(unique(mf_lgrouping(mf)[seq_len(nlh)]))
-        i_mat <- c(seq_len(ncolrows), which(mf_lgrouping(mf) %in% (i + ncolrows)))
+        ncolrows <- mf_nrheader(mf)
+        i_mat <- c(seq_len(nlh), which(mf_lgrouping(mf) %in% (i + ncolrows)))
         j_mat <- seq_len(ncol(mf_strings(mf)))
     } else {
         nlabcol <- as.integer(mf_has_rlabels(mf))
@@ -906,7 +907,7 @@ mpf_subset_rows <- function(mf, i) {
 
     rinfo <- mf_rinfo(mf)
 
-    rinfo <- rinfo[i,]
+    rinfo <- rinfo[rinfo$abs_rownumber %in% i,]
 
     rinfo$abs_rownumber <- map_to_new(rinfo$abs_rownumber, row_map)
     mf_rinfo(mf) <- rinfo
