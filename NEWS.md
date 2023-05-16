@@ -1,4 +1,4 @@
-## formatters 0.4.1.9002
+## formatters 0.4.1.9003
  * fix bug in mpf pagination (and thus export_as_txt) when column labels had newlines (#150, rtables#634)
 
 ## formatters 0.4.1.9002
