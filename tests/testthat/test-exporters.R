@@ -78,3 +78,38 @@ if(requireNamespace("r2rtf")) {
     export_as_rtf(dfmf, file = fil4)
     expect_true(file.exists(fil4))
 }
+
+
+
+## https://github.com/insightsengineering/rtables/issues/634
+
+test_that("mpf_subset_rows works when there are newlines/wrapping in column labels", {
+    strs <- matrix(c("hi", "lo",
+                     "",   "there",
+                     "(N=50)", "(N=whoknows)",
+                     "value", "value",
+                     "value2", "value2"),
+                   nrow = 5, byrow = TRUE)
+
+    rinfo <- rbind(pagdfrow(nm = "what", lab = "what", rnum = 1, pth = list(), extent = 1L, nsibs = 1, sibpos = 1, rclass = "what"),
+                   pagdfrow(nm = "what2", lab = "what2", rnum = 2, pth = list(), extent = 1L, nsibs = 1, sibpos = 1, rclass = "what"))
+    mymf <- MatrixPrintForm(strings = strs, aligns = matrix("center", ncol = 2, nrow = 5),
+                            formats = matrix("xx", ncol = 2, nrow = 5),
+                            spans = matrix(1L, ncol = 2, nrow = 5),
+                            line_grouping = c(1, 1, 2, 3, 4),
+                            nrow_header = 2,
+                            row_info = rinfo)
+
+    mymf_out <- toString(mymf, hsep = "-")
+    expct_lns <- c("  hi          lo     ",
+                   "            there    ",
+                   "(N=50)   (N=whoknows)",
+                   "---------------------",
+                   "value       value    ",
+                   "value2      value2   \n")
+    expect_identical(mymf_out,
+                     paste(expct_lns, collapse = "\n"))
+    newmf <- formatters:::mpf_subset_rows(mymf, 1)
+    expect_identical(toString(newmf, hsep = "-"),
+                     paste(c(expct_lns[1:5], ""), collapse = "\n"))
+})
