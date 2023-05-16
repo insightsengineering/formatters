@@ -8,7 +8,7 @@
  * new `paginate_indices` and `paginate_to_mpfs` functions
  * new `diagnose_pagination` function which accepts the same arguments as `paginate_to_mpfs` and returns information about the pagination algorithm outcome at both row and column positions.
  * `MatrixPrintForm` objects now track referential footnote information much more carefully than before
- * `MatrixPrintForm` objects will infer detail referential footnotes information from their `strings` element for backwards compatibility
+ * `MatrixPrintForm` objects will infer detailed referential footnote information from their `strings` element for backward compatibility.
  * fix to test that failed on old Windows CRAN machine due to imperfect UTF support there.
  * when specifying `lpp` and `cpp` in pagination or exporter functions, `NULL` now unambigiously means no pagination in the relevant direction, while the new default of `NA_integer_` now means those values should be inferred from page size.
 
