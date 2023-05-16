@@ -1,4 +1,7 @@
 ## formatters 0.4.1.9002
+ * fix bug in mpf pagination (and thus export_as_txt) when column labels had newlines (#150, rtables#634)
+
+## formatters 0.4.1.9002
  * font_size is now 8 across the board, whereas before it was inconsistent between 8 and 12
  * margins are now correctly interpreted as inches when specified (including the default)
  * fix off-by-one error in pagination machinery for certain cases
