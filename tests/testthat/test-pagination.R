@@ -299,7 +299,7 @@ expect_identical(formatters:::calc_lcpp(),
 ## cannot be piggybacked on.
 
 ## the ;TRUE is a hack becasue expect_success didn't do what it seems like it should
-## this will fail if the forst part befoer the ; throws an error.
+## this will fail if the first part befoer the ; throws an error.
 expect_true({diagnose_pagination(dfmf, lpp = NULL, cpp = 60); TRUE})
 expect_true({dgnostic <- diagnose_pagination(dfmf, lpp = 60, cpp = NULL); TRUE})
 expect_true({dgnostic <- diagnose_pagination(dfmf2, pg_width = 4, pg_height = 4,
