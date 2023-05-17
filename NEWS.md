@@ -1,21 +1,18 @@
-## formatters 0.4.1.9003
+## formatters 0.5.0
  * fix bug in mpf pagination (and thus export_as_txt) when column labels had newlines (#150, rtables#634)
-
-## formatters 0.4.1.9002
- * font_size is now 8 across the board, whereas before it was inconsistent between 8 and 12
- * margins are now correctly interpreted as inches when specified (including the default)
- * fix off-by-one error in pagination machinery for certain cases
- * refined informative messages when pagination is performed with `verbose = TRUE`
- * referential footnotes with specified (non-number) symbols are now only printed once per page regardless of how many elements on the page they refer to.
- * new `export_as_txt` function which can operate on any object with an applicable `matrix_form` method (including pagination)
- * new `paginate_indices` and `paginate_to_mpfs` functions
- * new `diagnose_pagination` function which accepts the same arguments as `paginate_to_mpfs` and returns information about the pagination algorithm outcome at both row and column positions.
- * `MatrixPrintForm` objects now track referential footnote information much more carefully than before
- * `MatrixPrintForm` objects will infer detailed referential footnote information from their `strings` element for backward compatibility.
- * fix to test that failed on old Windows CRAN machine due to imperfect UTF support there.
- * when specifying `lpp` and `cpp` in pagination or exporter functions, `NULL` now unambigiously means no pagination in the relevant direction, while the new default of `NA_integer_` now means those values should be inferred from page size.
-
-## formatters 0.4.1.9001
+ * `font_size` is now 8 consistently across the pagination machinery.
+ * When specified, margins are in inches (including the default).
+ * Fix off-by-one error in pagination machinery for certain cases.
+ * Refined informative messages when pagination is verbose (`verbose = TRUE`).
+ * Referential footnotes with specified (non-number) symbols are now printed once per page regardless of the number of elements on the page they refer to.
+ * New `export_as_txt` function operates now on any object with an applicable `matrix_form` method (including pagination).
+ * New `paginate_indices` and `paginate_to_mpfs` functions.
+ * New `diagnose_pagination` function accepts the same arguments as `paginate_to_mpfs` and returns information about the pagination algorithm outcome at both row and column positions.
+ * `MatrixPrintForm` objects now pay closer attention to referential footnote information than they did in the past.
+ * `MatrixPrintForm` objects infer detailed referential footnote information from their `strings` element for backward compatibility.
+ * Fix to test that failed on old Windows CRAN machine due to imperfect UTF support there.
+ * If `lpp` and `cpp` in pagination or exporter functions are assigned to `NULL`, no pagination in the vertical or horizontal direction happens, respectively. 
+* The new default of `NA_integer_` for `lpp` and `cpp` now means those values should be inferred from page size.
 * Added `hexSticker` logo.
 
 ## formatters 0.4.0
