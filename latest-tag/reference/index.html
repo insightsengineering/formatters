@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">formatters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,10 +33,18 @@
           aria-expanded="false" aria-haspopup="true"
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0">v0.5.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.1">v0.4.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.0">v0.4.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.3.3">v0.3.3</a> </div></li>
 <!-- end dropdown for versions -->
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-reports">
+    <a class="dropdown-item" href="../coverage-report/">Coverage report</a>
+    <a class="dropdown-item" href="../unit-test-report/">Unit test report</a>
+  </div>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -133,6 +141,16 @@
           <code><a href="title_footer.html">main_title()</a></code> <code><a href="title_footer.html">`main_title&lt;-`()</a></code> <code><a href="title_footer.html">subtitles()</a></code> <code><a href="title_footer.html">`subtitles&lt;-`()</a></code> <code><a href="title_footer.html">page_titles()</a></code> <code><a href="title_footer.html">`page_titles&lt;-`()</a></code> <code><a href="title_footer.html">main_footer()</a></code> <code><a href="title_footer.html">`main_footer&lt;-`()</a></code> <code><a href="title_footer.html">prov_footer()</a></code> <code><a href="title_footer.html">`prov_footer&lt;-`()</a></code> <code><a href="title_footer.html">all_footers()</a></code> <code><a href="title_footer.html">all_titles()</a></code> 
         </dt>
         <dd>General title/footer accessors</dd>
+      </dl><dl><dt>
+          
+          <code><a href="num_rep_cols.html">num_rep_cols()</a></code> 
+        </dt>
+        <dd>Number of repeated columns</dd>
+      </dl><dl><dt>
+          
+          <code><a href="do_forced_paginate.html">do_forced_paginate()</a></code> 
+        </dt>
+        <dd>Generic for Performing "Forced Pagination"</dd>
       </dl></div><div class="section level2">
       <h2 id="generics-interface-for-ascii-rendering">Generics Interface for ASCII Rendering<a class="anchor" aria-label="anchor" href="#generics-interface-for-ascii-rendering"></a></h2>
       
@@ -168,6 +186,11 @@
       <dl><dt>
           
           <code><a href="MatrixPrintForm.html">MatrixPrintForm()</a></code> <code><a href="MatrixPrintForm.html">matrix_print_form()</a></code> 
+        </dt>
+        <dd>Matrix Print Form - Intermediate Representation for ASCII Table Printing</dd>
+      </dl><dl><dt>
+          
+          <code><a href="MatrixPrintForm_class.html">MatrixPrintForm-class</a></code> 
         </dt>
         <dd>Matrix Print Form - Intermediate Representation for ASCII Table Printing</dd>
       </dl></div><div class="section level2">
@@ -223,6 +246,11 @@
       
 
       <dl><dt>
+          
+          <code><a href="paginate_indices.html">paginate_indices()</a></code> <code><a href="paginate_indices.html">paginate_to_mpfs()</a></code> <code><a href="paginate_indices.html">diagnose_pagination()</a></code> 
+        </dt>
+        <dd>Paginate a table-like object for rendering</dd>
+      </dl><dl><dt>
           
           <code><a href="pagination_algo.html">pagination_algo</a></code> 
         </dt>
@@ -333,6 +361,16 @@
 
       <dl><dt>
           
+          <code><a href="export_as_txt.html">export_as_txt()</a></code> 
+        </dt>
+        <dd>Export a table-like object to plain (ASCII) text with page break</dd>
+      </dl><dl><dt>
+          
+          <code><a href="export_as_rtf.html">export_as_rtf()</a></code> 
+        </dt>
+        <dd>Export table to RTF</dd>
+      </dl><dl><dt>
+          
           <code><a href="mpf_to_rtf.html">mpf_to_rtf()</a></code> 
         </dt>
         <dd>Transform MPF to RTF</dd>
@@ -379,7 +417,7 @@
         <dd>Calculate lines per inch and characters per inch for font</dd>
       </dl><dl><dt>
           
-          <code><a href="mpf_accessors.html">mf_strings()</a></code> <code><a href="mpf_accessors.html">mf_spans()</a></code> <code><a href="mpf_accessors.html">mf_aligns()</a></code> <code><a href="mpf_accessors.html">mf_display()</a></code> <code><a href="mpf_accessors.html">mf_formats()</a></code> <code><a href="mpf_accessors.html">mf_rinfo()</a></code> <code><a href="mpf_accessors.html">mf_has_topleft()</a></code> <code><a href="mpf_accessors.html">mf_lgrouping()</a></code> <code><a href="mpf_accessors.html">mf_rfnotes()</a></code> <code><a href="mpf_accessors.html">mf_nlheader()</a></code> <code><a href="mpf_accessors.html">mf_nrheader()</a></code> <code><a href="mpf_accessors.html">`mf_strings&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_spans&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_aligns&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_display&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_formats&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_rinfo&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_lgrouping&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_rfnotes&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_nrheader&lt;-`()</a></code> <code><a href="mpf_accessors.html">mpf_has_rlabels()</a></code> 
+          <code><a href="mpf_accessors.html">mf_strings()</a></code> <code><a href="mpf_accessors.html">mf_spans()</a></code> <code><a href="mpf_accessors.html">mf_aligns()</a></code> <code><a href="mpf_accessors.html">mf_display()</a></code> <code><a href="mpf_accessors.html">mf_formats()</a></code> <code><a href="mpf_accessors.html">mf_rinfo()</a></code> <code><a href="mpf_accessors.html">mf_cinfo()</a></code> <code><a href="mpf_accessors.html">mf_has_topleft()</a></code> <code><a href="mpf_accessors.html">mf_lgrouping()</a></code> <code><a href="mpf_accessors.html">mf_rfnotes()</a></code> <code><a href="mpf_accessors.html">mf_nlheader()</a></code> <code><a href="mpf_accessors.html">mf_nrheader()</a></code> <code><a href="mpf_accessors.html">mf_colgap()</a></code> <code><a href="mpf_accessors.html">`mf_strings&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_spans&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_aligns&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_display&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_formats&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_rinfo&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_cinfo&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_lgrouping&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_rfnotes&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_nrheader&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_colgap&lt;-`()</a></code> <code><a href="mpf_accessors.html">mf_ncol()</a></code> <code><a href="mpf_accessors.html">mf_nrow()</a></code> <code><a href="mpf_accessors.html">`mf_ncol&lt;-`()</a></code> <code><a href="mpf_accessors.html">ncol(<i>&lt;MatrixPrintForm&gt;</i>)</a></code> <code><a href="mpf_accessors.html">mpf_has_rlabels()</a></code> <code><a href="mpf_accessors.html">mf_has_rlabels()</a></code> 
         </dt>
         <dd>Setters and Getters for aspects of MatrixPrintForm Objects</dd>
       </dl><dl><dt>
@@ -392,6 +430,11 @@
           <code><a href="page_types.html">page_types()</a></code> <code><a href="page_types.html">page_dim()</a></code> 
         </dt>
         <dd>Supported Named Page TypesList supported named page types</dd>
+      </dl><dl><dt>
+          
+          <code><a href="ref_df_row.html">ref_df_row()</a></code> 
+        </dt>
+        <dd>Create a row for a referential footnote information dataframe</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
