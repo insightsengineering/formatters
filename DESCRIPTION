@@ -14,30 +14,38 @@ Description: We provide a framework for rendering complex tables to ASCII,
 License: Apache License 2.0
 URL: https://github.com/insightsengineering/formatters
 BugReports: https://github.com/insightsengineering/formatters/issues
-Depends: 
+Depends:
     methods,
     R (>= 2.10)
-Imports: 
-    checkmate,
+Imports:
+    checkmate (>= 2.0),
     grid,
-    htmltools
+    htmltools (>= 0.5.4)
 Suggests:
-    dplyr,
+    dplyr (>= 1.0.8),
     gt (>= 0.7.0),
-    huxtable,
-    knitr,
-    r2rtf,
-    rmarkdown,
-    testthat
-VignetteBuilder: 
+    huxtable (>= 4.0.0),
+    knitr (>= 1.42),
+    r2rtf (>= 0.3.2),
+    testthat (>= 3.0.4)
+VignetteBuilder:
     knitr
+Remotes:
+    mllg/checkmate@*release,
+    rstudio/htmltools@*release,
+    tidyverse/dplyr@*release,
+    rstudio/gt@*release,
+    hughjonesd/huxtable@*release,
+    yihui/knitr@*release,
+    Merck/r2rtf@*release,
+    r-lib/testthat@*release
 Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
-Collate: 
+Collate:
     'data.R'
     'format_value.R'
     'matrix_form.R'

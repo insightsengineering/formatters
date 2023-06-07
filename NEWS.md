@@ -1,4 +1,7 @@
 ## formatters 0.5.0.9000
+* Specify minimal version of dependent packages.
+
+## formatters 0.5.0
  * fix bug in mpf pagination (and thus export_as_txt) when column labels had newlines (#150, rtables#634)
  * `font_size` is now 8 consistently across the pagination machinery.
  * When specified, margins are in inches (including the default).
@@ -11,7 +14,7 @@
  * `MatrixPrintForm` objects now pay closer attention to referential footnote information than they did in the past.
  * `MatrixPrintForm` objects infer detailed referential footnote information from their `strings` element for backward compatibility.
  * Fix to test that failed on old Windows CRAN machine due to imperfect UTF support there.
- * If `lpp` and `cpp` in pagination or exporter functions are assigned to `NULL`, no pagination in the vertical or horizontal direction happens, respectively. 
+ * If `lpp` and `cpp` in pagination or exporter functions are assigned to `NULL`, no pagination in the vertical or horizontal direction happens, respectively.
 * The new default of `NA_integer_` for `lpp` and `cpp` now means those values should be inferred from page size.
 * Added `hexSticker` logo.
 
@@ -56,10 +59,10 @@
  * adding wrapping of titles, subtitles, and footers.
  * `page_lcpp` function now provided to map page size and font combinations to lines
    and characters per page.
- * getters and setters for the components of `MatrixPrintForm` objects are now exported 
+ * getters and setters for the components of `MatrixPrintForm` objects are now exported
    (i.e., `mf_spans` and friends).
  * `na_str` can now be length >1, and is matched in position to NAs in that case.
- * `format_value` now returns solely the `na_str` value when all-NA values are formatted with certain formats 
+ * `format_value` now returns solely the `na_str` value when all-NA values are formatted with certain formats
     (currently`"(N=xx)"`, `">999.9"`, `">999.99"`, `"x.xxxx | (<0.0001)"`)
 
 ## formatters 0.3.3
@@ -92,7 +95,7 @@
 ## formatters 0.3.0
  * add exported `default_hsep` function for use her and in reverse-dependencies (incl `rtables`)
  * format_value now respects `na_str` even when format is `xx` (previously it returned `"NA"` always)
- * rename `linesep` argument to `hsep` in `toString` generic signature 
+ * rename `linesep` argument to `hsep` in `toString` generic signature
  * add `indent_size` argument to `matrix_form` generic signature
  * add a number of `"__ (__)"` (no pct) formats in response to #23
  * Switch to `testthat` as testing framework
