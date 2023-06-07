@@ -9,7 +9,6 @@ on:
     branches:
       - min_deps
 
-
 jobs:
   dependency-test:
     strategy:
