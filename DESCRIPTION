@@ -30,15 +30,15 @@ Suggests:
     testthat (>= 3.0.4)
 VignetteBuilder:
     knitr
-Remotes:
-    mllg/checkmate@*release,
-    rstudio/htmltools@*release,
-    tidyverse/dplyr@*release,
-    rstudio/gt@*release,
-    hughjonesd/huxtable@*release,
-    yihui/knitr@*release,
-    Merck/r2rtf@*release,
-    r-lib/testthat@*release
+Config/Needs/verdepcheck:
+    mllg/checkmate,
+    rstudio/htmltools,
+    tidyverse/dplyr,
+    rstudio/gt,
+    hughjonesd/huxtable,
+    yihui/knitr,
+    Merck/r2rtf,
+    r-lib/testthat
 Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
 Language: en-US
