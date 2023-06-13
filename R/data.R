@@ -7,7 +7,7 @@
 
 
 
-#' Simulated CDISC Alike Data for Examples
+#' Simulated `CDISC` Alike Data for Examples
 #'
 #' @format rds (data.frame)
 #' @rdname cdisc_data

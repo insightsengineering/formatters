@@ -6,7 +6,7 @@
 [![Code Coverage 📔](https://raw.githubusercontent.com/insightsengineering/formatters/_xml_coverage_reports/data/main/badge.svg)](https://insightsengineering.github.io/formatters/main/coverage-report/)
 
 ![GitHub forks](https://img.shields.io/github/forks/insightsengineering/formatters?style=social)
-![GitHub Repo stars](https://img.shields.io/github/stars/insightsengineering/formatters?style=social)
+![GitHub repo stars](https://img.shields.io/github/stars/insightsengineering/formatters?style=social)
 
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/insightsengineering/formatters)
 ![GitHub contributors](https://img.shields.io/github/contributors/insightsengineering/formatters)

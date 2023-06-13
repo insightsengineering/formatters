@@ -688,12 +688,12 @@ splice_idx_lists <- function(lsts) {
 #' These functions perform or diagnose bi-directional pagination on
 #' an object.
 #'
-#' `paginate_to_mpfs` renders `obj` into the `MatrixPrintForm` (MPF)
+#' `paginate_to_mpfs` renders `obj` into the `MatrixPrintForm` (`MPF`)
 #' intermediate representation, and then paginates that MPF into
-#' component MPFs each corresponding to an individual page and
+#' component `MPF`s each corresponding to an individual page and
 #' returns those in a list.
 #'
-#' `paginate_indices` renders `obj` into an MPF, then uses
+#' `paginate_indices` renders `obj` into an `MPF`, then uses
 #' that representation to calculate the rows and columns of
 #' `obj` corresponding to each page of the pagination of `obj`,
 #' but simply returns these indices rather than paginating
