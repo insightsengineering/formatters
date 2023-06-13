@@ -22,6 +22,8 @@ jobs:
       GCHAT_WEBHOOK: ${{ secrets.GCHAT_WEBHOOK }}
     with:
       strategy: ${{ matrix.test-strategy }}
+      additional-env-vars: |
+        PKG_SYSREQS_DRY_RUN=true
   cran-status:
     name: CRAN Status Monitor 📺
     uses: insightsengineering/r.pkg.template/.github/workflows/cran-status.yaml@main
