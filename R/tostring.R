@@ -187,11 +187,11 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
 #'     of \code{x}. The expected length  of this numeric vector can be
 #'     retrieved with  `ncol() + 1`  as the  column of row  names must
 #'     also be considered.
-#' @param  hsep  character(1).   Characters  to  repeat   to  create
+#' @param hsep `character(1)`. Characters to repeat to create
 #'     header/body separator line.
-#' @param tf_wrap logical(1). Should  the texts for  title, subtitle,
+#' @param tf_wrap `logical(1)`. Should  the texts for  title, subtitle,
 #'     and footnotes be wrapped?
-#' @param max_width integer(1), character(1) or NULL. Width that title
+#' @param max_width `integer(1)`, `character(1)` or NULL. Width that title
 #'     and   footer   (including   footnotes)  materials   should   be
 #'     word-wrapped to. If NULL, it is  set to the current print width
 #'     of the  session (`getOption("width")`). If set to `"auto"`,
@@ -413,10 +413,10 @@ new_line_warning <- function(str_v) {
 }
 
 #' Wrap a string to within a maximum width
-#' @param str character(1). String to be wrapped
-#' @param max_width numeric(1). Maximum width, in characters, that the
+#' @param str `character(1)`. String to be wrapped
+#' @param max_width `numeric(1)`. Maximum width, in characters, that the
 #' text should be wrapped at.
-#' @param hard logical(1). Should hard wrapping (embedding newlines in
+#' @param hard `logical(1)`. Should hard wrapping (embedding newlines in
 #' the incoming strings) or soft (breaking wrapped strings into vectors
 #' of length >1) be used. Defaults to `FALSE` (i.e. soft wrapping).
 #'
@@ -477,7 +477,7 @@ wrap_string <- function(str, max_width, hard = FALSE) {
   naive
 }
 
-#' @param txt character. Vector of strings that should be (independently)
+#' @param txt character. A vector of strings that should be (independently)
 #' text-wrapped.
 #' @rdname wrap_string
 #' @export
@@ -534,7 +534,7 @@ expand_mat_rows <- function(mat, row_nlines = apply(mat, 1, nlines), expfun = pa
 
 #' Transform vectors of spans (with duplication) to Visibility vector
 #'
-#' @param spans numeric. Vector of spans, with each span value repeated
+#' @param spans numeric. A vector of spans, with each span value repeated
 #' for the cells it covers.
 #'
 #' @details
@@ -581,10 +581,10 @@ spans_to_viscell <- function(spans) {
 #'
 #' The row names are also considered a column for the output
 #'
-#' @param x MatrixPrintForm object, or an object with a `matrix_form`
+#' @param x `MatrixPrintForm` object, or an object with a `matrix_form`
 #' method.
-#' @param indent_size numeric(1). Indent size in characters. Ignored
-#' when `x` is already a MatrixPrintForm object in favor of information
+#' @param indent_size `numeric(1)`. Indent size in characters. Ignored
+#' when `x` is already a `MatrixPrintForm` object in favor of information
 #' there.
 #'
 #' @examples
@@ -666,7 +666,7 @@ propose_column_widths <- function(x, indent_size = 2) {
 #' @param x string
 #' @param n number  of  character  of the  output  string,  if `n  <
 #'     nchar(x)` an error is thrown
-#' @param just  character(1).   Text  alignment   justification  to
+#' @param just  `character(1)`.   Text  alignment   justification  to
 #'     use. Defaults to center. Must be center, right or left.
 #'
 #' @export
@@ -715,10 +715,10 @@ spaces <- function(n) {
 }
 
 
-#' spread x into len elements
+#' spread `x` into `len` elements
 #'
-#' @param x numeric(1). The number to spread
-#' @param len numeric(1). The number of times to repeat \code{x}
+#' @param x `numeric(1)`. The number to spread
+#' @param len `numeric(1)`. The number of times to repeat \code{x}
 #'
 #' @export
 #' @return if \code{x} is a scalar "whole number" value (see \code{\link{is.wholenumber}}),
@@ -762,8 +762,8 @@ spread_integer <- function(x, len) {
 
 #' is.wholenumber
 #'
-#' @param x numeric(1). A numeric value
-#' @param tol numeric(1). A precision tolerance.
+#' @param x `numeric(1)`. A numeric value
+#' @param tol `numeric(1)`. A precision tolerance.
 #'
 #' @return \code{TRUE} if \code{x} is within \code{tol} of zero,
 #' \code{FALSE} otherwise.

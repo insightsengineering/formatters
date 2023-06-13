@@ -7,9 +7,9 @@
 is.wholenumber(x, tol = .Machine$double.eps^0.5)
 }
 \arguments{
-\item{x}{numeric(1). A numeric value}
+\item{x}{\code{numeric(1)}. A numeric value}
 
-\item{tol}{numeric(1). A precision tolerance.}
+\item{tol}{\code{numeric(1)}. A precision tolerance.}
 }
 \value{
 \code{TRUE} if \code{x} is within \code{tol} of zero,

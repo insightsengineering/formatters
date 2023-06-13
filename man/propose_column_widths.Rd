@@ -7,11 +7,11 @@
 propose_column_widths(x, indent_size = 2)
 }
 \arguments{
-\item{x}{MatrixPrintForm object, or an object with a \code{matrix_form}
+\item{x}{\code{MatrixPrintForm} object, or an object with a \code{matrix_form}
 method.}
 
-\item{indent_size}{numeric(1). Indent size in characters. Ignored
-when \code{x} is already a MatrixPrintForm object in favor of information
+\item{indent_size}{\code{numeric(1)}. Indent size in characters. Ignored
+when \code{x} is already a \code{MatrixPrintForm} object in favor of information
 there.}
 }
 \value{

@@ -14,7 +14,7 @@
 \alias{ex_advs}
 \title{Simulated \code{CDISC} Alike Data for Examples}
 \format{
-rds (data.frame)
+\code{rds} (data.frame)
 
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 1934 rows and 48 columns.
 

@@ -689,7 +689,7 @@ splice_idx_lists <- function(lsts) {
 #' an object.
 #'
 #' `paginate_to_mpfs` renders `obj` into the `MatrixPrintForm` (`MPF`)
-#' intermediate representation, and then paginates that MPF into
+#' intermediate representation, and then paginates that `MPF` into
 #' component `MPF`s each corresponding to an individual page and
 #' returns those in a list.
 #'

@@ -11,7 +11,7 @@ padstr(x, n, just = c("center", "left", "right"))
 
 \item{n}{number  of  character  of the  output  string,  if \code{n  < nchar(x)} an error is thrown}
 
-\item{just}{character(1).   Text  alignment   justification  to
+\item{just}{\code{character(1)}.   Text  alignment   justification  to
 use. Defaults to center. Must be center, right or left.}
 }
 \value{

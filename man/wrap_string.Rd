@@ -10,16 +10,16 @@ wrap_string(str, max_width, hard = FALSE)
 wrap_txt(txt, max_width, hard = FALSE)
 }
 \arguments{
-\item{str}{character(1). String to be wrapped}
+\item{str}{\code{character(1)}. String to be wrapped}
 
-\item{max_width}{numeric(1). Maximum width, in characters, that the
+\item{max_width}{\code{numeric(1)}. Maximum width, in characters, that the
 text should be wrapped at.}
 
-\item{hard}{logical(1). Should hard wrapping (embedding newlines in
+\item{hard}{\code{logical(1)}. Should hard wrapping (embedding newlines in
 the incoming strings) or soft (breaking wrapped strings into vectors
 of length >1) be used. Defaults to \code{FALSE} (i.e. soft wrapping).}
 
-\item{txt}{character. Vector of strings that should be (independently)
+\item{txt}{character. A vector of strings that should be (independently)
 text-wrapped.}
 }
 \value{

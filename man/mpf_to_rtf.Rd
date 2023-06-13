@@ -2,7 +2,7 @@
 % Please edit documentation in R/mpf_exporters.R
 \name{mpf_to_rtf}
 \alias{mpf_to_rtf}
-\title{Transform MPF to RTF}
+\title{Transform \code{MPF} to \code{RTF}}
 \usage{
 mpf_to_rtf(
   mpf,
@@ -17,9 +17,9 @@ mpf_to_rtf(
 )
 }
 \arguments{
-\item{mpf}{MatrixPrintForm. MatrixPrintForm object.}
+\item{mpf}{\code{MatrixPrintForm}. \code{MatrixPrintForm} object.}
 
-\item{colwidths}{character(1). Column widths.}
+\item{colwidths}{\code{character(1)}. Column widths.}
 
 \item{page_type}{character(1).   Name   of  a  page  type.   See
 \code{page_types}.   Ignored when  \code{pg_width} and  \code{pg_height}
@@ -43,14 +43,15 @@ horizontal margins.}
 \item{...}{Passed to individual methods.}
 }
 \value{
-An rtf object
+An \code{RTF} object
 }
 \description{
-Experimental export to RTF via the \code{r2rtf} package
+Experimental export to \code{RTF} via the \code{r2rtf} package
 }
 \details{
 This function provides a low-level coercion of a
-\verb{MatrixPrintForm object into text containing the corresponding table in }RTF`. Currently, no pagination is done at this level,
+\code{MatrixPrintForm} object into text containing the corresponding
+table in \code{RTF}. Currently, no pagination is done at this level,
 and should be done prior to calling this function, though that
 may change in the future.
 }

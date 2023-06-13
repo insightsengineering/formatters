@@ -188,22 +188,22 @@ mpf_to_dfbody <- function(mpf, colwidths) {
 }
 
 
-#' Transform MPF to RTF
+#' Transform `MPF` to `RTF`
 #'
-#' Experimental export to RTF via the `r2rtf` package
+#' Experimental export to `RTF` via the `r2rtf` package
 #'
 #' @inheritParams page_lcpp
 #' @inheritParams toString
 #' @inheritParams grid::plotViewport
-#' @param mpf MatrixPrintForm. MatrixPrintForm object.
-#' @param colwidths character(1). Column widths.
+#' @param mpf `MatrixPrintForm`. `MatrixPrintForm` object.
+#' @param colwidths `character(1)`. Column widths.
 #' @details This function provides a low-level coercion of a
-#' `MatrixPrintForm object into text containing the corresponding
+#' `MatrixPrintForm` object into text containing the corresponding
 #' table in `RTF`. Currently, no pagination is done at this level,
 #' and should be done prior to calling this function, though that
 #' may change in the future.
 #'
-#' @return An rtf object
+#' @return An `RTF` object
 #' @export
 mpf_to_rtf <- function(mpf,
                        colwidths = NULL,
@@ -215,7 +215,7 @@ mpf_to_rtf <- function(mpf,
                        font_size = 8,
                        ...) {
   if (!requireNamespace("r2rtf")) {
-    stop("RTF export requires the 'r2rtf' function please install it")
+    stop("RTF export requires the 'r2rtf' package, please install it.")
   }
   mpf <- matrix_form(mpf, indent_rownames = TRUE)
   nlr <- mf_nlheader(mpf)
@@ -279,7 +279,7 @@ mpf_to_rtf <- function(mpf,
   rtfpg
 }
 
-## Not currently in use, previous alternate ways to get to rtf
+## Not currently in use, previous alternate ways to get to RTF
 
 ## ## XXX Experimental. Not to be exported without approval
 ## mpf_to_huxtable <- function(obj) {
@@ -372,19 +372,19 @@ mpf_to_rtf <- function(mpf,
 
 
 
-#' Export table to RTF
+#' Export table to `RTF`
 #'
-#' Experimental export to the RTF format.
+#' Experimental export to the `RTF` format.
 #'
-#' @details RTF export occurs by via the following steps
+#' @details `RTF` export occurs by via the following steps
 #'
 #' \itemize{
 #' \item{the table is paginated to the page size (Vertically and horizontally)}
-#' \item{Each separate page is converted to a MatrixPrintForm and from there to RTF-encoded text}
-#' \item{Separate rtfs text chunks are combined and written out as a single RTF file}
+#' \item{Each separate page is converted to a `MatrixPrintForm` and from there to `RTF`-encoded text}
+#' \item{Separate `RTFs` text chunks are combined and written out as a single `RTF` file}
 #' }
 #'
-#' Conversion of `MatrixPrintForm` objects to RTF is done via [formatters::mpf_to_rtf()].
+#' Conversion of `MatrixPrintForm` objects to `RTF` is done via [formatters::mpf_to_rtf()].
 #' @inheritParams export_as_txt
 #' @inheritParams toString
 #' @inheritParams grid::plotViewport

@@ -1,6 +1,6 @@
-### This file defines the generics which make up the interface formatters offers.
+### This file defines the generics which make up the interface `formatters` offers.
 ### Defining methods for these generics for a new table-like class should be fully
-### sufficient for hooking that class up to the formatters pagination and rendering
+### sufficient for hooking that class up to the `formatters` pagination and rendering
 ### machinery.
 
 
@@ -45,7 +45,7 @@
 #' `make_row_df` methods can call `make_row_df` recursively and retain information,
 #' and should not be set during a top-level call
 #'
-#' @note the technically present root tree node is excluded from the summary returned dby
+#' @note the technically present root tree node is excluded from the summary returned by
 #' both \code{make_row_df} and \code{make_col_df}, as it is simply the
 #' row/column structure of \code{tt} and thus not useful for pathing or pagination.
 #' @export
@@ -233,17 +233,17 @@ setMethod("print", "ANY", base::print) ## nocov
 
 
 
-## General/"universal" property getter and setter generics and stubs
+## General/"universal" property `getter` and `setter` generics and stubs
 
 #' @title Label, Name and Format accessor generics
 #'
-#' @description Getters and setters for basic, relatively universal attributes
+#' @description `Getters` and `setters` for basic, relatively universal attributes
 #' of "table-like" objects"
 #'
 #' @name lab_name
 #' @param obj ANY. The object.
 #' @param value character(1)/FormatSpec. The new value of the attribute.
-#' @return the name, format or label of \code{obj} for getters, or \code{obj} after modification
+#' @return the name, format or label of \code{obj} for `getters`, or \code{obj} after modification
 #' for setters.
 #' @aliases obj_name
 #' @export

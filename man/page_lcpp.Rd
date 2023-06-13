@@ -2,7 +2,7 @@
 % Please edit documentation in R/page_size.R
 \name{page_lcpp}
 \alias{page_lcpp}
-\title{Determine lines per page (LPP) and characters per page (CPP) based on font and page type}
+\title{Determine lines per page (\code{LPP}) and characters per page (\code{CPP}) based on font and page type}
 \usage{
 page_lcpp(
   page_type = page_types(),
@@ -42,11 +42,11 @@ horizontal margins.}
 \item{pg_height}{numeric(1). Page height in inches.}
 }
 \value{
-a named list containing \code{lpp} (lines per page) and \code{cpp} (characters per page)
+a named list containing \code{LPP} (lines per page) and \code{CPP} (characters per page)
 elements suitable for use by the pagination machinery.
 }
 \description{
-Determine lines per page (LPP) and characters per page (CPP) based on font and page type
+Determine lines per page (\code{LPP}) and characters per page (\code{CPP}) based on font and page type
 }
 \examples{
 page_lcpp()

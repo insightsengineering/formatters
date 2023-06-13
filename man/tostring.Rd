@@ -26,10 +26,10 @@ of \code{x}. The expected length  of this numeric vector can be
 retrieved with  \code{ncol() + 1}  as the  column of row  names must
 also be considered.}
 
-\item{tf_wrap}{logical(1). Should  the texts for  title, subtitle,
+\item{tf_wrap}{\code{logical(1)}. Should  the texts for  title, subtitle,
 and footnotes be wrapped?}
 
-\item{max_width}{integer(1), character(1) or NULL. Width that title
+\item{max_width}{\code{integer(1)}, \code{character(1)} or NULL. Width that title
 and   footer   (including   footnotes)  materials   should   be
 word-wrapped to. If NULL, it is  set to the current print width
 of the  session (\code{getOption("width")}). If set to \code{"auto"},
@@ -38,7 +38,7 @@ completely if \code{tf_wrap} is \code{FALSE}.}
 
 \item{col_gap}{numeric(1). Space (in characters) between columns}
 
-\item{hsep}{character(1).   Characters  to  repeat   to  create
+\item{hsep}{\code{character(1)}. Characters to repeat to create
 header/body separator line.}
 }
 \value{
