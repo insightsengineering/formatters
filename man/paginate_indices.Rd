@@ -127,17 +127,17 @@ considerations. Defaults to none.}
 \item{colwidths}{numeric vector.  Column widths (in characters) for
 use with vertical pagination.}
 
-\item{tf_wrap}{\code{logical(1)}. Should  the texts for  title, subtitle,
+\item{tf_wrap}{logical(1). Should  the texts for  title, subtitle,
 and footnotes be wrapped?}
 
-\item{max_width}{\code{integer(1)}, \code{character(1)} or NULL. Width that title
+\item{max_width}{integer(1), character(1) or NULL. Width that title
 and   footer   (including   footnotes)  materials   should   be
 word-wrapped to. If NULL, it is  set to the current print width
 of the  session (\code{getOption("width")}). If set to \code{"auto"},
 the width of the table (plus any table inset) is used. Ignored
 completely if \code{tf_wrap} is \code{FALSE}.}
 
-\item{indent_size}{\code{numeric(1)}. Indent size in characters. Ignored
+\item{indent_size}{numeric(1). Indent size in characters. Ignored
 when \code{x} is already a \code{MatrixPrintForm} object in favor of information
 there.}
 

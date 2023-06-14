@@ -89,7 +89,7 @@ NULL
 #' Create row of pagination data frame
 #' @param nm character(1). Name
 #' @param lab character(1). Label
-#' @param rnum numeric(1). Absolute rownumber
+#' @param rnum numeric(1). Absolute row number
 #' @param pth character or NULL. Path within larger table
 #' @param sibpos integer(1). Position among sibling rows
 #' @param nsibs integer(1). Number of siblings (including self).

@@ -98,7 +98,7 @@ mf_has_rlabels(mf)
 
 \item{value}{ANY. The new value for the component in question.}
 
-\item{x}{MatrixPrintForm. The object.}
+\item{x}{\code{MatrixPrintForm}. The object.}
 }
 \value{
 The element of the \code{MatrixPrintForm} associated with the \code{getter}, or

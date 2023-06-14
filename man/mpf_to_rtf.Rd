@@ -19,7 +19,7 @@ mpf_to_rtf(
 \arguments{
 \item{mpf}{\code{MatrixPrintForm}. \code{MatrixPrintForm} object.}
 
-\item{colwidths}{\code{character(1)}. Column widths.}
+\item{colwidths}{character(1). Column widths.}
 
 \item{page_type}{character(1).   Name   of  a  page  type.   See
 \code{page_types}.   Ignored when  \code{pg_width} and  \code{pg_height}

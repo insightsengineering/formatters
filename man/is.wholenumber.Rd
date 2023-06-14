@@ -2,21 +2,21 @@
 % Please edit documentation in R/tostring.R
 \name{is.wholenumber}
 \alias{is.wholenumber}
-\title{is.wholenumber}
+\title{\code{is.wholenumber}}
 \usage{
 is.wholenumber(x, tol = .Machine$double.eps^0.5)
 }
 \arguments{
-\item{x}{\code{numeric(1)}. A numeric value}
+\item{x}{numeric(1). A numeric value}
 
-\item{tol}{\code{numeric(1)}. A precision tolerance.}
+\item{tol}{numeric(1). A precision tolerance.}
 }
 \value{
 \code{TRUE} if \code{x} is within \code{tol} of zero,
 \code{FALSE} otherwise.
 }
 \description{
-is.wholenumber
+\code{is.wholenumber}
 }
 \examples{
 is.wholenumber(5)

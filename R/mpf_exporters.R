@@ -196,7 +196,7 @@ mpf_to_dfbody <- function(mpf, colwidths) {
 #' @inheritParams toString
 #' @inheritParams grid::plotViewport
 #' @param mpf `MatrixPrintForm`. `MatrixPrintForm` object.
-#' @param colwidths `character(1)`. Column widths.
+#' @param colwidths character(1). Column widths.
 #' @details This function provides a low-level coercion of a
 #' `MatrixPrintForm` object into text containing the corresponding
 #' table in `RTF`. Currently, no pagination is done at this level,

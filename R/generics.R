@@ -68,12 +68,12 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
 ## nocov end
 
 
-#' Transform rtable to a list of matrices which can be used for outputting
+#' Transform `rtable` to a list of matrices which can be used for outputting
 #'
-#' Although rtables are represented as a tree data structure when outputting the table to ASCII or HTML it is useful to
-#' map the rtable to an in between state with the formatted cells in a matrix form.
+#' Although `rtables` are represented as a tree data structure when outputting the table to ASCII or HTML it is useful to
+#' map the `rtable` to an in between state with the formatted cells in a matrix form.
 #'
-#' @param obj ANY. Object to be transformed into a ready-to-render form (a MatrixPrintForm object)
+#' @param obj ANY. Object to be transformed into a ready-to-render form (a `MatrixPrintForm` object)
 #' @param indent_rownames logical(1), if TRUE the column with the row names in the `strings` matrix of has indented row
 #' names (strings pre-fixed)
 #' @param expand_newlines logical(1). Should the matrix form generated
@@ -119,10 +119,10 @@ setMethod("matrix_form", "MatrixPrintForm", function(obj,
 })
 
 
-## Generics for toString and helper functions
+## Generics for `toString` and helper functions
 
 
-## this is where we will take wordwrapping
+## this is where we will take word wrapping
 ## into account when it is added
 ##
 ## ALL calculations of vertical space for pagination
@@ -203,7 +203,7 @@ setMethod("nlines", "character", function(x, colwidths, max_width) {
 
 
 
-#' @title toString
+#' @title `toString`
 #'
 #' @description Transform a complex object into a string representation ready
 #' to be printed or written to a plain-text file

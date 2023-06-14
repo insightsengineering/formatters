@@ -7,9 +7,9 @@
 spread_integer(x, len)
 }
 \arguments{
-\item{x}{\code{numeric(1)}. The number to spread}
+\item{x}{numeric(1). The number to spread}
 
-\item{len}{\code{numeric(1)}. The number of times to repeat \code{x}}
+\item{len}{numeric(1). The number of times to repeat \code{x}}
 }
 \value{
 if \code{x} is a scalar "whole number" value (see \code{\link{is.wholenumber}}),

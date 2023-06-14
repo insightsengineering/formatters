@@ -702,7 +702,7 @@ mf_nrow <- function(mf) max(mf_lgrouping(mf)) - mf_nrheader(mf)
     mf
 }
 
-#' @param x MatrixPrintForm. The object.
+#' @param x `MatrixPrintForm`. The object.
 #' @export
 #' @rdname mpf_accessors
 setMethod(

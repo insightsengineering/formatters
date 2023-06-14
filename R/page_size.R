@@ -44,7 +44,7 @@ pg_dim_names <- list(
 
 
 #'
-#' Supported Named Page TypesList supported named page types
+#' Supported Named Page `TypesList` supported named page types
 #'
 #' @return for `page_types` a character vector of supported page types,
 #' for `page_dim` the dimensions (width, then height) of the selected page type.

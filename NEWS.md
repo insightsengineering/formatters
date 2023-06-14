@@ -1,7 +1,7 @@
 ## formatters 0.5.0.9000
 
 ## formatters 0.5.0
- * fix bug in `MPF` pagination (and thus export_as_txt) when column labels had newlines (#150, rtables#634)
+ * fix bug in `MPF` pagination (and thus export_as_txt) when column labels had newlines ([#150](github.com/insightsengineering/formatters/issues/150), [`insightsengineering/rtables#634`](https://github.com/insightsengineering/rtables/issues/634))
  * `font_size` is now 8 consistently across the pagination machinery.
  * When specified, margins are in inches (including the default).
  * Fix off-by-one error in pagination machinery for certain cases.
@@ -86,7 +86,7 @@
  * calling `var_labels` on a data.frame with no columns is no longer an error ([`insightsengineering/rtables#224`](https://github.com/insightsengineering/rtables/issues/224))
 
 ## formatters 0.3.2
- * Change warning when non-UTF line sep default is used to message, and display it only during interactive sessions (once per session).
+ * Change warning when non-UTF line separator default is used to message, and displays it only during interactive sessions (once per session).
 
 ## formatters 0.3.1
  * Released on CRAN
@@ -104,7 +104,7 @@
  * Released on CRAN
 
 ## formatters 0.1.0.0003
- * Fix regression in support for new lines in columns in rtables
+ * Fix regression in support for new lines in columns in `rtables`
 
 ## formatters 0.1.0.0002
- * Add `formats` argument to matrix_form informal class/constructor for use in rtables::table_shell
+ * Add `formats` argument to matrix_form informal class/constructor for use in `rtables::table_shell`

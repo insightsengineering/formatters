@@ -1,6 +1,3 @@
-MatrixPrintForm
-TypesList
-charset
 decrementing
 glyphs
 mandatorily
@@ -8,15 +5,7 @@ paginations
 pathing
 pre
 repo
-rownumber
-rtable
-rtables
-sep
-sprintf
 subobjects
 subtable
 subtables
-toString
 trailling
-unicode
-wholenumber

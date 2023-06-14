@@ -76,7 +76,7 @@ is_valid_format <- function(x, stop_otherwise = FALSE) {
 }
 
 
-#' Specify text format via a sprintf format string
+#' Specify text format via a `sprintf` format string
 #'
 #'
 #' @param format character(1). A format string passed to `sprintf`.
