@@ -89,7 +89,7 @@ NULL
 #' Create row of pagination data frame
 #' @param nm character(1). Name
 #' @param lab character(1). Label
-#' @param rnum numeric(1). Absolute rownumber
+#' @param rnum numeric(1). Absolute row number
 #' @param pth character or NULL. Path within larger table
 #' @param sibpos integer(1). Position among sibling rows
 #' @param nsibs integer(1). Number of siblings (including self).
@@ -688,12 +688,12 @@ splice_idx_lists <- function(lsts) {
 #' These functions perform or diagnose bi-directional pagination on
 #' an object.
 #'
-#' `paginate_to_mpfs` renders `obj` into the `MatrixPrintForm` (MPF)
-#' intermediate representation, and then paginates that MPF into
-#' component MPFs each corresponding to an individual page and
+#' `paginate_to_mpfs` renders `obj` into the `MatrixPrintForm` (`MPF`)
+#' intermediate representation, and then paginates that `MPF` into
+#' component `MPF`s each corresponding to an individual page and
 #' returns those in a list.
 #'
-#' `paginate_indices` renders `obj` into an MPF, then uses
+#' `paginate_indices` renders `obj` into an `MPF`, then uses
 #' that representation to calculate the rows and columns of
 #' `obj` corresponding to each page of the pagination of `obj`,
 #' but simply returns these indices rather than paginating

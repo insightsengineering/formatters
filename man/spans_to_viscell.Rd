@@ -7,7 +7,7 @@
 spans_to_viscell(spans)
 }
 \arguments{
-\item{spans}{numeric. Vector of spans, with each span value repeated
+\item{spans}{numeric. A vector of spans, with each span value repeated
 for the cells it covers.}
 }
 \value{

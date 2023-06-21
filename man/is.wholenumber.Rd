@@ -2,7 +2,7 @@
 % Please edit documentation in R/tostring.R
 \name{is.wholenumber}
 \alias{is.wholenumber}
-\title{is.wholenumber}
+\title{\code{is.wholenumber}}
 \usage{
 is.wholenumber(x, tol = .Machine$double.eps^0.5)
 }
@@ -16,7 +16,7 @@ is.wholenumber(x, tol = .Machine$double.eps^0.5)
 \code{FALSE} otherwise.
 }
 \description{
-is.wholenumber
+\code{is.wholenumber}
 }
 \examples{
 is.wholenumber(5)

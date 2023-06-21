@@ -12,9 +12,9 @@
 \alias{ex_adqs}
 \alias{ex_adrs}
 \alias{ex_advs}
-\title{Simulated CDISC Alike Data for Examples}
+\title{Simulated \code{CDISC} Alike Data for Examples}
 \format{
-rds (data.frame)
+\code{rds} (data.frame)
 
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 1934 rows and 48 columns.
 
@@ -56,6 +56,6 @@ ex_adrs
 ex_advs
 }
 \description{
-Simulated CDISC Alike Data for Examples
+Simulated \code{CDISC} Alike Data for Examples
 }
 \keyword{datasets}

@@ -3,7 +3,7 @@
 \name{matrix_form}
 \alias{matrix_form}
 \alias{matrix_form,MatrixPrintForm-method}
-\title{Transform rtable to a list of matrices which can be used for outputting}
+\title{Transform \code{rtable} to a list of matrices which can be used for outputting}
 \usage{
 matrix_form(
   obj,
@@ -20,7 +20,7 @@ matrix_form(
 )
 }
 \arguments{
-\item{obj}{ANY. Object to be transformed into a ready-to-render form (a MatrixPrintForm object)}
+\item{obj}{ANY. Object to be transformed into a ready-to-render form (a \code{MatrixPrintForm} object)}
 
 \item{indent_rownames}{logical(1), if TRUE the column with the row names in the \code{strings} matrix of has indented row
 names (strings pre-fixed)}
@@ -48,8 +48,8 @@ With an additional \code{nrow_header} attribute indicating the number of pseudo 
 column structure defines.
 }
 \description{
-Although rtables are represented as a tree data structure when outputting the table to ASCII or HTML it is useful to
-map the rtable to an in between state with the formatted cells in a matrix form.
+Although \code{rtables} are represented as a tree data structure when outputting the table to ASCII or HTML it is useful to
+map the \code{rtable} to an in between state with the formatted cells in a matrix form.
 }
 \details{
 The strings in the return object are defined as follows: row labels are those determined by \code{summarize_rows} and

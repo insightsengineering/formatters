@@ -3,14 +3,14 @@
 \docType{data}
 \name{DM}
 \alias{DM}
-\title{DM data}
+\title{\code{DM} data}
 \format{
-rds (data.frame)
+\code{rds} (data.frame)
 }
 \usage{
 DM
 }
 \description{
-DM data
+\code{DM} data
 }
 \keyword{datasets}

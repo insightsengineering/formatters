@@ -3,7 +3,7 @@
 \name{page_types}
 \alias{page_types}
 \alias{page_dim}
-\title{Supported Named Page TypesList supported named page types}
+\title{Supported Named Page \code{TypesList} supported named page types}
 \usage{
 page_types()
 
@@ -18,7 +18,7 @@ for \code{page_types} a character vector of supported page types,
 for \code{page_dim} the dimensions (width, then height) of the selected page type.
 }
 \description{
-Supported Named Page TypesList supported named page types
+Supported Named Page \code{TypesList} supported named page types
 }
 \examples{
 page_types()

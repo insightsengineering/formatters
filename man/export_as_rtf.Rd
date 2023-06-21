@@ -2,7 +2,7 @@
 % Please edit documentation in R/mpf_exporters.R
 \name{export_as_rtf}
 \alias{export_as_rtf}
-\title{Export table to RTF}
+\title{Export table to \code{RTF}}
 \usage{
 export_as_rtf(
   x,
@@ -54,16 +54,16 @@ to Courier.}
 \item{...}{Passed to individual methods.}
 }
 \description{
-Experimental export to the RTF format.
+Experimental export to the \code{RTF} format.
 }
 \details{
-RTF export occurs by via the following steps
+\code{RTF} export occurs by via the following steps
 
 \itemize{
 \item{the table is paginated to the page size (Vertically and horizontally)}
-\item{Each separate page is converted to a MatrixPrintForm and from there to RTF-encoded text}
-\item{Separate rtfs text chunks are combined and written out as a single RTF file}
+\item{Each separate page is converted to a \code{MatrixPrintForm} and from there to \code{RTF}-encoded text}
+\item{Separate \code{RTFs} text chunks are combined and written out as a single \code{RTF} file}
 }
 
-Conversion of \code{MatrixPrintForm} objects to RTF is done via \code{\link[=mpf_to_rtf]{mpf_to_rtf()}}.
+Conversion of \code{MatrixPrintForm} objects to \code{RTF} is done via \code{\link[=mpf_to_rtf]{mpf_to_rtf()}}.
 }

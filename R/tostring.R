@@ -1,4 +1,4 @@
-# toString ----
+# `toString` ----
 
 ## this can't be tested from within R
 # nocov start
@@ -28,9 +28,9 @@ d_hsep_factory <- function() {
 #' Default horizontal Separator
 #'
 #' The default horizontal separator character which can be
-#' displayed in the current charset for use in rendering table-likes.
+#' displayed in the current `charset` for use in rendering table-likes.
 #'
-#' @return unicode 2014 (long dash for generating solid horizontal line)
+#' @return `unicode` 2014 (long dash for generating solid horizontal line)
 #' if in a locale that uses a UTF character set, otherwise an ASCII hyphen
 #' with a once-per-session warning.
 #'
@@ -187,7 +187,7 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
 #'     of \code{x}. The expected length  of this numeric vector can be
 #'     retrieved with  `ncol() + 1`  as the  column of row  names must
 #'     also be considered.
-#' @param  hsep  character(1).   Characters  to  repeat   to  create
+#' @param hsep character(1). Characters to repeat to create
 #'     header/body separator line.
 #' @param tf_wrap logical(1). Should  the texts for  title, subtitle,
 #'     and footnotes be wrapped?
@@ -477,7 +477,7 @@ wrap_string <- function(str, max_width, hard = FALSE) {
   naive
 }
 
-#' @param txt character. Vector of strings that should be (independently)
+#' @param txt character. A vector of strings that should be (independently)
 #' text-wrapped.
 #' @rdname wrap_string
 #' @export
@@ -534,7 +534,7 @@ expand_mat_rows <- function(mat, row_nlines = apply(mat, 1, nlines), expfun = pa
 
 #' Transform vectors of spans (with duplication) to Visibility vector
 #'
-#' @param spans numeric. Vector of spans, with each span value repeated
+#' @param spans numeric. A vector of spans, with each span value repeated
 #' for the cells it covers.
 #'
 #' @details
@@ -581,10 +581,10 @@ spans_to_viscell <- function(spans) {
 #'
 #' The row names are also considered a column for the output
 #'
-#' @param x MatrixPrintForm object, or an object with a `matrix_form`
+#' @param x `MatrixPrintForm` object, or an object with a `matrix_form`
 #' method.
 #' @param indent_size numeric(1). Indent size in characters. Ignored
-#' when `x` is already a MatrixPrintForm object in favor of information
+#' when `x` is already a `MatrixPrintForm` object in favor of information
 #' there.
 #'
 #' @examples
@@ -715,7 +715,7 @@ spaces <- function(n) {
 }
 
 
-#' spread x into len elements
+#' spread `x` into `len` elements
 #'
 #' @param x numeric(1). The number to spread
 #' @param len numeric(1). The number of times to repeat \code{x}
@@ -760,7 +760,7 @@ spread_integer <- function(x, len) {
 
 
 
-#' is.wholenumber
+#' `is.wholenumber`
 #'
 #' @param x numeric(1). A numeric value
 #' @param tol numeric(1). A precision tolerance.

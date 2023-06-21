@@ -52,11 +52,11 @@ obj_na_str(obj) <- value
 \item{value}{character(1). The new label}
 }
 \value{
-the name, format or label of \code{obj} for getters, or \code{obj} after modification
+the name, format or label of \code{obj} for \code{getters}, or \code{obj} after modification
 for setters.
 }
 \description{
-Getters and setters for basic, relatively universal attributes
+\code{Getters} and \code{setters} for basic, relatively universal attributes
 of "table-like" objects"
 }
 \seealso{

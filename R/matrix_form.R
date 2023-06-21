@@ -375,17 +375,17 @@ mform_build_refdf <- function(mform) {
 matrix_print_form <- MatrixPrintForm
 
 
-## hide the implementation behind abstraction incase we decide we want a real class someday
-#' Setters and Getters for aspects of MatrixPrintForm Objects
+## hide the implementation behind abstraction in case we decide we want a real class someday
+#' `Setters` and `getters` for aspects of `MatrixPrintForm` Objects
 #'
-#' Most of these functions, particularly the settters, are intended
+#' Most of these functions, particularly the `settters`, are intended
 #' almost exclusively for internal use in, e.g., `matrix_form` methods,
 #' and should generally not be called by end users.
 #'
-#' @param mf MatrixPrintForm(1). A MatrixPrintForm object
+#' @param mf `MatrixPrintForm(1)`. A `MatrixPrintForm` object
 #' @param value ANY. The new value for the component in question.
-#' @return The element of the MatrixPrintForm associated with the getter, or
-#' the modified MatrixPrintForm object in the case of a setter.
+#' @return The element of the `MatrixPrintForm` associated with the `getter`, or
+#' the modified `MatrixPrintForm` object in the case of a `setter`.
 #' @export
 #' @rdname mpf_accessors
 mf_strings <- function(mf) mf$strings
@@ -702,7 +702,7 @@ mf_nrow <- function(mf) max(mf_lgrouping(mf)) - mf_nrheader(mf)
     mf
 }
 
-#' @param x MatrixPrintForm. The object.
+#' @param x `MatrixPrintForm`. The object.
 #' @export
 #' @rdname mpf_accessors
 setMethod(

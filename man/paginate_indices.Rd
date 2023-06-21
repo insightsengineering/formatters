@@ -138,7 +138,7 @@ the width of the table (plus any table inset) is used. Ignored
 completely if \code{tf_wrap} is \code{FALSE}.}
 
 \item{indent_size}{numeric(1). Indent size in characters. Ignored
-when \code{x} is already a MatrixPrintForm object in favor of information
+when \code{x} is already a \code{MatrixPrintForm} object in favor of information
 there.}
 
 \item{pg_size_spec}{page_size_spec. A pre-calculated page
@@ -173,12 +173,12 @@ For \code{diagnose_pagination} a list containing:
 These functions perform or diagnose bi-directional pagination on
 an object.
 
-\code{paginate_to_mpfs} renders \code{obj} into the \code{MatrixPrintForm} (MPF)
-intermediate representation, and then paginates that MPF into
-component MPFs each corresponding to an individual page and
+\code{paginate_to_mpfs} renders \code{obj} into the \code{MatrixPrintForm} (\code{MPF})
+intermediate representation, and then paginates that \code{MPF} into
+component \code{MPF}s each corresponding to an individual page and
 returns those in a list.
 
-\code{paginate_indices} renders \code{obj} into an MPF, then uses
+\code{paginate_indices} renders \code{obj} into an \code{MPF}, then uses
 that representation to calculate the rows and columns of
 \code{obj} corresponding to each page of the pagination of \code{obj},
 but simply returns these indices rather than paginating

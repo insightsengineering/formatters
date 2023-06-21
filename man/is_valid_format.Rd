@@ -19,7 +19,7 @@ thrown}
 Check if a format is supported
 }
 \note{
-No check if the function is actually a formatter is performed.
+No check if the function is actually a \code{formatter} is performed.
 }
 \examples{
 is_valid_format("xx.x")

@@ -9,7 +9,7 @@ format_value(x, format = NULL, output = c("ascii", "html"), na_str = "NA")
 \arguments{
 \item{x}{ANY. The value to be formatted}
 
-\item{format}{character(1) or function. The format label (string) or formatter function to apply to \code{x}.}
+\item{format}{character(1) or function. The format label (string) or \code{formatter} function to apply to \code{x}.}
 
 \item{output}{character(1). output type}
 

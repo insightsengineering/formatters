@@ -7,13 +7,13 @@
 default_hsep()
 }
 \value{
-unicode 2014 (long dash for generating solid horizontal line)
+\code{unicode} 2014 (long dash for generating solid horizontal line)
 if in a locale that uses a UTF character set, otherwise an ASCII hyphen
 with a once-per-session warning.
 }
 \description{
 The default horizontal separator character which can be
-displayed in the current charset for use in rendering table-likes.
+displayed in the current \code{charset} for use in rendering table-likes.
 }
 \examples{
 default_hsep()

@@ -44,7 +44,7 @@ pg_dim_names <- list(
 
 
 #'
-#' Supported Named Page TypesList supported named page types
+#' Supported Named Page `TypesList` supported named page types
 #'
 #' @return for `page_types` a character vector of supported page types,
 #' for `page_dim` the dimensions (width, then height) of the selected page type.
@@ -117,7 +117,7 @@ font_lcpi <- function(font_family = "Courier", font_size = 8, lineheight = 1) {
 
 marg_order <- c("bottom", "left", "top", "right")
 
-#' Determine lines per page (LPP) and characters per page (CPP) based on font and page type
+#' Determine lines per page (`LPP`) and characters per page (`CPP`) based on font and page type
 #'
 #' @param  page_type  character(1).   Name   of  a  page  type.   See
 #'     `page_types`.   Ignored when  `pg_width` and  `pg_height`
@@ -137,7 +137,7 @@ marg_order <- c("bottom", "left", "top", "right")
 #' @param pg_width numeric(1). Page width in inches.
 #' @param pg_height numeric(1). Page height in inches.
 #'
-#' @return a named list containing `lpp` (lines per page) and `cpp` (characters per page)
+#' @return a named list containing `LPP` (lines per page) and `CPP` (characters per page)
 #' elements suitable for use by the pagination machinery.
 #'
 #' @export

@@ -77,11 +77,11 @@ size). \code{NULL} indicates no vertical pagination should occur.}
 
 \item{...}{Passed to individual methods.}
 
-\item{hsep}{character(1).   Characters  to  repeat   to  create
+\item{hsep}{character(1). Characters to repeat to create
 header/body separator line.}
 
 \item{indent_size}{numeric(1). Indent size in characters. Ignored
-when \code{x} is already a MatrixPrintForm object in favor of information
+when \code{x} is already a \code{MatrixPrintForm} object in favor of information
 there.}
 
 \item{tf_wrap}{logical(1). Should  the texts for  title, subtitle,
