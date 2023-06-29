@@ -1,4 +1,4 @@
-## formatters 0.5.0.9001
+## formatters 0.5.0.9002
 
 ## formatters 0.5.0
  * fix bug in `MPF` pagination (and thus export_as_txt) when column labels had newlines ([#150](github.com/insightsengineering/formatters/issues/150), [`insightsengineering/rtables#634`](https://github.com/insightsengineering/rtables/issues/634))
