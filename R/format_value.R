@@ -387,3 +387,26 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
     txt
   }
 }
+
+setClassUnion("FormatSpec", c("NULL", "character", "function", "list"))
+setClassUnion("characterOrNULL", c("NULL", "character"))
+setClass("fmt_config",
+         slots = c(format = "FormatSpec", format_na_str = "characterOrNULL", align = "characterOrNULL"),
+         contains = "list")
+
+#' Format Configuration
+#'
+#' @param format character(1) or function. A format label (string) or `formatter` function.
+#' @param na_str character(1). String that should be displayed in place of missing values.
+#' @param align character(1). Alignment values should be rendered with.
+#'
+#' @return An object of class `fmt_config`. Currently this is implemented as an S3 class inheriting
+#'   from `list` with the following elements:
+#'   * `format`
+#'   * `na_str`
+#'   * `align`
+#'
+#' @export
+fmt_config <- function(format = NULL, na_str = "NA", align = "center") {
+  new("fmt_config", format = format, format_na_str = na_str, align = align)
+}
