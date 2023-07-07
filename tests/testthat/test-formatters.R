@@ -537,3 +537,7 @@ mpf <- MatrixPrintForm(strings = strs, spans = spans, aligns = aligns,
 
 expect_equal(length(grep("spn_val", toString(mpf))),
              1L)
+
+test_that("default_hsep works as expected", {
+  expect_identical(default_hsep(), "—")
+})
