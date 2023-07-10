@@ -295,7 +295,7 @@ valid_pag <- function(pagdf,
       ok_split <- vapply(inplay,
                    function(var) {
           !identical(curpth[match(var, curpth) + 1],
-                     nxtpth[match(var, nxtpth) +1])
+                     nxtpth[match(var, nxtpth) + 1])
       },
       TRUE)
 

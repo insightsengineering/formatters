@@ -1,4 +1,9 @@
 ## formatters 0.5.0.9002
+### Enhancements
+ * Added decimal alignment support with `decimal`, `dec_right`, and `dec_left`.
+ 
+### Miscellaneous
+ * Added `list_valid_aligns()` that lists the available alignments.
 
 ## formatters 0.5.0
  * fix bug in `MPF` pagination (and thus export_as_txt) when column labels had newlines ([#150](github.com/insightsengineering/formatters/issues/150), [`insightsengineering/rtables#634`](https://github.com/insightsengineering/rtables/issues/634))

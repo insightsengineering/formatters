@@ -19,3 +19,21 @@
 #' @return `a`, unless it  is length 0, in which case  `b` (even in the
 #'     case `b` is also length 0)
 `%||%` <- function(a, b) if (length(a) == 0) b else a
+
+#' @title Utility to list valid cell alignments
+#'
+#' @examples
+#' list_valid_aligns()
+#'
+#' @export
+list_valid_aligns <- function() {
+  c("left", "right", "center", "decimal", "dec_right", "dec_left")
+}
+
+check_aligns <- function(algn) {
+  if(any(is.na(algn) | !(algn %in% list_valid_aligns()))) {
+    stop("Unsupported text-alignment: ",
+         algn[!(algn %in% list_valid_aligns())])
+  }
+  invisible(TRUE)
+}
