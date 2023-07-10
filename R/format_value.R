@@ -54,7 +54,7 @@ list_valid_format_labels <- function() {
 #' @param x either format string or an object returned by \code{sprintf_format}
 #' @param stop_otherwise logical, if \code{x} is not a format should an error be
 #'   thrown
-#' @note No check if the function is actually a formatter is performed.
+#' @note No check if the function is actually a `formatter` is performed.
 #' @return \code{TRUE} if \code{x} is \code{NULL}, a supported format string, or a function; \code{FALSE} otherwise.
 #'
 #' @export
@@ -76,7 +76,7 @@ is_valid_format <- function(x, stop_otherwise = FALSE) {
 }
 
 
-#' Specify text format via a sprintf format string
+#' Specify text format via a `sprintf` format string
 #'
 #'
 #' @param format character(1). A format string passed to `sprintf`.
@@ -139,7 +139,7 @@ sprintf_format <- function(format) {
 #' after the decimal that remain after rounding. It \emph{may} differ from
 #' \code{sprintf("\%.Nf", x)} for values ending in \code{5} after the decimal place
 #' on many popular operating systems due to \code{round}'s stricter adherence to the
-#' IEC 60559 standard, particularly for R versions > 4.0.0 (see Warning in \code{\link[base:round]{round}}
+#' `IEC 60559` standard, particularly for R versions > 4.0.0 (see Warning in \code{\link[base:round]{round}}
 #' documentation).
 #'
 #' @export
@@ -206,7 +206,7 @@ sep_2d_helper <- function(x, dig1, dig2, sep, na_str, wrap = NULL) {
 #' missing values within a non-length-zero `na_str` vector.
 #'
 #' @param x ANY. The value to be formatted
-#' @param format character(1) or function. The format label (string) or formatter function to apply to \code{x}.
+#' @param format character(1) or function. The format label (string) or `formatter` function to apply to \code{x}.
 #' @param na_str character(1). String that should be displayed when the value of \code{x} is missing.
 #'   Defaults to \code{"NA"}.
 #' @param output character(1). output type

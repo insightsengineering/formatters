@@ -2,7 +2,6 @@
 % Please edit documentation in R/matrix_form.R
 \name{MatrixPrintForm}
 \alias{MatrixPrintForm}
-\alias{MatrixPrintForm-class}
 \alias{matrix_print_form}
 \title{Matrix Print Form - Intermediate Representation for ASCII Table Printing}
 \usage{
@@ -26,6 +25,7 @@ MatrixPrintForm(
   prov_footer = character(),
   col_gap = 3,
   table_inset = 0L,
+  colwidths = NULL,
   indent_size = 2
 )
 
@@ -49,6 +49,7 @@ matrix_print_form(
   prov_footer = character(),
   col_gap = 3,
   table_inset = 0L,
+  colwidths = NULL,
   indent_size = 2
 )
 }
@@ -123,6 +124,9 @@ character vector.}
 \item{table_inset}{numeric(1). Table inset. See
 \code{\link{table_inset}}}
 
+\item{colwidths}{numeric. NULL, or a vector of column rendering widths.
+if non-NULL, must have length equal to \code{ncol(strings)}}
+
 \item{indent_size}{numeric(1). Number of spaces to be used per level of indent (if supported by
 the relevant method). Defaults to 2.}
 }
@@ -159,6 +163,9 @@ any row names/row labels}
 }
 }
 \description{
-This should generally only be called by \code{matrix_form} custom
-methods, and almost never from other code.
+Matrix Print Form - Intermediate Representation for ASCII Table Printing
+}
+\note{
+The bare constructor for the \code{MatrixPrintForm} should generally
+only be called by \code{matrix_form} custom methods, and almost never from other code.
 }

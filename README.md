@@ -6,7 +6,7 @@
 [![Code Coverage 📔](https://raw.githubusercontent.com/insightsengineering/formatters/_xml_coverage_reports/data/main/badge.svg)](https://insightsengineering.github.io/formatters/main/coverage-report/)
 
 ![GitHub forks](https://img.shields.io/github/forks/insightsengineering/formatters?style=social)
-![GitHub Repo stars](https://img.shields.io/github/stars/insightsengineering/formatters?style=social)
+![GitHub repo stars](https://img.shields.io/github/stars/insightsengineering/formatters?style=social)
 
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/insightsengineering/formatters)
 ![GitHub contributors](https://img.shields.io/github/contributors/insightsengineering/formatters)
@@ -24,7 +24,7 @@ related to ASCII rendering:
 
 1. `format_value` provides the ability to format single- and
    multi-valued elements into ASCII display-ready strings
-1. the `matrix_form` framework provides generics for implementing ASCII
+2. the `matrix_form` framework provides generics for implementing ASCII
    rendering support for display tables
 
 Both of these feature sets are used in the `rtables` package.

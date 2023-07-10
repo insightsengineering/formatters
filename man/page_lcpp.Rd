@@ -2,13 +2,13 @@
 % Please edit documentation in R/page_size.R
 \name{page_lcpp}
 \alias{page_lcpp}
-\title{Determine lines per page (LPP) and characters per page (CPP) based on font and page type}
+\title{Determine lines per page (\code{LPP}) and characters per page (\code{CPP}) based on font and page type}
 \usage{
 page_lcpp(
   page_type = page_types(),
   landscape = FALSE,
   font_family = "Courier",
-  font_size = 12,
+  font_size = 8,
   lineheight = 1,
   margins = c(top = 0.5, bottom = 0.5, left = 0.75, right = 0.75),
   pg_width = NULL,
@@ -32,8 +32,8 @@ to Courier.}
 
 \item{lineheight}{numeric(1). Line height, defaults to 1.}
 
-\item{margins}{numeric(4). Named numeric vector containing \code{'top'},
-\code{'bottom'}, \code{'left'}, and \code{'right'} margins in inches. Defaults
+\item{margins}{numeric(4). Named numeric vector containing \code{'bottom'},
+\code{'left'}, \code{'top'}, and \code{'right'} margins in inches. Defaults
 to \code{.5} inches for both vertical margins and \code{.75} for both
 horizontal margins.}
 
@@ -42,11 +42,11 @@ horizontal margins.}
 \item{pg_height}{numeric(1). Page height in inches.}
 }
 \value{
-a named list containing \code{lpp} (lines per page) and \code{cpp} (characters per page)
+a named list containing \code{LPP} (lines per page) and \code{CPP} (characters per page)
 elements suitable for use by the pagination machinery.
 }
 \description{
-Determine lines per page (LPP) and characters per page (CPP) based on font and page type
+Determine lines per page (\code{LPP}) and characters per page (\code{CPP}) based on font and page type
 }
 \examples{
 page_lcpp()

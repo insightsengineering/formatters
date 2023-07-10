@@ -2,7 +2,7 @@
 # R specific hooks: https://github.com/lorenzwalthert/precommit
 repos:
 -   repo: https://github.com/lorenzwalthert/precommit
-    rev: v0.3.2.9007
+    rev: v0.3.2.9013
     hooks: 
     # -   id: style-files
     #     args: [--style_pkg=styler, --style_fun=tidyverse_style]    
@@ -14,6 +14,7 @@ repos:
           - huxtable
           - r2rtf
           - vctrs
+          - checkmate
     # codemeta must be above use-tidy-description when both are used
     # -   id: codemeta-description-updated
     -   id: use-tidy-description

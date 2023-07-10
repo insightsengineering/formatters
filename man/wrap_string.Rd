@@ -19,7 +19,7 @@ text should be wrapped at.}
 the incoming strings) or soft (breaking wrapped strings into vectors
 of length >1) be used. Defaults to \code{FALSE} (i.e. soft wrapping).}
 
-\item{txt}{character. Vector of strings that should be (independently)
+\item{txt}{character. A vector of strings that should be (independently)
 text-wrapped.}
 }
 \value{

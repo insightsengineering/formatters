@@ -49,7 +49,7 @@ in the case where there are not at least \code{digits} significant digits
 after the decimal that remain after rounding. It \emph{may} differ from
 \code{sprintf("\%.Nf", x)} for values ending in \code{5} after the decimal place
 on many popular operating systems due to \code{round}'s stricter adherence to the
-IEC 60559 standard, particularly for R versions > 4.0.0 (see Warning in \code{\link[base:round]{round}}
+\verb{IEC 60559} standard, particularly for R versions > 4.0.0 (see Warning in \code{\link[base:round]{round}}
 documentation).
 }
 \examples{

@@ -36,7 +36,7 @@ be retrieved, respectively.}
 
 \item{lab}{character(1). Label}
 
-\item{rnum}{numeric(1). Absolute rownumber}
+\item{rnum}{numeric(1). Absolute row number}
 
 \item{pth}{character or NULL. Path within larger table}
 

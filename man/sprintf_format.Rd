@@ -2,7 +2,7 @@
 % Please edit documentation in R/format_value.R
 \name{sprintf_format}
 \alias{sprintf_format}
-\title{Specify text format via a sprintf format string}
+\title{Specify text format via a \code{sprintf} format string}
 \usage{
 sprintf_format(format)
 }
@@ -14,7 +14,7 @@ A formatting function which wraps and will apply the specified \code{printf} sty
 string \code{format}.
 }
 \description{
-Specify text format via a sprintf format string
+Specify text format via a \code{sprintf} format string
 }
 \examples{
 

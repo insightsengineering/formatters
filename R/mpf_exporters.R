@@ -1,3 +1,149 @@
+.need_pag <- function(page_type, pg_width, pg_height, cpp, lpp) {
+    !(is.null(page_type) && is.null(pg_width) && is.null(pg_height) && is.null(cpp) && is.null(lpp))
+
+}
+
+#' Export a table-like object to plain (ASCII) text with page break
+#'
+#' This function converts \code{x} to a \code{MatrixPrintForm} object via
+#' \code{matrix_form}, paginates it via \code{paginate}, converts each
+#' page to ASCII text via \code{toString}, and emits the strings to \code{file},
+#' separated by \code{page_break}.
+#'
+#' @inheritParams paginate_indices
+#' @inheritParams toString
+#' @inheritParams propose_column_widths
+#' @param x  ANY.  The  table-like object  to  export.  Must have  an
+#'     applicable \code{matrix_form} method.
+#' @param file character(1) or NULL.  If non-NULL, the path to write a
+#'     text file to containing the \code{x} rendered as ASCII text,
+#' @param page_break  character(1).  Page break  symbol (defaults  to
+#'     outputting \code{"\\n\\s"}).
+#' @param paginate logical(1). Whether pagination should be performed,
+#'     defaults to \code{TRUE} if page size is specified (including
+#'     the default).
+#' @details if  \code{x} has an \code{num_rep_cols}  method, the value
+#'     returned by it will be  used for \code{rep_cols} by default, if
+#'     not, 0 will be used.
+#'
+#' If \code{x} has an applicable \code{do_mand_paginate} method, it will be invoked
+#' during the pagination process.
+#'
+#' @return if \code{file} is NULL, the total paginated and then concatenated
+#' string value, otherwise the file that was written.
+#' @export
+#' @examples
+#' export_as_txt(basic_matrix_form(mtcars), pg_height = 5, pg_width = 4)
+
+export_as_txt <- function(x,
+                          file = NULL,
+                          page_type = NULL,
+                          landscape = FALSE,
+                          pg_width = page_dim(page_type)[if(landscape) 2 else 1],
+                          pg_height = page_dim(page_type)[if(landscape) 1 else 2],
+                          font_family = "Courier",
+                          font_size = 8,  # grid parameters
+                          lineheight = 1L,
+                          margins = c(top = .5, bottom = .5, left = .75, right = .75),
+                          paginate = TRUE,
+                          cpp = NA_integer_,
+                          lpp = NA_integer_,
+                          ...,
+                          hsep = default_hsep(),
+                          indent_size = 2,
+                          tf_wrap = paginate,
+                          max_width = NULL,
+                          colwidths = NULL,
+                          min_siblings = 2,
+                          nosplitin = character(),
+                          rep_cols = num_rep_cols(x),
+                          verbose = FALSE,
+                          page_break = "\\s\\n") {
+
+    if(paginate) {
+        pages <- paginate_to_mpfs(x,
+                                  page_type = page_type,
+                                  font_family = font_family,
+                                  font_size = font_size,
+                                  lineheight = lineheight,
+                                  landscape = landscape,
+                                  pg_width = pg_width,
+                                  pg_height = pg_height,
+                                  margins = margins,
+                                  lpp = lpp,
+                                  cpp = cpp,
+                                  min_siblings = min_siblings,
+                                  nosplitin = nosplitin,
+                                  colwidths = colwidths,
+                                  tf_wrap = tf_wrap,
+                                  max_width = max_width,
+                                  indent_size = indent_size,
+                                  verbose = verbose)
+    } else {
+        mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size)
+        mf_col_widths(mf) <- colwidths %||% propose_column_widths(mf)
+        pages <- list(mf)
+    }
+    ## we dont' set widths here because we already but that info on mpf
+    ## so its on each of the pages.
+    strings <- vapply(pages, toString, "", hsep = hsep, tf_wrap = tf_wrap, max_width = max_width)
+    res <- paste(strings, collapse = page_break)
+
+    if(is.null(file))
+        res
+    else
+        cat(res, file = file)
+}
+
+
+
+##     ## TODO this needs to be in terms of a MPF, so ncol(tt) needs to change
+
+##     ## if(!is.null(colwidths) && length(colwidths) != ncol(tt) + 1)
+##     ##     stop("non-null colwidths argument must have length ncol(tt) + 1 [",
+##     ##          ncol(tt) + 1, "], got length ", length(colwidths))
+
+##     mpf <- matrix_form(x, indent_rownames = TRUE)
+
+##     ps_spec <- calc_lcpp(page_type = page_type,
+##                          landscape = landscape,
+##                          pg_width = pg_width,
+##                          pg_height = pg_height,
+##                          font_family = font_family,
+##                          cpp = cpp,
+##                          lpp = lpp)
+
+##     ## This needs to return list(x) in cases where no pagination was necessary
+##     idx_lst <- paginate(mpf, .page_size_spec = ps_spec, colwidths = colwidths,
+##                      tf_wrap = tf_wrap, ## XXX I think we don't need this
+##                      ...)
+
+##     tbls <- lapply(idx_lst, function(ii)
+##     ## XXX how do we partition the colwidths ???
+##     ## Also this is gross make it a function!!!
+##     res <- paste(mapply(function(tb, cwidths, ...) {
+##         ## 1 and +1 are because cwidths includes rowlabel 'column'
+##         cinds <- c(1, .figure_out_colinds(tb, tt) + 1L)
+##         toString(tb, widths = cwidths[cinds], ...)
+##     },
+##     MoreArgs = list(hsep = hsep,
+##                     indent_size = indent_size,
+##                     tf_wrap = tf_wrap,
+##                     max_width = max_width,
+##                     cwidths = colwidths),
+##     SIMPLIFY = FALSE,
+##     tb = tbls),
+##     collapse = page_break)
+
+##     if(!is.null(file))
+##         cat(res, file = file)
+##     else
+##         res
+## }
+
+
+
+
 ## In use, must be tested
 prep_header_line <- function(mf, i) {
   ret <- mf$strings[i, mf$display[i, , drop = TRUE], drop = TRUE]
@@ -42,22 +188,22 @@ mpf_to_dfbody <- function(mpf, colwidths) {
 }
 
 
-#' Transform MPF to RTF
+#' Transform `MPF` to `RTF`
 #'
-#' Experimental export to RTF via the `r2rtf` package
+#' Experimental export to `RTF` via the `r2rtf` package
 #'
 #' @inheritParams page_lcpp
 #' @inheritParams toString
 #' @inheritParams grid::plotViewport
-#' @param mpf MatrixPrintForm. MatrixPrintForm object.
+#' @param mpf `MatrixPrintForm`. `MatrixPrintForm` object.
 #' @param colwidths character(1). Column widths.
 #' @details This function provides a low-level coercion of a
-#' `MatrixPrintForm object into text containing the corresponding
+#' `MatrixPrintForm` object into text containing the corresponding
 #' table in `RTF`. Currently, no pagination is done at this level,
 #' and should be done prior to calling this function, though that
 #' may change in the future.
 #'
-#' @return An rtf object
+#' @return An `RTF` object
 #' @export
 mpf_to_rtf <- function(mpf,
                        colwidths = NULL,
@@ -69,7 +215,7 @@ mpf_to_rtf <- function(mpf,
                        font_size = 8,
                        ...) {
   if (!requireNamespace("r2rtf")) {
-    stop("RTF export requires the 'r2rtf' function please install it")
+    stop("RTF export requires the 'r2rtf' package, please install it.")
   }
   mpf <- matrix_form(mpf, indent_rownames = TRUE)
   nlr <- mf_nlheader(mpf)
@@ -133,7 +279,7 @@ mpf_to_rtf <- function(mpf,
   rtfpg
 }
 
-## Not currently in use, previous alternate ways to get to rtf
+## Not currently in use, previous alternate ways to get to RTF
 
 ## ## XXX Experimental. Not to be exported without approval
 ## mpf_to_huxtable <- function(obj) {
@@ -223,3 +369,73 @@ mpf_to_rtf <- function(mpf,
 
 ##   ret
 ## }
+
+
+
+#' Export table to `RTF`
+#'
+#' Experimental export to the `RTF` format.
+#'
+#' @details `RTF` export occurs by via the following steps
+#'
+#' \itemize{
+#' \item{the table is paginated to the page size (Vertically and horizontally)}
+#' \item{Each separate page is converted to a `MatrixPrintForm` and from there to `RTF`-encoded text}
+#' \item{Separate `RTFs` text chunks are combined and written out as a single `RTF` file}
+#' }
+#'
+#' Conversion of `MatrixPrintForm` objects to `RTF` is done via [formatters::mpf_to_rtf()].
+#' @inheritParams export_as_txt
+#' @inheritParams toString
+#' @inheritParams grid::plotViewport
+#' @inheritParams paginate_to_mpfs
+#' @export
+
+export_as_rtf <- function(x,
+                      file = NULL,
+                      colwidths = propose_column_widths(matrix_form(x, TRUE)),
+                      page_type = "letter",
+                      pg_width = page_dim(page_type)[if(landscape) 2 else 1],
+                      pg_height = page_dim(page_type)[if(landscape) 1 else 2],
+                      landscape = FALSE,
+                      margins = c(bottom = .5, left = .75, top=.5, right = .75),
+                      font_size = 8,
+                      font_family = "Courier",
+                      ...) {
+    if(!requireNamespace("r2rtf"))
+        stop("RTF export requires the r2rtf package, please install it.")
+    if(is.null(names(margins)))
+        names(margins) <- marg_order
+
+    fullmf <- matrix_form(x)
+    req_ncols <- ncol(fullmf) + as.numeric(mf_has_rlabels(fullmf))
+    if(!is.null(colwidths) && length(colwidths) != req_ncols)
+        stop("non-null colwidths argument must have length ncol(x) (+ 1 if row labels are present) [",
+             req_ncols, "], got length ", length(colwidths))
+
+    true_width <- pg_width - sum(margins[c("left", "right")])
+    true_height <- pg_height - sum(margins[c("top", "bottom")])
+
+    mpfs <- paginate_to_mpfs(fullmf, font_family = font_family, font_size = font_size,
+                           pg_width = true_width,
+                           pg_height = true_height,
+                           margins = c(bottom = 0, left = 0, top = 0, right = 0),
+                           lineheight = 1.25,
+                           colwidths = colwidths,
+                           ...)
+
+    rtftxts <- lapply(mpfs, function(mf) r2rtf::rtf_encode(mpf_to_rtf(mf,
+                                                                       colwidths = mf_col_widths(mf),
+                                                                       page_type = page_type,
+                                                                       pg_width = pg_width,
+                                                                       pg_height = pg_height,
+                                                                       font_size = font_size,
+                                                                       margins = c(top = 0, left = 0, bottom = 0, right = 0))))
+    restxt <- paste(rtftxts[[1]]$start,
+                    paste(sapply(rtftxts, function(x) x$body), collapse = "\n{\\pard\\fs2\\par}\\page{\\pard\\fs2\\par}\n"),
+                    rtftxts[[1]]$end)
+    if(!is.null(file))
+        cat(restxt, file = file)
+    else
+        restxt
+}

@@ -3,7 +3,7 @@
 \name{toString}
 \alias{toString}
 \alias{toString,MatrixPrintForm-method}
-\title{toString}
+\title{\code{toString}}
 \usage{
 toString(x, ...)
 
@@ -12,7 +12,7 @@ toString(x, ...)
   widths = NULL,
   tf_wrap = FALSE,
   max_width = NULL,
-  col_gap = x$col_gap,
+  col_gap = mf_colgap(x),
   hsep = default_hsep()
 )
 }
@@ -38,7 +38,7 @@ completely if \code{tf_wrap} is \code{FALSE}.}
 
 \item{col_gap}{numeric(1). Space (in characters) between columns}
 
-\item{hsep}{character(1).   Characters  to  repeat   to  create
+\item{hsep}{character(1). Characters to repeat to create
 header/body separator line.}
 }
 \value{

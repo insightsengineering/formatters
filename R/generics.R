@@ -1,3 +1,9 @@
+### This file defines the generics which make up the interface `formatters` offers.
+### Defining methods for these generics for a new table-like class should be fully
+### sufficient for hooking that class up to the `formatters` pagination and rendering
+### machinery.
+
+
 #' @import methods
 #' @include matrix_form.R
 
@@ -39,7 +45,7 @@
 #' `make_row_df` methods can call `make_row_df` recursively and retain information,
 #' and should not be set during a top-level call
 #'
-#' @note the technically present root tree node is excluded from the summary returned dby
+#' @note the technically present root tree node is excluded from the summary returned by
 #' both \code{make_row_df} and \code{make_col_df}, as it is simply the
 #' row/column structure of \code{tt} and thus not useful for pathing or pagination.
 #' @export
@@ -62,12 +68,12 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
 ## nocov end
 
 
-#' Transform rtable to a list of matrices which can be used for outputting
+#' Transform `rtable` to a list of matrices which can be used for outputting
 #'
-#' Although rtables are represented as a tree data structure when outputting the table to ASCII or HTML it is useful to
-#' map the rtable to an in between state with the formatted cells in a matrix form.
+#' Although `rtables` are represented as a tree data structure when outputting the table to ASCII or HTML it is useful to
+#' map the `rtable` to an in between state with the formatted cells in a matrix form.
 #'
-#' @param obj ANY. Object to be transformed into a ready-to-render form (a MatrixPrintForm object)
+#' @param obj ANY. Object to be transformed into a ready-to-render form (a `MatrixPrintForm` object)
 #' @param indent_rownames logical(1), if TRUE the column with the row names in the `strings` matrix of has indented row
 #' names (strings pre-fixed)
 #' @param expand_newlines logical(1). Should the matrix form generated
@@ -113,10 +119,10 @@ setMethod("matrix_form", "MatrixPrintForm", function(obj,
 })
 
 
-## Generics for toString and helper functions
+## Generics for `toString` and helper functions
 
 
-## this is where we will take wordwrapping
+## this is where we will take word wrapping
 ## into account when it is added
 ##
 ## ALL calculations of vertical space for pagination
@@ -197,7 +203,7 @@ setMethod("nlines", "character", function(x, colwidths, max_width) {
 
 
 
-#' @title toString
+#' @title `toString`
 #'
 #' @description Transform a complex object into a string representation ready
 #' to be printed or written to a plain-text file
@@ -227,17 +233,17 @@ setMethod("print", "ANY", base::print) ## nocov
 
 
 
-## General/"universal" property getter and setter generics and stubs
+## General/"universal" property `getter` and `setter` generics and stubs
 
 #' @title Label, Name and Format accessor generics
 #'
-#' @description Getters and setters for basic, relatively universal attributes
+#' @description `Getters` and `setters` for basic, relatively universal attributes
 #' of "table-like" objects"
 #'
 #' @name lab_name
 #' @param obj ANY. The object.
 #' @param value character(1)/FormatSpec. The new value of the attribute.
-#' @return the name, format or label of \code{obj} for getters, or \code{obj} after modification
+#' @return the name, format or label of \code{obj} for `getters`, or \code{obj} after modification
 #' for setters.
 #' @aliases obj_name
 #' @export
@@ -521,3 +527,52 @@ setMethod(
     obj
   }
 )
+
+
+
+
+#' Generic for Performing "Forced Pagination"
+#'
+#' Forced pagination is pagination which happens regardless of
+#' position on page. The object is expected to have all information
+#' necessary to locate such page breaks, and the `do_forced_pag`
+#' method is expected to fully perform those paginations.
+#'
+#' @param obj The object to be paginated.
+#'
+#' The `ANY` method simply returns a list of length one, containing
+#' `obj`.
+#'
+#' @return a list of subobjects, which will be further paginated
+#' by the standard pagination algorithm.
+#'
+#'
+#' @export
+setGeneric("do_forced_paginate", function(obj) standardGeneric("do_forced_paginate"))
+
+#' @export
+#' @rdname do_forced_paginate
+setMethod("do_forced_paginate", "ANY", function(obj) list(obj))
+
+#' Number of repeated columns
+#'
+#' When called on a table-like object using the formatters framework,
+#' this method should return the number of columns which are mandatorily
+#' repeated after each horizontal pagination.
+#'
+#' Absent a class-specific method, this function returns 0, indicating
+#' no always-repeated columns.
+#'
+#' @param obj ANY. A table-like object.
+#' @note This number \emph{does not include row labels}, the repetition
+#' of which is handled separately.
+#'
+#' @return an integer.
+#' @export
+#' @examples
+#' mpf <- basic_matrix_form(mtcars)
+#' num_rep_cols(mpf)
+setGeneric("num_rep_cols", function(obj) standardGeneric("num_rep_cols"))
+#' @export
+#' @rdname num_rep_cols
+setMethod("num_rep_cols", "ANY", function(obj) 0L)

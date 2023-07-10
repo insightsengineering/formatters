@@ -7,22 +7,31 @@
 \alias{mf_display}
 \alias{mf_formats}
 \alias{mf_rinfo}
+\alias{mf_cinfo}
 \alias{mf_has_topleft}
 \alias{mf_lgrouping}
 \alias{mf_rfnotes}
 \alias{mf_nlheader}
 \alias{mf_nrheader}
+\alias{mf_colgap}
 \alias{mf_strings<-}
 \alias{mf_spans<-}
 \alias{mf_aligns<-}
 \alias{mf_display<-}
 \alias{mf_formats<-}
 \alias{mf_rinfo<-}
+\alias{mf_cinfo<-}
 \alias{mf_lgrouping<-}
 \alias{mf_rfnotes<-}
 \alias{mf_nrheader<-}
+\alias{mf_colgap<-}
+\alias{mf_ncol}
+\alias{mf_nrow}
+\alias{mf_ncol<-}
+\alias{ncol,MatrixPrintForm-method}
 \alias{mpf_has_rlabels}
-\title{Setters and Getters for aspects of MatrixPrintForm Objects}
+\alias{mf_has_rlabels}
+\title{\code{Setters} and \code{getters} for aspects of \code{MatrixPrintForm} Objects}
 \usage{
 mf_strings(mf)
 
@@ -36,6 +45,8 @@ mf_formats(mf)
 
 mf_rinfo(mf)
 
+mf_cinfo(mf)
+
 mf_has_topleft(mf)
 
 mf_lgrouping(mf)
@@ -45,6 +56,8 @@ mf_rfnotes(mf)
 mf_nlheader(mf)
 
 mf_nrheader(mf)
+
+mf_colgap(mf)
 
 mf_strings(mf) <- value
 
@@ -58,25 +71,41 @@ mf_formats(mf) <- value
 
 mf_rinfo(mf) <- value
 
+mf_cinfo(mf) <- value
+
 mf_lgrouping(mf) <- value
 
 mf_rfnotes(mf) <- value
 
 mf_nrheader(mf) <- value
 
+mf_colgap(mf) <- value
+
+mf_ncol(mf)
+
+mf_nrow(mf)
+
+mf_ncol(mf) <- value
+
+\S4method{ncol}{MatrixPrintForm}(x)
+
 mpf_has_rlabels(mf)
+
+mf_has_rlabels(mf)
 }
 \arguments{
-\item{mf}{MatrixPrintForm(1). A MatrixPrintForm object}
+\item{mf}{\code{MatrixPrintForm(1)}. A \code{MatrixPrintForm} object}
 
 \item{value}{ANY. The new value for the component in question.}
+
+\item{x}{\code{MatrixPrintForm}. The object.}
 }
 \value{
-The element of the MatrixPrintForm associated with the getter, or
-the modified MatrixPrintForm object in the case of a setter.
+The element of the \code{MatrixPrintForm} associated with the \code{getter}, or
+the modified \code{MatrixPrintForm} object in the case of a \code{setter}.
 }
 \description{
-Most of these functions, particularly the settters, are intended
+Most of these functions, particularly the \code{settters}, are intended
 almost exclusively for internal use in, e.g., \code{matrix_form} methods,
 and should generally not be called by end users.
 }
