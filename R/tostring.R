@@ -179,6 +179,85 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
     mat <- update_mf_nlines(mat, max_width = max_width)
     mat
 }
+#' Decimal Alignment
+#'
+#' @description Aligning decimal values of string matrix. Allowed alignments are: `dec_left`,
+#'  `dec_right` and `decimal`.
+#'
+#' @param string_mat character matrix. String matrix component of matrix print form object.
+#' @param align_mat character matrix. Aligns matrix component of matrix print form object.
+#'  Should contain either `dec_left`, `dec_right` or `decimal` for values to be decimal aligned.
+#'
+#' @details Decimal alignment left and right (`dec_left` and `dec_right`) are different to
+#'  center decimal alignment `decimal` only in the case some padding is present. This may
+#'  happen if column widths are wider by setting parameters `widths` in `toString` or
+#'  `colwidths` in `paginate_*` accordingly. It will be also the case (more common) of
+#'  wider column names. Decimal alignment is not supported along with cell wrapping.
+#'
+#' @examples
+#' dfmf <- basic_matrix_form(mtcars[1:5,])
+#' dfmf$aligns[, -c(1)] <- "dec_left"
+#' decimal_align(dfmf$strings, dfmf$aligns)
+#'
+#' @return Processed string matrix of matrix print form with decimal aligned values.
+#'
+#' @seealso [toString] and [MatrixPrintForm]
+#'
+#' @export
+decimal_align <- function(string_mat, align_mat) {
+  # Evaluate if any values are to be decimal aligned
+
+  if (!any(grepl("dec", align_mat))) {
+    string_mat <- string_mat
+  } else {
+    for (i in seq(1, ncol(string_mat))) {
+      # If no values are to be decimal aligned in the column (according to the aligns
+      # matrix), or there are no numerical values, strings remain as is
+      if (sum(grepl("dec", align_mat[, i])) == 0 || all(grepl("^[0-9]\\.", string_mat[, i]))) {
+        string_mat[, i] <- string_mat[, i]
+      }
+
+      # values to be decimal aligned.
+      if (any(grepl("dec", align_mat[, i]))) {
+        # Extract values not to be aligned (NAs, non-numbers, non-decimal numbers,
+        # doesn't say "decimal" in alignment matrix)
+        nas <- grepl("^NA$", string_mat[, i])
+        nonnum <- !grepl("[0-9]", string_mat[, i]) | grepl("[a-zA-Z]", string_mat[, i]) | !grepl("\\.", string_mat[, i])
+        alignmat <- !grepl("dec", align_mat[, i])
+
+        nonalign <- nas | nonnum | alignmat
+
+        x <- as.character(string_mat[, i])
+
+        if (length(x[!nonalign]) > 0) {
+          splitx <- strsplit(x[!nonalign], ".", fixed = TRUE)
+
+          left <-
+            unlist(lapply(splitx, FUN = function(x) x[1]))
+
+          right <-
+            unlist(lapply(splitx, FUN = function(x) paste0(x[-1], collapse = ".")))
+
+          # modify the piece with spaces
+          left_mod <- paste0(spaces(max(nchar(left), na.rm = TRUE) - nchar(left)), left)
+
+          right_mod <- paste0(right, spaces(max(nchar(right), na.rm = TRUE) - nchar(right)))
+
+          aligned <- ifelse(!grepl("[^0-9]$", left_mod),
+                            paste(left_mod, right_mod, sep = "."),
+                            paste(left_mod, right_mod)
+          )
+
+          x[!nonalign] <- aligned
+          string_mat[, i] <- x
+        } else {
+          string_mat[, i] <- x
+        }
+      }
+    }
+    string_mat
+  }
+}
 
 #' @rdname tostring
 #'
