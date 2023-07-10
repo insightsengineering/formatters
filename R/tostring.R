@@ -211,47 +211,68 @@ decimal_align <- function(string_mat, align_mat) {
     string_mat <- string_mat
   } else {
     for (i in seq(1, ncol(string_mat))) {
+      col_i <- as.character(string_mat[, i])
+      align_col_i <- grepl("dec", align_mat[, i])
       # If no values are to be decimal aligned in the column (according to the aligns
       # matrix), or there are no numerical values, strings remain as is
-      if (sum(grepl("dec", align_mat[, i])) == 0 || all(grepl("^[0-9]\\.", string_mat[, i]))) {
+      if (sum(align_col_i) == 0 ||
+          all(grepl("^[0-9]\\.", col_i))) {
         string_mat[, i] <- string_mat[, i]
       }
 
       # values to be decimal aligned.
-      if (any(grepl("dec", align_mat[, i]))) {
+      if (any(align_col_i)) {
         # Extract values not to be aligned (NAs, non-numbers, non-decimal numbers,
         # doesn't say "decimal" in alignment matrix)
-        nas <- grepl("^NA$", string_mat[, i])
-        nonnum <- !grepl("[0-9]", string_mat[, i]) | grepl("[a-zA-Z]", string_mat[, i]) | !grepl("\\.", string_mat[, i])
-        alignmat <- !grepl("dec", align_mat[, i])
+        nas <- vapply(col_i, is.na, FUN.VALUE = logical(1))
+        nonnum <- !grepl("[0-9]", col_i) |
+          grepl("[a-zA-Z]", col_i)
 
-        nonalign <- nas | nonnum | alignmat
+        nonalign <- nas | nonnum | !align_col_i
 
-        x <- as.character(string_mat[, i])
+        # Do decimal alignment
+        if (length(col_i[!nonalign]) > 0) {
+          # Work with %
+          where_perc <- grepl("\\%$", col_i[!nonalign])
+          if (any(where_perc)) {
+            col_i[!nonalign][where_perc] <-
+              gsub("\\%$", "", col_i[!nonalign][where_perc])
+          }
 
-        if (length(x[!nonalign]) > 0) {
-          splitx <- strsplit(x[!nonalign], ".", fixed = TRUE)
+          # General split (only one match)
+          splitx <- regmatches(col_i[!nonalign],
+                               regexpr("\\.", col_i[!nonalign]),
+                               invert = TRUE
+          )
 
-          left <-
-            unlist(lapply(splitx, FUN = function(x) x[1]))
+          left <- vapply(splitx, FUN = function(x) x[1], character(1))
 
-          right <-
-            unlist(lapply(splitx, FUN = function(x) paste0(x[-1], collapse = ".")))
+          right <- sapply(splitx, FUN = function(x) {
+            paste0(x[-1], collapse = "")
+          })
+
+          # If we have empty rights and no dot we need extra space (also %)
+          empty_right <- !nzchar(right)
+
+          # Attach the % if present
+          if (any(where_perc)) {
+            right[where_perc] <- paste0(right[where_perc], "%")
+          }
 
           # modify the piece with spaces
           left_mod <- paste0(spaces(max(nchar(left), na.rm = TRUE) - nchar(left)), left)
 
           right_mod <- paste0(right, spaces(max(nchar(right), na.rm = TRUE) - nchar(right)))
 
-          aligned <- ifelse(!grepl("[^0-9]$", left_mod),
-                            paste(left_mod, right_mod, sep = "."),
-                            paste(left_mod, right_mod)
-          )
+          had_dot <- grepl("\\.", col_i[!nonalign])
+          sep_v <- fill_r <- rep("", length(col_i[!nonalign]))
+          sep_v[had_dot] <- "."
+          fill_r[empty_right & !had_dot] <- " "
+          aligned <- paste(left_mod, sep_v, right_mod, fill_r, sep = "")
 
-          x[!nonalign] <- aligned
-          string_mat[, i] <- x
+          string_mat[!nonalign, i] <- aligned
         } else {
-          string_mat[, i] <- x
+          string_mat[, i] <- col_i
         }
       }
     }
