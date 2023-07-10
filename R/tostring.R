@@ -179,52 +179,55 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
 
 #' Decimal Alignment
 #'
-#' Aligning decimal values of string matrix. Allowed alignments are: `dec_left`,
-#' `dec_right` and `decimal`.
+#' @description Aligning decimal values of string matrix. Allowed alignments are: `dec_left`,
+#'  `dec_right` and `decimal`.
 #'
-#' @param string_mat string matrix component of matrix print form object
-#' @param align_mat aligns matrix component of matrix print form object.
-#' Should contain either `dec_left`, `dec_right` or `decimal` for values to be decimal aligned.
+#' @param string_mat character matrix. String matrix component of matrix print form object.
+#' @param align_mat character matrix. Aligns matrix component of matrix print form object.
+#'  Should contain either `dec_left`, `dec_right` or `decimal` for values to be decimal aligned.
 #'
-#' @export
+#' @details Decimal alignment left and right (`dec_left` and `dec_right`) are different to
+#'  center decimal alignment `decimal` only in the case some padding is present. This may
+#'  happen if column widths are wider by setting parameters `widths` in `toString` or
+#'  `colwidths` in `paginate_*` accordingly. It will be also the case (more common) of
+#'  wider column names. Decimal alignment is not supported along with cell wrapping.
+#'
 #' @examples
-#'
-#' dfmf <- basic_matrix_form(mtcars)
-#' dfmf$aligns[,-c(1)] <- "dec_left"
+#' dfmf <- basic_matrix_form(mtcars[1:5,])
+#' dfmf$aligns[, -c(1)] <- "dec_left"
 #' decimal_align(dfmf$strings, dfmf$aligns)
 #'
-#' @return Processed string matrix of matrix print form with decimal aligned values
+#' @return Processed string matrix of matrix print form with decimal aligned values.
+#'
+#' @seealso [`toString`] and [`MatrixPrintForm`]
+#'
+#' @export
+decimal_align <- function(string_mat, align_mat) {
+  # Evaluate if any values are to be decimal aligned
 
-decimal_align <- function(string_mat, align_mat){
-
-  # evaluate if any values are to be decimal aligned
-
-  if(!any(grepl("dec", align_mat))){
+  if (!any(grepl("dec", align_mat))) {
     string_mat <- string_mat
-  }
-
-  else{
-    for(i in seq(1, ncol(string_mat))){
-
-      # if no values are to be decimal aligned in the column (according to the aligns matrix), or there are no numerical values, strings remain as is
-      if (sum(grepl("dec", align_mat[,i])) == 0 | all(grepl("^[0-9]\\.", string_mat[,i])) ){
-        string_mat[,i] <- string_mat[,i]
+  } else {
+    for (i in seq(1, ncol(string_mat))) {
+      # If no values are to be decimal aligned in the column (according to the aligns
+      # matrix), or there are no numerical values, strings remain as is
+      if (sum(grepl("dec", align_mat[, i])) == 0 || all(grepl("^[0-9]\\.", string_mat[, i]))) {
+        string_mat[, i] <- string_mat[, i]
       }
 
       # values to be decimal aligned.
-      if (any(grepl("dec", align_mat[,i]))){
-
-        # Extract values not to be aligned (NAs, non-numbers, non-decimal numbers, doesn't say "decimal" in alignment matrix)
-        nas <- grepl("^NA$", string_mat[,i])
-        nonnum <- !grepl("[0-9]", string_mat[,i]) | grepl("[a-zA-Z]", string_mat[,i]) | !grepl("\\.", string_mat[,i])
-        alignmat <- !grepl("dec", align_mat[,i])
+      if (any(grepl("dec", align_mat[, i]))) {
+        # Extract values not to be aligned (NAs, non-numbers, non-decimal numbers,
+        # doesn't say "decimal" in alignment matrix)
+        nas <- grepl("^NA$", string_mat[, i])
+        nonnum <- !grepl("[0-9]", string_mat[, i]) | grepl("[a-zA-Z]", string_mat[, i]) | !grepl("\\.", string_mat[, i])
+        alignmat <- !grepl("dec", align_mat[, i])
 
         nonalign <- nas | nonnum | alignmat
 
-        x <- as.character(string_mat[,i])
+        x <- as.character(string_mat[, i])
 
-        if(length(x[!nonalign])> 0){
-
+        if (length(x[!nonalign]) > 0) {
           splitx <- strsplit(x[!nonalign], ".", fixed = TRUE)
 
           left <-
@@ -234,17 +237,19 @@ decimal_align <- function(string_mat, align_mat){
             unlist(lapply(splitx, FUN = function(x) paste0(x[-1], collapse = ".")))
 
           # modify the piece with spaces
-          left_mod <- paste0(spaces(max(nchar(left), na.rm = T) - nchar(left)), left)
+          left_mod <- paste0(spaces(max(nchar(left), na.rm = TRUE) - nchar(left)), left)
 
-          right_mod <- paste0(right, spaces(max(nchar(right), na.rm = T) - nchar(right)))
+          right_mod <- paste0(right, spaces(max(nchar(right), na.rm = TRUE) - nchar(right)))
 
-          aligned <- ifelse(!grepl("[^0-9]$", left_mod), paste(left_mod, right_mod, sep = "."), paste(left_mod, right_mod))
+          aligned <- ifelse(!grepl("[^0-9]$", left_mod),
+            paste(left_mod, right_mod, sep = "."),
+            paste(left_mod, right_mod)
+          )
 
           x[!nonalign] <- aligned
-          string_mat[,i] <- x
-        }
-        else{
-          string_mat[,i] <- x
+          string_mat[, i] <- x
+        } else {
+          string_mat[, i] <- x
         }
       }
     }
@@ -329,6 +334,7 @@ decimal_align <- function(string_mat, align_mat){
     mat <- matrix_form(x, indent_rownames = TRUE)
     inset <- table_inset(mat)
 
+<<<<<<< HEAD
     # if cells are decimal aligned, run propose column widths
     # if the provided widths is less than proposed width, return an error
     if (any(grepl("dec", mat$aligns))) {
@@ -346,6 +352,214 @@ decimal_align <- function(string_mat, align_mat){
           stop(
             "Inserted width(s) for column(s) ", desc_width,
             " is(are) not wide enough for the desired alignment."
+=======
+  # if cells are decimal aligned, run propose column widths
+  # if the provided widths is less than proposed width, return an error
+  if (any(grepl("dec", mat$aligns))) {
+    aligned <- propose_column_widths(x)
+
+    # catch any columns that require widths more than what is provided
+    if (!is.null(widths)) {
+      how_wide <- sapply(seq_along(widths), function(i) c(widths[i] - aligned[i]))
+      too_wide <- how_wide < 0
+      if (any(too_wide)) {
+        desc_width <- paste(paste(
+          names(which(too_wide)),
+          paste0("(", how_wide[too_wide], ")")
+        ), collapse = ", ")
+        stop(
+          "Inserted width(s) for column(s) ", desc_width,
+          " is(are) not wide enough for the desired alignment."
+        )
+      }
+    }
+
+    widths <- aligned
+  }
+
+  if (is.null(widths)) {
+    widths <- propose_column_widths(x)
+  }
+  ncchar <- sum(widths) + (length(widths) - 1) * col_gap
+
+  ## Text wrapping checks
+  if (tf_wrap) {
+    if (is.null(max_width)) {
+      max_width <- getOption("width", 80L)
+    } else if (is.character(max_width) && identical(max_width, "auto")) {
+      max_width <- ncchar + inset
+    }
+    assert_number(max_width, lower = 0)
+  }
+
+  # Check for having the right number of widths
+  stopifnot(length(widths) == ncol(mat$strings))
+
+  ## format the to ASCII
+  cell_widths_mat <- .calc_cell_widths(mat, widths, col_gap)
+  ## wrap_string calls strwrap, which destroys whitespace so we need to make
+  ## sure to put the indents back in
+
+  # See if indentation is properly set
+  ind_from_mf <- mf_rinfo(mat)$indent > 0
+  nlh <- mf_nlheader(mat)
+  ind_std <- paste0(rep(" ", mat$indent_size), collapse = "")
+  # Body indentation
+  old_indent <- sapply(mf_rinfo(mat)$indent, function(i) paste0(rep(ind_std, i), collapse = ""))
+  # Header indentation (it happens with toplefts, not \n in titles, dealt afterwards)
+  # NB: what about \n in topleft? -> not supported
+  header_indent <- gsub("^([[:space:]]*).*", "\\1", mat$strings[1:nlh, 1]) # Supposedly never with empty strings " "
+  old_indent <- c(header_indent, old_indent)
+  need_reindent <- nzchar(old_indent)
+  # Check for which row has indent
+  ind_from_strings <- nchar(old_indent)[-seq_len(nlh)] > 0
+  if (!all(ind_from_strings == ind_from_mf)) {
+    stop("Row-info and string indentations are different.", # nocov
+         " Please contact the maintainer, this should not happen.") # nocov
+  }
+  ori_mflg <- mf_lgrouping(mat) # Original groups
+  reindent_old_idx <- ori_mflg[need_reindent] # Indent groups bf wrap
+
+  # Taking care in advance of indented word wrappings
+  cell_widths_mat[need_reindent, 1] <- cell_widths_mat[need_reindent, 1] - nchar(old_indent)[need_reindent]
+
+  # Case in which the indentation is taking too much space vs desired wrapping
+  if (any(cell_widths_mat < 0)) {
+    col_culprits <- apply(cell_widths_mat, 2, function(i) any(i < 0))
+    stop(
+      "Inserted width(s) for column(s) ", which(col_culprits),
+      " is(are) not wide enough for the desired indentation."
+    )
+  }
+
+  new_strings <- matrix(
+    unlist(mapply(wrap_string,
+      str = mat$strings,
+      max_width = cell_widths_mat,
+      hard = TRUE
+    )),
+    ncol = ncol(mat$strings)
+  )
+  mat$strings <- new_strings
+
+  ## XXXXX this is wrong and will break for listings cause we don't know when
+  ## we need has_topleft to be FALSE!!!!!!!!!!
+  mat <- mform_handle_newlines(mat)
+
+  # Indent groups after newline
+  reindent_new_idx <- mf_lgrouping(mat) %in% reindent_old_idx
+  if (anyNA(reindent_new_idx)) {
+    stop("Unable to remap indenting after cell content text wrapping. ", # nocov
+         "Please contact the maintainer, this should not happen.") # nocov
+  }
+
+  # Adding the indentation back in
+  ind_v <- NULL
+  for (i in mf_lgrouping(mat)[reindent_new_idx]) {
+    ind_v <- c(ind_v, which(i == ori_mflg)[1])
+  }
+  new_indent <- old_indent[ind_v]
+
+  # Additional safety check
+  if (length(new_indent) > 0 && !all(nzchar(new_indent))) {
+    stop("Recovered indentation contains empty strings. This is an", # nocov
+         " indexing problem, please contact the maintainer, this should not happen.") # nocov
+  }
+
+  # Indentation is different for topleft material
+  if (isTRUE(mf_has_topleft(mat))) {
+    # mf_nlheader counts actual header lines while mf_nrheader is 'virtual'
+    # A bit of an hack, but unforeseen behavior, related to \n in topleft is not supported
+    # Therefore, this still suppose that we dealt with \n in the cols before
+    indx_topleft <- which(reindent_new_idx[1:nlh])
+    new_indent[seq_along(indx_topleft)] <- old_indent[indx_topleft]
+  }
+
+  # Main addition of the 'saved' indentation to strings
+  mat$strings[reindent_new_idx, 1] <- paste0(
+    new_indent,
+    mat$strings[reindent_new_idx, 1]
+  )
+
+  body <- mat$strings
+  aligns <- mat$aligns
+  keep_mat <- mat$display
+  ## spans <- mat$spans
+  ##    ri <- mat$row_info
+  ref_fnotes <- mat$ref_footnotes
+  nl_header <- mf_nlheader(mat)
+
+  cell_widths_mat <- .calc_cell_widths(mat, widths, col_gap)
+
+  ## nr <- nrow(body)
+  ## cell_widths_mat <- matrix(rep(widths, nr), nrow = nr, byrow = TRUE)
+  ## nc <- ncol(cell_widths_mat)
+
+  ## for (i in seq_len(nrow(body))) {
+  ##   if (any(!keep_mat[i, ])) { # any spans?
+  ##     j <- 1
+  ##     while (j <= nc) {
+  ##       nj <- spans[i, j]
+  ##       j <- if (nj > 1) {
+  ##         js <- seq(j, j + nj - 1)
+  ##         cell_widths_mat[i, js] <- sum(cell_widths_mat[i, js]) + col_gap * (nj - 1)
+  ##         j + nj
+  ##       } else {
+  ##         j + 1
+  ##       }
+  ##     }
+  ##   }
+  ## }
+
+  # decimal alignment
+  if (any(grepl("dec", aligns))) {
+    body <- decimal_align(body, aligns)
+  }
+
+  content <- matrix(mapply(padstr, body, cell_widths_mat, aligns), ncol = ncol(body))
+  content[!keep_mat] <- NA
+  # apply(content, 1, function(x) sum(nchar(x), na.rm = TRUE))
+
+  gap_str <- strrep(" ", col_gap)
+
+  div <- substr(strrep(hsep, ncchar), 1, ncchar)
+  txt_head <- apply(head(content, nl_header), 1, .paste_no_na, collapse = gap_str)
+  sec_seps_df <- x$row_info[, c("abs_rownumber", "trailing_sep"), drop = FALSE]
+  if (!is.null(sec_seps_df) && any(!is.na(sec_seps_df$trailing_sep))) {
+    bdy_cont <- tail(content, -nl_header)
+    ## unfortunately we count "header rows" wrt line grouping so it
+    ## doesn't match the real (i.e. body) rows as is
+    row_grouping <- tail(x$line_grouping, -nl_header) - mf_nrheader(x)
+    nrbody <- NROW(bdy_cont)
+    stopifnot(length(row_grouping) == nrbody)
+    ## all rows with non-NA section divs and the final row (regardless of NA status)
+    ## fixes #77
+    sec_seps_df <- sec_seps_df[unique(c(
+      which(!is.na(sec_seps_df$trailing_sep)),
+      NROW(sec_seps_df)
+    )), ]
+    txt_body <- character()
+    sec_strt <- 1
+    section_rws <- sec_seps_df$abs_rownumber
+    for (i in seq_len(NROW(section_rws))) {
+      cur_rownum <- section_rws[i]
+      sec_end <- max(which(row_grouping == cur_rownum))
+      txt_body <- c(
+        txt_body,
+        apply(bdy_cont[seq(sec_strt, sec_end), , drop = FALSE],
+          1,
+          .paste_no_na,
+          collapse = gap_str
+        ),
+        ## don't print section dividers if they would be the last thing before the
+        ## footer divider
+        ## this also ensures an extraneous sec div won't be printed if we have non-sec-div
+        ## rows after the last sec div row (#77)
+        if (sec_end < nrbody) {
+          substr(
+            strrep(sec_seps_df$trailing_sep[i], ncchar), 1,
+            ncchar - inset
+>>>>>>> f2ebbbcd4f7c98c25345fe43f84e13bea677e2dc
           )
         }
       }
@@ -757,7 +971,7 @@ propose_column_widths <- function(x, indent_size = 2) {
 
   # compute decimal alignment if asked in alignment matrix
 
-  if(any(grepl("dec", aligns))){
+  if (any(grepl("dec", aligns))) {
     body <- decimal_align(body, aligns)
   }
 

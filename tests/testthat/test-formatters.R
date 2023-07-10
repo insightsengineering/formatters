@@ -16,6 +16,348 @@ test_that("formats work", {
     expect_identical(
   format_value(values[1], format = "xx."),
   "5"
+<<<<<<< HEAD
+=======
+)
+
+expect_identical(
+  format_value(values[1], format = "xx.x"),
+  "5.1"
+)
+
+expect_identical(
+  format_value(values[1], format = "xx.xx"),
+  "5.12"
+)
+
+expect_identical(
+  format_value(values[1], format = "xx.xxx"),
+  "5.123"
+)
+
+expect_identical(
+  format_value(values[1], format = "xx.xxxx"),
+  "5.1235"
+)
+
+expect_identical(
+  format_value(values[1], format = "xx%"),
+  paste0(values[1] * 100, "%")
+)
+
+expect_identical(
+  format_value(values[1], format = "xx.%"),
+  "512%"
+)
+
+expect_identical(
+  format_value(values[1], format = "xx.x%"),
+  "512.3%"
+)
+
+expect_identical(
+  format_value(values[1], format = "xx.xx%"),
+  "512.35%"
+)
+
+expect_identical(
+  format_value(values[1], format = "xx.xxx%"),
+  "512.346%"
+)
+
+expect_identical(
+  format_value(values[1], format = ">999.9"),
+  "5.1"
+)
+
+expect_identical(
+  format_value(10000, format = ">999.9"),
+  ">999.9"
+)
+
+expect_identical(
+  format_value(values[1], format = ">999.99"),
+  "5.12"
+)
+
+expect_identical(
+  format_value(10000, format = ">999.99"),
+  ">999.99"
+)
+
+expect_identical(
+  format_value(.0004, format = "x.xxxx | (<0.0001)"),
+  "0.0004"
+)
+
+expect_identical(
+  format_value(.00004, format = "x.xxxx | (<0.0001)"),
+  "<0.0001"
+)
+
+expect_identical(
+  format_value(values, format = "xx / xx"),
+  paste(values, collapse = " / ")
+)
+
+expect_identical(
+  format_value(values, format = "xx. / xx."),
+  "5 / 8"
+)
+
+expect_identical(
+  format_value(values, format = "xx.x / xx.x"),
+  "5.1 / 7.9"
+)
+
+expect_identical(
+  format_value(values, format = "xx.xx / xx.xx"),
+  "5.12 / 7.89"
+)
+
+expect_identical(
+  format_value(values, format = "xx.xxx / xx.xxx"),
+  "5.123 / 7.891"
+)
+
+expect_identical(
+  format_value(values, format = "xx (xx%)"),
+  paste0(values[1], " (", values[2] * 100, "%)")
+)
+
+expect_identical(
+  format_value(values, format = "xx (xx.%)"),
+  paste0(values[1], " (789%)")
+)
+
+expect_identical(
+  format_value(values, format = "xx. (xx.%)"),
+  paste0(5, " (789%)")
+)
+
+expect_identical(
+  format_value(values, format = "xx (xx.x%)"),
+  paste0(values[1], " (789.1%)")
+)
+
+expect_identical(
+  format_value(values, format = "xx (xx.xx%)"),
+  paste0(values[1], " (789.11%)")
+)
+
+expect_identical(
+  format_value(values, format = "xx.x (xx.x%)"),
+  "5.1 (789.1%)"
+)
+
+expect_identical(
+  format_value(values, format = "xx.xx (xx.xx%)"),
+  "5.12 (789.11%)"
+)
+
+expect_identical(
+  format_value(values, format = "xx.x (xx.x%)"),
+  "5.1 (789.1%)"
+)
+
+expect_identical(
+  format_value(values, format = "(xx, xx)"),
+  paste0("(", values[1], ", ", values[2], ")")
+)
+
+expect_identical(
+  format_value(values, format = "(xx., xx.)"),
+  "(5, 8)"
+)
+
+expect_identical(
+  format_value(values, format = "(xx.x, xx.x)"),
+  "(5.1, 7.9)"
+)
+
+expect_identical(
+  format_value(values, format = "(xx.xx, xx.xx)"),
+  "(5.12, 7.89)"
+)
+
+expect_identical(
+  format_value(values, format = "(xx.xxx, xx.xxx)"),
+  "(5.123, 7.891)"
+)
+
+expect_identical(
+  format_value(values, format = "(xx.xxxx, xx.xxxx)"),
+  "(5.1235, 7.8911)"
+)
+
+expect_identical(
+  format_value(values, format = "xx - xx"),
+  paste(values, collapse = " - ")
+)
+
+expect_identical(
+  format_value(values, format = "xx.x - xx.x"),
+  "5.1 - 7.9"
+)
+
+expect_identical(
+  format_value(values, format = "xx.xx - xx.xx"),
+  "5.12 - 7.89"
+)
+
+expect_identical(
+  format_value(values, format = "xx (xx%)"),
+  paste0(values[1], " (", values[2] * 100, "%)")
+)
+
+expect_identical(
+  format_value(values, format = "xx (xx)"),
+  paste0(values[1], " (", values[2], ")")
+)
+
+
+expect_identical(
+  format_value(values, format = "xx (xx.)"),
+  paste0(values[1], " (8)")
+)
+
+
+expect_identical(
+  format_value(values, format = "xx (xx.x)"),
+  paste0(values[1], " (7.9)")
+)
+
+expect_identical(
+  format_value(values, format = "xx (xx.xx)"),
+  paste0(values[1], " (7.89)")
+)
+
+
+expect_identical(
+  format_value(values, format = "xx. (xx.)"),
+  paste0(5, " (8)")
+)
+
+
+expect_identical(
+  format_value(values, format = "xx.x (xx.x)"),
+  "5.1 (7.9)"
+)
+
+expect_identical(
+  format_value(values, format = "xx.xx (xx.xx)"),
+  "5.12 (7.89)"
+)
+
+expect_identical(
+  format_value(values, format = "xx.x, xx.x"),
+  "5.1, 7.9"
+)
+
+expect_identical(
+  format_value(values, format = "xx.x to xx.x"),
+  "5.1 to 7.9"
+)
+
+expect_identical(
+  format_value(c(values, 10.1235), format = "xx. (xx. - xx.)"),
+  "5 (8 - 10)"
+)
+
+expect_identical(
+  format_value(c(values, 10.1235), format = "xx.x (xx.x - xx.x)"),
+  "5.1 (7.9 - 10.1)"
+)
+
+expect_identical(
+  format_value(c(values, 10.1235), format = "xx.xx (xx.xx - xx.xx)"),
+  "5.12 (7.89 - 10.12)"
+)
+
+expect_identical(
+  format_value(c(values, 10.1235), format = "xx.xxx (xx.xxx - xx.xxx)"),
+  "5.123 (7.891 - 10.124)"
+)
+
+expect_identical(format_value(NULL, "xx"), "")
+
+expect_identical(
+  format_value(5.123, "xx.x", output = "html"),
+  list("5.1" = htmltools::tagList(format_value(5.123, "xx.x"), NULL))
+)
+
+expect_identical(format_value(c(500, 1), "N=xx (xx%)"),
+                 "N=500 (100%)")
+
+## errors
+
+expect_error(format_value(5.1, "abcd"), "unknown format label")
+expect_error(format_value(5.1, "xx - xx"), "are of different length")
+
+expect_error(format_value(c(5.1, 2, 3), "xx - xx"), "are of different length")
+## handling NAs
+
+results <- vapply(forms[["1d"]], function(fmt) format_value(NA, format = fmt), "")
+justnastr <- results == "NA"
+
+expect_true(all(justnastr))
+
+expect_identical(
+  format_value(NA, "xx.", na_str = "-"),
+  "-"
+)
+expect_identical(
+  format_value(NA, "xx", na_str = "-"),
+  "-"
+)
+
+## trailing 0s are correct
+expect_identical(format_value(0, "xx."), "0")
+expect_identical(format_value(0, "xx.x"), "0.0")
+expect_identical(format_value(0, "xx.xx"), "0.00")
+expect_identical(format_value(0, "xx.xxx"), "0.000")
+expect_identical(format_value(0, "xx.xxxx"), "0.0000")
+
+
+## sprintf_format functionality
+myfun <- sprintf_format("hi there %1.4f")
+expect_true(is_valid_format(myfun))
+expect_identical(
+  format_value(pi, format = myfun),
+  "hi there 3.1416"
+)
+
+
+
+thing <- 5.1234
+expect_true(is.null(obj_label(thing)))
+obj_label(thing) <- "hi thing"
+expect_identical(obj_label(thing), "hi thing")
+expect_true(is.null(obj_format(thing)))
+obj_format(thing) <- "xx.x"
+expect_identical(
+  format_value(thing, obj_format(thing)),
+  "5.1"
+)
+
+
+## labels
+
+x <- 15
+expect_identical(
+  obj_label(with_label(x, "hi")),
+  "hi"
+)
+
+mydf <- mtcars
+lbls <- paste("LBL: ", names(mydf))
+var_labels(mydf) <- lbls
+expect_identical(
+  var_labels(mydf),
+  setNames(
+    lbls,
+    names(mydf)
+>>>>>>> f2ebbbcd4f7c98c25345fe43f84e13bea677e2dc
   )
 
     expect_identical(
@@ -538,40 +880,135 @@ mpf <- MatrixPrintForm(strings = strs, spans = spans, aligns = aligns,
 expect_equal(length(grep("spn_val", toString(mpf))),
              1L)
 
-
 # testing if error is returned when provided widths argument
 # is narrower than decimal aligned values
 
 df_error <- dfmf
-df_error$aligns[,-c(1)] <- "dec_left"
+df_error$aligns[, -c(1)] <- "dec_left"
 
-expect_error(toString(df_error, widths = c(25,4,4,4,4,4,4,4,4,4,4,4)))
+expect_error(
+  toString(df_error, widths = c(25, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4)),
+  "Inserted width\\(s\\) for column\\(s\\) disp, wt, qsec is\\(are\\) not wide enough for the desired alignment"
+)
 
 
 # test if padstr works with "dec_left", "dec_right" and "decimal"
 
 test_that("padstr works with dec_left", {
-  bmf <- basic_matrix_form(mtcars[,c(1,6)])
-  bmf$aligns[,-c(1)] <- "dec_left"
-  result <- toString(bmf)
-  expected <- c("                      mpg    wt   \n——————————————————————————————————\nMazda RX4             21     2.62 \nMazda RX4 Wag         21     2.875\nDatsun 710            22.8   2.32 \nHornet 4 Drive        21.4   3.215\nHornet Sportabout     18.7   3.44 \nValiant               18.1   3.46 \nDuster 360            14.3   3.57 \nMerc 240D             24.4   3.19 \nMerc 230              22.8   3.15 \nMerc 280              19.2   3.44 \nMerc 280C             17.8   3.44 \nMerc 450SE            16.4   4.07 \nMerc 450SL            17.3   3.73 \nMerc 450SLC           15.2   3.78 \nCadillac Fleetwood    10.4   5.25 \nLincoln Continental   10.4   5.424\nChrysler Imperial     14.7   5.345\nFiat 128              32.4   2.2  \nHonda Civic           30.4   1.615\nToyota Corolla        33.9   1.835\nToyota Corona         21.5   2.465\nDodge Challenger      15.5   3.52 \nAMC Javelin           15.2   3.435\nCamaro Z28            13.3   3.84 \nPontiac Firebird      19.2   3.845\nFiat X1-9             27.3   1.935\nPorsche 914-2         26     2.14 \nLotus Europa          30.4   1.513\nFord Pantera L        15.8   3.17 \nFerrari Dino          19.7   2.77 \nMaserati Bora         15     3.57 \nVolvo 142E            21.4   2.78 \n")
+  bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
+  bmf$aligns[, -c(1)] <- "dec_left"
+  cw <- propose_column_widths(bmf)
+  cw[2] <- cw[2] + 1
+  result <- strsplit(toString(bmf, widths = cw, hsep = "-"), "\\n")[[1]]
+  expected <- c(
+    "                 mpg     wt   ",
+    "------------------------------",
+    "Mazda RX4        21      2.62 ",
+    "Mazda RX4 Wag    21      2.875",
+    "Datsun 710       22.8    2.32 ",
+    "Hornet 4 Drive   21.4    3.215"
+  )
   expect_identical(result, expected)
 })
 
 test_that("padstr works with dec_right", {
-  bmf <- basic_matrix_form(mtcars[,c(1,6)])
-  bmf$aligns[,-c(1)] <- "dec_right"
-  result <- toString(bmf)
-  expected <- c("                       mpg      wt\n——————————————————————————————————\nMazda RX4               21   2.62 \nMazda RX4 Wag           21   2.875\nDatsun 710            22.8   2.32 \nHornet 4 Drive        21.4   3.215\nHornet Sportabout     18.7   3.44 \nValiant               18.1   3.46 \nDuster 360            14.3   3.57 \nMerc 240D             24.4   3.19 \nMerc 230              22.8   3.15 \nMerc 280              19.2   3.44 \nMerc 280C             17.8   3.44 \nMerc 450SE            16.4   4.07 \nMerc 450SL            17.3   3.73 \nMerc 450SLC           15.2   3.78 \nCadillac Fleetwood    10.4   5.25 \nLincoln Continental   10.4   5.424\nChrysler Imperial     14.7   5.345\nFiat 128              32.4   2.2  \nHonda Civic           30.4   1.615\nToyota Corolla        33.9   1.835\nToyota Corona         21.5   2.465\nDodge Challenger      15.5   3.52 \nAMC Javelin           15.2   3.435\nCamaro Z28            13.3   3.84 \nPontiac Firebird      19.2   3.845\nFiat X1-9             27.3   1.935\nPorsche 914-2           26   2.14 \nLotus Europa          30.4   1.513\nFord Pantera L        15.8   3.17 \nFerrari Dino          19.7   2.77 \nMaserati Bora           15   3.57 \nVolvo 142E            21.4   2.78 \n")
+  bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
+  bmf$aligns[, -c(1)] <- "dec_right"
+  cw <- propose_column_widths(bmf)
+  cw[2] <- cw[2] + 1
+  result <- strsplit(toString(bmf, widths = cw, hsep = "-"), "\\n")[[1]]
+  cat(paste0('c(\n  "', paste0(result, collapse = '",\n  "'), '"\n)'))
+  expected <- c(
+    "                   mpg      wt",
+    "------------------------------",
+    "Mazda RX4         21     2.62 ",
+    "Mazda RX4 Wag     21     2.875",
+    "Datsun 710        22.8   2.32 ",
+    "Hornet 4 Drive    21.4   3.215"
+  )
   expect_identical(result, expected)
 })
 
-
-test_that("padstr works with dec_right", {
-  bmf <- basic_matrix_form(mtcars[,c(1,6)])
-  bmf$aligns[,-c(1)] <- "decimal"
-  result <- toString(bmf)
-  expected <- c("                      mpg     wt  \n——————————————————————————————————\nMazda RX4              21    2.62 \nMazda RX4 Wag          21    2.875\nDatsun 710            22.8   2.32 \nHornet 4 Drive        21.4   3.215\nHornet Sportabout     18.7   3.44 \nValiant               18.1   3.46 \nDuster 360            14.3   3.57 \nMerc 240D             24.4   3.19 \nMerc 230              22.8   3.15 \nMerc 280              19.2   3.44 \nMerc 280C             17.8   3.44 \nMerc 450SE            16.4   4.07 \nMerc 450SL            17.3   3.73 \nMerc 450SLC           15.2   3.78 \nCadillac Fleetwood    10.4   5.25 \nLincoln Continental   10.4   5.424\nChrysler Imperial     14.7   5.345\nFiat 128              32.4   2.2  \nHonda Civic           30.4   1.615\nToyota Corolla        33.9   1.835\nToyota Corona         21.5   2.465\nDodge Challenger      15.5   3.52 \nAMC Javelin           15.2   3.435\nCamaro Z28            13.3   3.84 \nPontiac Firebird      19.2   3.845\nFiat X1-9             27.3   1.935\nPorsche 914-2          26    2.14 \nLotus Europa          30.4   1.513\nFord Pantera L        15.8   3.17 \nFerrari Dino          19.7   2.77 \nMaserati Bora          15    3.57 \nVolvo 142E            21.4   2.78 \n")
+test_that("padstr works with decimal", {
+  bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
+  bmf$aligns[, -c(1)] <- "decimal"
+  cw <- propose_column_widths(bmf)
+  cw[2] <- cw[2] + 2
+  result <- strsplit(toString(bmf, widths = cw, hsep = "-"), "\\n")[[1]]
+  expected <- c(
+    "                      mpg      wt  ",
+    "-----------------------------------",
+    "Mazda RX4             21      2.62 ",
+    "Mazda RX4 Wag         21      2.875",
+    "Datsun 710            22.8    2.32 ",
+    "Hornet 4 Drive        21.4    3.215"
+  )
   expect_identical(result, expected)
 })
 
+test_that("Decimal alignment: a specific case with larger widths", {
+  hard_c <- c(12345.6, 0.235678, 6.7, 9.26, 1, 11)
+  lhc <- length(hard_c)
+  bmf <- basic_matrix_form(mtcars[1:lhc, c(1, 6)])
+  cw0 <- propose_column_widths(bmf)
+  bmf$strings[2:c(lhc + 1), 2] <- as.character(hard_c)
+  bmf$strings[2:c(lhc + 1), 3] <- paste0(hard_c, "%")
+  bmf$formats[2:c(lhc + 1), 3] <- rep("xx%", lhc)
+
+  # decimal
+  bmf$aligns[, -1] <- "decimal"
+  cw <- cw_err <- propose_column_widths(bmf)
+  expect_equal(sum(cw - cw0), 16) # small check of increased colwidths
+  cw_err[c(2, 3)] <- cw[c(2, 3)] - 6
+  cw[c(2, 3)] <- cw[c(2, 3)] + 6
+
+  er_msg <- paste0("Inserted width\\(s\\) for column\\(s\\) mpg \\(-6\\), wt \\(-6\\) ",
+                   "is\\(are\\) not wide enough for the desired alignment.")
+  expect_error(toString(bmf, widths = cw_err), er_msg)
+
+  res_dec <- strsplit(toString(bmf, widths = cw, hsep = "-"), "\\n")[[1]]
+
+  expected <- c(
+    "                          mpg                 wt         ",
+    "---------------------------------------------------------",
+    "Mazda RX4             12345.6           12345.6%         ",
+    "Mazda RX4 Wag             0.235678          0.235678%    ",
+    "Datsun 710                6.7               6.7%         ",
+    "Hornet 4 Drive            9.26              9.26%        ",
+    "Hornet Sportabout         1                 1%           ",
+    "Valiant                  11                11%           "
+  )
+  expect_identical(res_dec, expected)
+
+  # dec_right
+  bmf$aligns[, -1] <- "dec_right"
+  res_decr <- strsplit(toString(bmf, widths  = cw), "\\n")[[1]]
+
+  # expected <- c( # to fix
+  #   "                             mpg              wt",
+  #   "————————————————————————————————————————————————",
+  #   "Mazda RX4           12345.6        12345.6%     ",
+  #   "Mazda RX4 Wag           0.235678       0.235678%",
+  #   "Datsun 710              6.7            6.7%     ",
+  #   "Hornet 4 Drive          9.26           9.26%    ",
+  #   "Hornet Sportabout       1              1%",
+  #   "Valiant                       11             11%"
+  # )
+  # expect_identical(res_decr, expected)
+
+  # dec_left
+  bmf$aligns[, -1] <- "dec_left"
+  res_decl <- strsplit(toString(bmf, widths = cw), "\\n")[[1]]
+
+  # expected <- c( # to fix
+  #   "                    mpg            wt           ",
+  #   "————————————————————————————————————————————————",
+  #   "Mazda RX4           12345.6        12345.6%     ",
+  #   "Mazda RX4 Wag           0.235678       0.235678%",
+  #   "Datsun 710              6.7            6.7%     ",
+  #   "Hornet 4 Drive          9.26           9.26%    ",
+  #   "Hornet Sportabout       1              1%       ",
+  #   "Valiant                11              11%      "
+  # )
+  # expect_identical(res_decl, expected)
+})
