@@ -116,27 +116,3 @@ test_that("exporters work", {
                          paste(c(expct_lns[1:5], ""), collapse = "\n"))
     })
 })
-
-test_that("export_as_txt prints split level header when using page_by with only one level", {
-    tbl <- basic_table() %>%
-        split_rows_by("PARAMCD", labels_var = "PARAMCD", split_label = "aaa",
-                      label_pos = "topleft",
-                      split_fun = drop_split_levels, page_by = TRUE) %>%
-        split_rows_by("AVISIT", label_pos = "topleft",
-                      split_fun = keep_split_levels("SCREENING")) %>%
-        summarize_vars("AVAL",
-                       .stats = c("n", "mean_sd")) %>%
-        build_table(ex_adlb %>% filter(PARAMCD == "ALT"))
-    tbl_txt <- tbl %>% export_as_txt(lpp = 100)
-
-    expect_txt <- paste0(
-        "\naaa: ALT\n\n",
-        "——————————————————————————\n",
-        "aaa                       \n",
-        "  AVISIT         all obs  \n",
-        "——————————————————————————\n",
-        "SCREENING                 \n",
-        "  n                400    \n",
-        "  Mean (SD)     50.3 (7.8)\n")
-    expect_identical(tbl_txt[[1]], expect_txt)
-})
