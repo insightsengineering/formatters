@@ -889,6 +889,10 @@ paginate_indices <- function(obj,
          pag_col_indices = pag_col_indices)
 }
 
+setGeneric("has_page_title", function(obj) standardGeneric("has_page_title"))
+
+setMethod("has_page_title", "ANY", function(obj) length(page_titles(obj)) > 0)
+
 #' @rdname paginate_indices
 #' @export
 paginate_to_mpfs <- function(obj,
@@ -958,7 +962,7 @@ paginate_to_mpfs <- function(obj,
                       nosplitin = nosplitin,
                       verbose = verbose)
         return(unlist(deep_pag, recursive = FALSE))
-    } else if (!is.null(attr(obj, "page_title_prefix")) && !is.na(attr(obj, "page_title_prefix"))) {
+    } else if (has_page_title(fpags[[1]])) {
       obj <- fpags[[1]]
     }
 
