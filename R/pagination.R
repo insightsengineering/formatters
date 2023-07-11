@@ -958,6 +958,8 @@ paginate_to_mpfs <- function(obj,
                       nosplitin = nosplitin,
                       verbose = verbose)
         return(unlist(deep_pag, recursive = FALSE))
+    } else if (!is.null(attr(obj, "page_title_prefix")) && !is.na(attr(obj, "page_title_prefix"))) {
+      obj <- fpags[[1]]
     }
 
 
