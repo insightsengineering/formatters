@@ -9,8 +9,9 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: console
+  markdown: 
+    wrap: 72
 ---
-
 
 ```{r, echo=FALSE}
 knitr::opts_chunk$set(comment = "")
@@ -19,19 +20,22 @@ library(formatters)
 
 # formatters
 
-The `formatters` package provides two core pieces of functionality, both related to ASCII rendering:
+The `formatters` package provides two core pieces of functionality, both
+related to ASCII rendering:
 
-1. `format_value` provides the ability to format single- and multi-valued elements into ASCII display-ready strings
-2. the `matrix_form` framework provides generics for implementing ASCII rendering support for display tables
+1.  `format_value` provides the ability to format single- and
+    multi-valued elements into ASCII display-ready strings
+2.  the `matrix_form` framework provides generics for implementing ASCII
+    rendering support for display tables
 
-Both of these feature sets are used in the `rtables` package.
+**Both of these feature sets are used in the `rtables` package.**
 
 # Formatting values
 
 The core motivation for `formatters` is the rendering of reporting
-tables into ASCII. In this context a 'value' is the raw content that
-to appear in a single table cell. Most commonly this is a numeric
-vector of length 1, 2 or -- occasionally -- 3.
+tables into ASCII. In this context a 'value' is the raw content that to
+appear in a single table cell. Most commonly this is a numeric vector of
+length 1, 2 or -- occasionally -- 3.
 
 ## Format labels
 
@@ -44,17 +48,15 @@ calling the `list_valid_format_labels` function:
 list_valid_format_labels()
 ```
 
-Each of these labels describes how the incoming (possibly
-multi-element) raw value will be formatted. `xx` indicates that an
-element of the value will be printed as is, with no
-modification. `xx.` indicates that a numeric value element will be
-rounded to 0 decimal places, `xx.x` indicates rounding to 1 decimal
-place, etc.
+Each of these labels describes how the incoming (possibly multi-element)
+raw value will be formatted. `xx` indicates that an element of the value
+will be printed as is, with no modification. `xx.` indicates that a
+numeric value element will be rounded to 0 decimal places, `xx.x`
+indicates rounding to 1 decimal place, etc.
 
 ## Formatting values
 
 Values are formatted via calls to `format_value`, like so:
-
 
 ```{r}
 format_value(5.1235, format = "xx.xx")
@@ -64,24 +66,24 @@ format_value(5.1235, format = "xx.xx")
 format_value(c(1.2355, 2.6789), "(xx.xx, xx.xx)")
 ```
 
-
 # Table Rendering Framework
 
 **Advanced Usage Only** These features are supported, and in fact are
 used in `rtables` and the experimental `rlistings`. That said, the API
 is currently very low-level and tailored to what `rtables` and
-`rlistings` need. How useful this is to other table frameworks may
-vary.
+`rlistings` need. How useful this is to other table frameworks may vary.
 
 The second major piece of functionality in `formatters` is the ability
-to render tables into ASCII (and thus directly to the terminal) based
-on a so-called `MatrixPrintForm` representation of the table.
+to render tables into ASCII (and thus directly to the terminal) based on
+a so-called `MatrixPrintForm` representation of the table.
 
-To hook up `rtables`-style ASCII display for your tables, it suffices
-to export a method for the exported `matrix_form` generic `formatters`
-provides. This method must return a `MatrixPrintForm` object representing your table.
+To hook up `rtables`-style ASCII display for your tables, it suffices to
+export a method for the exported `matrix_form` generic `formatters`
+provides. This method must return a `MatrixPrintForm` object
+representing your table.
 
-We can build a baby example method for `data.frames` to illustrate this process:
+We can build a baby example method for `data.frames` to illustrate this
+process:
 
 ```{r}
 

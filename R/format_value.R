@@ -27,17 +27,21 @@ formats_3d <- c(
   "xx.xxx (xx.xxx - xx.xxx)"
 )
 
-#' List with currently support 'xx' style format labels grouped by 1d, 2d and 3d
+#' @title List with currently supported formats and vertical alignments
 #'
+#' @description We support `xx` style format labels grouped by 1d, 2d and 3d.
 #' Currently valid format labels can not be added dynamically. Format functions
-#' must be used for special cases
+#' must be used for special cases.
 #'
-#' @export
-#' @return A nested list, with elements listing the supported 1d, 2d, and 3d format strings.
+#' @return
+#' * `list_valid_format_labels()`: A nested list, with elements listing the supported 1d, 2d,
+#'  and 3d format strings.
+#'
 #' @examples
-#'
 #' list_valid_format_labels()
 #'
+#' @name list_formats
+#' @export
 list_valid_format_labels <- function() {
   structure(
     list(
@@ -47,6 +51,25 @@ list_valid_format_labels <- function() {
     ),
     info = "xx does not modify the element, and xx. rounds a number to 0 digits"
   )
+}
+#' @return
+#' * `list_valid_aligns()`: a character vector of valid vertical alignments
+#'
+#' @examples
+#' list_valid_aligns()
+#'
+#' @name list_formats
+#' @export
+list_valid_aligns <- function() {
+  c("left", "right", "center", "decimal", "dec_right", "dec_left")
+}
+
+check_aligns <- function(algn) {
+  if(any(is.na(algn) | !(algn %in% list_valid_aligns()))) {
+    stop("Unsupported text-alignment: ",
+         algn[!(algn %in% list_valid_aligns())])
+  }
+  invisible(TRUE)
 }
 
 #' Check if a format is supported
