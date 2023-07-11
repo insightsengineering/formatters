@@ -247,9 +247,7 @@ decimal_align <- function(string_mat, align_mat) {
 
           left <- vapply(splitx, FUN = function(x) x[1], character(1))
 
-          right <- sapply(splitx, FUN = function(x) {
-            paste0(x[-1], collapse = "")
-          })
+          right <- sapply(splitx, FUN = function(x) paste0(x[-1], collapse = ""))
 
           # If we have empty rights and no dot we need extra space (also %)
           empty_right <- !nzchar(right)
@@ -345,8 +343,6 @@ setMethod("toString", "MatrixPrintForm", function(x,
           )
         }
       }
-
-      widths <- aligned
     }
 
     if (is.null(widths)) {

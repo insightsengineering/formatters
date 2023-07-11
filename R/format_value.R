@@ -64,27 +64,26 @@ list_valid_aligns <- function() {
   c("left", "right", "center", "decimal", "dec_right", "dec_left")
 }
 
-check_aligns <- function(algn) {
-  if(any(is.na(algn) | !(algn %in% list_valid_aligns()))) {
-    stop("Unsupported text-alignment: ",
-         algn[!(algn %in% list_valid_aligns())])
-  }
-  invisible(TRUE)
-}
-
-#' Check if a format is supported
+#' @title Check if a format or alignment is supported
+#'
+#' @description Utility functions for checking formats and alignments.
 #'
 #' @param x either format string or an object returned by \code{sprintf_format}
 #' @param stop_otherwise logical, if \code{x} is not a format should an error be
 #'   thrown
-#' @note No check if the function is actually a `formatter` is performed.
-#' @return \code{TRUE} if \code{x} is \code{NULL}, a supported format string, or a function; \code{FALSE} otherwise.
 #'
-#' @export
+#' @note No check if the function is actually a `formatter` is performed.
+#'
+#' @return
+#'  * `is_valid_format`: \code{TRUE} if \code{x} is \code{NULL}, a supported
+#'    format string, or a function; \code{FALSE} otherwise.
 #'
 #' @examples
 #' is_valid_format("xx.x")
 #' is_valid_format("fakeyfake")
+#'
+#' @name check_formats
+#' @export
 is_valid_format <- function(x, stop_otherwise = FALSE) {
   is_valid <- is.null(x) ||
     (length(x) == 1 &&
@@ -97,7 +96,23 @@ is_valid_format <- function(x, stop_otherwise = FALSE) {
 
   is_valid
 }
-
+#' @param algn vector of characters that indicates the requested cell alignments.
+#'
+#' @return
+#'  * `check_aligns`: `TRUE` if it passes the check.
+#'
+#' @examples
+#' check_aligns(c("decimal", "dec_right"))
+#'
+#' @name check_formats
+#' @export
+check_aligns <- function(algn) {
+  if(any(is.na(algn) | !(algn %in% list_valid_aligns()))) {
+    stop("Unsupported text-alignment: ",
+         algn[!(algn %in% list_valid_aligns())])
+  }
+  invisible(TRUE)
+}
 
 #' Specify text format via a `sprintf` format string
 #'
