@@ -14,8 +14,7 @@ fmt_config(format = NULL, na_str = "NA", align = "center")
 \item{align}{character(1). Alignment values should be rendered with.}
 }
 \value{
-An object of class \code{fmt_config}. Currently this is implemented as an S3 class inheriting
-from \code{list} with the following elements:
+An object of class \code{fmt_config} which contains the following elements:
 \itemize{
 \item \code{format}
 \item \code{na_str}
@@ -24,4 +23,9 @@ from \code{list} with the following elements:
 }
 \description{
 Format Configuration
+}
+\examples{
+fmt_config(format = "xx.xx", na_str = "-", align = "left")
+fmt_config(format = "xx.xx - xx.xx", align = "right")
+
 }

@@ -391,8 +391,7 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
 setClassUnion("FormatSpec", c("NULL", "character", "function", "list"))
 setClassUnion("characterOrNULL", c("NULL", "character"))
 setClass("fmt_config",
-         slots = c(format = "FormatSpec", format_na_str = "characterOrNULL", align = "characterOrNULL"),
-         contains = "list")
+         slots = c(format = "FormatSpec", format_na_str = "characterOrNULL", align = "characterOrNULL"))
 
 #' Format Configuration
 #'
@@ -400,11 +399,14 @@ setClass("fmt_config",
 #' @param na_str character(1). String that should be displayed in place of missing values.
 #' @param align character(1). Alignment values should be rendered with.
 #'
-#' @return An object of class `fmt_config`. Currently this is implemented as an S3 class inheriting
-#'   from `list` with the following elements:
+#' @return An object of class `fmt_config` which contains the following elements:
 #'   * `format`
 #'   * `na_str`
 #'   * `align`
+#'
+#' @examples
+#' fmt_config(format = "xx.xx", na_str = "-", align = "left")
+#' fmt_config(format = "xx.xx - xx.xx", align = "right")
 #'
 #' @export
 fmt_config <- function(format = NULL, na_str = "NA", align = "center") {
