@@ -318,6 +318,22 @@ setMethod("obj_na_str<-", "ANY", function(obj, value) {
   obj
 })
 
+#' @rdname lab_name
+#' @export
+setGeneric("obj_align", function(obj) standardGeneric("obj_align"))
+#' @rdname lab_name
+#' @exportMethod obj_align
+setMethod("obj_align", "ANY", function(obj) attr(obj, "align", exact = TRUE))
+
+#' @rdname lab_name
+#' @export
+setGeneric("obj_align<-", function(obj, value) standardGeneric("obj_align<-"))
+#' @exportMethod obj_align<-
+#' @rdname lab_name
+setMethod("obj_align<-", "ANY", function(obj, value) {
+  attr(obj, "align") <- value
+  obj
+})
 
 #' General title/footer accessors
 #'
