@@ -674,7 +674,7 @@ test_that("Decimal alignment: a specific case with larger widths", {
   expect_identical(res_decl, expected)
 })
 
-test_that("Special cases of decimal alignment", {
+test_that("All supported 1d format cases of decimal alignment", {
   hard_c_formats <- list_valid_format_labels()$`1d`
   hard_c <- sapply(hard_c_formats, gsub, pattern = "x", replacement = "1")
   lhc <- length(hard_c)
@@ -684,6 +684,7 @@ test_that("Special cases of decimal alignment", {
   cw <- propose_column_widths(bmf)
   bmf$strings[2:c(lhc + 1), seq(2, 3)] <- as.character(hard_c)
   bmf$formats[2:c(lhc + 1), seq(2, 3)] <- hard_c
+
   # decimal
   set.seed(1)
   bmf$aligns[, 2] <- "decimal"
@@ -698,24 +699,77 @@ test_that("Special cases of decimal alignment", {
   res_dec <- strsplit(toString(bmf, widths = cw, hsep = "-"), "\\n")[[1]]
 
   expected <- c(
-    "             mpg            wt                            left   ",
-    "-----------------------------------------------------------------",
-    "a     11                        11                      decimal  ",
-    "b     11.                   11.                         left     ",
-    "c     11.1                                       11.1   right    ",
-    "d     11.11                       11.11                 dec_right",
-    "e     11.111                         11.111             center   ",
-    "f     11.1111                 11.1111                   dec_left ",
-    "g     11%                                         11%   right    ",
-    "h     11.%                            11.%              center   ",
-    "i     11.1%                           11.1%             center   ",
-    "j     11.11%                11.11%                      left     ",
-    "k     11.111%                     11.111%               dec_right",
-    "l          (N=11)                              (N=11)   dec_right",
-    "m   >999.9                                     >999.9   right    ",
-    "n   >999.99                 >999.99                     dec_left ",
-    "o      1.1111 | (<0.0001)      1.1111 | (<0.0001)       dec_left "
+    "             mpg             wt                             left   ",
+    "-------------------------------------------------------------------",
+    "a      11                         11                      decimal  ",
+    "b      11.                   11.                          left     ",
+    "c      11.1                                        11.1   right    ",
+    "d      11.11                        11.11                 dec_right",
+    "e      11.111                          11.111             center   ",
+    "f      11.1111                  11.1111                   dec_left ",
+    "g      11%                                          11%   right    ",
+    "h      11.%                             11.%              center   ",
+    "i      11.1%                           11.1%              center   ",
+    "j      11.11%                11.11%                       left     ",
+    "k      11.111%                      11.111%               dec_right",
+    "l   (N=11)                       (N=11)                   dec_right",
+    "m    >999.9                                      >999.9   right    ",
+    "n    >999.99                  >999.99                     dec_left ",
+    "o       1.1111 | (<0.0001)       1.1111 | (<0.0001)       dec_left "
   )
   expect_identical(res_dec, expected)
 })
 
+test_that("All 2d cases for decimal alignment", {
+  formats2d <- list_valid_format_labels()$`2d`
+  hard_c <- sapply(formats2d, gsub, pattern = "x", replacement = "1")
+  reduced_df <- mtcars[seq_along(hard_c), c(1, 6)]
+  rownames(reduced_df) <- formats2d
+  colnames(reduced_df) <- c("dec_left", "decimal")
+  bmf <- basic_matrix_form(reduced_df)
+  bmf$strings[seq(2, length(hard_c) + 1), seq(2, 3)] <- as.character(hard_c)
+  bmf$formats[seq(2, length(hard_c) + 1), seq(2, 3)] <- hard_c
+
+  bmf$aligns[, 2] <- "decimal"
+  bmf$aligns[, 3] <- "dec_right"
+  bmf$col_widths <- NULL
+  expect_silent(res_dec <- strsplit(toString(bmf, hsep = "-"), "\\n")[[1]])
+
+  expected <- c(
+    "                          dec_left                     decimal",
+    "--------------------------------------------------------------",
+    "xx / xx                11 / 11               11 / 11          ",
+    "xx. / xx.              11. / 11.             11. / 11.        ",
+    "xx.x / xx.x            11.1 / 11.1           11.1 / 11.1      ",
+    "xx.xx / xx.xx          11.11 / 11.11         11.11 / 11.11    ",
+    "xx.xxx / xx.xxx        11.111 / 11.111       11.111 / 11.111  ",
+    "N=xx (xx%)           N=11 (11%)            N=11 (11%)         ",
+    "xx (xx%)               11 (11%)              11 (11%)         ",
+    "xx (xx.%)              11 (11.%)             11 (11.%)        ",
+    "xx (xx.x%)             11 (11.1%)            11 (11.1%)       ",
+    "xx (xx.xx%)            11 (11.11%)           11 (11.11%)      ",
+    "xx. (xx.%)             11. (11.%)            11. (11.%)       ",
+    "xx.x (xx.x%)           11.1 (11.1%)          11.1 (11.1%)     ",
+    "xx.xx (xx.xx%)         11.11 (11.11%)        11.11 (11.11%)   ",
+    "(xx, xx)              (11, 11)              (11, 11)          ",
+    "(xx., xx.)            (11., 11.)            (11., 11.)        ",
+    "(xx.x, xx.x)          (11.1, 11.1)          (11.1, 11.1)      ",
+    "(xx.xx, xx.xx)        (11.11, 11.11)        (11.11, 11.11)    ",
+    "(xx.xxx, xx.xxx)      (11.111, 11.111)      (11.111, 11.111)  ",
+    "(xx.xxxx, xx.xxxx)    (11.1111, 11.1111)    (11.1111, 11.1111)",
+    "xx - xx                11 - 11               11 - 11          ",
+    "xx.x - xx.x            11.1 - 11.1           11.1 - 11.1      ",
+    "xx.xx - xx.xx          11.11 - 11.11         11.11 - 11.11    ",
+    "xx (xx)                11 (11)               11 (11)          ",
+    "xx. (xx.)              11. (11.)             11. (11.)        ",
+    "xx.x (xx.x)            11.1 (11.1)           11.1 (11.1)      ",
+    "xx.xx (xx.xx)          11.11 (11.11)         11.11 (11.11)    ",
+    "xx (xx.)               11 (11.)              11 (11.)         ",
+    "xx (xx.x)              11 (11.1)             11 (11.1)        ",
+    "xx (xx.xx)             11 (11.11)            11 (11.11)       ",
+    "xx.x, xx.x             11.1, 11.1            11.1, 11.1       ",
+    "xx.x to xx.x           11.1 to 11.1          11.1 to 11.1     "
+  )
+
+  expect_identical(res_dec, expected)
+})
