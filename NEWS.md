@@ -1,4 +1,4 @@
-## formatters 0.5.0.9002
+## formatters 0.5.0.9003
 ### Enhancements
  * Added decimal alignment support with `decimal`, `dec_right`, and `dec_left`.
  
