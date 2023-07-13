@@ -234,6 +234,21 @@ decimal_align <- function(string_mat, align_mat) {
         # Do decimal alignment
         if (length(col_i[!nonalign]) > 0) {
 
+          # Count the number of numbers in the string
+          matches <- gregexpr("\\d+\\.\\d+|\\d+", col_i[!nonalign])
+          more_than_one <- vapply(matches, function(x) {
+            sum(attr(x, "match.length") > 0) > 1
+          }, logical(1))
+
+          # Throw error in case any have more than 1 numbers
+          if (any(more_than_one)) {
+            stop("Decimal alignment is not supported for multiple values. ",
+                 "Found the following string with multiple numbers ",
+                 "(first 3 selected from column ", col_i[1],"): '",
+                 paste0(col_i[!nonalign][more_than_one][seq(1, 3)],
+                       collapse = "', '"), "'")
+          }
+
           # General split (only one match -> the first)
           main_regexp <- regexpr("\\d+", col_i[!nonalign])
           left <- regmatches(col_i[!nonalign], main_regexp, invert = FALSE)
