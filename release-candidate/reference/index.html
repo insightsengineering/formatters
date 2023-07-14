@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">formatters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,6 +34,7 @@
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/release-candidate">release-candidate</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1-rc1">v0.5.1-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0-rc1">v0.5.0-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0">v0.5.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.1">v0.4.1</a>
@@ -96,7 +97,7 @@
           
           <code><a href="is.wholenumber.html">is.wholenumber()</a></code> 
         </dt>
-        <dd>is.wholenumber</dd>
+        <dd><code>is.wholenumber</code></dd>
       </dl><dl><dt>
           
           <code><a href="list_valid_format_labels.html">list_valid_format_labels()</a></code> 
@@ -106,7 +107,12 @@
           
           <code><a href="sprintf_format.html">sprintf_format()</a></code> 
         </dt>
-        <dd>Specify text format via a sprintf format string</dd>
+        <dd>Specify text format via a <code>sprintf</code> format string</dd>
+      </dl><dl><dt>
+          
+          <code><a href="fmt_config.html">fmt_config()</a></code> 
+        </dt>
+        <dd>Format Configuration</dd>
       </dl></div><div class="section level2">
       <h2 id="generics-interface-for-pagination">Generics Interface For Pagination<a class="anchor" aria-label="anchor" href="#generics-interface-for-pagination"></a></h2>
       
@@ -168,7 +174,7 @@
           
           <code><a href="matrix_form.html">matrix_form()</a></code> 
         </dt>
-        <dd>Transform rtable to a list of matrices which can be used for outputting</dd>
+        <dd>Transform <code>rtable</code> to a list of matrices which can be used for outputting</dd>
       </dl><dl><dt>
           
           <code><a href="basic_matrix_form.html">basic_matrix_form()</a></code> 
@@ -210,7 +216,7 @@
           
           <code><a href="tostring.html">toString()</a></code> 
         </dt>
-        <dd>toString</dd>
+        <dd><code>toString</code></dd>
       </dl><dl><dt>
           
           <code><a href="spans_to_viscell.html">spans_to_viscell()</a></code> 
@@ -230,12 +236,12 @@
           
           <code><a href="spread_integer.html">spread_integer()</a></code> 
         </dt>
-        <dd>spread x into len elements</dd>
+        <dd>spread <code>x</code> into <code>len</code> elements</dd>
       </dl><dl><dt>
           
           <code><a href="is.wholenumber.html">is.wholenumber()</a></code> 
         </dt>
-        <dd>is.wholenumber</dd>
+        <dd><code>is.wholenumber</code></dd>
       </dl></div><div class="section level2">
       <h2 id="pagination">Pagination<a class="anchor" aria-label="anchor" href="#pagination"></a></h2>
       
@@ -326,7 +332,7 @@
 
       <dl><dt>
           
-          <code><a href="lab_name.html">obj_name()</a></code> <code><a href="lab_name.html">`obj_name&lt;-`()</a></code> <code><a href="lab_name.html">obj_label()</a></code> <code><a href="lab_name.html">`obj_label&lt;-`()</a></code> <code><a href="lab_name.html">obj_format()</a></code> <code><a href="lab_name.html">`obj_format&lt;-`()</a></code> <code><a href="lab_name.html">obj_na_str()</a></code> <code><a href="lab_name.html">`obj_na_str&lt;-`()</a></code> 
+          <code><a href="lab_name.html">obj_name()</a></code> <code><a href="lab_name.html">`obj_name&lt;-`()</a></code> <code><a href="lab_name.html">obj_label()</a></code> <code><a href="lab_name.html">`obj_label&lt;-`()</a></code> <code><a href="lab_name.html">obj_format()</a></code> <code><a href="lab_name.html">`obj_format&lt;-`()</a></code> <code><a href="lab_name.html">obj_na_str()</a></code> <code><a href="lab_name.html">`obj_na_str&lt;-`()</a></code> <code><a href="lab_name.html">obj_align()</a></code> <code><a href="lab_name.html">`obj_align&lt;-`()</a></code> 
         </dt>
         <dd>Label, Name and Format accessor generics</dd>
       </dl></div><div class="section level2">
@@ -344,12 +350,12 @@
           
           <code><a href="cdisc_data.html">ex_adsl</a></code> <code><a href="cdisc_data.html">ex_adae</a></code> <code><a href="cdisc_data.html">ex_adaette</a></code> <code><a href="cdisc_data.html">ex_adtte</a></code> <code><a href="cdisc_data.html">ex_adcm</a></code> <code><a href="cdisc_data.html">ex_adlb</a></code> <code><a href="cdisc_data.html">ex_admh</a></code> <code><a href="cdisc_data.html">ex_adqs</a></code> <code><a href="cdisc_data.html">ex_adrs</a></code> <code><a href="cdisc_data.html">ex_advs</a></code> 
         </dt>
-        <dd>Simulated CDISC Alike Data for Examples</dd>
+        <dd>Simulated <code>CDISC</code> Alike Data for Examples</dd>
       </dl><dl><dt>
           
           <code><a href="DM.html">DM</a></code> 
         </dt>
-        <dd>DM data</dd>
+        <dd><code>DM</code> data</dd>
       </dl></div><div class="section level2">
       <h2 id="export">Export<a class="anchor" aria-label="anchor" href="#export"></a></h2>
       
@@ -370,12 +376,12 @@
           
           <code><a href="export_as_rtf.html">export_as_rtf()</a></code> 
         </dt>
-        <dd>Export table to RTF</dd>
+        <dd>Export table to <code>RTF</code></dd>
       </dl><dl><dt>
           
           <code><a href="mpf_to_rtf.html">mpf_to_rtf()</a></code> 
         </dt>
-        <dd>Transform MPF to RTF</dd>
+        <dd>Transform <code>MPF</code> to <code>RTF</code></dd>
       </dl></div><div class="section level2">
       <h2 id="miscellany">Miscellany<a class="anchor" aria-label="anchor" href="#miscellany"></a></h2>
       
@@ -421,17 +427,17 @@
           
           <code><a href="mpf_accessors.html">mf_strings()</a></code> <code><a href="mpf_accessors.html">mf_spans()</a></code> <code><a href="mpf_accessors.html">mf_aligns()</a></code> <code><a href="mpf_accessors.html">mf_display()</a></code> <code><a href="mpf_accessors.html">mf_formats()</a></code> <code><a href="mpf_accessors.html">mf_rinfo()</a></code> <code><a href="mpf_accessors.html">mf_cinfo()</a></code> <code><a href="mpf_accessors.html">mf_has_topleft()</a></code> <code><a href="mpf_accessors.html">mf_lgrouping()</a></code> <code><a href="mpf_accessors.html">mf_rfnotes()</a></code> <code><a href="mpf_accessors.html">mf_nlheader()</a></code> <code><a href="mpf_accessors.html">mf_nrheader()</a></code> <code><a href="mpf_accessors.html">mf_colgap()</a></code> <code><a href="mpf_accessors.html">`mf_strings&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_spans&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_aligns&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_display&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_formats&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_rinfo&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_cinfo&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_lgrouping&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_rfnotes&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_nrheader&lt;-`()</a></code> <code><a href="mpf_accessors.html">`mf_colgap&lt;-`()</a></code> <code><a href="mpf_accessors.html">mf_ncol()</a></code> <code><a href="mpf_accessors.html">mf_nrow()</a></code> <code><a href="mpf_accessors.html">`mf_ncol&lt;-`()</a></code> <code><a href="mpf_accessors.html">ncol(<i>&lt;MatrixPrintForm&gt;</i>)</a></code> <code><a href="mpf_accessors.html">mpf_has_rlabels()</a></code> <code><a href="mpf_accessors.html">mf_has_rlabels()</a></code> 
         </dt>
-        <dd>Setters and Getters for aspects of MatrixPrintForm Objects</dd>
+        <dd><code>Setters</code> and <code>getters</code> for aspects of <code>MatrixPrintForm</code> Objects</dd>
       </dl><dl><dt>
           
           <code><a href="page_lcpp.html">page_lcpp()</a></code> 
         </dt>
-        <dd>Determine lines per page (LPP) and characters per page (CPP) based on font and page type</dd>
+        <dd>Determine lines per page (<code>LPP</code>) and characters per page (<code>CPP</code>) based on font and page type</dd>
       </dl><dl><dt>
           
           <code><a href="page_types.html">page_types()</a></code> <code><a href="page_types.html">page_dim()</a></code> 
         </dt>
-        <dd>Supported Named Page TypesList supported named page types</dd>
+        <dd>Supported Named Page <code>TypesList</code> supported named page types</dd>
       </dl><dl><dt>
           
           <code><a href="ref_df_row.html">ref_df_row()</a></code> 
