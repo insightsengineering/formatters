@@ -16,6 +16,10 @@
 \alias{obj_na_str,ANY-method}
 \alias{obj_na_str<-}
 \alias{obj_na_str<-,ANY-method}
+\alias{obj_align}
+\alias{obj_align,ANY-method}
+\alias{obj_align<-}
+\alias{obj_align<-,ANY-method}
 \title{Label, Name and Format accessor generics}
 \usage{
 obj_name(obj)
@@ -45,6 +49,14 @@ obj_na_str(obj)
 obj_na_str(obj) <- value
 
 \S4method{obj_na_str}{ANY}(obj) <- value
+
+obj_align(obj)
+
+\S4method{obj_align}{ANY}(obj)
+
+obj_align(obj) <- value
+
+\S4method{obj_align}{ANY}(obj) <- value
 }
 \arguments{
 \item{obj}{ANY. The object.}
