@@ -26,6 +26,7 @@ reference:
       - is.wholenumber
       - list_valid_format_labels
       - sprintf_format
+      - fmt_config
   - title: Generics Interface For Pagination
     desc: Generics requried for pagination machinery
     contents:

@@ -425,3 +425,30 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
     txt
   }
 }
+
+setClassUnion("FormatSpec", c("NULL", "character", "function", "list"))
+setClassUnion("characterOrNULL", c("NULL", "character"))
+setClass("fmt_config",
+         slots = c(format = "FormatSpec",
+                   format_na_str = "characterOrNULL",
+                   align = "characterOrNULL"))
+
+#' Format Configuration
+#'
+#' @param format character(1) or function. A format label (string) or `formatter` function.
+#' @param na_str character(1). String that should be displayed in place of missing values.
+#' @param align character(1). Alignment values should be rendered with.
+#'
+#' @return An object of class `fmt_config` which contains the following elements:
+#'   * `format`
+#'   * `na_str`
+#'   * `align`
+#'
+#' @examples
+#' fmt_config(format = "xx.xx", na_str = "-", align = "left")
+#' fmt_config(format = "xx.xx - xx.xx", align = "right")
+#'
+#' @export
+fmt_config <- function(format = NULL, na_str = NULL, align = NULL) {
+  new("fmt_config", format = format, format_na_str = na_str, align = align)
+}

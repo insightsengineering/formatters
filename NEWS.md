@@ -1,7 +1,9 @@
-## formatters 0.5.0.9003
+## formatters 0.5.0.9005
 ### Enhancements
  * Added decimal alignment support with `decimal`, `dec_right`, and `dec_left`.
- 
+ * New generic `getter` and `setter` for `align` (`obj_align` and `obj_align<-`).
+ * New `fmt_config` class to bundle together `format`, `na_str`, and `align` instructions.
+
 ### Miscellaneous
  * Added `list_valid_aligns()` that lists the available alignments.
 
