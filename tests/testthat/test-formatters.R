@@ -473,10 +473,12 @@ expect_error(page_dim("wakawakawaka"))
 stupidobj <- NA_real_
 obj_na_str(stupidobj) <- "wat"
 obj_format(stupidobj) <- "xx.x"
+expect_silent(obj_align(stupidobj) <- "left") # setter for ANY align
 expect_identical(format_value(stupidobj,
                               format = obj_format(stupidobj),
                               na_str = obj_na_str(stupidobj)),
                  "wat")
+expect_identical(obj_align(stupidobj), "left") # getter for ANY align
 
 ## XXX I'm not sure if we use this functionality anywhere
 ## and as I note in the code implementing it its dangerous and I'm
@@ -538,14 +540,19 @@ mpf <- MatrixPrintForm(strings = strs, spans = spans, aligns = aligns,
 expect_equal(length(grep("spn_val", toString(mpf))),
              1L)
 
-testthat::test_that("fmt_config works as expected", {
+test_that("fmt_config works as expected", {
   x <- fmt_config()
-  expect_identical(slot(x, "format"), NULL)
-  expect_identical(obj_na_str(x), "NA")
-  expect_identical(obj_align(x), "center")
+  expect_identical(obj_format(x), NULL)
+  expect_identical(obj_na_str(x), NULL)
+  expect_identical(obj_align(x), NULL)
 
   x <- fmt_config(format = "xx.xx", na_str = "<Missing>", align = "right")
   expect_identical(obj_format(x), "xx.xx")
   expect_identical(obj_na_str(x), "<Missing>")
   expect_identical(obj_align(x), "right")
+
+  # Test setters
+  expect_silent(obj_format(x) <- function() {})
+  expect_silent(obj_na_str(x) <- "something wrong")
+  expect_silent(obj_align(x) <- "something wrong")
 })
