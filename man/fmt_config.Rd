@@ -4,7 +4,7 @@
 \alias{fmt_config}
 \title{Format Configuration}
 \usage{
-fmt_config(format = NULL, na_str = NULL, align = NULL)
+fmt_config(format = NULL, na_str = "NA", align = "center")
 }
 \arguments{
 \item{format}{character(1) or function. A format label (string) or \code{formatter} function.}
