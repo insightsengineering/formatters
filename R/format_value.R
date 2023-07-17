@@ -391,7 +391,9 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
 setClassUnion("FormatSpec", c("NULL", "character", "function", "list"))
 setClassUnion("characterOrNULL", c("NULL", "character"))
 setClass("fmt_config",
-         slots = c(format = "FormatSpec", format_na_str = "characterOrNULL", align = "characterOrNULL"))
+         slots = c(format = "FormatSpec",
+                   format_na_str = "characterOrNULL",
+                   align = "characterOrNULL"))
 
 #' Format Configuration
 #'
@@ -409,6 +411,6 @@ setClass("fmt_config",
 #' fmt_config(format = "xx.xx - xx.xx", align = "right")
 #'
 #' @export
-fmt_config <- function(format = NULL, na_str = "NA", align = "center") {
+fmt_config <- function(format = NULL, na_str = NULL, align = NULL) {
   new("fmt_config", format = format, format_na_str = na_str, align = align)
 }
