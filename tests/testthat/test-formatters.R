@@ -538,14 +538,15 @@ mpf <- MatrixPrintForm(strings = strs, spans = spans, aligns = aligns,
 expect_equal(length(grep("spn_val", toString(mpf))),
              1L)
 
-testthat::test_that("fmt_config works as expected", {
+test_that("fmt_config works as expected", {
   x <- fmt_config()
   expect_identical(slot(x, "format"), NULL)
   expect_identical(obj_na_str(x), "NA")
-  expect_identical(obj_align(x), "center")
+  expect_identical(obj_align(x), NULL)
 
   x <- fmt_config(format = "xx.xx", na_str = "<Missing>", align = "right")
   expect_identical(obj_format(x), "xx.xx")
   expect_identical(obj_na_str(x), "<Missing>")
   expect_identical(obj_align(x), "right")
+  expect_silent(obj_align(x) <- "something wrong")
 })
