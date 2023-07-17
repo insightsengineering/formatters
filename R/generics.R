@@ -288,7 +288,7 @@ setGeneric("obj_format", function(obj) standardGeneric("obj_format"))
 ## this covers rcell, etc
 #' @rdname lab_name
 #' @exportMethod obj_format
-setMethod("obj_format", "ANY", function(obj) obj@format)
+setMethod("obj_format", "ANY", function(obj) attr(obj, "format", exact = TRUE))
 
 
 #' @export
@@ -298,7 +298,7 @@ setGeneric("obj_format<-", function(obj, value) standardGeneric("obj_format<-"))
 #' @exportMethod obj_format<-
 #' @rdname lab_name
 setMethod("obj_format<-", "ANY", function(obj, value) {
-  obj@format <- value
+  attr(obj, "format") <- value
   obj
 })
 
@@ -307,14 +307,14 @@ setMethod("obj_format<-", "ANY", function(obj, value) {
 setGeneric("obj_na_str", function(obj) standardGeneric("obj_na_str"))
 #' @rdname lab_name
 #' @exportMethod obj_na_str
-setMethod("obj_na_str", "ANY", function(obj) obj@format_na_str)
+setMethod("obj_na_str", "ANY", function(obj) attr(obj, "format_na_str", exact = TRUE))
 #' @rdname lab_name
 #' @export
 setGeneric("obj_na_str<-", function(obj, value) standardGeneric("obj_na_str<-"))
 #' @exportMethod obj_na_str<-
 #' @rdname lab_name
 setMethod("obj_na_str<-", "ANY", function(obj, value) {
-  obj@format_na_str <- value
+  attr(obj, "format_na_str") <- value
   obj
 })
 
@@ -323,7 +323,7 @@ setMethod("obj_na_str<-", "ANY", function(obj, value) {
 setGeneric("obj_align", function(obj) standardGeneric("obj_align"))
 #' @rdname lab_name
 #' @exportMethod obj_align
-setMethod("obj_align", "ANY", function(obj) obj@align)
+setMethod("obj_align", "ANY", function(obj) attr(obj, "align", exact = TRUE))
 
 #' @rdname lab_name
 #' @export
@@ -331,7 +331,7 @@ setGeneric("obj_align<-", function(obj, value) standardGeneric("obj_align<-"))
 #' @exportMethod obj_align<-
 #' @rdname lab_name
 setMethod("obj_align<-", "ANY", function(obj, value) {
-  obj@align <- value
+  attr(obj, "align") <- value
   obj
 })
 
