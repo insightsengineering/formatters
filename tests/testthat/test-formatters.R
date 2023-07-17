@@ -543,8 +543,8 @@ expect_equal(length(grep("spn_val", toString(mpf))),
 test_that("fmt_config works as expected", {
   x <- fmt_config()
   expect_identical(obj_format(x), NULL)
-  expect_identical(obj_na_str(x), NULL)
-  expect_identical(obj_align(x), NULL)
+  expect_identical(obj_na_str(x), "NA")
+  expect_identical(obj_align(x), "center")
 
   x <- fmt_config(format = "xx.xx", na_str = "<Missing>", align = "right")
   expect_identical(obj_format(x), "xx.xx")
