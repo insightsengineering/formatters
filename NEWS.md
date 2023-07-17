@@ -1,4 +1,4 @@
-## formatters 0.5.0.9005
+## formatters 0.5.0.9006
  * New generic `getter` and `setter` for `align` (`obj_align` and `obj_align<-`).
  * New `fmt_config` class to bundle together `format`, `na_str`, and `align` instructions.
  * Reverting default for alignment (from `NULL` to `center`) and `na_str` 
