@@ -411,6 +411,6 @@ setClass("fmt_config",
 #' fmt_config(format = "xx.xx - xx.xx", align = "right")
 #'
 #' @export
-fmt_config <- function(format = NULL, na_str = "NA", align = "center") {
+fmt_config <- function(format = NULL, na_str = NULL, align = NULL) {
   new("fmt_config", format = format, format_na_str = na_str, align = align)
 }

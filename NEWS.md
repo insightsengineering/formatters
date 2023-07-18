@@ -1,8 +1,7 @@
 ## formatters 0.5.0.9006
  * New generic `getter` and `setter` for `align` (`obj_align` and `obj_align<-`).
  * New `fmt_config` class to bundle together `format`, `na_str`, and `align` instructions.
- * Reverting default for alignment (from `NULL` to `center`) and `na_str` 
-   from `NULL` to `"NA"`. This affects only `rlistings`, where the new default takes effect.
+ * Default for `fmt_config` alignment and `na_str` set to `NULL`. The default values are set in `rlistings`.
 
 ## formatters 0.5.0
  * fix bug in `MPF` pagination (and thus export_as_txt) when column labels had newlines ([#150](github.com/insightsengineering/formatters/issues/150), [`insightsengineering/rtables#634`](https://github.com/insightsengineering/rtables/issues/634))
