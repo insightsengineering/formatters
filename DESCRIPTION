@@ -24,11 +24,11 @@ Depends:
 Imports:
     checkmate (>= 2.1.0),
     grid,
-    htmltools
+    htmltools (>= 0.5.3)
 Suggests:
-    dplyr,
+    dplyr (>= 1.0.9),
     gt (>= 0.7.0),
-    huxtable,
+    huxtable (>= 1.0.0),
     knitr (>= 1.34),
     r2rtf (>= 0.3.2),
     rmarkdown (>= 1.11),
