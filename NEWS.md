@@ -1,8 +1,9 @@
-## formatters 0.5.0.9005
-### Enhancements
+## formatters 0.5.0.9006
  * Added decimal alignment support with `decimal`, `dec_right`, and `dec_left`.
  * New generic `getter` and `setter` for `align` (`obj_align` and `obj_align<-`).
  * New `fmt_config` class to bundle together `format`, `na_str`, and `align` instructions.
+ * Reverting default for alignment (from `NULL` to `center`) and `na_str` 
+   from `NULL` to `"NA"`. This affects only `rlistings`, where the new default takes effect.
 
 ### Miscellaneous
  * Added `list_valid_aligns()` that lists the available alignments.
