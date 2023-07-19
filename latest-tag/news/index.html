@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">formatters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,6 +36,7 @@
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1-rc1">v0.5.1-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0-rc1">v0.5.0-rc1</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1">v0.5.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0">v0.5.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.1">v0.4.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.0">v0.4.0</a>
@@ -69,8 +70,16 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.5.0" id="formatters-050">formatters 0.5.0<a class="anchor" aria-label="anchor" href="#formatters-050"></a></h2>
-<ul><li>fix bug in mpf pagination (and thus export_as_txt) when column labels had newlines (<a href="https://github.com/insightsengineering/formatters/issues/150" class="external-link">#150</a>, rtables#634)</li>
+<h2 class="pkg-version" data-toc-text="0.5.1" id="formatters-051">formatters 0.5.1<a class="anchor" aria-label="anchor" href="#formatters-051"></a></h2>
+<ul><li>Updated <code>export_as_txt</code> to print split label when using <code>page_by</code> with only one level.</li>
+<li>Reduced the amount of spelling issues.</li>
+<li>New generic <code>getter</code> and <code>setter</code> for <code>align</code> (<code>obj_align</code> and <code>obj_align&lt;-</code>).</li>
+<li>New <code>fmt_config</code> class to bundle together <code>format</code>, <code>na_str</code>, and <code>align</code> instructions.</li>
+<li>Reverting default for alignment (from <code>NULL</code> to <code>center</code>) and <code>na_str</code> from <code>NULL</code> to <code>"NA"</code>. This affects only <code>rlistings</code>, where the new default takes effect.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.5.0" id="formatters-050">formatters 0.5.0<a class="anchor" aria-label="anchor" href="#formatters-050"></a></h2><p class="text-muted">CRAN release: 2023-05-25</p>
+<ul><li>Fix bug in <code>MPF</code> pagination (and thus export_as_txt) when column labels had newlines (<a href="github.com/insightsengineering/formatters/issues/150">#150</a>, <a href="https://github.com/insightsengineering/rtables/issues/634" class="external-link"><code>insightsengineering/rtables#634</code></a>)</li>
 <li>
 <code>font_size</code> is now 8 consistently across the pagination machinery.</li>
 <li>When specified, margins are in inches (including the default).</li>
@@ -93,11 +102,11 @@
 <h2 class="pkg-version" data-toc-text="0.4.0" id="formatters-040">formatters 0.4.0<a class="anchor" aria-label="anchor" href="#formatters-040"></a></h2><p class="text-muted">CRAN release: 2023-03-02</p>
 <ul><li>Cell values and row labels are now word-wrapped based on column widths (<code>widths</code> in <code>toString</code> and <code>colwidths</code> in pagination and exporters.</li>
 <li>New “N=xx (xx%)” format support (<a href="https://github.com/insightsengineering/rtables/issues/516" class="external-link uri">https://github.com/insightsengineering/rtables/issues/516</a>).</li>
-<li>New generic getter and setter for na-string (<code>obj_na_str</code> and <code>obj_na_str&lt;-</code>, migrated from <code>rtables</code>).</li>
+<li>New generic <code>getter</code> and <code>setter</code> for <code>na</code>-string (<code>obj_na_str</code> and <code>obj_na_str&lt;-</code>, migrated from <code>rtables</code>).</li>
 <li>
-<code>MatrixPrintForm</code> class now carries around <code>has_topleft</code> information explicitly, getter <code>mf_has_topleft</code>.</li>
-<li>Number of header lines in a MatrixPrintForm object (<code>mf_nlheader</code>) is now a computed attribute rather than a stored one, <code>mf_nlheader&lt;-</code> has been removed.</li>
-<li>New <code>MatrixPrintForm</code> accessor: <code>mpf_has_rlabels</code> determines whether the MPF$strings has a column which are label rows (i.e. no column index in originating object).</li>
+<code>MatrixPrintForm</code> class now carries around <code>has_topleft</code> information explicitly, <code>getter</code> <code>mf_has_topleft</code>.</li>
+<li>Number of header lines in a <code>MatrixPrintForm</code> object (<code>mf_nlheader</code>) is now a computed attribute rather than a stored one, <code>mf_nlheader&lt;-</code> has been removed.</li>
+<li>New <code>MatrixPrintForm</code> accessor: <code>mpf_has_rlabels</code> determines whether the <code>MPF$strings</code> has a column which are label rows (i.e. no column index in originating object).</li>
 <li>
 <code>wrap_text</code> and <code>wrap_string</code> now accept the <code>hard</code> argument (default <code>FALSE</code>) indicating whether ‘hard’ word-wrapping (i.e. explicit embedding of newline characters) should be performed.</li>
 <li>
@@ -117,9 +126,10 @@
 <code>nlines</code> now accepts both <code>colwidths</code> and <code>max_width</code>, defaulting to <code>NULL</code> for both</li>
 <li>
 <code>pag_indices_inner</code>, <code>find_pag</code> and <code>valid_pag</code> now accept <code>have_col_fnotes</code> and <code>div_height</code> arguments</li>
-<li>fix bug which lead to insightsengineering/rtables#414 (<code>nlines("", &lt;non-null&gt;)</code> threw an error</li>
+<li>fix bug which lead to <a href="https://github.com/insightsengineering/rtables/issues/414" class="external-link"><code>insightsengineering/rtables#414</code></a> (<code>nlines("", &lt;non-null&gt;)</code> threw an error</li>
 <li>paginate related generics now accept max_width for use in ensuring pagination now takes word wrapping into account for titles and footers.</li>
-<li>nlines character method has changed, not takes the sum of the nlines of its elements instead of the max in the case of a vector of length &gt; 1</li>
+<li>
+<code>nlines</code> character method has changed, not takes the sum of the <code>nlines</code> of its elements instead of the max in the case of a vector of length &gt; 1</li>
 <li>new <code>wrap_title_footer</code> function for use on everything which implements the generic interface we design.</li>
 <li>export new <code>page_dim</code> function which returns values of page dims for a named type.</li>
 <li>
@@ -141,7 +151,8 @@
 <li>adding wrapping of titles, subtitles, and footers.</li>
 <li>
 <code>page_lcpp</code> function now provided to map page size and font combinations to lines and characters per page.</li>
-<li>getters and setters for the components of <code>MatrixPrintForm</code> objects are now exported (i.e., <code>mf_spans</code> and friends).</li>
+<li>
+<code>getters</code> and <code>setters</code> for the components of <code>MatrixPrintForm</code> objects are now exported (i.e., <code>mf_spans</code> and friends).</li>
 <li>
 <code>na_str</code> can now be length &gt;1, and is matched in position to NAs in that case.</li>
 <li>
@@ -155,7 +166,8 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.2.5" id="formatters-0325">formatters 0.3.2.5<a class="anchor" aria-label="anchor" href="#formatters-0325"></a></h2>
 <ul><li>
-<code>label_vars&lt;-</code> now correctly adheres to names of value, even in different order than <code>names(x)</code>. Fixes rlistings#8</li>
+<code>label_vars&lt;-</code> now correctly adheres to names of value, even in different order than <code>names(x)</code>. Fixes <a href="https://github.com/insightsengineering/rlistings/issues/8" class="external-link"><code>insightsengineering/rlistings#8</code></a>
+</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.2.4" id="formatters-0324">formatters 0.3.2.4<a class="anchor" aria-label="anchor" href="#formatters-0324"></a></h2>
@@ -178,11 +190,11 @@
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.2.1" id="formatters-0321">formatters 0.3.2.1<a class="anchor" aria-label="anchor" href="#formatters-0321"></a></h2>
-<ul><li>calling <code>var_labels</code> on a data.frame with no columns is no longer an error (insightsengineering/rtables#224)</li>
+<ul><li>calling <code>var_labels</code> on a data.frame with no columns is no longer an error (<a href="https://github.com/insightsengineering/rtables/issues/224" class="external-link"><code>insightsengineering/rtables#224</code></a>)</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.2" id="formatters-032">formatters 0.3.2<a class="anchor" aria-label="anchor" href="#formatters-032"></a></h2><p class="text-muted">CRAN release: 2022-06-09</p>
-<ul><li>Change warning when non-UTF line sep default is used to message, and display it only during interactive sessions (once per session).</li>
+<ul><li>Change warning when non-UTF line separator default is used to message, and displays it only during interactive sessions (once per session).</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.1" id="formatters-031">formatters 0.3.1<a class="anchor" aria-label="anchor" href="#formatters-031"></a></h2><p class="text-muted">CRAN release: 2022-05-20</p>
@@ -204,11 +216,13 @@
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0.0003" id="formatters-0100003">formatters 0.1.0.0003<a class="anchor" aria-label="anchor" href="#formatters-0100003"></a></h2>
-<ul><li>Fix regression in support for new lines in columns in rtables</li>
+<ul><li>Fix regression in support for new lines in columns in <code>rtables</code>
+</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0.0002" id="formatters-0100002">formatters 0.1.0.0002<a class="anchor" aria-label="anchor" href="#formatters-0100002"></a></h2>
-<ul><li>Add <code>formats</code> argument to matrix_form informal class/constructor for use in rtables::table_shell</li>
+<ul><li>Add <code>formats</code> argument to matrix_form informal class/constructor for use in <code><a href="https://rdrr.io/pkg/rtables/man/table_shell.html" class="external-link">rtables::table_shell</a></code>
+</li>
 </ul></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

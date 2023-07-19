@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">formatters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,6 +36,7 @@
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1-rc1">v0.5.1-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0-rc1">v0.5.0-rc1</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1">v0.5.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0">v0.5.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.1">v0.4.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.0">v0.4.0</a>
@@ -64,13 +65,13 @@
 </nav><div class="container template-reference-topic">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>Transform MPF to RTF</h1>
+      <img src="" class="logo" alt=""><h1>Transform <code>MPF</code> to <code>RTF</code></h1>
       <small class="dont-index">Source: <a href="https://github.com/insightsengineering/formatters/blob/HEAD/R/mpf_exporters.R" class="external-link"><code>R/mpf_exporters.R</code></a></small>
       <div class="d-none name"><code>mpf_to_rtf.Rd</code></div>
     </div>
 
     <div class="ref-description section level2">
-    <p>Experimental export to RTF via the <code>r2rtf</code> package</p>
+    <p>Experimental export to <code>RTF</code> via the <code>r2rtf</code> package</p>
     </div>
 
     <div class="section level2">
@@ -91,7 +92,7 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>mpf</dt>
-<dd><p>MatrixPrintForm. MatrixPrintForm object.</p></dd>
+<dd><p><code>MatrixPrintForm</code>. <code>MatrixPrintForm</code> object.</p></dd>
 
 
 <dt>colwidths</dt>
@@ -137,12 +138,13 @@ horizontal margins.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>An rtf object</p>
+<p>An <code>RTF</code> object</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>This function provides a low-level coercion of a
-<code>MatrixPrintForm object into text containing the corresponding table in </code>RTF`. Currently, no pagination is done at this level,
+<code>MatrixPrintForm</code> object into text containing the corresponding
+table in <code>RTF</code>. Currently, no pagination is done at this level,
 and should be done prior to calling this function, though that
 may change in the future.</p>
     </div>
