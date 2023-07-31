@@ -21,6 +21,12 @@ downstream_repos:
   insightsengineering/tern.rbmi:
     repo: insightsengineering/tern.rbmi
     host: https://github.com
+ insightsengineering/teal.osprey:
+    repo: insightsengineering/teal.osprey
+    host: https://github.com
+ insightsengineering/teal.modules.clinical:
+    repo: insightsengineering/teal.modules.clinical
+    host: https://github.com
   insightsengineering/chevron:
     repo: insightsengineering/chevron
     host: https://github.com
