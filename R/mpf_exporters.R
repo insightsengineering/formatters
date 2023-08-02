@@ -78,7 +78,8 @@ export_as_txt <- function(x,
                                   tf_wrap = tf_wrap,
                                   max_width = max_width,
                                   indent_size = indent_size,
-                                  verbose = verbose)
+                                  verbose = verbose,
+                                  rep_cols = rep_cols)
     } else {
         mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size)
         mf_col_widths(mf) <- colwidths %||% propose_column_widths(mf)
