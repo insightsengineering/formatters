@@ -1,5 +1,10 @@
 ## formatters 0.5.0.9006
  * Added decimal alignment support with `decimal`, `dec_right`, and `dec_left`.
+
+## formatters 0.5.1
+ * Updated `export_as_txt` to print split label when using `page_by` with only one level.
+ * Reduced the amount of spelling issues.
+
  * New generic `getter` and `setter` for `align` (`obj_align` and `obj_align<-`).
  * New `fmt_config` class to bundle together `format`, `na_str`, and `align` instructions.
  * Reverting default for alignment (from `NULL` to `center`) and `na_str` 
@@ -9,7 +14,7 @@
  * Added `list_valid_aligns()` that lists the available alignments.
 
 ## formatters 0.5.0
- * fix bug in `MPF` pagination (and thus export_as_txt) when column labels had newlines ([#150](github.com/insightsengineering/formatters/issues/150), [`insightsengineering/rtables#634`](https://github.com/insightsengineering/rtables/issues/634))
+ * Fix bug in `MPF` pagination (and thus export_as_txt) when column labels had newlines ([#150](github.com/insightsengineering/formatters/issues/150), [`insightsengineering/rtables#634`](https://github.com/insightsengineering/rtables/issues/634))
  * `font_size` is now 8 consistently across the pagination machinery.
  * When specified, margins are in inches (including the default).
  * Fix off-by-one error in pagination machinery for certain cases.
