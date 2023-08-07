@@ -28,8 +28,9 @@ wider column names. Decimal alignment is not supported along with cell wrapping.
 }
 \examples{
 dfmf <- basic_matrix_form(mtcars[1:5,])
-dfmf$aligns[, -c(1)] <- "dec_left"
-decimal_align(dfmf$strings, dfmf$aligns)
+aligns <- mf_aligns(dfmf)
+aligns[, -c(1)] <- "dec_left"
+decimal_align(mf_strings(dfmf), aligns)
 
 }
 \seealso{

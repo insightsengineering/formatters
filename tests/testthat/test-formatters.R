@@ -555,7 +555,7 @@ test_that("error when widths are < than decimal aligned values", {
 })
 test_that("padstr works with dec_left", {
   bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
-  bmf$aligns[, -c(1)] <- "dec_left"
+  bmf$aligns[-1, -c(1)] <- "dec_left"
   cw <- propose_column_widths(bmf) + 5
 
   result <- strsplit(toString(bmf, widths = cw, hsep = "-"), "\\n")[[1]]
@@ -567,7 +567,7 @@ test_that("padstr works with dec_left", {
   expect_equal(nc_res - 15, nc_res_ncw)
 
   expected <- c(
-    "                 mpg    wt   ",
+    "                 mpg     wt  ",
     "-----------------------------",
     "Mazda RX4        21     2.62 ",
     "Mazda RX4 Wag    21     2.875",
@@ -579,10 +579,10 @@ test_that("padstr works with dec_left", {
 
 test_that("padstr works with dec_right", {
   bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
-  bmf$aligns[, -c(1)] <- "dec_right"
+  bmf$aligns[-1, -c(1)] <- "dec_right"
   result <- strsplit(toString(bmf, hsep = "-"), "\\n")[[1]]
   expected <- c(
-    "                  mpg      wt",
+    "                 mpg     wt  ",
     "-----------------------------",
     "Mazda RX4        21     2.62 ",
     "Mazda RX4 Wag    21     2.875",
@@ -594,7 +594,7 @@ test_that("padstr works with dec_right", {
 
 test_that("padstr works with decimal", {
   bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
-  bmf$aligns[, -c(1)] <- "decimal"
+  bmf$aligns[-1, -c(1)] <- "decimal"
   result <- strsplit(toString(bmf, hsep = "-"), "\\n")[[1]]
   expected <- c(
     "                 mpg     wt  ",
@@ -605,6 +605,59 @@ test_that("padstr works with decimal", {
     "Hornet 4 Drive   21.4   3.215"
   )
   expect_identical(result, expected)
+})
+
+
+test_that("decimal alignments work when there are numbers but no decimal places", {
+    bmf <- basic_matrix_form(mtcars[1:2, c(1, 6)])
+
+    bmf2 <- bmf
+
+    mf_aligns(bmf)[2:3, 2] <- "dec_right"
+    mf_aligns(bmf2)[2:3, 2] <- "right"
+    expect_identical(toString(bmf), toString(bmf2))
+
+
+    mf_aligns(bmf)[2:3, 2] <- "decimal"
+    mf_aligns(bmf2)[2:3, 2] <- "center"
+    expect_identical(toString(bmf), toString(bmf2))
+
+    mf_aligns(bmf)[2:3, 2] <- "dec_left"
+    mf_aligns(bmf2)[2:3, 2] <- "left"
+    expect_identical(toString(bmf), toString(bmf2))
+})
+
+test_that("behavior of decimal alignments on non-numbers", {
+    ## XXX This may be converted into an error in the future but currently we don't
+    ## have the ability to do that.
+
+    bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
+    mf_strings(bmf)[-c(1,2), 2] <- letters[1:3]
+    bmf2 <- bmf
+
+    mf_aligns(bmf)[-1, 2] <- "decimal"
+    mf_aligns(bmf2)[-1, 2] <- "center"
+    expect_identical(toString(bmf), toString(bmf2))
+
+    mf_aligns(bmf)[-1, 2] <- "dec_left"
+    mf_aligns(bmf2)[-1, 2] <- "left"
+    expect_identical(toString(bmf), toString(bmf2))
+
+    mf_aligns(bmf)[-1, 2] <- "dec_right"
+    mf_aligns(bmf2)[-1, 2] <- "right"
+    expect_identical(toString(bmf), toString(bmf2))
+
+    ## handles periods in string values sanely
+    bmf3 <- bmf
+    mf_strings(bmf3)[2, 3] <- "haha sentence."
+    bmf4 <- bmf3
+
+    mf_aligns(bmf3)[-1, 2] <- "decimal"
+    mf_aligns(bmf4)[-1, 2] <- "center"
+    ## have to pass it propose_column_widths cause manually modifying
+    ## the string matrix doesn't update the cached default col widths
+    expect_identical(toString(bmf3, propose_column_widths(bmf3)),
+                     toString(bmf4, propose_column_widths(bmf4)))
 })
 
 test_that("Decimal alignment: a specific case with larger widths", {

@@ -107,9 +107,12 @@ is_valid_format <- function(x, stop_otherwise = FALSE) {
 #' @name check_formats
 #' @export
 check_aligns <- function(algn) {
-  if(any(is.na(algn) | !(algn %in% list_valid_aligns()))) {
-    stop("Unsupported text-alignment: ",
-         algn[!(algn %in% list_valid_aligns())])
+    if(anyNA(algn))
+        stop("Got missing-value for text alignment.")
+    invalid <- setdiff(algn, list_valid_aligns())
+    if(length(invalid) > 0) {
+        stop("Unsupported text-alignment(s): ",
+             paste(invalid, collapse = ", "))
   }
   invisible(TRUE)
 }
