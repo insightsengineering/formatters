@@ -112,8 +112,9 @@ disp_from_spans <- function(spans) {
 #'     \code{strings}.
 #' @param  aligns character  matrix.   Matrix  of same  dimension  as
 #'     \code{strings} giving  the text alignment information  for each
-#'     element.    Must  be   repeated   to   match  placeholders   in
-#'     \code{strings}.
+#'     element. Must  be   repeated   to   match  placeholders   in
+#'     \code{strings}. Must be a supported text alignment. See
+#'     [decimal_align] allowed values.
 #' @param formats  matrix. Matrix  of same dimension
 #'     as  \code{strings} giving  the text  format information  for
 #'     each  element.   Must  be  repeated to  match  placeholders  in

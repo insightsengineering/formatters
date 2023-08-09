@@ -4,7 +4,7 @@
 \alias{padstr}
 \title{Pad a string and align within string}
 \usage{
-padstr(x, n, just = c("center", "left", "right"))
+padstr(x, n, just = list_valid_aligns())
 }
 \arguments{
 \item{x}{string}
@@ -12,7 +12,8 @@ padstr(x, n, just = c("center", "left", "right"))
 \item{n}{number  of  character  of the  output  string,  if \code{n  < nchar(x)} an error is thrown}
 
 \item{just}{character(1).   Text  alignment   justification  to
-use. Defaults to center. Must be center, right or left.}
+use. Defaults to \code{center}. Must be \code{center}, \code{right}, \code{left},
+\code{dec_right}, \code{dec_left} or \code{decimal}.}
 }
 \value{
 \code{x}, padded to be a string of \code{n} characters

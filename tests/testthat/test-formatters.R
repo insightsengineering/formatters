@@ -540,6 +540,316 @@ mpf <- MatrixPrintForm(strings = strs, spans = spans, aligns = aligns,
 expect_equal(length(grep("spn_val", toString(mpf))),
              1L)
 
+### Decimal Alignment Testing ================
+test_that("error when widths are < than decimal aligned values", {
+  df_error <- basic_matrix_form(mtcars)
+  df_error$aligns[, -c(1)] <- "dec_left"
+
+  expect_error(
+    toString(df_error, widths = c(25, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4)),
+    paste0(
+      "Inserted width\\(s\\) for column\\(s\\) disp \\(-1\\), wt \\(-1\\), ",
+      "qsec \\(-1\\) is\\(are\\) not wide enough for the desired alignment."
+    )
+  )
+})
+test_that("padstr works with dec_left", {
+  bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
+  bmf$aligns[-1, -c(1)] <- "dec_left"
+  cw <- propose_column_widths(bmf) + 5
+
+  result <- strsplit(toString(bmf, widths = cw, hsep = "-"), "\\n")[[1]]
+  result_no_cw <- strsplit(toString(bmf, hsep = "-"), "\\n")[[1]]
+
+  nc_res <- sapply(result, nchar, USE.NAMES = FALSE)
+  nc_res_ncw <- sapply(result_no_cw, nchar, USE.NAMES = FALSE)
+
+  expect_equal(nc_res - 15, nc_res_ncw)
+
+  expected <- c(
+    "                 mpg     wt  ",
+    "-----------------------------",
+    "Mazda RX4        21     2.62 ",
+    "Mazda RX4 Wag    21     2.875",
+    "Datsun 710       22.8   2.32 ",
+    "Hornet 4 Drive   21.4   3.215"
+  )
+  expect_identical(result_no_cw, expected)
+})
+
+test_that("padstr works with dec_right", {
+  bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
+  bmf$aligns[-1, -c(1)] <- "dec_right"
+  result <- strsplit(toString(bmf, hsep = "-"), "\\n")[[1]]
+  expected <- c(
+    "                 mpg     wt  ",
+    "-----------------------------",
+    "Mazda RX4        21     2.62 ",
+    "Mazda RX4 Wag    21     2.875",
+    "Datsun 710       22.8   2.32 ",
+    "Hornet 4 Drive   21.4   3.215"
+  )
+  expect_identical(result, expected)
+})
+
+test_that("padstr works with decimal", {
+  bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
+  bmf$aligns[-1, -c(1)] <- "decimal"
+  result <- strsplit(toString(bmf, hsep = "-"), "\\n")[[1]]
+  expected <- c(
+    "                 mpg     wt  ",
+    "-----------------------------",
+    "Mazda RX4        21     2.62 ",
+    "Mazda RX4 Wag    21     2.875",
+    "Datsun 710       22.8   2.32 ",
+    "Hornet 4 Drive   21.4   3.215"
+  )
+  expect_identical(result, expected)
+})
+
+
+test_that("decimal alignments work when there are numbers but no decimal places", {
+    bmf <- basic_matrix_form(mtcars[1:2, c(1, 6)])
+
+    bmf2 <- bmf
+
+    mf_aligns(bmf)[2:3, 2] <- "dec_right"
+    mf_aligns(bmf2)[2:3, 2] <- "right"
+    expect_identical(toString(bmf), toString(bmf2))
+
+
+    mf_aligns(bmf)[2:3, 2] <- "decimal"
+    mf_aligns(bmf2)[2:3, 2] <- "center"
+    expect_identical(toString(bmf), toString(bmf2))
+
+    mf_aligns(bmf)[2:3, 2] <- "dec_left"
+    mf_aligns(bmf2)[2:3, 2] <- "left"
+    expect_identical(toString(bmf), toString(bmf2))
+})
+
+test_that("behavior of decimal alignments on non-numbers", {
+    ## XXX This may be converted into an error in the future but currently we don't
+    ## have the ability to do that.
+
+    bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
+    mf_strings(bmf)[-c(1,2), 2] <- letters[1:3]
+    bmf2 <- bmf
+
+    mf_aligns(bmf)[-1, 2] <- "decimal"
+    mf_aligns(bmf2)[-1, 2] <- "center"
+    expect_identical(toString(bmf), toString(bmf2))
+
+    mf_aligns(bmf)[-1, 2] <- "dec_left"
+    mf_aligns(bmf2)[-1, 2] <- "left"
+    expect_identical(toString(bmf), toString(bmf2))
+
+    mf_aligns(bmf)[-1, 2] <- "dec_right"
+    mf_aligns(bmf2)[-1, 2] <- "right"
+    expect_identical(toString(bmf), toString(bmf2))
+
+    ## handles periods in string values sanely
+    bmf3 <- bmf
+    mf_strings(bmf3)[2, 3] <- "haha sentence."
+    bmf4 <- bmf3
+
+    mf_aligns(bmf3)[-1, 2] <- "decimal"
+    mf_aligns(bmf4)[-1, 2] <- "center"
+    ## have to pass it propose_column_widths cause manually modifying
+    ## the string matrix doesn't update the cached default col widths
+    expect_identical(toString(bmf3, propose_column_widths(bmf3)),
+                     toString(bmf4, propose_column_widths(bmf4)))
+})
+
+test_that("Decimal alignment: a specific case with larger widths", {
+  hard_c <- c(12345.6, 0.235678, 6.7, 9.26, 1, 11)
+  lhc <- length(hard_c)
+  bmf <- basic_matrix_form(mtcars[1:lhc, c(1, 6)])
+  cw0 <- propose_column_widths(bmf)
+  bmf$strings[2:c(lhc + 1), 2] <- as.character(hard_c)
+  bmf$strings[2:c(lhc + 1), 3] <- paste0(hard_c, "%")
+  bmf$formats[2:c(lhc + 1), 3] <- rep("xx%", lhc)
+
+  # decimal
+  bmf$aligns[, -1] <- "decimal"
+  cw <- cw_err <- propose_column_widths(bmf)
+  expect_equal(sum(cw - cw0), 16) # small check of increased colwidths
+  cw_err[c(2, 3)] <- cw[c(2, 3)] - 6
+  cw[c(2, 3)] <- cw[c(2, 3)] + 6
+
+  er_msg <- paste0(
+    "Inserted width\\(s\\) for column\\(s\\) mpg \\(-6\\), wt \\(-6\\) ",
+    "is\\(are\\) not wide enough for the desired alignment."
+  )
+  expect_error(toString(bmf, widths = cw_err), er_msg)
+
+  res_dec <- strsplit(toString(bmf, widths = cw, hsep = "-"), "\\n")[[1]]
+
+  expected <- c(
+    "                           mpg                   wt         ",
+    "------------------------------------------------------------",
+    "Mazda RX4              12345.6              12345.6%        ",
+    "Mazda RX4 Wag              0.235678             0.235678%   ",
+    "Datsun 710                 6.7                  6.7%        ",
+    "Hornet 4 Drive             9.26                 9.26%       ",
+    "Hornet Sportabout          1                    1%          ",
+    "Valiant                   11                   11%          "
+  )
+  expect_identical(res_dec, expected)
+
+  # dec_right
+  bmf$aligns[, -1] <- "dec_right"
+  res_decr <- strsplit(toString(bmf, widths = cw, hsep = "-"), "\\n")[[1]]
+
+  expected <- c(
+    "                                   mpg                    wt",
+    "------------------------------------------------------------",
+    "Mazda RX4                 12345.6              12345.6%     ",
+    "Mazda RX4 Wag                 0.235678             0.235678%",
+    "Datsun 710                    6.7                  6.7%     ",
+    "Hornet 4 Drive                9.26                 9.26%    ",
+    "Hornet Sportabout             1                    1%       ",
+    "Valiant                      11                   11%       "
+  )
+  expect_identical(res_decr, expected)
+
+  # dec_left
+  bmf$aligns[, -1] <- "dec_left"
+  res_decl <- strsplit(toString(bmf, widths = cw, hsep = "-"), "\\n")[[1]]
+
+  expected <- c(
+    "                    mpg                  wt                 ",
+    "------------------------------------------------------------",
+    "Mazda RX4           12345.6              12345.6%           ",
+    "Mazda RX4 Wag           0.235678             0.235678%      ",
+    "Datsun 710              6.7                  6.7%           ",
+    "Hornet 4 Drive          9.26                 9.26%          ",
+    "Hornet Sportabout       1                    1%             ",
+    "Valiant                11                   11%             "
+  )
+  expect_identical(res_decl, expected)
+
+  # decimal mix
+  bmf$aligns[-1, -1] <- rep(c("dec_left", "dec_right", "decimal"), each = 2)
+  bmf$strings[-1, 1] <- bmf$aligns[-1, 2]
+
+  res_decl <- strsplit(toString(bmf, widths = cw, hsep = "-"), "\\n")[[1]]
+
+  expected <- c(
+    "                    mpg                  wt                 ",
+    "------------------------------------------------------------",
+    "dec_left            12345.6              12345.6%           ",
+    "dec_left                0.235678             0.235678%      ",
+    "dec_right                     6.7                  6.7%     ",
+    "dec_right                     9.26                 9.26%    ",
+    "decimal                    1                    1%          ",
+    "decimal                   11                   11%          "
+  )
+  expect_identical(res_decl, expected)
+})
+
+test_that("All supported 1d format cases of decimal alignment", {
+  hard_c_formats <- list_valid_format_labels()$`1d`
+  hard_c <- sapply(hard_c_formats, gsub, pattern = "x", replacement = "1")
+  lhc <- length(hard_c)
+  reduced_df <- mtcars[seq_len(lhc), c(1, 6, 7)]
+  rownames(reduced_df) <- letters[seq_len(lhc)]
+  bmf <- basic_matrix_form(reduced_df)
+  cw <- propose_column_widths(bmf)
+  bmf$strings[2:c(lhc + 1), seq(2, 3)] <- as.character(hard_c)
+  bmf$formats[2:c(lhc + 1), seq(2, 3)] <- hard_c
+
+  # decimal
+  set.seed(1)
+  bmf$aligns[, 2] <- "decimal"
+  sample_list_aligns <- sample(list_valid_aligns(),
+                               size = nrow(bmf$aligns),
+                               replace = TRUE
+  )
+  bmf$strings[, 4] <- bmf$aligns[, 3] <- sample_list_aligns
+
+  expect_error(cw <- propose_column_widths(bmf), regexp = "*1.1111 | (<0.0001)*")
+  bmf$aligns[nrow(bmf$aligns), c(2, 3)] <- "center"
+  cw <- propose_column_widths(bmf)
+  cw[3] <- cw[3] + 4
+  res_dec <- strsplit(toString(bmf, widths = cw, hsep = "-"), "\\n")[[1]]
+
+  expected <- c(
+    "           mpg           wt                         left   ",
+    "-----------------------------------------------------------",
+    "a          11                     11              decimal  ",
+    "b          11.           11.                      left     ",
+    "c          11.1                            11.1   right    ",
+    "d          11.11                        11.11     dec_right",
+    "e          11.111                11.111           center   ",
+    "f          11.1111          11.1111               dec_left ",
+    "g          11%                              11%   right    ",
+    "h          11.%                   11.%            center   ",
+    "i          11.1%                 11.1%            center   ",
+    "j          11.11%        11.11%                   left     ",
+    "k          11.111%                      11.111%   dec_right",
+    "l       (N=11)                       (N=11)       dec_right",
+    "m        >999.9                          >999.9   right    ",
+    "n        >999.99          >999.99                 dec_left ",
+    "o   1.1111 | (<0.0001)     1.1111 | (<0.0001)     dec_left "
+  )
+  expect_identical(res_dec, expected)
+})
+
+test_that("All 2d cases for decimal alignment", {
+  formats2d <- list_valid_format_labels()$`2d`
+  hard_c <- sapply(formats2d, gsub, pattern = "x", replacement = "1")
+  reduced_df <- mtcars[seq_along(hard_c), c(1, 6)]
+  rownames(reduced_df) <- formats2d
+  colnames(reduced_df) <- c("dec_left", "decimal")
+  bmf <- basic_matrix_form(reduced_df)
+  bmf$strings[seq(2, length(hard_c) + 1), seq(2, 3)] <- as.character(hard_c)
+  bmf$formats[seq(2, length(hard_c) + 1), seq(2, 3)] <- hard_c
+
+  bmf$aligns[, 2] <- "decimal"
+  bmf$aligns[, 3] <- "dec_right"
+  bmf$col_widths <- NULL
+  expect_error(res_dec <- strsplit(toString(bmf, hsep = "-"), "\\n")[[1]],
+               regexp = "*first 3 selected from column dec_left*")
+
+  # expected <- c(
+  #   "                          dec_left                     decimal",
+  #   "--------------------------------------------------------------",
+  #   "xx / xx                11 / 11               11 / 11          ",
+  #   "xx. / xx.              11. / 11.             11. / 11.        ",
+  #   "xx.x / xx.x            11.1 / 11.1           11.1 / 11.1      ",
+  #   "xx.xx / xx.xx          11.11 / 11.11         11.11 / 11.11    ",
+  #   "xx.xxx / xx.xxx        11.111 / 11.111       11.111 / 11.111  ",
+  #   "N=xx (xx%)           N=11 (11%)            N=11 (11%)         ",
+  #   "xx (xx%)               11 (11%)              11 (11%)         ",
+  #   "xx (xx.%)              11 (11.%)             11 (11.%)        ",
+  #   "xx (xx.x%)             11 (11.1%)            11 (11.1%)       ",
+  #   "xx (xx.xx%)            11 (11.11%)           11 (11.11%)      ",
+  #   "xx. (xx.%)             11. (11.%)            11. (11.%)       ",
+  #   "xx.x (xx.x%)           11.1 (11.1%)          11.1 (11.1%)     ",
+  #   "xx.xx (xx.xx%)         11.11 (11.11%)        11.11 (11.11%)   ",
+  #   "(xx, xx)              (11, 11)              (11, 11)          ",
+  #   "(xx., xx.)            (11., 11.)            (11., 11.)        ",
+  #   "(xx.x, xx.x)          (11.1, 11.1)          (11.1, 11.1)      ",
+  #   "(xx.xx, xx.xx)        (11.11, 11.11)        (11.11, 11.11)    ",
+  #   "(xx.xxx, xx.xxx)      (11.111, 11.111)      (11.111, 11.111)  ",
+  #   "(xx.xxxx, xx.xxxx)    (11.1111, 11.1111)    (11.1111, 11.1111)",
+  #   "xx - xx                11 - 11               11 - 11          ",
+  #   "xx.x - xx.x            11.1 - 11.1           11.1 - 11.1      ",
+  #   "xx.xx - xx.xx          11.11 - 11.11         11.11 - 11.11    ",
+  #   "xx (xx)                11 (11)               11 (11)          ",
+  #   "xx. (xx.)              11. (11.)             11. (11.)        ",
+  #   "xx.x (xx.x)            11.1 (11.1)           11.1 (11.1)      ",
+  #   "xx.xx (xx.xx)          11.11 (11.11)         11.11 (11.11)    ",
+  #   "xx (xx.)               11 (11.)              11 (11.)         ",
+  #   "xx (xx.x)              11 (11.1)             11 (11.1)        ",
+  #   "xx (xx.xx)             11 (11.11)            11 (11.11)       ",
+  #   "xx.x, xx.x             11.1, 11.1            11.1, 11.1       ",
+  #   "xx.x to xx.x           11.1 to 11.1          11.1 to 11.1     "
+  # )
+  #
+  # expect_identical(res_dec, expected)
+})
+
 test_that("fmt_config works as expected", {
   x <- fmt_config()
   expect_identical(obj_format(x), NULL)

@@ -67,8 +67,9 @@ element.    Must  be   repeated   to   match  placeholders   in
 
 \item{aligns}{character  matrix.   Matrix  of same  dimension  as
 \code{strings} giving  the text alignment information  for each
-element.    Must  be   repeated   to   match  placeholders   in
-\code{strings}.}
+element. Must  be   repeated   to   match  placeholders   in
+\code{strings}. Must be a supported text alignment. See
+\link{decimal_align} allowed values.}
 
 \item{formats}{matrix. Matrix  of same dimension
 as  \code{strings} giving  the text  format information  for
