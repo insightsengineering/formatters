@@ -119,10 +119,6 @@ test_that("exporters work", {
 
 test_that("export_as_txt maintains repeated columns when paginate is TRUE", {
   dfmf <- basic_matrix_form(mtcars)
-  main_title(dfmf) <- "main title"
-  main_footer(dfmf) <- "main footer"
-  prov_footer(dfmf) <- "prov footer"
-  subtitles(dfmf) <- c("sub", "titles")
 
   # repeat first 3 columns in each page
   pag_out <- export_as_txt(dfmf, cpp = 90, rep_cols = 3)
