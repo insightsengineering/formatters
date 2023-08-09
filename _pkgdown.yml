@@ -53,6 +53,8 @@ reference:
       - toString,MatrixPrintForm-method
       - spans_to_viscell
       - propose_column_widths
+      - decimal_align
+      - list_valid_aligns
       - padstr
       - spread_integer
       - is.wholenumber
