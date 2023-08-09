@@ -46,6 +46,12 @@
     <loc>https://insightsengineering.github.io/formatters/main/reference/cdisc_data.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/check_formats.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/decimal_align.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/formatters/main/reference/default_hsep.html</loc>
   </url>
   <url>
@@ -79,13 +85,10 @@
     <loc>https://insightsengineering.github.io/formatters/main/reference/is.wholenumber.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/formatters/main/reference/is_valid_format.html</loc>
-  </url>
-  <url>
     <loc>https://insightsengineering.github.io/formatters/main/reference/lab_name.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/formatters/main/reference/list_valid_format_labels.html</loc>
+    <loc>https://insightsengineering.github.io/formatters/main/reference/list_formats.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/formatters/main/reference/make_row_df.html</loc>
