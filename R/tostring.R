@@ -180,6 +180,135 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
     mat
 }
 
+## take a character vector and return whether the value is
+## a string version of a number or not
+is_number_str <- function(vec) {
+    is.na(as.numeric(vec))
+}
+
+is_dec_align <- function(vec) {
+    sdiff <- setdiff(vec, list_valid_aligns())
+    if(length(sdiff) > 0)
+        stop("Invalid text-alignment(s): ",
+             paste(sdiff, collapse = ", "))
+    grepl("dec", vec)
+}
+
+any_dec_align <- function(vec) any(is_dec_align(vec))
+
+#' Decimal Alignment
+#'
+#' @description Aligning decimal values of string matrix. Allowed alignments are: `dec_left`,
+#'  `dec_right` and `decimal`.
+#'
+#' @param string_mat character matrix. String matrix component of matrix print form object.
+#' @param align_mat character matrix. Aligns matrix component of matrix print form object.
+#'  Should contain either `dec_left`, `dec_right` or `decimal` for values to be decimal aligned.
+#'
+#' @details Decimal alignment left and right (`dec_left` and `dec_right`) are different to
+#'  center decimal alignment `decimal` only in the case some padding is present. This may
+#'  happen if column widths are wider by setting parameters `widths` in `toString` or
+#'  `colwidths` in `paginate_*` accordingly. It will be also the case (more common) of
+#'  wider column names. Decimal alignment is not supported along with cell wrapping.
+#'
+#' @examples
+#' dfmf <- basic_matrix_form(mtcars[1:5,])
+#' aligns <- mf_aligns(dfmf)
+#' aligns[, -c(1)] <- "dec_left"
+#' decimal_align(mf_strings(dfmf), aligns)
+#'
+#' @return Processed string matrix of matrix print form with decimal aligned values.
+#'
+#' @seealso [toString] and [MatrixPrintForm]
+#'
+#' @export
+decimal_align <- function(string_mat, align_mat) {
+    ## Evaluate if any values are to be decimal aligned
+    if (!any_dec_align(align_mat)) {
+        return(string_mat)
+    }
+    for (i in seq(1, ncol(string_mat))) {
+        ## Take a column and its decimal alignments
+        col_i <- as.character(string_mat[, i])
+        align_col_i <- is_dec_align(align_mat[, i])
+        ## If no values are to be decimal aligned in the column (according
+        ##  to the aligns matrix), or there are no numerical values, strings
+        ##  remain as is
+        ## if (sum(align_col_i) == 0 ||
+        ##     all(grepl("^[0-9]\\.", col_i))) {
+        ##     string_mat[, i] <- string_mat[, i]
+        ## }
+
+        ## !( A || B) -> !A && !B  DeMorgan's Law
+        ## Values to be decimal aligned
+        if (any(align_col_i) &&
+            ## I do not understand this condition what is it doing???
+            ## I guess the assumption is this means they are already decimal aligned?
+            ## not sure that's true with padding... ~GB
+            any(!grepl("^[0-9]\\.", col_i))) {
+            ## Extract values not to be aligned (NAs, non-numbers,
+            ##  doesn't say "decimal" in alignment matrix)
+            ## XXX FIXME because this happens after formatting, we can't tell the difference between
+            ## non-number strings which come from na_str+ NA  value and strings which just aren't numbers.
+            ## this is a problem that should eventually be fixed.
+            nas <- vapply(col_i, is.na, FUN.VALUE = logical(1))
+            nonnum <- !grepl("[0-9]", col_i)
+            ## Why not? grepl("[a-zA-Z]", col_i) # This excludes N=xx, e.g.
+            nonalign <- nas | nonnum | !align_col_i
+            ## Do decimal alignment
+            if (length(col_i[!nonalign]) > 0) {
+                ## Count the number of numbers in the string
+                matches <- gregexpr("\\d+\\.\\d+|\\d+", col_i[!nonalign])
+                more_than_one <- vapply(matches, function(x) {
+                    sum(attr(x, "match.length") > 0) > 1
+                }, logical(1))
+                ## Throw error in case any have more than 1 numbers
+                if (any(more_than_one)) {
+                    stop("Decimal alignment is not supported for multiple values. ",
+                         "Found the following string with multiple numbers ",
+                         "(first 3 selected from column ", col_i[1],"): '",
+                         paste0(col_i[!nonalign][more_than_one][seq(1, 3)],
+                                collapse = "', '"), "'")
+                }
+                ## General split (only one match -> the first)
+                main_regexp <- regexpr("\\d+", col_i[!nonalign])
+                left <- regmatches(col_i[!nonalign], main_regexp, invert = FALSE)
+                right <- regmatches(col_i[!nonalign], main_regexp, invert = TRUE)
+                right <- sapply(right, "[[", 2)
+                something_left <- sapply(strsplit(col_i[!nonalign], "\\d+"), "[[", 1)
+                left <- paste0(something_left, left)
+                if (!checkmate::test_set_equal(paste0(left, right), col_i[!nonalign]))
+                    stop("Split string list lost some piece along the way. This ",
+                         "should not have happened. Please contact the maintainer.") # nocov
+                separator <- sapply(right, function(x) {
+                    if (nzchar(x)) {
+                        substr(x, 1, 1)
+                    } else {
+                        c(" ")
+                    }
+                }, USE.NAMES = FALSE)
+                right <- sapply(right, function(x) {
+                    if (nchar(x) > 1) {
+                        substr(x, 2, nchar(x))
+                    } else {
+                        c("")
+                    }
+                }, USE.NAMES = FALSE)
+                ## figure out whether we need space separators (at least one had a "." or not)
+                if(!any(grepl("[^[:space:]]", separator)))
+                    separator <- gsub("[[:space:]]*", "", separator)
+                ## modify the piece with spaces
+                left_mod <- paste0(spaces(max(nchar(left), na.rm = TRUE) - nchar(left)), left)
+                right_mod <- paste0(right, spaces(max(nchar(right), na.rm = TRUE) - nchar(right)))
+                                        # Put everything together
+                aligned <- paste(left_mod, separator, right_mod, sep = "")
+                string_mat[!nonalign, i] <- aligned
+            }
+        }
+    }
+    string_mat
+}
+
 #' @rdname tostring
 #'
 #' @inheritParams MatrixPrintForm
@@ -225,12 +354,35 @@ setMethod("toString", "MatrixPrintForm", function(x,
     mat <- matrix_form(x, indent_rownames = TRUE)
     inset <- table_inset(mat)
 
+    # if cells are decimal aligned, run propose column widths
+    # if the provided widths is less than proposed width, return an error
+    if (any_dec_align(mf_aligns(mat))) {
+      aligned <- propose_column_widths(x)
+
+      # catch any columns that require widths more than what is provided
+      if (!is.null(widths)) {
+        how_wide <- sapply(seq_along(widths), function(i) c(widths[i] - aligned[i]))
+        too_wide <- how_wide < 0
+        if (any(too_wide)) {
+          desc_width <- paste(paste(
+            names(which(too_wide)),
+            paste0("(", how_wide[too_wide], ")")
+          ), collapse = ", ")
+          stop(
+            "Inserted width(s) for column(s) ", desc_width,
+            " is(are) not wide enough for the desired alignment."
+          )
+        }
+      }
+    }
+
     if (is.null(widths)) {
         widths <- mf_col_widths(x) %||% propose_column_widths(x)
     } else {
         mf_col_widths(x) <- widths
     }
     ncchar <- sum(widths) + (length(widths) - 1) * col_gap
+
     ## Text wrapping checks
     if (tf_wrap) {
         if (is.null(max_width)) {
@@ -243,15 +395,20 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
     mat <- do_cell_fnotes_wrap(mat, widths, max_width = max_width, tf_wrap = tf_wrap)
 
-    body <- mat$strings
-    aligns <- mat$aligns
-    keep_mat <- mat$display
+    body <- mf_strings(mat)
+    aligns <- mf_aligns(mat)
+    keep_mat <- mf_display(mat)
     ## spans <- mat$spans
     ##    ri <- mat$row_info
-    ref_fnotes <- mat$ref_footnotes
+    ref_fnotes <- mf_rfnotes(mat)
     nl_header <- mf_nlheader(mat)
 
     cell_widths_mat <- .calc_cell_widths(mat, widths, col_gap)
+
+    # decimal alignment
+    if (any_dec_align(aligns)) {
+      body <- decimal_align(body, aligns)
+    }
 
     content <- matrix(mapply(padstr, body, cell_widths_mat, aligns), ncol = ncol(body))
     content[!keep_mat] <- NA
@@ -264,7 +421,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
     sec_seps_df <- x$row_info[, c("abs_rownumber", "trailing_sep"), drop = FALSE]
     if (!is.null(sec_seps_df) && any(!is.na(sec_seps_df$trailing_sep))) {
         bdy_cont <- tail(content, -nl_header)
-        ## unfortunately we count "header rows" wrt lihnegrouping so it
+        ## unfortunately we count "header rows" wrt line grouping so it
         ## doesn't match the real (i.e. body) rows as is
         row_grouping <- tail(x$line_grouping, -nl_header) - mf_nrheader(x)
         nrbody <- NROW(bdy_cont)
@@ -615,10 +772,15 @@ propose_column_widths <- function(x, indent_size = 2) {
   if (!is(x, "MatrixPrintForm")) {
     x <- matrix_form(x, indent_rownames = TRUE, indent_size = indent_size)
   }
-  body <- x$strings
-  spans <- x$spans
-  # aligns <- x$aligns
-  display <- x$display
+  body <- mf_strings(x)
+  spans <- mf_spans(x)
+  aligns <- mf_aligns(x)
+  display <- mf_display(x)
+
+  # compute decimal alignment if asked in alignment matrix
+  if (any_dec_align(aligns)) {
+    body <- decimal_align(body, aligns)
+  }
 
   chars <- nchar(body)
 
@@ -667,7 +829,8 @@ propose_column_widths <- function(x, indent_size = 2) {
 #' @param n number  of  character  of the  output  string,  if `n  <
 #'     nchar(x)` an error is thrown
 #' @param just  character(1).   Text  alignment   justification  to
-#'     use. Defaults to center. Must be center, right or left.
+#'     use. Defaults to `center`. Must be `center`, `right`, `left`,
+#'     `dec_right`, `dec_left` or `decimal`.
 #'
 #' @export
 #' @examples
@@ -683,7 +846,7 @@ propose_column_widths <- function(x, indent_size = 2) {
 #' }
 #' @return `x`, padded to be a string of `n` characters
 #'
-padstr <- function(x, n, just = c("center", "left", "right")) {
+padstr <- function(x, n, just = list_valid_aligns()) {
   just <- match.arg(just)
 
   if (length(x) != 1) stop("length of x needs to be 1 and not", length(x))
@@ -701,7 +864,13 @@ padstr <- function(x, n, just = c("center", "left", "right")) {
       paste0(spaces(floor(pad)), x, spaces(ceiling(pad)))
     },
     left = paste0(x, spaces(n - nc)),
-    right = paste0(spaces(n - nc), x)
+    right = paste0(spaces(n - nc), x),
+    decimal = {
+      pad <- (n - nc) / 2
+      paste0(spaces(floor(pad)), x, spaces(ceiling(pad)))
+    },
+    dec_left = paste0(x, spaces(n - nc)),
+    dec_right = paste0(spaces(n - nc), x)
   )
 }
 

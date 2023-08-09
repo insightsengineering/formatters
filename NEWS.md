@@ -1,4 +1,8 @@
-## formatters 0.5.1.9001
+## formatters 0.5.1.9002
+ * Added decimal alignment support with `decimal`, `dec_right`, and `dec_left`.
+
+### Miscellaneous
+ * Added `list_valid_aligns()` that lists the available alignments.
 
 ## formatters 0.5.1
  * Updated `export_as_txt` to print split label when using `page_by` with only one level.
