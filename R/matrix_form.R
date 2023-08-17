@@ -880,8 +880,12 @@ truncate_one_span <- function(spanrow, j) {
 }
 
 truncate_spans <- function(spans, j) {
+  if (length(spans[1,])==1){
+    as.matrix(apply(spans, 1, truncate_one_span, j = j))
+  }
+  else
     t(apply(spans, 1, truncate_one_span, j = j))
-}
+  }
 
 
 mpf_subset_rows <- function(mf, i) {
