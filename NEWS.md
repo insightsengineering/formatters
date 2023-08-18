@@ -1,5 +1,5 @@
 ## formatters 0.5.1.9003
- * `truncate_spans` function modified to handle matrix with a single column after pagination.
+ * `paginate_to_mpfs` can handle single column tables and listings.
  * Added decimal alignment support with `decimal`, `dec_right`, and `dec_left`.
  * Updated `export_as_txt` to pass `rep_cols` argument to pagination function.
 
