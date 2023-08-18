@@ -885,7 +885,7 @@ truncate_spans <- function(spans, j) {
   }
   else
     t(apply(spans, 1, truncate_one_span, j = j))
-  }
+}
 
 
 mpf_subset_rows <- function(mf, i) {
