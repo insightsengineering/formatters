@@ -1,5 +1,6 @@
-## formatters 0.5.1.9002
+## formatters 0.5.1.9003
  * Added decimal alignment support with `decimal`, `dec_right`, and `dec_left`.
+ * Updated `export_as_txt` to pass `rep_cols` argument to pagination function.
 
 ### Miscellaneous
  * Added `list_valid_aligns()` that lists the available alignments.

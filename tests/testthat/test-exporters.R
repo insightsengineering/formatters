@@ -116,3 +116,16 @@ test_that("exporters work", {
                          paste(c(expct_lns[1:5], ""), collapse = "\n"))
     })
 })
+
+test_that("export_as_txt maintains repeated columns when paginate is TRUE", {
+  dfmf <- basic_matrix_form(mtcars)
+
+  # repeat first 3 columns in each page
+  pag_out <- export_as_txt(dfmf, cpp = 90, rep_cols = 3)
+
+  # There should be two "disp", "cyl" and "mpg" columns
+  expect_identical(length(gregexpr(c("mpg"), pag_out)[[1]]), 2L)
+  expect_identical(length(gregexpr(c("cyl"), pag_out)[[1]]), 2L)
+  expect_identical(length(gregexpr(c("disp"), pag_out)[[1]]), 2L)
+})
+
