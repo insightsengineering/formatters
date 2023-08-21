@@ -316,3 +316,14 @@ test_that("non-monospaced fonts are caught", {
         )
     )
 })
+
+test_that("spans and string matrix match after pagination
+          when table has single column", {
+
+  df <- as.data.frame(mtcars[, 1])
+  test <- basic_matrix_form(df)
+  pag_test <- paginate_to_mpfs(test)
+
+  expect_identical(
+    dim(pag_test[[1]]$spans), dim(pag_test[[1]]$strings))
+})
