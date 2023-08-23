@@ -1,13 +1,16 @@
 Package: formatters
 Title: ASCII Formatting for Values and Tables
-Version: 0.5.1.9005
+Version: 0.5.2
 Date: 2023-08-21
 Authors@R: c(
     person("Gabriel", "Becker", , "gabembecker@gmail.com", role = c("aut", "cre")),
     person("Adrian", "Waddell", , "adrian.waddell@gene.com", role = "aut"),
     person("Davide", "Garolini", , "davide.garolini@roche.com", role = "ctb"),
+    person("Emily", "de la Rua", , "emily.de_la_rua@contractors.roche.com", role = "ctb"),
+    person("Abinaya", "Yogasekaram", , "abinaya.yogasekaram@contractors.roche.com", role = "ctb"),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
   )
+Maintainer: Joe Zhu <joe.zhu@roche.com>
 Description: We provide a framework for rendering complex tables to ASCII,
     and a set of formatters for transforming values or sets of values into
     ASCII-ready display strings.
