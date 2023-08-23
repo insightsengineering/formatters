@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">formatters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.2</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,6 +34,7 @@
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/release-candidate">release-candidate</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.2-rc1">v0.5.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1-rc1">v0.5.1-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0-rc1">v0.5.0-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1">v0.5.1</a>
@@ -70,11 +71,21 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.5.2" id="formatters-052">formatters 0.5.2<a class="anchor" aria-label="anchor" href="#formatters-052"></a></h2>
+<ul><li>
+<code>paginate_to_mpfs</code> can handle single column tables and listings.</li>
+<li>Added decimal alignment support with <code>decimal</code>, <code>dec_right</code>, and <code>dec_left</code>.</li>
+<li>Updated <code>export_as_txt</code> to pass <code>rep_cols</code> argument to pagination function.</li>
+<li>Added <code><a href="../reference/list_formats.html">list_valid_aligns()</a></code> that lists the available alignments.</li>
+<li>Set default values for <code>na_str</code> and <code>align</code> to <code>NULL</code> in the format configuration function <code>fmt_config</code>.</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.1" id="formatters-051">formatters 0.5.1<a class="anchor" aria-label="anchor" href="#formatters-051"></a></h2>
 <ul><li>Updated <code>export_as_txt</code> to print split label when using <code>page_by</code> with only one level.</li>
 <li>Reduced the amount of spelling issues.</li>
 <li>New generic <code>getter</code> and <code>setter</code> for <code>align</code> (<code>obj_align</code> and <code>obj_align&lt;-</code>).</li>
 <li>New <code>fmt_config</code> class to bundle together <code>format</code>, <code>na_str</code>, and <code>align</code> instructions.</li>
+<li>Reverting default for alignment (from <code>NULL</code> to <code>center</code>) and <code>na_str</code> from <code>NULL</code> to <code>"NA"</code>. This affects only <code>rlistings</code>, where the new default takes effect.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.0" id="formatters-050">formatters 0.5.0<a class="anchor" aria-label="anchor" href="#formatters-050"></a></h2><p class="text-muted">CRAN release: 2023-05-25</p>
