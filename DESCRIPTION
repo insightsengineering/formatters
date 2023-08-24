@@ -3,7 +3,7 @@ Title: ASCII Formatting for Values and Tables
 Version: 0.5.2
 Date: 2023-08-21
 Authors@R: c(
-    person("Gabriel", "Becker", , "gabembecker@gmail.com", role = c("aut", "cre")),
+    person("Gabriel", "Becker", , "gabembecker@gmail.com", role = c("aut"), comment = "original creator of the package"),
     person("Adrian", "Waddell", , "adrian.waddell@gene.com", role = "aut"),
     person("Davide", "Garolini", , "davide.garolini@roche.com", role = "ctb"),
     person("Emily", "de la Rua", , "emily.de_la_rua@contractors.roche.com", role = "ctb"),
