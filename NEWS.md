@@ -14,7 +14,7 @@
    from `NULL` to `"NA"`. This affects only `rlistings`, where the new default takes effect.
 
 ## formatters 0.5.0
- * Fix bug in `MPF` pagination (and thus export_as_txt) when column labels had newlines ([#150](github.com/insightsengineering/formatters/issues/150), [`insightsengineering/rtables#634`](https://github.com/insightsengineering/rtables/issues/634))
+ * Fix bug in `MPF` pagination (and thus export_as_txt) when column labels had newlines ([#150](https://github.com/insightsengineering/formatters/issues/150), [`insightsengineering/rtables#634`](https://github.com/insightsengineering/rtables/issues/634))
  * `font_size` is now 8 consistently across the pagination machinery.
  * When specified, margins are in inches (including the default).
  * Fix off-by-one error in pagination machinery for certain cases.
