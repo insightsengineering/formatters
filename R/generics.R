@@ -367,7 +367,7 @@ setMethod("obj_align<-", "fmt_config", function(obj, value) {
 #' @param obj ANY. Object to extract information from.
 #' @export
 #' @rdname title_footer
-#' @return a character scalar (`main_title`), a character scalar or vector (if footer spans multiple lines) (`main_footer`) or
+#' @return a character scalar (`main_title`), a character vector (`main_footer`), or
 #' vector of length zero or more (`subtitles`, `page_titles`,
 #' `prov_footer`) containing the relevant title/footer contents
 setGeneric("main_title", function(obj) standardGeneric("main_title"))

@@ -78,7 +78,7 @@ all_titles(obj)
 \item{value}{character. New value.}
 }
 \value{
-a character scalar (\code{main_title}), a character scalar or vector (if footer spans multiple lines) (\code{main_footer}) or
+a character scalar (\code{main_title}), a character vector (\code{main_footer}), or
 vector of length zero or more (\code{subtitles}, \code{page_titles},
 \code{prov_footer}) containing the relevant title/footer contents
 }
