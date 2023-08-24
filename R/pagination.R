@@ -637,7 +637,7 @@ calc_rlpp <- function(pg_size_spec, mf, colwidths, tf_wrap, verbose) {
         flines <- nlines(mnfoot, colwidths = colwidths,
                          max_width = max_width - table_inset(mf))
     prfoot <- prov_footer(mf)
-    if(length(prfoot) && nzchar(prfoot)) {
+    if(length(prfoot) && any(nzchar(prfoot))) {
         flines <- flines + nlines(prov_footer(mf), colwidths = colwidths, max_width = max_width)
         if(havemn)
             flines <- flines + 1L ## space between main and prov footer.
