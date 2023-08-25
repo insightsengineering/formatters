@@ -187,7 +187,9 @@ is_number_str <- function(vec) {
 }
 
 is_dec_align <- function(vec) {
-    sdiff <- setdiff(vec, list_valid_aligns())
+  # "c" is not an alignment method we define in `formatters`,
+  # but the reverse dependency package `tables` will need
+    sdiff <- setdiff(vec, c(list_valid_aligns(), "c"))
     if(length(sdiff) > 0)
         stop("Invalid text-alignment(s): ",
              paste(sdiff, collapse = ", "))

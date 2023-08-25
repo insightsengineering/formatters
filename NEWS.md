@@ -1,10 +1,10 @@
-## formatters 0.5.1.9007
+## formatters 0.5.2
  * `paginate_to_mpfs` can handle single column tables and listings.
  * Added decimal alignment support with `decimal`, `dec_right`, and `dec_left`.
  * Updated `export_as_txt` to pass `rep_cols` argument to pagination function.
-
-### Miscellaneous
  * Added `list_valid_aligns()` that lists the available alignments.
+ * Set default values for `na_str` and `align` to `NULL` in the format configuration function `fmt_config`.
+ * Fixed a bug that threw warning when `prov_footer` length is greater than `1` [`insightsengineering/rtables#705`](https://github.com/insightsengineering/rtables/issues/705).
 
 ## formatters 0.5.1
  * Updated `export_as_txt` to print split label when using `page_by` with only one level.
@@ -15,7 +15,7 @@
    from `NULL` to `"NA"`. This affects only `rlistings`, where the new default takes effect.
 
 ## formatters 0.5.0
- * Fix bug in `MPF` pagination (and thus export_as_txt) when column labels had newlines ([#150](github.com/insightsengineering/formatters/issues/150), [`insightsengineering/rtables#634`](https://github.com/insightsengineering/rtables/issues/634))
+ * Fix bug in `MPF` pagination (and thus export_as_txt) when column labels had newlines ([#150](https://github.com/insightsengineering/formatters/issues/150), [`insightsengineering/rtables#634`](https://github.com/insightsengineering/rtables/issues/634))
  * `font_size` is now 8 consistently across the pagination machinery.
  * When specified, margins are in inches (including the default).
  * Fix off-by-one error in pagination machinery for certain cases.
