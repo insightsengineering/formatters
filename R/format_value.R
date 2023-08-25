@@ -61,7 +61,7 @@ list_valid_format_labels <- function() {
 #' @name list_formats
 #' @export
 list_valid_aligns <- function() {
-  c("c", "left", "right", "center", "decimal", "dec_right", "dec_left")
+  c("left", "right", "center", "decimal", "dec_right", "dec_left", "c")
 }
 
 #' @title Check if a format or alignment is supported
