@@ -1,3 +1,5 @@
+## formatters 0.5.2.9000
+
 ## formatters 0.5.2
  * `paginate_to_mpfs` can handle single column tables and listings.
  * Added decimal alignment support with `decimal`, `dec_right`, and `dec_left`.
