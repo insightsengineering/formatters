@@ -28,7 +28,7 @@ Imports:
 Suggests:
     dplyr (>= 1.0.9),
     gt (>= 0.7.0),
-    huxtable (>= 1.0.0),
+    huxtable (>= 2.0.0),
     knitr (>= 1.42),
     r2rtf (>= 0.3.2),
     testthat (>= 3.0.4)
