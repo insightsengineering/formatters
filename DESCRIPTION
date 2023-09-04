@@ -29,12 +29,20 @@ Suggests:
     dplyr (>= 1.0.9),
     gt (>= 0.7.0),
     huxtable (>= 1.0.0),
-    knitr (>= 1.34),
+    knitr (>= 1.42),
     r2rtf (>= 0.3.2),
-    rmarkdown (>= 1.11),
     testthat (>= 3.0.4)
 VignetteBuilder:
     knitr
+Config/Needs/verdepcheck:
+    mllg/checkmate,
+    rstudio/htmltools,
+    tidyverse/dplyr,
+    rstudio/gt,
+    hughjonesd/huxtable,
+    yihui/knitr,
+    Merck/r2rtf,
+    r-lib/testthat
 Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
 Language: en-US
