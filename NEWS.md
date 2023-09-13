@@ -1,4 +1,5 @@
 ## formatters 0.5.2.9001
+  * Specified minimal version of package dependencies.
 
 ## formatters 0.5.2
  * `paginate_to_mpfs` can handle single column tables and listings.
