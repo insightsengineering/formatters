@@ -1,4 +1,5 @@
-## formatters 0.5.2.9001
+## formatters 0.5.2.9002
+  * Specified minimal version of package dependencies.
 
 ### Miscellaneous
  * Decimal alignment now throws informative error if scientific notation is used.
