@@ -1,4 +1,4 @@
-## formatters 0.5.2.9001
+## formatters 0.5.2.9002
   * Specified minimal version of package dependencies.
 
 ## formatters 0.5.2
