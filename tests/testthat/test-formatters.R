@@ -795,6 +795,24 @@ test_that("All supported 1d format cases of decimal alignment", {
   expect_identical(res_dec, expected)
 })
 
+test_that("decimal alignment disallows scientific notation", {
+  reduced_df <- mtcars[seq_len(2), seq_len(2)]
+  rownames(reduced_df) <- letters[seq_len(2)]
+  bmf <- basic_matrix_form(reduced_df)
+
+  bmf$strings[c(2, 3), 3] <- c(as.character(100000), as.character(0.00001))
+  bmf$aligns[seq(2, 3), seq(2, 3)] <- "decimal"
+  expect_error(toString(bmf), "formatC")
+
+  bmf$strings[c(2, 3), 3] <- c(NA, as.character(0.001)) # NA does not interfere
+  mf_col_widths(bmf) <- c(1, 3, 5)
+  expect_silent(toString(bmf))
+
+  bmf$strings[c(2, 3), 3] <- c("NE", as.character(0.001)) # NE does not interfere
+  mf_col_widths(bmf) <- c(1, 3, 5)
+  expect_silent(toString(bmf))
+})
+
 test_that("All 2d cases for decimal alignment", {
   formats2d <- list_valid_format_labels()$`2d`
   hard_c <- sapply(formats2d, gsub, pattern = "x", replacement = "1")
