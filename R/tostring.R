@@ -233,21 +233,10 @@ decimal_align <- function(string_mat, align_mat) {
         ## Take a column and its decimal alignments
         col_i <- as.character(string_mat[, i])
         align_col_i <- is_dec_align(align_mat[, i])
-        ## If no values are to be decimal aligned in the column (according
-        ##  to the aligns matrix), or there are no numerical values, strings
-        ##  remain as is
-        ## if (sum(align_col_i) == 0 ||
-        ##     all(grepl("^[0-9]\\.", col_i))) {
-        ##     string_mat[, i] <- string_mat[, i]
-        ## }
 
         ## !( A || B) -> !A && !B  DeMorgan's Law
-        ## Values to be decimal aligned
-        if (any(align_col_i) &&
-            ## I do not understand this condition what is it doing???
-            ## I guess the assumption is this means they are already decimal aligned?
-            ## not sure that's true with padding... ~GB
-            any(!grepl("^[0-9]\\.", col_i))) {
+        ## Are there any values to be decimal aligned? safe if
+        if (any(align_col_i) && any(!grepl("^[0-9]\\.", col_i))) {
             ## Extract values not to be aligned (NAs, non-numbers,
             ##  doesn't say "decimal" in alignment matrix)
             ## XXX FIXME because this happens after formatting, we can't tell the difference between
@@ -255,12 +244,23 @@ decimal_align <- function(string_mat, align_mat) {
             ## this is a problem that should eventually be fixed.
             nas <- vapply(col_i, is.na, FUN.VALUE = logical(1))
             nonnum <- !grepl("[0-9]", col_i)
-            ## Why not? grepl("[a-zA-Z]", col_i) # This excludes N=xx, e.g.
+            ## No grepl("[a-zA-Z]", col_i) because this excludes N=xx, e.g.
             nonalign <- nas | nonnum | !align_col_i
+            col_ia <- col_i[!nonalign]
+
             ## Do decimal alignment
-            if (length(col_i[!nonalign]) > 0) {
+            if (length(col_ia) > 0) {
+                # Special case: scientific notation
+                has_sc_not <- grepl("\\d+[e|E][\\+|\\-]\\d+", col_ia)
+                if(any(has_sc_not)) {
+                  stop("Found values using scientific notation between the ones that",
+                       " needs to be decimal aligned (aligns is decimal, dec_left or dec_right).",
+                       " Please consider using format functions to get a complete decimal ",
+                       "(e.g. formatC).")
+                }
+
                 ## Count the number of numbers in the string
-                matches <- gregexpr("\\d+\\.\\d+|\\d+", col_i[!nonalign])
+                matches <- gregexpr("\\d+\\.\\d+|\\d+", col_ia)
                 more_than_one <- vapply(matches, function(x) {
                     sum(attr(x, "match.length") > 0) > 1
                 }, logical(1))
@@ -269,17 +269,17 @@ decimal_align <- function(string_mat, align_mat) {
                     stop("Decimal alignment is not supported for multiple values. ",
                          "Found the following string with multiple numbers ",
                          "(first 3 selected from column ", col_i[1],"): '",
-                         paste0(col_i[!nonalign][more_than_one][seq(1, 3)],
+                         paste0(col_ia[more_than_one][seq(1, 3)],
                                 collapse = "', '"), "'")
                 }
                 ## General split (only one match -> the first)
-                main_regexp <- regexpr("\\d+", col_i[!nonalign])
-                left <- regmatches(col_i[!nonalign], main_regexp, invert = FALSE)
-                right <- regmatches(col_i[!nonalign], main_regexp, invert = TRUE)
+                main_regexp <- regexpr("\\d+", col_ia)
+                left <- regmatches(col_ia, main_regexp, invert = FALSE)
+                right <- regmatches(col_ia, main_regexp, invert = TRUE)
                 right <- sapply(right, "[[", 2)
-                something_left <- sapply(strsplit(col_i[!nonalign], "\\d+"), "[[", 1)
+                something_left <- sapply(strsplit(col_ia, "\\d+"), "[[", 1)
                 left <- paste0(something_left, left)
-                if (!checkmate::test_set_equal(paste0(left, right), col_i[!nonalign]))
+                if (!checkmate::test_set_equal(paste0(left, right), col_ia))
                     stop("Split string list lost some piece along the way. This ",
                          "should not have happened. Please contact the maintainer.") # nocov
                 separator <- sapply(right, function(x) {
