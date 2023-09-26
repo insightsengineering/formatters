@@ -590,7 +590,11 @@ new_line_warning <- function(str_v) {
 #' @export
 wrap_string <- function(str, max_width, hard = FALSE) {
   stopifnot(is.character(str) && length(str) == 1)
-  naive <- strwrap(str, max_width + 1)
+  if(nchar(str) <= max_width+1){
+    naive <- str
+  }
+  else{
+  naive <- strwrap(str, max_width + 1)}
   while (any(nchar(naive) > max_width)) {
     good <- character()
     bwi <- which(nchar(naive) > max_width)[1]
