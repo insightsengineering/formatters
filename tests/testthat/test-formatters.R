@@ -884,3 +884,17 @@ test_that("fmt_config works as expected", {
   expect_silent(obj_na_str(x) <- "something wrong")
   expect_silent(obj_align(x) <- "something wrong")
 })
+
+
+test_that("wrap_strings avoids trimming whitespace", {
+  testdf <- iris[1:5,]
+  testdf$Species <- paste0("    ", testdf$Species)
+  bmf <- basic_matrix_form(testdf)
+  main_title(bmf) <- "some\nvery\nspacious\ntitle"
+  prov_footer(bmf) <- "some\nvery\nspacious\nfooter"
+  bmf$ref_footnotes <- "some\nvery\nspacious\nreference"
+
+  expected <- "some\nvery\nspacious\ntitle\n\n————————————————————————————————————————————————————————————————————————\n    Sepal.Length   Sepal.Width   Petal.Length   Petal.Width    Species  \n————————————————————————————————————————————————————————————————————————\n1   5.1            3.5           1.4            0.2               setosa\n2   4.9            3             1.4            0.2               setosa\n3   4.7            3.2           1.3            0.2               setosa\n4   4.6            3.1           1.5            0.2               setosa\n5   5              3.6           1.4            0.2               setosa\n————————————————————————————————————————————————————————————————————————\n\nsome\nvery\nspacious\nreference\n————————————————————————————————————————————————————————————————————————\n\n\nsome\nvery\nspacious\nfooter\n"
+
+  expect_identical(toString(bmf), expected)
+})

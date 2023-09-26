@@ -5,7 +5,7 @@
 \alias{wrap_txt}
 \title{Wrap a string to within a maximum width}
 \usage{
-wrap_string(str, max_width, hard = FALSE)
+wrap_string(str, max_width, hard = FALSE, no_wrap = FALSE)
 
 wrap_txt(txt, max_width, hard = FALSE)
 }
@@ -18,6 +18,8 @@ text should be wrapped at.}
 \item{hard}{logical(1). Should hard wrapping (embedding newlines in
 the incoming strings) or soft (breaking wrapped strings into vectors
 of length >1) be used. Defaults to \code{FALSE} (i.e. soft wrapping).}
+
+\item{no_wrap}{logical(1). Identify if the string should be wrapped.}
 
 \item{txt}{character. A vector of strings that should be (independently)
 text-wrapped.}

@@ -579,6 +579,7 @@ new_line_warning <- function(str_v) {
 #' @param hard logical(1). Should hard wrapping (embedding newlines in
 #' the incoming strings) or soft (breaking wrapped strings into vectors
 #' of length >1) be used. Defaults to `FALSE` (i.e. soft wrapping).
+#' @param no_wrap logical(1). Identify if the string should be wrapped.
 #'
 #' @details Word wrapping happens as with \link[base:strwrap]{base::strwrap}
 #'   with the following exception: individual words which are longer
