@@ -588,13 +588,13 @@ new_line_warning <- function(str_v) {
 #'   the hard or soft word-wrapped content.
 #'
 #' @export
-wrap_string <- function(str, max_width, hard = FALSE) {
+wrap_string <- function(str, max_width, hard = FALSE){
   stopifnot(is.character(str) && length(str) == 1)
-  if(nchar(str) <= max_width+1){
-    naive <- str
-  }
-  else{
-  naive <- strwrap(str, max_width + 1)}
+    if(!is.na(str) && nchar(str) <= max_width+1){
+      naive <- str
+      }
+    else{
+      naive <- strwrap(str, max_width + 1)}
   while (any(nchar(naive) > max_width)) {
     good <- character()
     bwi <- which(nchar(naive) > max_width)[1]
@@ -638,7 +638,7 @@ wrap_string <- function(str, max_width, hard = FALSE) {
     naive <- paste(naive, collapse = "\n")
   }
   naive
-}
+  }
 
 #' @param txt character. A vector of strings that should be (independently)
 #' text-wrapped.
