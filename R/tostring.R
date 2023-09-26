@@ -131,7 +131,8 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
         unlist(mapply(wrap_string,
                       str = mat$strings,
                       max_width = cell_widths_mat,
-                      hard = TRUE
+                      hard = TRUE,
+                      no_wrap = TRUE
                       )),
         ncol = ncol(mat$strings)
     )
@@ -588,9 +589,9 @@ new_line_warning <- function(str_v) {
 #'   the hard or soft word-wrapped content.
 #'
 #' @export
-wrap_string <- function(str, max_width, hard = FALSE){
+wrap_string <- function(str, max_width, hard = FALSE, no_wrap = FALSE){
   stopifnot(is.character(str) && length(str) == 1)
-    if(!is.na(str) && nchar(str) <= max_width+1){
+    if(!is.na(str) && nchar(str) <= max_width+1 && no_wrap){
       naive <- str
       }
     else{
