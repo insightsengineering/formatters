@@ -392,7 +392,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
     # Total number of characters for the table
     ncchar <- sum(widths) + (length(widths) - 1) * col_gap
 
-    ## Text wrapping checks
+    ## Text wrapping checks (widths)
     if (tf_wrap) {
         if (is.null(max_width)) {
             max_width <- getOption("width", 80L)
@@ -401,7 +401,8 @@ setMethod("toString", "MatrixPrintForm", function(x,
         }
         assert_number(max_width, lower = 0)
     }
-
+    browser()
+    # Main wrapper function for table core
     mat <- do_cell_fnotes_wrap(mat, widths, max_width = max_width, tf_wrap = tf_wrap)
 
     body <- mf_strings(mat)
@@ -419,14 +420,18 @@ setMethod("toString", "MatrixPrintForm", function(x,
       body <- decimal_align(body, aligns)
     }
 
+    # Content is a matrix of cells with the right amount of spaces
     content <- matrix(mapply(padstr, body, cell_widths_mat, aligns), ncol = ncol(body))
     content[!keep_mat] <- NA
-                                        # apply(content, 1, function(x) sum(nchar(x), na.rm = TRUE))
 
+    # Define gap string and divisor string
     gap_str <- strrep(" ", col_gap)
-
     div <- substr(strrep(hsep, ncchar), 1, ncchar)
+
+    # text head (paste w/o NA content header and gap string)
     txt_head <- apply(head(content, nl_header), 1, .paste_no_na, collapse = gap_str)
+
+    # txt body
     sec_seps_df <- x$row_info[, c("abs_rownumber", "trailing_sep"), drop = FALSE]
     if (!is.null(sec_seps_df) && any(!is.na(sec_seps_df$trailing_sep))) {
         bdy_cont <- tail(content, -nl_header)
@@ -468,12 +473,12 @@ setMethod("toString", "MatrixPrintForm", function(x,
             sec_strt <- sec_end + 1
         }
     } else {
+        # This is the usual default pasting
         txt_body <- apply(tail(content, -nl_header), 1, .paste_no_na, collapse = gap_str)
     }
 
-
+    # retrieving titles and footers
     allts <- all_titles(x)
-
     allfoots <- list(
         "main_footer" = main_footer(x),
         "prov_footer" = prov_footer(x),
@@ -481,16 +486,14 @@ setMethod("toString", "MatrixPrintForm", function(x,
     )
     allfoots <- allfoots[!sapply(allfoots, is.null)]
 
-
     ## Wrapping titles if they go beyond the horizontally allowed space
     if (tf_wrap) {
         new_line_warning(allts)
         allts <- wrap_txt(allts, max_width = max_width)
     }
-
     titles_txt <- if (any(nzchar(allts))) c(allts, "", .do_inset(div, inset)) else NULL
 
-                                        # Wrapping footers if they go beyond the horizontally allowed space
+    # Wrapping footers if they go beyond the horizontally allowed space
     if (tf_wrap) {
         new_line_warning(allfoots)
         allfoots$main_footer <- wrap_txt(allfoots$main_footer, max_width - inset)
@@ -499,9 +502,11 @@ setMethod("toString", "MatrixPrintForm", function(x,
         allfoots$prov_footer <- wrap_txt(allfoots$prov_footer, max_width)
     }
 
-    paste0(paste(
+    # Final return
+    paste0(
+      paste(
         c(
-            titles_txt,
+            titles_txt, # .do_inset(div, inset) happens if there are any titles
             .do_inset(txt_head, inset),
             .do_inset(div, inset),
             .do_inset(txt_body, inset),

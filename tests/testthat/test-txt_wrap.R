@@ -166,6 +166,11 @@ test_that("row label wrapping has identical indentation", {
 
 test_that("wrap_txt and wrap_strings work and avoid trimming whitespaces and \n", {
 
+  basic_table() %>%
+    split_rows_by('Species') %>%
+    analyze("Sepal.Length") %>%
+    build_table(iris %>% mutate(Species = sprintf("   %s", Species)))
+
   str <- "  , something really  not \n very good  but I keep it12   \n"
   formatters::wrap_txt(str, 5, hard = TRUE) # it breaks it (hard or not)
   formatters::wrap_string(str, 5, no_wrap = TRUE)
