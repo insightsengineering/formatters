@@ -126,9 +126,9 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
 .check_indentation <- function(mat) {
   # mf_nrheader(mat) # not useful
   mf_nlh <- mf_nlheader(mat)
-  mf_lbody <- mf_lgrouping(mat)[-seq_len(mf_nlh)] - mf_nlh + 1 # deselect header
-  mf_str <- mf_strings(mat)[-seq_len(mf_nlh), 1, drop = FALSE]
-  mf_ind <- mf_rinfo(mat)$indent
+  mf_lbody <- mf_lgrouping(mat)
+  mf_str <- mf_strings(mat)
+  mf_ind <- c(rep(0, mf_nrheader(mat)), mf_rinfo(mat)$indent) # XXX to fix with topleft
   ind_std <- paste0(rep(" ", mat$indent_size), collapse = "")
 
   # Expected indent (-x negative numbers should not appear at this stage)
@@ -598,14 +598,18 @@ new_line_warning <- function(str_v) {
   }
 }
 
-wrap_string2 <- function(str, width, collapse = NULL, indent = 0) {
+wrap_string2 <- function(str, width, collapse = NULL, indent = 0, simplify = TRUE) {
   ret <- stringi::stri_wrap(str,
                      width = width,
                      normalize = FALSE, # keeps spaces
-                     simplify = FALSE, # makes it a list with str elements
+                     simplify = simplify, # makes it a list with str elements
                      indent = indent)
   if (!is.null(collapse)) {
-    return(paste0(ret[[1]], collapse = collapse))
+    if (simplify) {
+      return(paste0(ret, collapse = collapse))
+    } else {
+      return(lapply(ret, function(ii) paste0(ii, collapse = collapse)))
+    }
   }
   return(ret)
 }

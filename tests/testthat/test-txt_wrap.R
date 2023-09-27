@@ -164,42 +164,53 @@ test_that("row label wrapping has identical indentation", {
   expect_identical(res_vec, exp_vec)
 })
 
-test_that("wrap_txt and wrap_strings work and avoid trimming whitespaces and \n", {
-  set.seed(1)
-  iris_mod <- iris %>%
-    mutate(Species = sprintf("   %s\nops and something to split somehow", Species)) %>%
-    mutate(Special = sample(c("Yes,\nReally", "No"), nrow(iris), replace = TRUE)) %>%
-    mutate(Is_A = "Also this has to be split somewhere")
-# Problems with topleft comes from MatrixPrintForm. We avoid them for now.
-  tbl <- basic_table() %>%
-    split_rows_by("Species", label_pos = "topleft", split_label = "Speciessomemore") %>%
-    split_rows_by("Is_A", label_pos = "topleft") %>%
-    split_cols_by("Special") %>%
-    analyze("Sepal.Length") %>%
-    build_table(iris_mod)
-  mftbl <- rtables::matrix_form(tbl, TRUE)
-  proposed_cwidths <- propose_column_widths(mftbl)
-  proposed_cwidths[1] <- floor(proposed_cwidths[1]/2)
-  toString(mftbl, widths = proposed_cwidths)
-
+test_that("wrap_strings work", {
   str <- c("  , something really  \tnot  very good",
            "  but I keep it12   ")
-  wrap_string(str, )
   formatters::wrap_txt(str, 5, hard = TRUE) # it breaks it (hard or not)
-  formatters::wrap_string(str, 5, no_wrap = TRUE)
+  expect_equal(formatters:::wrap_string2(str, 5, collapse = "\n", simplify = TRUE), 1)
+  expect_equal(length(formatters:::wrap_string2(str, 5, collapse = "\n", simplify = FALSE)), 2)
+    strsplit("\n")
   stringr::str_wrap(str, width = 5, whitespace_only = FALSE)
+})
 
-  testdf <- iris[1:5,]
-  testdf$Species <- paste0("    ", testdf$Species)
+test_that("toString wrapping avoid trimming whitespaces", {
+
+  testdf <- iris[seq_len(5), seq_len(2)]
+  # The following will have i = indent size and general col width = 16
+  rownames(testdf) <- c(
+    "   A pretty long line", # i1 - only line will be in the second line (it has 3 whitespaces)
+    "Barbars", # nothing
+    "    Continuously long line", # i2 - long line in second line -> matching spacing
+    "       D              ", # i0 - empty first line (it has the first piece), second starts D
+    "Oltragious" # nothing
+  )
+
   bmf <- basic_matrix_form(testdf)
-  to_string_matrix2(bmf, with_spaces = TRUE, print_txt_to_copy = TRUE)
+  bmf$strings
+  mfi <- mf_rinfo(bmf)
+  mfi$indent <- c(1, 0, 2, 0, 0)
+  mf_rinfo(bmf) <- mfi
+  expect_silent(.check_indentation(bmf)) # internal check for correct indentation setting
+  cw <- propose_column_widths(bmf)
+  cw[1] <- 16
+  res <- strsplit(toString(bmf, widths = cw), "\\n")[[1]]
 
-  main_title(bmf) <- "some\nvery\nspacious\ntitle"
-  prov_footer(bmf) <- "some\nvery\nspacious\nfooter"
-  bmf$ref_footnotes <- "some\nvery\nspacious\nreference"
-  catform <- toString(matform, widths = c(15, 5), hsep = "-") # This reindent (correctly) the rows
+  expect_identical(
+    c(
+      "                   Sepal.Length   Sepal.Width",
+      "—————————————————————————————————————————————",
+      "   A pretty long   5.1            3.5        ",
+      "  line                                       ",
+      "Barbars            4.9            3          ",
+      "    Continuously   4.7            3.2        ",
+      "    long line                                ",
+      "                   4.6            3.1        ",
+      "D                                            ",
+      "Oltragious         5              3.6        "
+    ),
+    res
+  )
 
-  expected <- "some\nvery\nspacious\ntitle\n\n————————————————————————————————————————————————————————————————————————\n    Sepal.Length   Sepal.Width   Petal.Length   Petal.Width    Species  \n————————————————————————————————————————————————————————————————————————\n1   5.1            3.5           1.4            0.2               setosa\n2   4.9            3             1.4            0.2               setosa\n3   4.7            3.2           1.3            0.2               setosa\n4   4.6            3.1           1.5            0.2               setosa\n5   5              3.6           1.4            0.2               setosa\n————————————————————————————————————————————————————————————————————————\n\nsome\nvery\nspacious\nreference\n————————————————————————————————————————————————————————————————————————\n\n\nsome\nvery\nspacious\nfooter\n"
-
-  expect_identical(toString(bmf), expected)
+  to_string_matrix2(bmf, widths = cw, with_spaces = TRUE, print_txt_to_copy = TRUE)
 })
