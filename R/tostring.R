@@ -1,5 +1,3 @@
-# `toString` ----
-
 ## this can't be tested from within R
 # nocov start
 #' @importFrom stats na.omit
@@ -70,7 +68,7 @@ default_hsep <- d_hsep_factory()
 }
 
 
-
+# Main function that does the wrapping
 do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
 
     col_gap <- mf_colgap(mat)
@@ -312,6 +310,10 @@ decimal_align <- function(string_mat, align_mat) {
     string_mat
 }
 
+# toString ---------------------------------------------------------------------
+# main printing code for MatrixPrintForm
+#
+
 #' @rdname tostring
 #'
 #' @inheritParams MatrixPrintForm
@@ -379,11 +381,15 @@ setMethod("toString", "MatrixPrintForm", function(x,
       }
     }
 
+    # Column widths are fixed here
     if (is.null(widths)) {
+      # if mf does not have widths -> propose them
         widths <- mf_col_widths(x) %||% propose_column_widths(x)
     } else {
         mf_col_widths(x) <- widths
     }
+
+    # Total number of characters for the table
     ncchar <- sum(widths) + (length(widths) - 1) * col_gap
 
     ## Text wrapping checks
@@ -592,7 +598,7 @@ new_line_warning <- function(str_v) {
 #' @export
 wrap_string <- function(str, max_width, hard = FALSE, no_wrap = FALSE){
   stopifnot(is.character(str) && length(str) == 1)
-    if(!is.na(str) && nchar(str) <= max_width+1 && no_wrap){
+    if(!is.na(str) && nchar(str) <= max_width + 1 && no_wrap){
       naive <- str
       }
     else{
