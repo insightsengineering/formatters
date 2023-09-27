@@ -165,13 +165,26 @@ test_that("row label wrapping has identical indentation", {
 })
 
 test_that("wrap_txt and wrap_strings work and avoid trimming whitespaces and \n", {
-
-  basic_table() %>%
-    split_rows_by('Species') %>%
+  set.seed(1)
+  iris_mod <- iris %>%
+    mutate(Species = sprintf("   %s\nops and something to split somehow", Species)) %>%
+    mutate(Special = sample(c("Yes,\nReally", "No"), nrow(iris), replace = TRUE)) %>%
+    mutate(Is_A = "Also this has to be split somewhere")
+# Problems with topleft comes from MatrixPrintForm. We avoid them for now.
+  tbl <- basic_table() %>%
+    split_rows_by("Species", label_pos = "topleft", split_label = "Speciessomemore") %>%
+    split_rows_by("Is_A", label_pos = "topleft") %>%
+    split_cols_by("Special") %>%
     analyze("Sepal.Length") %>%
-    build_table(iris %>% mutate(Species = sprintf("   %s", Species)))
+    build_table(iris_mod)
+  mftbl <- rtables::matrix_form(tbl, TRUE)
+  proposed_cwidths <- propose_column_widths(mftbl)
+  proposed_cwidths[1] <- floor(proposed_cwidths[1]/2)
+  toString(mftbl, widths = proposed_cwidths)
 
-  str <- "  , something really  not \n very good  but I keep it12   \n"
+  str <- c("  , something really  \tnot  very good",
+           "  but I keep it12   ")
+  wrap_string(str, )
   formatters::wrap_txt(str, 5, hard = TRUE) # it breaks it (hard or not)
   formatters::wrap_string(str, 5, no_wrap = TRUE)
   stringr::str_wrap(str, width = 5, whitespace_only = FALSE)

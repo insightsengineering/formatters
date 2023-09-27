@@ -90,93 +90,167 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
 
     ## format the to ASCII
     cell_widths_mat <- .calc_cell_widths(mat, widths, col_gap)
+
+    # Check that indentation is correct (it works only for body)
+    .check_indentation(mat)
+
     ## wrap_string calls strwrap, which destroys whitespace so we need to make
     ## sure to put the indents back in
-
+    ##
+    # NOTE: we can forget about this fix if we fix the wrapping
     ## See if indentation is properly set
-    ind_from_mf <- mf_rinfo(mat)$indent > 0
-    nlh <- mf_nlheader(mat)
-    ind_std <- paste0(rep(" ", mat$indent_size), collapse = "")
-    ## Body indentation
-    old_indent <- sapply(mf_rinfo(mat)$indent, function(i) paste0(rep(ind_std, i), collapse = ""))
-    ## Header indentation (it happens with toplefts, not \n in titles, dealt afterwards)
-    ## NB: what about \n in topleft? -> not supported
-    header_indent <- gsub("^([[:space:]]*).*", "\\1", mat$strings[1:nlh, 1]) # Supposedly never with empty strings " "
-    old_indent <- c(header_indent, old_indent)
-    need_reindent <- nzchar(old_indent)
-    ## Check for which row has indent
-    ind_from_strings <- nchar(old_indent)[-seq_len(nlh)] > 0
-    if (!all(ind_from_strings == ind_from_mf)) {
-        stop("Row-info and string indentations are different.", # nocov
-             " Please contact the maintainer, this should not happen.") # nocov
+    # ind_from_mf <- mf_rinfo(mat)$indent > 0
+    # nlh <- mf_nlheader(mat)
+    # ## Body indentation
+    # real_indent <- sapply(mf_rinfo(mat)$indent, function(i) paste0(rep(ind_std, i), collapse = ""))
+    # mf_strings(mat)
+    # nchar(real_indent)
+
+    # ## Header indentation (it happens with toplefts, not \n in titles, dealt afterwards)
+    # ## NB: what about \n in topleft? -> not supported
+    # header_indent <- gsub("^([[:space:]]*).*", "\\1", mat$strings[1:nlh, 1]) # Supposedly never with empty strings " "
+    # old_indent <- c(header_indent, old_indent)
+    # need_reindent <- nzchar(old_indent)
+    # ## Check for which row has indent
+    # ind_from_strings <- nchar(old_indent)[-seq_len(nlh)] > 0
+    # if (!all(ind_from_strings == ind_from_mf)) {
+    #     stop("Row-info and string indentations are different.", # nocov
+    #          " Please contact the maintainer, this should not happen.") # nocov
+    # }
+    # ori_mflg <- mf_lgrouping(mat) # Original groups
+    # reindent_old_idx <- ori_mflg[need_reindent] # Indent groups bf wrap
+    #
+    # ## Taking care in advance of indented word wrappings
+    # cell_widths_mat[need_reindent, 1] <- cell_widths_mat[need_reindent, 1] - nchar(old_indent)[need_reindent]
+    #
+    # ## Case in which the indentation is taking too much space vs desired wrapping
+    # if (any(cell_widths_mat < 0)) {
+    #     col_culprits <- apply(cell_widths_mat, 2, function(i) any(i < 0))
+    #     stop(
+    #         "Inserted width(s) for column(s) ", which(col_culprits),
+    #         " is(are) not wide enough for the desired indentation."
+    #     )
+    # }
+
+    mfs <- mf_strings(mat) # we work on mfs
+    mf_nlh <- mf_nlheader(mat)
+    mf_l <- mf_lgrouping(mat)
+    mf_ind <- c(rep(0, mf_nrheader(mat)), mf_rinfo(mat)$indent) # XXX TO FIX in matrix form
+    stopifnot(length(mf_ind) == length(unique(mf_l))) # Check for indentation and grouping
+    ind_std <- paste0(rep(" ", mat$indent_size), collapse = "") # standard size of indent 1
+    real_indent <- sapply(mf_ind, function(ii) paste0(rep(ind_std, ii), collapse = ""))
+
+    # Take out indentation to be reinserted later according
+    lbl_row <- mfs[, 1, drop = TRUE]
+    for (ii in seq_along(lbl_row)) {
+      grp <- mf_l[ii]
+      if (nzchar(real_indent[grp])) {
+        # Update also the widths!!
+        cell_widths_mat[ii, 1] <- cell_widths_mat[ii, 1] - nchar(real_indent[grp])
+        mfs[ii, 1] <- stringi::stri_replace(lbl_row[ii], "", regex = paste0("^", real_indent[grp]))
+      } else {
+        mfs[ii, 1] <- lbl_row[ii]
+      }
     }
-    ori_mflg <- mf_lgrouping(mat) # Original groups
-    reindent_old_idx <- ori_mflg[need_reindent] # Indent groups bf wrap
 
-    ## Taking care in advance of indented word wrappings
-    cell_widths_mat[need_reindent, 1] <- cell_widths_mat[need_reindent, 1] - nchar(old_indent)[need_reindent]
+    # Expansion
+    col_list_wrap_rows <- lapply(seq_len(nrow(mfs)), function(rowi) {
+      rowi <- 5
+      cell_w <- cell_widths_mat[rowi, coli]
+      cell_v <- mfs[rowi, coli]
+      if (nchar(cell_v) > cell_w) {
+        spl_row <- lapply(seq_len(ncol(mfs)), function(coli) {
+          wrap_string2(cell_v, width = cell_w, collapse = "\n")
+        })
+        # spl_row_max <-
 
-    ## Case in which the indentation is taking too much space vs desired wrapping
-    if (any(cell_widths_mat < 0)) {
-        col_culprits <- apply(cell_widths_mat, 2, function(i) any(i < 0))
-        stop(
-            "Inserted width(s) for column(s) ", which(col_culprits),
-            " is(are) not wide enough for the desired indentation."
-        )
-    }
+      }
+      return(cell_v)
+    })
 
-    new_strings <- matrix(
-        unlist(mapply(wrap_string,
-                      str = mat$strings,
-                      max_width = cell_widths_mat,
-                      hard = TRUE,
-                      no_wrap = TRUE
+
+    mf_strings(mat) <- matrix(
+        unlist(mapply(wrap_string2,
+                      str = mfs,
+                      width = cell_widths_mat,
+                      collapse = "\n"
                       )),
-        ncol = ncol(mat$strings)
+        ncol = ncol(mfs)
     )
-    mat$strings <- new_strings
 
     ## XXXXX this is wrong and will break for listings cause we don't know when
     ## we need has_topleft to be FALSE!!!!!!!!!!
-    mat <- mform_handle_newlines(mat)
+    mat <- mform_handle_newlines(mat) # not needed at this stage
+    ## This is dealt with in matrix_form()
 
     ## Indent groups after newline
-    reindent_new_idx <- mf_lgrouping(mat) %in% reindent_old_idx
-    if (anyNA(reindent_new_idx)) {
-        stop("Unable to remap indenting after cell content text wrapping. ", # nocov
-             "Please contact the maintainer, this should not happen.") # nocov
-    }
+    # reindent_new_idx <- mf_lgrouping(mat) %in% reindent_old_idx
+    # if (anyNA(reindent_new_idx)) {
+    #     stop("Unable to remap indenting after cell content text wrapping. ", # nocov
+    #          "Please contact the maintainer, this should not happen.") # nocov
+    # }
+    #
+    # ## Adding the indentation back in
+    # ind_v <- NULL
+    # for (i in mf_lgrouping(mat)[reindent_new_idx]) {
+    #     ind_v <- c(ind_v, which(i == ori_mflg)[1])
+    # }
+    # new_indent <- old_indent[ind_v]
+    #
+    # ## Additional safety check
+    # if (length(new_indent) > 0 && !all(nzchar(new_indent))) {
+    #     stop("Recovered indentation contains empty strings. This is an", # nocov
+    #          " indexing problem, please contact the maintainer, this should not happen.") # nocov
+    # }
+    #
+    # ## Indentation is different for topleft material
+    # if (isTRUE(mf_has_topleft(mat))) {
+    #     ## mf_nlheader counts actual header lines while mf_nrheader is 'virtual'
+    #     ## A bit of an hack, but unforeseen behavior, related to \n in topleft is not supported
+    #     ## Therefore, this still suppose that we dealt with \n in the cols before
+    #     indx_topleft <- which(reindent_new_idx[1:nlh])
+    #     new_indent[seq_along(indx_topleft)] <- old_indent[indx_topleft]
+    # }
+    #
+    # ## Main addition of the 'saved' indentation to strings
+    # mf_strings(mat)[reindent_new_idx, 1] <- paste0(
+    #     new_indent,
+    #     mat$strings[reindent_new_idx, 1]
+    # )
 
-    ## Adding the indentation back in
-    ind_v <- NULL
-    for (i in mf_lgrouping(mat)[reindent_new_idx]) {
-        ind_v <- c(ind_v, which(i == ori_mflg)[1])
-    }
-    new_indent <- old_indent[ind_v]
-
-    ## Additional safety check
-    if (length(new_indent) > 0 && !all(nzchar(new_indent))) {
-        stop("Recovered indentation contains empty strings. This is an", # nocov
-             " indexing problem, please contact the maintainer, this should not happen.") # nocov
-    }
-
-    ## Indentation is different for topleft material
-    if (isTRUE(mf_has_topleft(mat))) {
-        ## mf_nlheader counts actual header lines while mf_nrheader is 'virtual'
-        ## A bit of an hack, but unforeseen behavior, related to \n in topleft is not supported
-        ## Therefore, this still suppose that we dealt with \n in the cols before
-        indx_topleft <- which(reindent_new_idx[1:nlh])
-        new_indent[seq_along(indx_topleft)] <- old_indent[indx_topleft]
-    }
-
-    ## Main addition of the 'saved' indentation to strings
-    mf_strings(mat)[reindent_new_idx, 1] <- paste0(
-        new_indent,
-        mat$strings[reindent_new_idx, 1]
-    )
     ## this updates extents in rinfo AND nlines in ref_fnotes_df
     mat <- update_mf_nlines(mat, max_width = max_width)
     mat
+}
+
+# Helper function to see if body indentation matches (minimum)
+# It sees if there is AT LEAST the indentation contained in rinfo
+.check_indentation <- function(mat) {
+  # mf_nrheader(mat) # not useful
+  mf_nlh <- mf_nlheader(mat)
+  mf_lbody <- mf_lgrouping(mat)[-seq_len(mf_nlh)] - mf_nlh + 1 # deselect header
+  mf_str <- mf_strings(mat)[-seq_len(mf_nlh), 1, drop = FALSE]
+  mf_ind <- mf_rinfo(mat)$indent
+  ind_std <- paste0(rep(" ", mat$indent_size), collapse = "")
+
+  # Expected indent (-x negative numbers should not appear at this stage)
+  stopifnot(all(mf_ind >= 0))
+  real_indent <- sapply(mf_ind, function(ii) paste0(rep(ind_std, ii), collapse = ""))
+
+  # Main detector
+  correct_indentation <- vapply(seq_along(mf_lbody), function(xx) {
+    grouping <- mf_lbody[xx]
+    if (nzchar(real_indent[grouping])) {
+      return(stringi::stri_detect(mf_str[xx, 1], regex = paste0("^", real_indent[grouping])))
+    }
+    # Cases where no indent are true by definition
+    return(TRUE)
+  }, logical(1))
+
+  if (any(!correct_indentation)) {
+    stop("We discovered indentation mismatches between the matrix_form and the indentation",
+         " predefined in mf_rinfo. This should not happen. Contact the maintainer.") # nocov
+  }
 }
 
 ## take a character vector and return whether the value is
@@ -401,7 +475,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
         }
         assert_number(max_width, lower = 0)
     }
-    browser()
+
     # Main wrapper function for table core
     mat <- do_cell_fnotes_wrap(mat, widths, max_width = max_width, tf_wrap = tf_wrap)
 
@@ -583,6 +657,18 @@ new_line_warning <- function(str_v) {
   }
 }
 
+wrap_string2 <- function(str, width, collapse = NULL, indent = 0) {
+  ret <- stringi::stri_wrap(str,
+                     width = width,
+                     normalize = FALSE, # keeps spaces
+                     simplify = FALSE, # makes it a list with str elements
+                     indent = indent)
+  if (!is.null(collapse)) {
+    return(paste0(ret[[1]], collapse = collapse))
+  }
+  return(ret)
+}
+
 #' Wrap a string to within a maximum width
 #' @param str character(1). String to be wrapped
 #' @param max_width numeric(1). Maximum width, in characters, that the
@@ -590,7 +676,6 @@ new_line_warning <- function(str_v) {
 #' @param hard logical(1). Should hard wrapping (embedding newlines in
 #' the incoming strings) or soft (breaking wrapped strings into vectors
 #' of length >1) be used. Defaults to `FALSE` (i.e. soft wrapping).
-#' @param no_wrap logical(1). Identify if the string should be wrapped.
 #'
 #' @details Word wrapping happens as with \link[base:strwrap]{base::strwrap}
 #'   with the following exception: individual words which are longer
@@ -603,11 +688,9 @@ new_line_warning <- function(str_v) {
 #' @export
 wrap_string <- function(str, max_width, hard = FALSE, no_wrap = FALSE){
   stopifnot(is.character(str) && length(str) == 1)
-    if(!is.na(str) && nchar(str) <= max_width + 1 && no_wrap){
-      naive <- str
-      }
-    else{
-      naive <- strwrap(str, max_width + 1)}
+
+  naive <- strwrap(str, max_width + 1)
+
   while (any(nchar(naive) > max_width)) {
     good <- character()
     bwi <- which(nchar(naive) > max_width)[1]
