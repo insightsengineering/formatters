@@ -3,7 +3,7 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   formatters: formatters.html
-last_built: 2023-08-23T16:18Z
+last_built: 2023-09-28T12:28Z
 urls:
   reference: https://insightsengineering.github.io/formatters/reference
   article: https://insightsengineering.github.io/formatters/articles
