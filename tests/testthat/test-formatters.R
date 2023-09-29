@@ -3,6 +3,25 @@ test_that("Default hsep works", {
   expect_true(formatters::default_hsep() %in% c("\u2014", "-"))
 })
 
+test_that("make_row_df works", {
+  library(rtables)
+  tbl <- basic_table() %>%
+    split_cols_by("Species") %>%
+    analyze(c("Sepal.Length", "Sepal.Width")) %>%
+              build_table(iris)
+
+  result <- make_row_df(tbl)
+
+  expect_equal(dim(result), c(4, 17))
+
+  expect_identical(colnames(result), c("label", "name", "abs_rownumber", "path",
+                                       "pos_in_siblings", "n_siblings", "self_extent",
+                                      "par_extent", "reprint_inds", "node_class",
+                                      "indent", "nrowrefs", "ncellrefs", "nreflines",
+                                      "force_page", "page_title", "trailing_sep"))
+})
+
+
 test_that("formats work", {
     ## listing supported formats and enuring they all read as valid
     forms <- list_valid_format_labels()
