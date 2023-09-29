@@ -1,4 +1,8 @@
 values <- c(5.123456, 7.891112)
+test_that("Default hsep works", {
+  expect_true(formatters::default_hsep() %in% c("\u2014", "-"))
+})
+
 test_that("formats work", {
     ## listing supported formats and enuring they all read as valid
     forms <- list_valid_format_labels()
