@@ -65,6 +65,22 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
                                    max_width = NULL) {
   standardGeneric("make_row_df")
 })
+
+# Used only for test cover
+#' @keywords internal
+setMethod("make_row_df", "MatrixPrintForm", function(tt, colwidths = NULL, visible_only = TRUE,
+                                                     rownum = 0,
+                                                     indent = 0L,
+                                                     path = character(),
+                                                     incontent = FALSE,
+                                                     repr_ext = 0L,
+                                                     repr_inds = integer(),
+                                                     sibpos = NA_integer_,
+                                                     nsibs = NA_integer_,
+                                                     max_width = NULL) {
+  stop("make_row_df can be used only on {rtables} table objects, and not on `matrix_form`-",
+       "generated objects (MatrixPrintForm).")
+})
 ## nocov end
 
 
@@ -108,6 +124,7 @@ setGeneric("matrix_form", function(obj,
                                    indent_size = 2) {
   standardGeneric("matrix_form")
 })
+
 
 #' @rdname matrix_form
 #' @export
