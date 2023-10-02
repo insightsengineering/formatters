@@ -172,15 +172,21 @@ test_that("row label wrapping has identical indentation", {
 })
 
 test_that("wrap_strings work", {
-  str <- list("  , something really  \tnot  very good",
+  str <- list("  , something really  \\tnot  very good", # \t needs to be escaped
            "  but I keep it12   ")
 
   # If simplify is TRUE and a list or char vec is input, it will be collapsed in one
   expect_equal(length(wrap_string2(str, 5, collapse = "\n", simplify = TRUE)), 1)
   expect_equal(length(wrap_string2(str, 5, collapse = "\n", simplify = FALSE)), 2)
 
-  # size is smaller than bigger word
-  wrap_string2(str, 5, collapse = "\n")
+  # size is smaller than bigger word -> dealing with empty spaces
+  expect_identical(
+    wrap_string2(str, 5, collapse = "\n"),
+    list(
+      "  ,\nsomet\nhing\nreall\ny  \n\\tnot \nvery\ngood", # \t needs to be escaped
+      " \nbut I\nkeep\nit12"
+    )
+  )
 })
 
 test_that("toString wrapping avoid trimming whitespaces", {
@@ -194,18 +200,20 @@ test_that("toString wrapping avoid trimming whitespaces", {
     "       D              ", # i0 - empty first line (it has the first piece), second starts D
     "Oltragious" # nothing
   )
+  wanna_be_indent <- c(1, 0, 2, 0, 0)
+  testdf[, 1] <- wanna_be_indent # so to see the expected indentation
   # NB: multiple spaces are considered as a word in stringi with two spaces around
 
   bmf <- basic_matrix_form(testdf)
 
   # Correcting indentation
   mfi <- mf_rinfo(bmf)
-  mfi$indent <- c(1, 0, 2, 0, 0)
+  mfi$indent <- wanna_be_indent
   mf_rinfo(bmf) <- mfi
   expect_silent(.check_indentation(bmf)) # internal check for correct indentation setting
 
   # Reducing the colwidth to force wrapping
-  cw <- propose_column_widths(bmf)
+  cw <- cw2 <- propose_column_widths(bmf)
   cw[1] <- 16
 
   bmf_ts <- toString(bmf, widths = cw)
@@ -215,17 +223,42 @@ test_that("toString wrapping avoid trimming whitespaces", {
     c(
       "                   Sepal.Length   Sepal.Width",
       "—————————————————————————————————————————————",
-      "   A pretty long   5.1            3.5        ",
+      "   A pretty long   1              3.5        ",
       "  line                                       ",
-      "Barbars            4.9            3          ",
-      "    Continuously   4.7            3.2        ",
+      "Barbars            0              3          ",
+      "    Continuously   2              3.2        ",
       "    long line                                ",
-      "                   4.6            3.1        ",
+      "                   0              3.1        ",
       "D                                            ",
-      "Oltragious         5              3.6        "
+      "Oltragious         0              3.6        "
     ),
     res
   )
 
-  # to_string_matrix2(bmf, widths = cw, with_spaces = TRUE, print_txt_to_copy = TRUE)
+  # wrapping this with split words (also white spaces count as a word, we drop multiples)
+  cw2[1] <- 9
+  bmf_ts <- toString(bmf, widths = cw2)
+  res <- strsplit(bmf_ts, "\\n")[[1]]
+
+  expect_identical(
+    c(
+      "            Sepal.Length   Sepal.Width",
+      "——————————————————————————————————————",
+      "   A        1              3.5        ",
+      "  pretty                              ",
+      "  long                                ",
+      "  line                                ",
+      "Barbars     0              3          ",
+      "    Conti   2              3.2        ",
+      "    nuous                             ",
+      "    ly                                ",
+      "    long                              ",
+      "    line                              ",
+      "            0              3.1        ",
+      "D                                     ",
+      "Oltragiou   0              3.6        ",
+      "s                                     "
+    ),
+    res
+  )
 })

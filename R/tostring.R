@@ -102,12 +102,10 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
         unlist(mapply(wrap_string2,
                       str = mfs,
                       width = cell_widths_mat,
-                      collapse = "\n",
-                      simplify = TRUE, # NB
+                      collapse = "\n"
                       )),
         ncol = ncol(mfs)
     )
-    # NB: if single elements have length > 1 they are collapsed when simplify = TRUE
 
     ## XXXXX this is wrong and will break for listings cause we don't know when
     ## we need has_topleft to be FALSE!!!!!!!!!!
@@ -600,35 +598,54 @@ new_line_warning <- function(str_v) {
   }
 }
 
-wrap_string2 <- function(str, width, collapse = NULL, indent = 0, simplify = TRUE) {
+wrap_string2 <- function(str, width, collapse = NULL, indent = 0) {
+  if (length(str) > 1) {
+    return(lapply(str, wrap_string2, width = width, collapse = collapse, indent = indent))
+  }
+  checkmate::assert_character(str)
+  checkmate::assert_int(width, lower = 1)
+
   # str can be also a vector or list. In this case simplify manages the output
   ret <- stringi::stri_wrap(str,
                      width = width,
                      normalize = FALSE, # keeps spaces
-                     simplify = simplify, # If FALSE makes it a list with str elements
+                     simplify = TRUE, # If FALSE makes it a list with str elements
                      indent = indent)
   # Check if it went fine
-  browser()
   if (any(nchar(ret) > width)) {
     which_exceeded <- which(nchar(ret) > width)
     values_that_exceeded <- ret[which_exceeded]
-    which_only_spaces <- grepl("^\\s+$", values_that_exceeded)
-    if (any(!which_only_spaces)) {
-      # Split the words and rerun
-
-      values_that_exceeded
-    }
-    # Split the spaces manually
+    # Split the words, paste, and rerun
+    ret[which_exceeded] <- split_words_by(values_that_exceeded, width)
+    ret <- paste0(ret, collapse = " ")
+    return(wrap_string2(ret, width, collapse, indent))
   }
 
   if (!is.null(collapse)) {
-    if (simplify) {
       return(paste0(ret, collapse = collapse))
-    } else {
-      return(lapply(ret, function(ii) paste0(ii, collapse = collapse)))
-    }
   }
+
   return(ret)
+}
+
+# Helper fnc to split the words and collapse them with space
+split_words_by <- function(wrd, width) {
+  vapply(wrd, function(wrd_i) {
+    init_v <- seq(1, nchar(wrd_i), by = width)
+    end_v <- c(init_v[-1] - 1, nchar(wrd_i))
+    fin_str_v <- substring(wrd_i, init_v, end_v)
+    is_only_spaces <- grepl("^\\s+$", fin_str_v)
+
+    # We pop only spaces at this point
+    if (all(is_only_spaces)) {
+      fin_str_v <- fin_str_v[1] # keep only one width-sized empty
+    } else {
+      fin_str_v <- fin_str_v[!is_only_spaces] # hybrid text + \s
+    }
+
+    # Collapse the string
+    paste0(fin_str_v, collapse = " ")
+  }, character(1), USE.NAMES = FALSE)
 }
 
 #' Wrap a string to within a maximum width
