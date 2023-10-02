@@ -150,6 +150,13 @@ test_that("row label wrapping has identical indentation", {
   mf_rinfo(matform)$indent <- c(1, 2)
   matform$strings[2, 1] <- paste0(" ", matform$strings[2, 1]) # Does not respect indent_size
   matform$strings[3, 1] <- paste0("  ", matform$strings[3, 1]) # Does not respect indent_size
+  expect_error(
+    catform <- toString(matform, widths = c(15, 5), hsep = "-"), # Broken indentation, check fails
+    "indentation mismatches"
+  )
+
+  matform$strings[2, 1] <- paste0("  ", matform$strings[2, 1]) # Does not respect indent_size
+  matform$strings[3, 1] <- paste0("    ", matform$strings[3, 1]) # Does not respect indent_size
   catform <- toString(matform, widths = c(15, 5), hsep = "-") # This reindent (correctly) the rows
   res_vec <- strsplit(catform, "\n")[[1]]
   exp_vec <- c(
@@ -165,18 +172,20 @@ test_that("row label wrapping has identical indentation", {
 })
 
 test_that("wrap_strings work", {
-  str <- c("  , something really  \tnot  very good",
+  str <- list("  , something really  \tnot  very good",
            "  but I keep it12   ")
-  formatters::wrap_txt(str, 5, hard = TRUE) # it breaks it (hard or not)
-  expect_equal(formatters:::wrap_string2(str, 5, collapse = "\n", simplify = TRUE), 1)
-  expect_equal(length(formatters:::wrap_string2(str, 5, collapse = "\n", simplify = FALSE)), 2)
-    strsplit("\n")
-  stringr::str_wrap(str, width = 5, whitespace_only = FALSE)
+
+  # If simplify is TRUE and a list or char vec is input, it will be collapsed in one
+  expect_equal(length(wrap_string2(str, 5, collapse = "\n", simplify = TRUE)), 1)
+  expect_equal(length(wrap_string2(str, 5, collapse = "\n", simplify = FALSE)), 2)
+
+  # size is smaller than bigger word
+  wrap_string2(str, 5, collapse = "\n")
 })
 
 test_that("toString wrapping avoid trimming whitespaces", {
-
   testdf <- iris[seq_len(5), seq_len(2)]
+
   # The following will have i = indent size and general col width = 16
   rownames(testdf) <- c(
     "   A pretty long line", # i1 - only line will be in the second line (it has 3 whitespaces)
@@ -185,16 +194,22 @@ test_that("toString wrapping avoid trimming whitespaces", {
     "       D              ", # i0 - empty first line (it has the first piece), second starts D
     "Oltragious" # nothing
   )
+  # NB: multiple spaces are considered as a word in stringi with two spaces around
 
   bmf <- basic_matrix_form(testdf)
-  bmf$strings
+
+  # Correcting indentation
   mfi <- mf_rinfo(bmf)
   mfi$indent <- c(1, 0, 2, 0, 0)
   mf_rinfo(bmf) <- mfi
   expect_silent(.check_indentation(bmf)) # internal check for correct indentation setting
+
+  # Reducing the colwidth to force wrapping
   cw <- propose_column_widths(bmf)
   cw[1] <- 16
-  res <- strsplit(toString(bmf, widths = cw), "\\n")[[1]]
+
+  bmf_ts <- toString(bmf, widths = cw)
+  res <- strsplit(bmf_ts, "\\n")[[1]]
 
   expect_identical(
     c(
@@ -212,5 +227,5 @@ test_that("toString wrapping avoid trimming whitespaces", {
     res
   )
 
-  to_string_matrix2(bmf, widths = cw, with_spaces = TRUE, print_txt_to_copy = TRUE)
+  # to_string_matrix2(bmf, widths = cw, with_spaces = TRUE, print_txt_to_copy = TRUE)
 })

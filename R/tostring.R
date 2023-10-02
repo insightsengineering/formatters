@@ -102,10 +102,12 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
         unlist(mapply(wrap_string2,
                       str = mfs,
                       width = cell_widths_mat,
-                      collapse = "\n"
+                      collapse = "\n",
+                      simplify = TRUE, # NB
                       )),
         ncol = ncol(mfs)
     )
+    # NB: if single elements have length > 1 they are collapsed when simplify = TRUE
 
     ## XXXXX this is wrong and will break for listings cause we don't know when
     ## we need has_topleft to be FALSE!!!!!!!!!!
@@ -599,11 +601,26 @@ new_line_warning <- function(str_v) {
 }
 
 wrap_string2 <- function(str, width, collapse = NULL, indent = 0, simplify = TRUE) {
+  # str can be also a vector or list. In this case simplify manages the output
   ret <- stringi::stri_wrap(str,
                      width = width,
                      normalize = FALSE, # keeps spaces
-                     simplify = simplify, # makes it a list with str elements
+                     simplify = simplify, # If FALSE makes it a list with str elements
                      indent = indent)
+  # Check if it went fine
+  browser()
+  if (any(nchar(ret) > width)) {
+    which_exceeded <- which(nchar(ret) > width)
+    values_that_exceeded <- ret[which_exceeded]
+    which_only_spaces <- grepl("^\\s+$", values_that_exceeded)
+    if (any(!which_only_spaces)) {
+      # Split the words and rerun
+
+      values_that_exceeded
+    }
+    # Split the spaces manually
+  }
+
   if (!is.null(collapse)) {
     if (simplify) {
       return(paste0(ret, collapse = collapse))
