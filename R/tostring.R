@@ -99,7 +99,7 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
 
     # Main wrapper
     mf_strings(mat) <- matrix(
-        unlist(mapply(wrap_string2,
+        unlist(mapply(wrap_string,
                       str = mfs,
                       width = cell_widths_mat,
                       collapse = "\n"
@@ -598,19 +598,56 @@ new_line_warning <- function(str_v) {
   }
 }
 
-wrap_string2 <- function(str, width, collapse = NULL, indent = 0) {
+
+#' Wrap a string to within a precise width
+#'
+#' @description
+#' Core wrapping functionality that preserve white spaces. Only `"\n"` is not supported
+#' by core functionality [stringi::stri_wrap()]. This is usually solved before hand by
+#' [matrix_form()]. If the width is smaller than any large word, these will be truncated
+#' after `width` characters. If the split leaves trailing groups of empty spaces,
+#' they will be dropped.
+#'
+#' @param str character. String to be wrapped. If it is a character vector or
+#'   a list, it will be looped as a list and returned as such.
+#' @param width numeric(1). Width, in characters, that the
+#'   text should be wrapped at.
+#' @param collapse character(1) or `NULL`. If the words that have been split should
+#'   be pasted together with the collapse character. This is usually done internally
+#'   with `"\n"` to have the wrapping updated along with other internal values
+#'
+#' @details Word wrapping happens as with [stringi::stri_wrap()]
+#'   with the following exception: individual words which are longer
+#'   than `max_width` are broken up in a way that fits with the rest of the
+#'   word wrapping.
+#'
+#' @return A string if `str` is one element and if `collapse = NULL`. Otherwise, is
+#'   a list of elements (if `length(str) > 1`) that can contain strings or vector of
+#'   characters (if `collapse = NULL`).
+#'
+#' @examples
+#' str <- list("  , something really  \\tnot  very good", # \t needs to be escaped
+#'             "  but I keep it12   ")
+#' wrap_string(str, 5, collapse = "\n")
+#'
+#' @name wrap_string
+#' @export
+wrap_string <- function(str, width, collapse = NULL) {
   if (length(str) > 1) {
-    return(lapply(str, wrap_string2, width = width, collapse = collapse, indent = indent))
+    return(
+      lapply(str, wrap_string, width = width, collapse = collapse)
+    )
   }
   checkmate::assert_character(str)
   checkmate::assert_int(width, lower = 1)
 
   # str can be also a vector or list. In this case simplify manages the output
   ret <- stringi::stri_wrap(str,
-                     width = width,
-                     normalize = FALSE, # keeps spaces
-                     simplify = TRUE, # If FALSE makes it a list with str elements
-                     indent = indent)
+    width = width,
+    normalize = FALSE, # keeps spaces
+    simplify = TRUE, # If FALSE makes it a list with str elements
+    indent = 0
+  )
   # Check if it went fine
   if (any(nchar(ret) > width)) {
     which_exceeded <- which(nchar(ret) > width)
@@ -618,14 +655,25 @@ wrap_string2 <- function(str, width, collapse = NULL, indent = 0) {
     # Split the words, paste, and rerun
     ret[which_exceeded] <- split_words_by(values_that_exceeded, width)
     ret <- paste0(ret, collapse = " ")
-    return(wrap_string2(ret, width, collapse, indent))
+    return(wrap_string(ret, width, collapse))
   }
 
   if (!is.null(collapse)) {
-      return(paste0(ret, collapse = collapse))
+    return(paste0(ret, collapse = collapse))
   }
 
   return(ret)
+}
+
+#' @describeIn wrap_string function that flattens the list of wrapped strings with
+#'   `unist(str, use.names = FALSE)`. This is deprecated, use [wrap_string()] instead.
+#' @examples
+#' wrap_txt(str, 5, collapse = NULL)
+#'
+#' @export
+wrap_txt <- function(str, width, collapse = NULL) {
+  wrap_string(str, width, collapse) %>%
+    unlist(use.names = FALSE)
 }
 
 # Helper fnc to split the words and collapse them with space
@@ -648,80 +696,6 @@ split_words_by <- function(wrd, width) {
   }, character(1), USE.NAMES = FALSE)
 }
 
-#' Wrap a string to within a maximum width
-#' @param str character(1). String to be wrapped
-#' @param max_width numeric(1). Maximum width, in characters, that the
-#' text should be wrapped at.
-#' @param hard logical(1). Should hard wrapping (embedding newlines in
-#' the incoming strings) or soft (breaking wrapped strings into vectors
-#' of length >1) be used. Defaults to `FALSE` (i.e. soft wrapping).
-#'
-#' @details Word wrapping happens as with \link[base:strwrap]{base::strwrap}
-#'   with the following exception: individual words which are longer
-#'   than `max_width` are broken up in a way that fits with the rest of the
-#'   word wrapping.
-#'
-#' @return A string (`wrap_string` or character vector (`wrap_txt`) containing
-#'   the hard or soft word-wrapped content.
-#'
-#' @export
-wrap_string <- function(str, max_width, hard = FALSE, no_wrap = FALSE){
-  stopifnot(is.character(str) && length(str) == 1)
-
-  naive <- strwrap(str, max_width + 1)
-
-  while (any(nchar(naive) > max_width)) {
-    good <- character()
-    bwi <- which(nchar(naive) > max_width)[1]
-    curbw <- naive[bwi]
-    if (bwi > 2) {
-      good <- c(good, naive[1:(bwi - 2)])
-    }
-    if (bwi > 1) {
-      str_before <- naive[bwi - 1]
-    } else {
-      str_before <- ""
-    }
-    room <- max_width - nchar(str_before) - (bwi > 1)
-    if (room <= 0) {
-      toadd <- c(str_before, substr(curbw, 1, max_width))
-      room <- 0
-      leftover <- substr(curbw, max_width + 1, nchar(curbw))
-    } else {
-      goodpart <- substr(curbw, 1, room)
-      if (nzchar(str_before)) {
-        toadd <- paste(str_before, goodpart)
-      } else {
-        toadd <- goodpart
-      }
-      leftover <- substr(curbw, room + 1, nchar(curbw))
-    }
-    good <- c(good, toadd)
-    if (bwi == length(naive)) {
-      good <- c(good, leftover)
-    } else {
-      good <- c(
-        good,
-        paste(leftover, naive[bwi + 1]),
-        if (bwi < length(naive) - 1) naive[seq(bwi + 2, length(naive))]
-      )
-    }
-    str <- paste(good, collapse = " ")
-    naive <- strwrap(str, max_width + 1)
-  }
-  if (hard) {
-    naive <- paste(naive, collapse = "\n")
-  }
-  naive
-  }
-
-#' @param txt character. A vector of strings that should be (independently)
-#' text-wrapped.
-#' @rdname wrap_string
-#' @export
-wrap_txt <- function(txt, max_width, hard = FALSE) {
-  unlist(lapply(txt, wrap_string, max_width = max_width, hard = hard), use.names = FALSE)
-}
 
 pad_vert_top <- function(x, len) {
   c(x, rep("", len - length(x)))

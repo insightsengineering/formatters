@@ -175,17 +175,23 @@ test_that("wrap_strings work", {
   str <- list("  , something really  \\tnot  very good", # \t needs to be escaped
            "  but I keep it12   ")
 
-  # If simplify is TRUE and a list or char vec is input, it will be collapsed in one
-  expect_equal(length(wrap_string2(str, 5, collapse = "\n", simplify = TRUE)), 1)
-  expect_equal(length(wrap_string2(str, 5, collapse = "\n", simplify = FALSE)), 2)
-
   # size is smaller than bigger word -> dealing with empty spaces
   expect_identical(
-    wrap_string2(str, 5, collapse = "\n"),
+    wrap_string(str, 5, collapse = "\n"),
     list(
       "  ,\nsomet\nhing\nreall\ny \n\\tnot\nvery\ngood", # \t needs to be escaped
       " \nbut I\nkeep\nit12"
     )
+  )
+
+  # wrap_txt: deprecated, just to test how it behaves
+  expect_identical(
+    wrap_string(str, 5, collapse = "\n"),
+    as.list(wrap_txt(str, 5, collapse = "\n"))
+  )
+  expect_identical(
+    unlist(wrap_string(str, 5, collapse = NULL)),
+    wrap_txt(str, 5, collapse = NULL)
   )
 })
 
