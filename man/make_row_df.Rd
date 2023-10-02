@@ -2,9 +2,25 @@
 % Please edit documentation in R/generics.R
 \name{make_row_df}
 \alias{make_row_df}
-\title{Make row and column layout summary data.frames for use during pagination}
+\alias{make_row_df,MatrixPrintForm-method}
+\title{Make row layout summary data.frames for use during pagination}
 \usage{
 make_row_df(
+  tt,
+  colwidths = NULL,
+  visible_only = TRUE,
+  rownum = 0,
+  indent = 0L,
+  path = character(),
+  incontent = FALSE,
+  repr_ext = 0L,
+  repr_inds = integer(),
+  sibpos = NA_integer_,
+  nsibs = NA_integer_,
+  max_width = NULL
+)
+
+\S4method{make_row_df}{MatrixPrintForm}(
   tt,
   colwidths = NULL,
   visible_only = TRUE,
@@ -51,7 +67,9 @@ materials.}
 a data.frame of row/column-structure information used by the pagination machinery.
 }
 \description{
-Make row and column layout summary data.frames for use during pagination
+All relevant information about table rows (e.g. indentations) is summarized in a data.frames.
+This function works ONLY on \code{rtables} and \code{rlistings} objects, and not on their print counterparts
+(like \code{MatrixPrintForm}).
 }
 \details{
 When  \code{visible_only} is  \code{TRUE} (the  default),
@@ -73,6 +91,6 @@ and should not be set during a top-level call
 }
 \note{
 the technically present root tree node is excluded from the summary returned by
-both \code{make_row_df} and \code{make_col_df}, as it is simply the
+both \code{make_row_df} and \code{make_col_df} (see \code{rtables::make_col_df}), as it is simply the
 row/column structure of \code{tt} and thus not useful for pathing or pagination.
 }
