@@ -11,7 +11,7 @@ wrap_txt(str, width, collapse = NULL)
 }
 \arguments{
 \item{str}{character. String to be wrapped. If it is a character vector or
-a list, it will be looped as a list and returned as such.}
+a list, it will be looped as a list and returned with \code{unlist(use.names = FALSE)}.}
 
 \item{width}{numeric(1). Width, in characters, that the
 text should be wrapped at.}

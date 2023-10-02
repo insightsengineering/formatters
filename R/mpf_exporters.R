@@ -87,7 +87,8 @@ export_as_txt <- function(x,
     }
     ## we dont' set widths here because we already but that info on mpf
     ## so its on each of the pages.
-    strings <- vapply(pages, toString, "", hsep = hsep, tf_wrap = tf_wrap, max_width = max_width)
+    strings <- vapply(pages, toString, "", widths = NULL,
+                      hsep = hsep, tf_wrap = tf_wrap, max_width = max_width)
     res <- paste(strings, collapse = page_break)
 
     if(is.null(file))

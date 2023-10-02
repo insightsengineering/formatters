@@ -504,7 +504,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
     ## Wrapping titles if they go beyond the horizontally allowed space
     if (tf_wrap) {
         new_line_warning(allts)
-        allts <- wrap_txt(allts, max_width = max_width)
+        allts <- wrap_txt(allts, max_width)
     }
     titles_txt <- if (any(nzchar(allts))) c(allts, "", .do_inset(div, inset)) else NULL
 
@@ -609,7 +609,7 @@ new_line_warning <- function(str_v) {
 #' they will be dropped.
 #'
 #' @param str character. String to be wrapped. If it is a character vector or
-#'   a list, it will be looped as a list and returned as such.
+#'   a list, it will be looped as a list and returned with `unlist(use.names = FALSE)`.
 #' @param width numeric(1). Width, in characters, that the
 #'   text should be wrapped at.
 #' @param collapse character(1) or `NULL`. If the words that have been split should
@@ -635,11 +635,24 @@ new_line_warning <- function(str_v) {
 wrap_string <- function(str, width, collapse = NULL) {
   if (length(str) > 1) {
     return(
-      lapply(str, wrap_string, width = width, collapse = collapse)
+      unlist(
+        lapply(str, wrap_string, width = width, collapse = collapse),
+        use.names = FALSE
+      )
     )
+  }
+  str <- unlist(str, use.names = FALSE) # it happens is one list element
+  if (length(str) == 0 || is.null(str) || !nzchar(str) || is.na(str)) {
+    return(str)
   }
   checkmate::assert_character(str)
   checkmate::assert_int(width, lower = 1)
+
+  if (any(grepl("\\n", str))) {
+    stop("Found \\n in a string that was meant to be wrapped. This should not happen ",
+         "because matrix_form should take care of them before this step (toString, ",
+         "i.e. the printing machinery). Please contact the maintaner or file an issue.")
+  }
 
   # str can be also a vector or list. In this case simplify manages the output
   ret <- stringi::stri_wrap(str,
@@ -665,17 +678,6 @@ wrap_string <- function(str, width, collapse = NULL) {
   return(ret)
 }
 
-#' @describeIn wrap_string function that flattens the list of wrapped strings with
-#'   `unist(str, use.names = FALSE)`. This is deprecated, use [wrap_string()] instead.
-#' @examples
-#' wrap_txt(str, 5, collapse = NULL)
-#'
-#' @export
-wrap_txt <- function(str, width, collapse = NULL) {
-  wrap_string(str, width, collapse) %>%
-    unlist(use.names = FALSE)
-}
-
 # Helper fnc to split the words and collapse them with space
 split_words_by <- function(wrd, width) {
   vapply(wrd, function(wrd_i) {
@@ -696,6 +698,15 @@ split_words_by <- function(wrd, width) {
   }, character(1), USE.NAMES = FALSE)
 }
 
+#' @describeIn wrap_string function that flattens the list of wrapped strings with
+#'   `unist(str, use.names = FALSE)`. This is deprecated, use [wrap_string()] instead.
+#' @examples
+#' wrap_txt(str, 5, collapse = NULL)
+#'
+#' @export
+wrap_txt <- function(str, width, collapse = NULL) {
+  unlist(wrap_string(str, width, collapse), use.names = FALSE)
+}
 
 pad_vert_top <- function(x, len) {
   c(x, rep("", len - length(x)))

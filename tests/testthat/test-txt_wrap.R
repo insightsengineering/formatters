@@ -57,7 +57,9 @@ test_that("toString() throws a warning when newline is in string", {
   prov_footer(bmf) <- "some\nvery\nspacious\nfooter"
   bmf$ref_footnotes <- "some\nvery\nspacious\nreference"
   expect_silent(toString(bmf, tf_wrap = FALSE))
-  expect_warning(toString(bmf, tf_wrap = TRUE))
+  expect_warning(expect_error(toString(bmf, tf_wrap = TRUE),
+                                "in a string that was meant to be wrapped"))
+  # xxx the warning will go away as it is not necessary once \\n will be added
 })
 
 test_that("works with words that are too big (no warning)", {
@@ -135,7 +137,7 @@ test_that("auto works with inset and col_gap", {
 
 test_that("regression tests for rtables empty title underlying issue", {
   expect_identical(nlines("", max_width = 6), 1L)
-  expect_identical(wrap_string("", max_width = 6), "")
+  expect_identical(wrap_string("", width = 6), "")
 })
 
 test_that("row label wrapping has identical indentation", {
@@ -178,7 +180,7 @@ test_that("wrap_strings work", {
   # size is smaller than bigger word -> dealing with empty spaces
   expect_identical(
     wrap_string(str, 5, collapse = "\n"),
-    list(
+    c(
       "  ,\nsomet\nhing\nreall\ny \n\\tnot\nvery\ngood", # \t needs to be escaped
       " \nbut I\nkeep\nit12"
     )
@@ -187,7 +189,7 @@ test_that("wrap_strings work", {
   # wrap_txt: deprecated, just to test how it behaves
   expect_identical(
     wrap_string(str, 5, collapse = "\n"),
-    as.list(wrap_txt(str, 5, collapse = "\n"))
+    wrap_txt(str, 5, collapse = "\n")
   )
   expect_identical(
     unlist(wrap_string(str, 5, collapse = NULL)),
