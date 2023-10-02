@@ -1,6 +1,6 @@
 values <- c(5.123456, 7.891112)
 test_that("Default hsep works", {
-  expect_true(formatters::default_hsep() %in% c("\u2014", "-"))
+  expect_true(default_hsep() %in% c("\u2014", "-"))
 })
 test_that("make_row_df produces custom error message if used on MatrixPrintForm", {
   # To cover generic that does use {rtables} obj (no circular deps)
