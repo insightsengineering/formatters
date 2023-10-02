@@ -163,9 +163,9 @@ test_that("row label wrapping has identical indentation", {
     "                   all_o",
     "                    bs  ",
     " -----------------------",
-    "   Something to    3    ",
+    "    Something to   3    ",
     "   wrap                 ",
-    "     Also here     4    ",
+    "       Also here   4    ",
     "     it is              "
   )
   expect_identical(res_vec, exp_vec)
@@ -183,7 +183,7 @@ test_that("wrap_strings work", {
   expect_identical(
     wrap_string2(str, 5, collapse = "\n"),
     list(
-      "  ,\nsomet\nhing\nreall\ny  \n\\tnot \nvery\ngood", # \t needs to be escaped
+      "  ,\nsomet\nhing\nreall\ny \n\\tnot\nvery\ngood", # \t needs to be escaped
       " \nbut I\nkeep\nit12"
     )
   )
@@ -216,13 +216,13 @@ test_that("toString wrapping avoid trimming whitespaces", {
   cw <- cw2 <- propose_column_widths(bmf)
   cw[1] <- 16
 
-  bmf_ts <- toString(bmf, widths = cw)
+  bmf_ts <- toString(bmf, widths = cw, hsep = "-")
   res <- strsplit(bmf_ts, "\\n")[[1]]
 
   expect_identical(
     c(
       "                   Sepal.Length   Sepal.Width",
-      "—————————————————————————————————————————————",
+      "---------------------------------------------",
       "   A pretty long   1              3.5        ",
       "  line                                       ",
       "Barbars            0              3          ",
@@ -237,13 +237,13 @@ test_that("toString wrapping avoid trimming whitespaces", {
 
   # wrapping this with split words (also white spaces count as a word, we drop multiples)
   cw2[1] <- 9
-  bmf_ts <- toString(bmf, widths = cw2)
+  bmf_ts <- toString(bmf, widths = cw2, hsep = "-")
   res <- strsplit(bmf_ts, "\\n")[[1]]
 
   expect_identical(
     c(
       "            Sepal.Length   Sepal.Width",
-      "——————————————————————————————————————",
+      "--------------------------------------",
       "   A        1              3.5        ",
       "  pretty                              ",
       "  long                                ",
