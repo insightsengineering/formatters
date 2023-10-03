@@ -6,10 +6,15 @@
 
 #' @import methods
 #' @include matrix_form.R
-
-#' @title Make row and column layout summary data.frames for use during pagination
-#' @name make_row_df
 #'
+#' @title Make row layout summary data.frames for use during pagination
+#'
+#' @description
+#' All relevant information about table rows (e.g. indentations) is summarized in a data.frames.
+#' This function works ONLY on `rtables` and `rlistings` objects, and not on their print counterparts
+#' (like `MatrixPrintForm`).
+#'
+#' @name make_row_df
 #'
 #' @param tt ANY. Object representing the table-like object to be summarized.
 #' @param visible_only logical(1). Should only visible aspects of the table structure be reflected in this summary.
@@ -46,12 +51,12 @@
 #' and should not be set during a top-level call
 #'
 #' @note the technically present root tree node is excluded from the summary returned by
-#' both \code{make_row_df} and \code{make_col_df}, as it is simply the
+#' both \code{make_row_df} and \code{make_col_df} (see `rtables::make_col_df`), as it is simply the
 #' row/column structure of \code{tt} and thus not useful for pathing or pagination.
-#' @export
 #' @return a data.frame of row/column-structure information used by the pagination machinery.
-#' @rdname make_row_df
 #'
+#' @rdname make_row_df
+#' @export
 ## nocov start
 setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
                                    rownum = 0,
@@ -64,6 +69,21 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
                                    nsibs = NA_integer_,
                                    max_width = NULL) {
   standardGeneric("make_row_df")
+})
+
+#' @rdname make_row_df
+setMethod("make_row_df", "MatrixPrintForm", function(tt, colwidths = NULL, visible_only = TRUE,
+                                                     rownum = 0,
+                                                     indent = 0L,
+                                                     path = character(),
+                                                     incontent = FALSE,
+                                                     repr_ext = 0L,
+                                                     repr_inds = integer(),
+                                                     sibpos = NA_integer_,
+                                                     nsibs = NA_integer_,
+                                                     max_width = NULL) {
+  stop("make_row_df can be used only on {rtables} table objects, and not on `matrix_form`-",
+       "generated objects (MatrixPrintForm).")
 })
 ## nocov end
 
@@ -108,6 +128,7 @@ setGeneric("matrix_form", function(obj,
                                    indent_size = 2) {
   standardGeneric("matrix_form")
 })
+
 
 #' @rdname matrix_form
 #' @export
