@@ -174,14 +174,15 @@ test_that("row label wrapping has identical indentation", {
 })
 
 test_that("wrap_strings work", {
-  str <- list("  , something really  \\tnot  very good", # \t needs to be escaped
+  # \t needs to be escaped -> it should be an error xxx
+  str <- list("  , something really  \\tnot  very good",
            "  but I keep it12   ")
 
   # size is smaller than bigger word -> dealing with empty spaces
   expect_identical(
     wrap_string(str, 5, collapse = "\n"),
     c(
-      "  ,\nsomet\nhing\nreall\ny \n\\tnot\nvery\ngood", # \t needs to be escaped
+      "  ,\nsomet\nhing\nreall\ny  \\t\nnot \nvery\ngood",
       " \nbut I\nkeep\nit12"
     )
   )
@@ -194,6 +195,17 @@ test_that("wrap_strings work", {
   expect_identical(
     unlist(wrap_string(str, 5, collapse = NULL)),
     wrap_txt(str, 5, collapse = NULL)
+  )
+
+  # Now a string that needs smarter wrapping # Where to start word split?
+  str <- "A very long content to_be_wrapped_and_splitted and then something"
+  expect_identical(
+    length(wrap_string(str, 18, smart = TRUE)), # more compact
+    length(wrap_string(str, 18, smart = FALSE)) - 1L
+  )
+  expect_identical(
+    wrap_string(str, 4, smart = TRUE),
+    wrap_string(str, 4, smart = FALSE)
   )
 })
 

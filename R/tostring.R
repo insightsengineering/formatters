@@ -321,7 +321,13 @@ decimal_align <- function(string_mat, align_mat) {
 # main printing code for MatrixPrintForm
 #
 
-#' @rdname tostring
+#' @title Main printing system: `toString`
+#'
+#' @description
+#' All objects that are printed to console pass by `toString`. This function allows
+#' fundamental formatting specifications for the final output, like column widths and
+#' relative wrapping (`width`), title and footer wrapping (`tf_wrap = TRUE` and
+#' `max_width`), or horizontal separator character (e.g. `hsep = "+"`).
 #'
 #' @inheritParams MatrixPrintForm
 #' @param widths numeric (or  NULL). (proposed) widths for the columns
@@ -347,6 +353,8 @@ decimal_align <- function(string_mat, align_mat) {
 #' case each string is word-wrapped separately with the behavior
 #' described above.
 #'
+#' @seealso [wrap_string()]
+#'
 #' @examples
 #' mform <- basic_matrix_form(mtcars)
 #' cat(toString(mform))
@@ -354,6 +362,7 @@ decimal_align <- function(string_mat, align_mat) {
 #' @return A character string containing the ASCII rendering
 #' of the table-like object represented by `x`
 #'
+#' @rdname tostring
 #' @exportMethod toString
 setMethod("toString", "MatrixPrintForm", function(x,
                                                   widths = NULL,
@@ -614,7 +623,12 @@ new_line_warning <- function(str_v) {
 #'   text should be wrapped at.
 #' @param collapse character(1) or `NULL`. If the words that have been split should
 #'   be pasted together with the collapse character. This is usually done internally
-#'   with `"\n"` to have the wrapping updated along with other internal values
+#'   with `"\n"` to have the wrapping updated along with other internal values.
+#' @param smart logical(1). Defaults to `TRUE`. It attempts to calculate the optimal
+#'   word split if there are some words that exceed inserted `width`. It does so by
+#'   considering the preceding word (if present) and adding a piece of the word to split
+#'   if there is space for it. This option uses a recurrent for loop, hence it may be
+#'   expansive for large texts with a relatively small width.
 #'
 #' @details Word wrapping happens as with [stringi::stri_wrap()]
 #'   with the following exception: individual words which are longer
@@ -632,11 +646,11 @@ new_line_warning <- function(str_v) {
 #'
 #' @name wrap_string
 #' @export
-wrap_string <- function(str, width, collapse = NULL) {
+wrap_string <- function(str, width, collapse = NULL, smart = TRUE) {
   if (length(str) > 1) {
     return(
       unlist(
-        lapply(str, wrap_string, width = width, collapse = collapse),
+        lapply(str, wrap_string, width = width, collapse = collapse, smart = smart),
         use.names = FALSE
       )
     )
@@ -647,6 +661,7 @@ wrap_string <- function(str, width, collapse = NULL) {
   }
   checkmate::assert_character(str)
   checkmate::assert_int(width, lower = 1)
+  checkmate::assert_flag(smart)
 
   if (any(grepl("\\n", str))) {
     stop("Found \\n in a string that was meant to be wrapped. This should not happen ",
@@ -664,11 +679,38 @@ wrap_string <- function(str, width, collapse = NULL) {
   # Check if it went fine
   if (any(nchar(ret) > width)) {
     which_exceeded <- which(nchar(ret) > width)
-    values_that_exceeded <- ret[which_exceeded]
-    # Split the words, paste, and rerun
-    ret[which_exceeded] <- split_words_by(values_that_exceeded, width)
-    ret <- paste0(ret, collapse = " ")
-    return(wrap_string(ret, width, collapse))
+
+    if (smart) {
+      # Recursive for loop to take word interval
+      for (we_i in which_exceeded) {
+        # Is there space for some part of the next word?
+        char_threshold <- width *(2 / 3) + 0.01 # if too little space -> no previous word
+        smart_condition <- nchar(ret[we_i - 1]) + 1 < char_threshold # +1 is for spaces
+        if (we_i - 1 > 0 && smart_condition) {
+          we_interval <- unique(c(we_i - 1, we_i))
+          we_interval <- we_interval[
+            (we_interval < (length(ret) + 1)) &
+            (we_interval > 0)
+          ]
+        } else {
+          we_interval <- we_i
+        }
+        # Split words and collapse (needs unique afterwards)
+        ret[we_interval] <- split_words_by(
+          paste0(ret[we_interval], collapse = " "),
+          width
+        )
+        # Paste together and rerun
+        ret <- paste0(unique(ret), collapse = " ")
+        return(wrap_string(str = ret, width = width, collapse = collapse, smart = smart))
+      }
+    } else {
+      values_that_exceeded <- ret[which_exceeded]
+      # Split the words, paste, and rerun
+      ret[which_exceeded] <- split_words_by(values_that_exceeded, width)
+      ret <- paste0(ret, collapse = " ")
+      return(wrap_string(str = ret, width = width, collapse = collapse, smart = smart))
+    }
   }
 
   if (!is.null(collapse)) {
