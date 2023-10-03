@@ -48,6 +48,11 @@ of the table-like object represented by \code{x}
 \description{
 Transform a complex object into a string representation ready
 to be printed or written to a plain-text file
+
+All objects that are printed to console pass by \code{toString}. This function allows
+fundamental formatting specifications for the final output, like column widths and
+relative wrapping (\code{width}), title and footer wrapping (\code{tf_wrap = TRUE} and
+\code{max_width}), or horizontal separator character (e.g. \code{hsep = "+"}).
 }
 \details{
 Manual insertion of newlines is not supported when \code{tf_wrap} is on
@@ -60,4 +65,7 @@ described above.
 mform <- basic_matrix_form(mtcars)
 cat(toString(mform))
 
+}
+\seealso{
+\code{\link[=wrap_string]{wrap_string()}}
 }
