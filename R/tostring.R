@@ -656,7 +656,7 @@ wrap_string <- function(str, width, collapse = NULL, smart = TRUE) {
     )
   }
   str <- unlist(str, use.names = FALSE) # it happens is one list element
-  if (length(str) == 0 || is.null(str) || !nzchar(str) || is.na(str)) {
+  if (!length(str) || !nzchar(str) || is.na(str)) {
     return(str)
   }
   checkmate::assert_character(str)
