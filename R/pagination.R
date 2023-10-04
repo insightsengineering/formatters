@@ -893,6 +893,28 @@ setGeneric("has_page_title", function(obj) standardGeneric("has_page_title"))
 
 setMethod("has_page_title", "ANY", function(obj) length(page_titles(obj)) > 0)
 
+# Retain listing key column formatting with pagination
+paginate_listing_strings <- function(df, i, mpf) {
+  l_mfs <- lapply(i, function(ii) {
+    mf_strings(matrix_form(df[ii, ]))
+  })
+
+  if (length(l_mfs) > 1) {
+    l_res <- lapply(l_mfs[-1], function(x) {
+      x[-1, ] # remove header row
+    })
+
+    l_mfs <- c(l_mfs[1], l_res)
+  }
+
+  new_mpf_strings <- do.call(rbind, l_mfs)
+
+  stopifnot(identical(dim(new_mpf_strings), dim(mf_strings(mpf))))
+
+  mf_strings(mpf) <- new_mpf_strings
+  mpf
+}
+
 #' @rdname paginate_indices
 #' @export
 paginate_to_mpfs <- function(obj,
@@ -993,6 +1015,9 @@ paginate_to_mpfs <- function(obj,
                                      rep_cols = rep_cols,
                                      verbose = verbose)
 
+    if (any(class(obj) == "listing_df")) {
+      mpf <- paginate_listing_strings(obj, page_indices$pag_row_indicies, mpf)
+    }
     pagmats <- lapply(page_indices$pag_row_indices, function(ii) {
         mpf_subset_rows(mpf, ii)
     })
