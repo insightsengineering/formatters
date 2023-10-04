@@ -1016,7 +1016,7 @@ paginate_to_mpfs <- function(obj,
                                      verbose = verbose)
 
     if (any(class(obj) == "listing_df")) {
-      mpf <- paginate_listing_strings(obj, page_indices$pag_row_indicies, mpf)
+      mpf <- paginate_listing_strings(obj, page_indices$pag_row_indices, mpf)
     }
     pagmats <- lapply(page_indices$pag_row_indices, function(ii) {
         mpf_subset_rows(mpf, ii)
