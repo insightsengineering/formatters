@@ -1,8 +1,9 @@
-## formatters 0.5.2.9003
-  * Specified minimal version of package dependencies.
+## formatters 0.5.3.9000
 
-### Miscellaneous
+## formatters 0.5.3
  * Decimal alignment now throws informative error if scientific notation is used.
+ * Specified minimal version of package dependencies.
+ * Updated hex sticker logo.
 
 ## formatters 0.5.2
  * `paginate_to_mpfs` can handle single column tables and listings.
