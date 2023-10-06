@@ -126,8 +126,9 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
 .check_indentation <- function(mat, row_col_width = NULL) {
   # mf_nrheader(mat) # not useful
   mf_nlh <- mf_nlheader(mat)
-  mf_lbody <- mf_lgrouping(mat)
+  mf_lgrp <- mf_lgrouping(mat)
   mf_str <- mf_strings(mat)
+  # we base everything on the groupings -> unique indentation identifiers
   mf_ind <- c(rep(0, mf_nrheader(mat)), mf_rinfo(mat)$indent) # XXX to fix with topleft
   ind_std <- paste0(rep(" ", mat$indent_size), collapse = "")
 
@@ -138,17 +139,25 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
     }, character(1))
 
   if (!is.null(row_col_width)) {
-    if (any(nchar(real_indent) + 1 > row_col_width)) {
+    # Self consistency test for row_col_width (same groups should have same width)
+    # This should not be necessary (nocov)
+    consistency_check <- vapply(unique(mf_lgrp), function(ii) {
+      width_per_grp <- row_col_width[which(mf_lgrp == ii)]
+      all(width_per_grp == width_per_grp[1])
+    }, logical(1))
+    stopifnot(all(consistency_check))
+    unique_row_col_width <- row_col_width[match(unique(mf_lgrp), mf_lgrp)]
+    if (any(nchar(real_indent) + 1 > unique_row_col_width)) {
       stop("Inserted width for row label column is not wide enough.",
            "We found the following rows that do not have at least indentation * ind_size + 1",
            " characters to allow text to be shown after indentation: ",
-           paste0(which(nchar(real_indent) + 1 > row_col_width), collapse = " "))
+           paste0(which(nchar(real_indent) + 1 > unique_row_col_width), collapse = " "))
     }
   }
 
   # Main detector
-  correct_indentation <- vapply(seq_along(mf_lbody), function(xx) {
-    grouping <- mf_lbody[xx]
+  correct_indentation <- vapply(seq_along(mf_lgrp), function(xx) {
+    grouping <- mf_lgrp[xx]
     if (nzchar(real_indent[grouping])) {
       return(stringi::stri_detect(mf_str[xx, 1], regex = paste0("^", real_indent[grouping])))
     }
@@ -393,7 +402,8 @@ setMethod("toString", "MatrixPrintForm", function(x,
     }
 
     # Check that expansion worked for header -> should not happen
-    if (mf_nrheader(mat) + nrow(mf_rinfo(mat)) != nrow(mf_strings(mat))) {
+    if (length(mf_lgrouping(mat)) != nrow(mf_strings(mat)) || # non-unique grouping test
+        mf_nrheader(mat) + nrow(mf_rinfo(mat)) != length(unique(mf_lgrouping(mat)))) {
       stop("The sum of the expected nrows header and nrows of content table does ",
            "not match the number of rows in the string matrix. To our knowledge, ",
            "this is usually of a problem in solving newline characters (\\n) in the header. ",
