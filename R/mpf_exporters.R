@@ -409,7 +409,7 @@ export_as_rtf <- function(x,
     if(is.null(names(margins)))
         names(margins) <- marg_order
 
-    fullmf <- matrix_form(x)
+    fullmf <- matrix_form(x, indent_rownames = TRUE)
     req_ncols <- ncol(fullmf) + as.numeric(mf_has_rlabels(fullmf))
     if(!is.null(colwidths) && length(colwidths) != req_ncols)
         stop("non-null colwidths argument must have length ncol(x) (+ 1 if row labels are present) [",

@@ -92,7 +92,7 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
     cell_widths_mat <- .calc_cell_widths(mat, widths, col_gap)
 
     # Check that indentation is correct (it works only for body)
-    .check_indentation(mat)
+    .check_indentation(mat, row_col_width = cell_widths_mat[ , 1, drop = TRUE])
     mod_ind_list <- .modify_indentation(mat, cell_widths_mat, do_what = "remove")
     mfs <- mod_ind_list[["mfs"]]
     cell_widths_mat <- mod_ind_list[["cell_widths_mat"]]
@@ -123,7 +123,7 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
 
 # Helper function to see if body indentation matches (minimum)
 # It sees if there is AT LEAST the indentation contained in rinfo
-.check_indentation <- function(mat) {
+.check_indentation <- function(mat, row_col_width = NULL) {
   # mf_nrheader(mat) # not useful
   mf_nlh <- mf_nlheader(mat)
   mf_lbody <- mf_lgrouping(mat)
@@ -133,7 +133,18 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
 
   # Expected indent (-x negative numbers should not appear at this stage)
   stopifnot(all(mf_ind >= 0))
-  real_indent <- sapply(mf_ind, function(ii) paste0(rep(ind_std, ii), collapse = ""))
+  real_indent <- vapply(mf_ind, function(ii) {
+    paste0(rep(ind_std, ii), collapse = "")
+    }, character(1))
+
+  if (!is.null(row_col_width)) {
+    if (any(nchar(real_indent) + 1 > row_col_width)) {
+      stop("Inserted width for row label column is not wide enough.",
+           "We found the following rows that do not have at least indentation * ind_size + 1",
+           " characters to allow text to be shown after indentation: ",
+           paste0(which(nchar(real_indent) + 1 > row_col_width), collapse = " "))
+    }
+  }
 
   # Main detector
   correct_indentation <- vapply(seq_along(mf_lbody), function(xx) {
@@ -376,9 +387,17 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
     # Check for \n in mat strings -> if there are any, matrix_form did not work
     if (any(grepl("\n", mf_strings(mat)))) {
-      stop("Found newline characters (\n) in string matrix produced by matrix_form.",
-           "This is not supported and implies missbehavior on the first parsing (in matrix_form).",
+      stop("Found newline characters (\\n) in string matrix produced by matrix_form. ",
+           "This is not supported and implies missbehavior on the first parsing (in matrix_form). ",
            "Please contact the maintainer or file an issue.") # nocov
+    }
+
+    # Check that expansion worked for header -> should not happen
+    if (mf_nrheader(mat) + nrow(mf_rinfo(mat)) != nrow(mf_strings(mat))) {
+      stop("The sum of the expected nrows header and nrows of content table does ",
+           "not match the number of rows in the string matrix. To our knowledge, ",
+           "this is usually of a problem in solving newline characters (\\n) in the header. ",
+           "Please contact the maintaner or file an issue.") # nocov
     }
 
     inset <- table_inset(mat)
