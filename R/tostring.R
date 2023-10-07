@@ -129,7 +129,11 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
   mf_lgrp <- mf_lgrouping(mat)
   mf_str <- mf_strings(mat)
   # we base everything on the groupings -> unique indentation identifiers
-  mf_ind <- c(rep(0, mf_nrheader(mat)), mf_rinfo(mat)$indent) # XXX to fix with topleft
+  if (!is.null(mf_rinfo(mat))) { # this happens in rare cases with rtables::rtable()
+    mf_ind <- c(rep(0, mf_nrheader(mat)), mf_rinfo(mat)$indent) # XXX to fix with topleft
+  } else {
+    mf_ind <- rep(0, mf_nrheader(mat))
+  }
   ind_std <- paste0(rep(" ", mat$indent_size), collapse = "")
 
   # Expected indent (-x negative numbers should not appear at this stage)
@@ -138,7 +142,7 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
     paste0(rep(ind_std, ii), collapse = "")
     }, character(1))
 
-  if (!is.null(row_col_width)) {
+  if (!is.null(row_col_width) && !is.null(mf_rinfo(mat))) { # second is rare case
     # Self consistency test for row_col_width (same groups should have same width)
     # This should not be necessary (nocov)
     consistency_check <- vapply(unique(mf_lgrp), function(ii) {
@@ -186,7 +190,11 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
   mfs <- mf_strings(mat) # we work on mfs
   mf_nlh <- mf_nlheader(mat)
   mf_l <- mf_lgrouping(mat)
-  mf_ind <- c(rep(0, mf_nrheader(mat)), mf_rinfo(mat)$indent) # XXX TO FIX in matrix form
+  if (!is.null(mf_rinfo(mat))) { # this happens in rare cases with rtables::rtable()
+    mf_ind <- c(rep(0, mf_nrheader(mat)), mf_rinfo(mat)$indent) # XXX to fix with topleft
+  } else {
+    mf_ind <- rep(0, mf_nrheader(mat))
+  }
   stopifnot(length(mf_ind) == length(unique(mf_l))) # Check for indentation and grouping
   ind_std <- paste0(rep(" ", mat$indent_size), collapse = "") # standard size of indent 1
 
@@ -412,8 +420,9 @@ setMethod("toString", "MatrixPrintForm", function(x,
     }
 
     # Check that expansion worked for header -> should not happen
-    if (length(mf_lgrouping(mat)) != nrow(mf_strings(mat)) || # non-unique grouping test
-        mf_nrheader(mat) + nrow(mf_rinfo(mat)) != length(unique(mf_lgrouping(mat)))) {
+    if (!is.null(mf_rinfo(mat)) && # rare case of rtables::rtable()
+        (length(mf_lgrouping(mat)) != nrow(mf_strings(mat)) || # non-unique grouping test
+        mf_nrheader(mat) + nrow(mf_rinfo(mat)) != length(unique(mf_lgrouping(mat))))) {
       stop("The sum of the expected nrows header and nrows of content table does ",
            "not match the number of rows in the string matrix. To our knowledge, ",
            "this is usually of a problem in solving newline characters (\\n) in the header. ",
