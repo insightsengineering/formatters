@@ -157,8 +157,8 @@ test_that("row label wrapping has identical indentation", {
     "indentation mismatches"
   )
 
-  matform$strings[2, 1] <- paste0("  ", matform$strings[2, 1]) # Does not respect indent_size
-  matform$strings[3, 1] <- paste0("    ", matform$strings[3, 1]) # Does not respect indent_size
+  matform$strings[2, 1] <- paste0("  ", matform$strings[2, 1]) # Does respect indent_size
+  matform$strings[3, 1] <- paste0("    ", matform$strings[3, 1]) # Does respect indent_size
   catform <- toString(matform, widths = c(15, 5), hsep = "-") # This reindent (correctly) the rows
   res_vec <- strsplit(catform, "\n")[[1]]
   exp_vec <- c(

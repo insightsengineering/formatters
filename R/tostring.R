@@ -723,7 +723,7 @@ wrap_string <- function(str, width, collapse = NULL, smart = TRUE) {
       # Recursive for loop to take word interval
       for (we_i in which_exceeded) {
         # Is there space for some part of the next word?
-        char_threshold <- width *(2 / 3) + 0.01 # if too little space -> no previous word
+        char_threshold <- width * (2 / 3) + 0.01 # if too little space -> no previous word
         smart_condition <- nchar(ret[we_i - 1]) + 1 < char_threshold # +1 is for spaces
         if (we_i - 1 > 0 && smart_condition) {
           we_interval <- unique(c(we_i - 1, we_i))
