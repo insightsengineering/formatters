@@ -146,9 +146,19 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
       all(width_per_grp == width_per_grp[1])
     }, logical(1))
     stopifnot(all(consistency_check))
+
+    # Taking only one width for each indentation grouping
     unique_row_col_width <- row_col_width[match(unique(mf_lgrp), mf_lgrp)]
-    if (any(nchar(real_indent) + 1 > unique_row_col_width)) {
-      stop("Inserted width for row label column is not wide enough.",
+
+    # Exception for check: case with summarize_row_groups and (hence) content_rows
+    nchar_real_indent <- nchar(real_indent)
+    body_rows <- seq(mf_nrheader(mat) + 1, length(nchar_real_indent))
+    nchar_real_indent[body_rows] <- nchar_real_indent[body_rows] +
+      as.numeric(mf_rinfo(mat)$node_class != "ContentRow")
+    # xxx I think all of the above is a bit buggy honestly (check ContentRows!!!)
+
+    if (any(nchar_real_indent > unique_row_col_width)) {
+      stop("Inserted width for row label column is not wide enough. ",
            "We found the following rows that do not have at least indentation * ind_size + 1",
            " characters to allow text to be shown after indentation: ",
            paste0(which(nchar(real_indent) + 1 > unique_row_col_width), collapse = " "))
