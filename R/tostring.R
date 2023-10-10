@@ -142,7 +142,9 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
     paste0(rep(ind_std, ii), collapse = "")
     }, character(1))
 
-  if (!is.null(row_col_width) && !is.null(mf_rinfo(mat))) { # second is rare case
+  if (!is.null(row_col_width) &&
+      any(row_col_width > 0)
+      && !is.null(mf_rinfo(mat))) { # third is rare case
     # Self consistency test for row_col_width (same groups should have same width)
     # This should not be necessary (nocov)
     consistency_check <- vapply(unique(mf_lgrp), function(ii) {
