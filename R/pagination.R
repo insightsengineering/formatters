@@ -916,7 +916,6 @@ paginate_to_mpfs <- function(obj,
                      rep_cols = num_rep_cols(obj),
                      col_gap = 2,
                      verbose = FALSE) {
-    browser()
     mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size)
     if(is.null(colwidths))
         colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf)
