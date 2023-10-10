@@ -916,7 +916,6 @@ paginate_to_mpfs <- function(obj,
                      rep_cols = num_rep_cols(obj),
                      col_gap = 2,
                      verbose = FALSE) {
-
     mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size)
     if(is.null(colwidths))
         colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf)
@@ -993,10 +992,15 @@ paginate_to_mpfs <- function(obj,
                                      rep_cols = rep_cols,
                                      verbose = verbose)
 
-    pagmats <- lapply(page_indices$pag_row_indices, function(ii) {
-        mpf_subset_rows(mpf, ii)
-    })
-
+    if (any(inherits(obj, "listing_df"))) {
+      pagmats <- lapply(page_indices$pag_row_indices,
+                        function(ii) matrix_form(obj[ii, ], TRUE, TRUE,
+                                                 indent_size = indent_size))
+    } else {
+      pagmats <- lapply(page_indices$pag_row_indices, function(ii) {
+          mpf_subset_rows(mpf, ii)
+      })
+    }
     ## these chunks now carry around their (correctly subset) col widths...
     res <- lapply(pagmats, function(matii) {
         lapply(page_indices$pag_col_indices, function(jj) {
