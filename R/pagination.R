@@ -994,7 +994,7 @@ paginate_to_mpfs <- function(obj,
 
     if (any(inherits(obj, "listing_df"))) {
       pagmats <- lapply(page_indices$pag_row_indices,
-                        function(ii) matrix_form(lsting[ii, ], TRUE, TRUE,
+                        function(ii) matrix_form(obj[ii, ], TRUE, TRUE,
                                                  indent_size = indent_size))
     } else {
       pagmats <- lapply(page_indices$pag_row_indices, function(ii) {
