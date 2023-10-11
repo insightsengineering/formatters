@@ -57,7 +57,9 @@ test_that("toString() throws a warning when newline is in string", {
   prov_footer(bmf) <- "some\nvery\nspacious\nfooter"
   bmf$ref_footnotes <- "some\nvery\nspacious\nreference"
   expect_silent(toString(bmf, tf_wrap = FALSE))
-  expect_warning(toString(bmf, tf_wrap = TRUE))
+  expect_warning(expect_error(toString(bmf, tf_wrap = TRUE),
+                                "in a string that was meant to be wrapped"))
+  # xxx the warning will go away as it is not necessary once \\n will be added
 })
 
 test_that("works with words that are too big (no warning)", {
@@ -135,7 +137,7 @@ test_that("auto works with inset and col_gap", {
 
 test_that("regression tests for rtables empty title underlying issue", {
   expect_identical(nlines("", max_width = 6), 1L)
-  expect_identical(wrap_string("", max_width = 6), "")
+  expect_identical(wrap_string("", width = 6), "")
 })
 
 test_that("row label wrapping has identical indentation", {
@@ -150,16 +152,133 @@ test_that("row label wrapping has identical indentation", {
   mf_rinfo(matform)$indent <- c(1, 2)
   matform$strings[2, 1] <- paste0(" ", matform$strings[2, 1]) # Does not respect indent_size
   matform$strings[3, 1] <- paste0("  ", matform$strings[3, 1]) # Does not respect indent_size
+  expect_error(
+    catform <- toString(matform, widths = c(15, 5), hsep = "-"), # Broken indentation, check fails
+    "indentation mismatches"
+  )
+
+  matform$strings[2, 1] <- paste0("  ", matform$strings[2, 1]) # Does respect indent_size
+  matform$strings[3, 1] <- paste0("    ", matform$strings[3, 1]) # Does respect indent_size
   catform <- toString(matform, widths = c(15, 5), hsep = "-") # This reindent (correctly) the rows
   res_vec <- strsplit(catform, "\n")[[1]]
   exp_vec <- c(
     "                   all_o",
     "                    bs  ",
     " -----------------------",
-    "   Something to    3    ",
+    "    Something to   3    ",
     "   wrap                 ",
-    "     Also here     4    ",
+    "       Also here   4    ",
     "     it is              "
   )
   expect_identical(res_vec, exp_vec)
+})
+
+test_that("wrap_strings work", {
+  # \t needs to be escaped -> it should be an error xxx
+  str <- list("  , something really  \\tnot  very good",
+           "  but I keep it12   ")
+
+  # size is smaller than bigger word -> dealing with empty spaces
+  expect_identical(
+    wrap_string(str, 5, collapse = "\n"),
+    c(
+      "  ,\nsomet\nhing\nreall\ny  \\t\nnot \nvery\ngood",
+      " \nbut I\nkeep\nit12"
+    )
+  )
+
+  # wrap_txt: deprecated, just to test how it behaves
+  expect_identical(
+    wrap_string(str, 5, collapse = "\n"),
+    wrap_txt(str, 5, collapse = "\n")
+  )
+  expect_identical(
+    unlist(wrap_string(str, 5, collapse = NULL)),
+    wrap_txt(str, 5, collapse = NULL)
+  )
+
+  # Now a string that needs smarter wrapping # Where to start word split?
+  str <- "A very long content to_be_wrapped_and_splitted and then something"
+  expect_identical(
+    length(wrap_string(str, 18, smart = TRUE)), # more compact
+    length(wrap_string(str, 18, smart = FALSE)) - 1L
+  )
+  expect_identical(
+    wrap_string(str, 4, smart = TRUE),
+    wrap_string(str, 4, smart = FALSE)
+  )
+})
+
+test_that("toString wrapping avoid trimming whitespaces", {
+  testdf <- iris[seq_len(5), seq_len(2)]
+
+  # The following will have i = indent size and general col width = 16
+  rownames(testdf) <- c(
+    "   A pretty long line", # i1 - only line will be in the second line (it has 3 whitespaces)
+    "Barbars", # nothing
+    "    Continuously long line", # i2 - long line in second line -> matching spacing
+    "       D              ", # i0 - empty first line (it has the first piece), second starts D
+    "Oltragious" # nothing
+  )
+  wanna_be_indent <- c(1, 0, 2, 0, 0)
+  testdf[, 1] <- wanna_be_indent # so to see the expected indentation
+  # NB: multiple spaces are considered as a word in stringi with two spaces around
+
+  bmf <- basic_matrix_form(testdf)
+
+  # Correcting indentation
+  mfi <- mf_rinfo(bmf)
+  mfi$indent <- wanna_be_indent
+  mf_rinfo(bmf) <- mfi
+  expect_silent(.check_indentation(bmf)) # internal check for correct indentation setting
+
+  # Reducing the colwidth to force wrapping
+  cw <- cw2 <- propose_column_widths(bmf)
+  cw[1] <- 16
+
+  bmf_ts <- toString(bmf, widths = cw, hsep = "-")
+  res <- strsplit(bmf_ts, "\\n")[[1]]
+
+  expect_identical(
+    c(
+      "                   Sepal.Length   Sepal.Width",
+      "---------------------------------------------",
+      "   A pretty long   1              3.5        ",
+      "  line                                       ",
+      "Barbars            0              3          ",
+      "    Continuously   2              3.2        ",
+      "    long line                                ",
+      "                   0              3.1        ",
+      "D                                            ",
+      "Oltragious         0              3.6        "
+    ),
+    res
+  )
+
+  # wrapping this with split words (also white spaces count as a word, we drop multiples)
+  cw2[1] <- 9
+  bmf_ts <- toString(bmf, widths = cw2, hsep = "-")
+  res <- strsplit(bmf_ts, "\\n")[[1]]
+
+  expect_identical(
+    c(
+      "            Sepal.Length   Sepal.Width",
+      "--------------------------------------",
+      "   A        1              3.5        ",
+      "  pretty                              ",
+      "  long                                ",
+      "  line                                ",
+      "Barbars     0              3          ",
+      "    Conti   2              3.2        ",
+      "    nuous                             ",
+      "    ly                                ",
+      "    long                              ",
+      "    line                              ",
+      "            0              3.1        ",
+      "D                                     ",
+      "Oltragiou   0              3.6        ",
+      "s                                     "
+    ),
+    res
+  )
 })

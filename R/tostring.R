@@ -1,5 +1,3 @@
-# `toString` ----
-
 ## this can't be tested from within R
 # nocov start
 #' @importFrom stats na.omit
@@ -70,7 +68,7 @@ default_hsep <- d_hsep_factory()
 }
 
 
-
+# Main function that does the wrapping
 do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
 
     col_gap <- mf_colgap(mat)
@@ -92,93 +90,141 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
 
     ## format the to ASCII
     cell_widths_mat <- .calc_cell_widths(mat, widths, col_gap)
-    ## wrap_string calls strwrap, which destroys whitespace so we need to make
-    ## sure to put the indents back in
 
-    ## See if indentation is properly set
-    ind_from_mf <- mf_rinfo(mat)$indent > 0
-    nlh <- mf_nlheader(mat)
-    ind_std <- paste0(rep(" ", mat$indent_size), collapse = "")
-    ## Body indentation
-    old_indent <- sapply(mf_rinfo(mat)$indent, function(i) paste0(rep(ind_std, i), collapse = ""))
-    ## Header indentation (it happens with toplefts, not \n in titles, dealt afterwards)
-    ## NB: what about \n in topleft? -> not supported
-    header_indent <- gsub("^([[:space:]]*).*", "\\1", mat$strings[1:nlh, 1]) # Supposedly never with empty strings " "
-    old_indent <- c(header_indent, old_indent)
-    need_reindent <- nzchar(old_indent)
-    ## Check for which row has indent
-    ind_from_strings <- nchar(old_indent)[-seq_len(nlh)] > 0
-    if (!all(ind_from_strings == ind_from_mf)) {
-        stop("Row-info and string indentations are different.", # nocov
-             " Please contact the maintainer, this should not happen.") # nocov
-    }
-    ori_mflg <- mf_lgrouping(mat) # Original groups
-    reindent_old_idx <- ori_mflg[need_reindent] # Indent groups bf wrap
+    # Check that indentation is correct (it works only for body)
+    .check_indentation(mat, row_col_width = cell_widths_mat[ , 1, drop = TRUE])
+    mod_ind_list <- .modify_indentation(mat, cell_widths_mat, do_what = "remove")
+    mfs <- mod_ind_list[["mfs"]]
+    cell_widths_mat <- mod_ind_list[["cell_widths_mat"]]
 
-    ## Taking care in advance of indented word wrappings
-    cell_widths_mat[need_reindent, 1] <- cell_widths_mat[need_reindent, 1] - nchar(old_indent)[need_reindent]
-
-    ## Case in which the indentation is taking too much space vs desired wrapping
-    if (any(cell_widths_mat < 0)) {
-        col_culprits <- apply(cell_widths_mat, 2, function(i) any(i < 0))
-        stop(
-            "Inserted width(s) for column(s) ", which(col_culprits),
-            " is(are) not wide enough for the desired indentation."
-        )
-    }
-
-    new_strings <- matrix(
+    # Main wrapper
+    mf_strings(mat) <- matrix(
         unlist(mapply(wrap_string,
-                      str = mat$strings,
-                      max_width = cell_widths_mat,
-                      hard = TRUE
+                      str = mfs,
+                      width = cell_widths_mat,
+                      collapse = "\n"
                       )),
-        ncol = ncol(mat$strings)
+        ncol = ncol(mfs)
     )
-    mat$strings <- new_strings
 
     ## XXXXX this is wrong and will break for listings cause we don't know when
     ## we need has_topleft to be FALSE!!!!!!!!!!
     mat <- mform_handle_newlines(mat)
 
-    ## Indent groups after newline
-    reindent_new_idx <- mf_lgrouping(mat) %in% reindent_old_idx
-    if (anyNA(reindent_new_idx)) {
-        stop("Unable to remap indenting after cell content text wrapping. ", # nocov
-             "Please contact the maintainer, this should not happen.") # nocov
-    }
-
-    ## Adding the indentation back in
-    ind_v <- NULL
-    for (i in mf_lgrouping(mat)[reindent_new_idx]) {
-        ind_v <- c(ind_v, which(i == ori_mflg)[1])
-    }
-    new_indent <- old_indent[ind_v]
-
-    ## Additional safety check
-    if (length(new_indent) > 0 && !all(nzchar(new_indent))) {
-        stop("Recovered indentation contains empty strings. This is an", # nocov
-             " indexing problem, please contact the maintainer, this should not happen.") # nocov
-    }
-
-    ## Indentation is different for topleft material
-    if (isTRUE(mf_has_topleft(mat))) {
-        ## mf_nlheader counts actual header lines while mf_nrheader is 'virtual'
-        ## A bit of an hack, but unforeseen behavior, related to \n in topleft is not supported
-        ## Therefore, this still suppose that we dealt with \n in the cols before
-        indx_topleft <- which(reindent_new_idx[1:nlh])
-        new_indent[seq_along(indx_topleft)] <- old_indent[indx_topleft]
-    }
-
-    ## Main addition of the 'saved' indentation to strings
-    mf_strings(mat)[reindent_new_idx, 1] <- paste0(
-        new_indent,
-        mat$strings[reindent_new_idx, 1]
-    )
     ## this updates extents in rinfo AND nlines in ref_fnotes_df
     mat <- update_mf_nlines(mat, max_width = max_width)
+
+    # Re-indenting
+    mf_strings(mat) <- .modify_indentation(mat, cell_widths_mat, do_what = "add")[["mfs"]]
+    .check_indentation(mat) # all went well
+
     mat
 }
+
+# Helper function to see if body indentation matches (minimum)
+# It sees if there is AT LEAST the indentation contained in rinfo
+.check_indentation <- function(mat, row_col_width = NULL) {
+  # mf_nrheader(mat) # not useful
+  mf_nlh <- mf_nlheader(mat)
+  mf_lgrp <- mf_lgrouping(mat)
+  mf_str <- mf_strings(mat)
+  # we base everything on the groupings -> unique indentation identifiers
+  if (!is.null(mf_rinfo(mat))) { # this happens in rare cases with rtables::rtable()
+    mf_ind <- c(rep(0, mf_nrheader(mat)), mf_rinfo(mat)$indent) # XXX to fix with topleft
+  } else {
+    mf_ind <- rep(0, mf_nrheader(mat))
+  }
+  ind_std <- paste0(rep(" ", mat$indent_size), collapse = "")
+
+  # Expected indent (-x negative numbers should not appear at this stage)
+  stopifnot(all(mf_ind >= 0))
+  real_indent <- vapply(mf_ind, function(ii) {
+    paste0(rep(ind_std, ii), collapse = "")
+    }, character(1))
+
+  if (!is.null(row_col_width) &&
+      any(row_col_width > 0)
+      && !is.null(mf_rinfo(mat))) { # third is rare case
+    # Self consistency test for row_col_width (same groups should have same width)
+    # This should not be necessary (nocov)
+    consistency_check <- vapply(unique(mf_lgrp), function(ii) {
+      width_per_grp <- row_col_width[which(mf_lgrp == ii)]
+      all(width_per_grp == width_per_grp[1])
+    }, logical(1))
+    stopifnot(all(consistency_check))
+
+    # Taking only one width for each indentation grouping
+    unique_row_col_width <- row_col_width[match(unique(mf_lgrp), mf_lgrp)]
+
+    # Exception for check: case with summarize_row_groups and (hence) content_rows
+    nchar_real_indent <- nchar(real_indent)
+    body_rows <- seq(mf_nrheader(mat) + 1, length(nchar_real_indent))
+    nchar_real_indent[body_rows] <- nchar_real_indent[body_rows] +
+      as.numeric(mf_rinfo(mat)$node_class != "ContentRow")
+    # xxx I think all of the above is a bit buggy honestly (check ContentRows!!!)
+
+    if (any(nchar_real_indent > unique_row_col_width)) {
+      stop("Inserted width for row label column is not wide enough. ",
+           "We found the following rows that do not have at least indentation * ind_size + 1",
+           " characters to allow text to be shown after indentation: ",
+           paste0(which(nchar(real_indent) + 1 > unique_row_col_width), collapse = " "))
+    }
+  }
+
+  # Main detector
+  correct_indentation <- vapply(seq_along(mf_lgrp), function(xx) {
+    grouping <- mf_lgrp[xx]
+    if (nzchar(real_indent[grouping])) {
+      return(stringi::stri_detect(mf_str[xx, 1], regex = paste0("^", real_indent[grouping])))
+    }
+    # Cases where no indent are true by definition
+    return(TRUE)
+  }, logical(1))
+
+  if (any(!correct_indentation)) {
+    stop("We discovered indentation mismatches between the matrix_form and the indentation",
+         " predefined in mf_rinfo. This should not happen. Contact the maintainer.") # nocov
+  }
+}
+# Helper function that takes out or adds the proper indentation
+.modify_indentation <- function(mat, cell_widths_mat, do_what = c("remove", "add")) {
+  # Extract info
+  mfs <- mf_strings(mat) # we work on mfs
+  mf_nlh <- mf_nlheader(mat)
+  mf_l <- mf_lgrouping(mat)
+  if (!is.null(mf_rinfo(mat))) { # this happens in rare cases with rtables::rtable()
+    mf_ind <- c(rep(0, mf_nrheader(mat)), mf_rinfo(mat)$indent) # XXX to fix with topleft
+  } else {
+    mf_ind <- rep(0, mf_nrheader(mat))
+  }
+  stopifnot(length(mf_ind) == length(unique(mf_l))) # Check for indentation and grouping
+  ind_std <- paste0(rep(" ", mat$indent_size), collapse = "") # standard size of indent 1
+
+  # Create real indentation
+  real_indent <- sapply(mf_ind, function(ii) paste0(rep(ind_std, ii), collapse = ""))
+
+  # Use groupings to add or remove proper indentation
+  lbl_row <- mfs[, 1, drop = TRUE]
+  for (ii in seq_along(lbl_row)) {
+    grp <- mf_l[ii]
+    if (nzchar(real_indent[grp])) {
+      # Update also the widths!!
+      if (do_what[1] == "remove") {
+        cell_widths_mat[ii, 1] <- cell_widths_mat[ii, 1] - nchar(real_indent[grp])
+        mfs[ii, 1] <- stringi::stri_replace(lbl_row[ii], "", regex = paste0("^", real_indent[grp]))
+      } else if (do_what[1] == "add") {
+        mfs[ii, 1] <- paste0(real_indent[grp], lbl_row[ii])
+      } else {
+        stop("do_what needs to be remove or add.") # nocov
+      }
+    } else {
+      mfs[ii, 1] <- lbl_row[ii]
+    }
+  }
+  # Final return
+  return(list("mfs" = mfs, "cell_widths_mat" = cell_widths_mat))
+}
+
 
 ## take a character vector and return whether the value is
 ## a string version of a number or not
@@ -311,7 +357,17 @@ decimal_align <- function(string_mat, align_mat) {
     string_mat
 }
 
-#' @rdname tostring
+# toString ---------------------------------------------------------------------
+# main printing code for MatrixPrintForm
+#
+
+#' @title Main printing system: `toString`
+#'
+#' @description
+#' All objects that are printed to console pass by `toString`. This function allows
+#' fundamental formatting specifications for the final output, like column widths and
+#' relative wrapping (`width`), title and footer wrapping (`tf_wrap = TRUE` and
+#' `max_width`), or horizontal separator character (e.g. `hsep = "+"`).
 #'
 #' @inheritParams MatrixPrintForm
 #' @param widths numeric (or  NULL). (proposed) widths for the columns
@@ -337,6 +393,8 @@ decimal_align <- function(string_mat, align_mat) {
 #' case each string is word-wrapped separately with the behavior
 #' described above.
 #'
+#' @seealso [wrap_string()]
+#'
 #' @examples
 #' mform <- basic_matrix_form(mtcars)
 #' cat(toString(mform))
@@ -344,6 +402,7 @@ decimal_align <- function(string_mat, align_mat) {
 #' @return A character string containing the ASCII rendering
 #' of the table-like object represented by `x`
 #'
+#' @rdname tostring
 #' @exportMethod toString
 setMethod("toString", "MatrixPrintForm", function(x,
                                                   widths = NULL,
@@ -351,9 +410,27 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   max_width = NULL,
                                                   col_gap = mf_colgap(x),
                                                   hsep = default_hsep()) {
-    assert_flag(tf_wrap)
+    checkmate::assert_flag(tf_wrap)
 
     mat <- matrix_form(x, indent_rownames = TRUE)
+
+    # Check for \n in mat strings -> if there are any, matrix_form did not work
+    if (any(grepl("\n", mf_strings(mat)))) {
+      stop("Found newline characters (\\n) in string matrix produced by matrix_form. ",
+           "This is not supported and implies missbehavior on the first parsing (in matrix_form). ",
+           "Please contact the maintainer or file an issue.") # nocov
+    }
+
+    # Check that expansion worked for header -> should not happen
+    if (!is.null(mf_rinfo(mat)) && # rare case of rtables::rtable()
+        (length(mf_lgrouping(mat)) != nrow(mf_strings(mat)) || # non-unique grouping test
+        mf_nrheader(mat) + nrow(mf_rinfo(mat)) != length(unique(mf_lgrouping(mat))))) {
+      stop("The sum of the expected nrows header and nrows of content table does ",
+           "not match the number of rows in the string matrix. To our knowledge, ",
+           "this is usually of a problem in solving newline characters (\\n) in the header. ",
+           "Please contact the maintaner or file an issue.") # nocov
+    }
+
     inset <- table_inset(mat)
 
     # if cells are decimal aligned, run propose column widths
@@ -378,14 +455,18 @@ setMethod("toString", "MatrixPrintForm", function(x,
       }
     }
 
+    # Column widths are fixed here
     if (is.null(widths)) {
+      # if mf does not have widths -> propose them
         widths <- mf_col_widths(x) %||% propose_column_widths(x)
     } else {
         mf_col_widths(x) <- widths
     }
+
+    # Total number of characters for the table
     ncchar <- sum(widths) + (length(widths) - 1) * col_gap
 
-    ## Text wrapping checks
+    ## Text wrapping checks (widths)
     if (tf_wrap) {
         if (is.null(max_width)) {
             max_width <- getOption("width", 80L)
@@ -395,6 +476,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
         assert_number(max_width, lower = 0)
     }
 
+    # Main wrapper function for table core
     mat <- do_cell_fnotes_wrap(mat, widths, max_width = max_width, tf_wrap = tf_wrap)
 
     body <- mf_strings(mat)
@@ -412,14 +494,18 @@ setMethod("toString", "MatrixPrintForm", function(x,
       body <- decimal_align(body, aligns)
     }
 
+    # Content is a matrix of cells with the right amount of spaces
     content <- matrix(mapply(padstr, body, cell_widths_mat, aligns), ncol = ncol(body))
     content[!keep_mat] <- NA
-                                        # apply(content, 1, function(x) sum(nchar(x), na.rm = TRUE))
 
+    # Define gap string and divisor string
     gap_str <- strrep(" ", col_gap)
-
     div <- substr(strrep(hsep, ncchar), 1, ncchar)
+
+    # text head (paste w/o NA content header and gap string)
     txt_head <- apply(head(content, nl_header), 1, .paste_no_na, collapse = gap_str)
+
+    # txt body
     sec_seps_df <- x$row_info[, c("abs_rownumber", "trailing_sep"), drop = FALSE]
     if (!is.null(sec_seps_df) && any(!is.na(sec_seps_df$trailing_sep))) {
         bdy_cont <- tail(content, -nl_header)
@@ -461,12 +547,12 @@ setMethod("toString", "MatrixPrintForm", function(x,
             sec_strt <- sec_end + 1
         }
     } else {
+        # This is the usual default pasting
         txt_body <- apply(tail(content, -nl_header), 1, .paste_no_na, collapse = gap_str)
     }
 
-
+    # retrieving titles and footers
     allts <- all_titles(x)
-
     allfoots <- list(
         "main_footer" = main_footer(x),
         "prov_footer" = prov_footer(x),
@@ -474,16 +560,14 @@ setMethod("toString", "MatrixPrintForm", function(x,
     )
     allfoots <- allfoots[!sapply(allfoots, is.null)]
 
-
     ## Wrapping titles if they go beyond the horizontally allowed space
     if (tf_wrap) {
         new_line_warning(allts)
-        allts <- wrap_txt(allts, max_width = max_width)
+        allts <- wrap_txt(allts, max_width)
     }
-
     titles_txt <- if (any(nzchar(allts))) c(allts, "", .do_inset(div, inset)) else NULL
 
-                                        # Wrapping footers if they go beyond the horizontally allowed space
+    # Wrapping footers if they go beyond the horizontally allowed space
     if (tf_wrap) {
         new_line_warning(allfoots)
         allfoots$main_footer <- wrap_txt(allfoots$main_footer, max_width - inset)
@@ -492,9 +576,11 @@ setMethod("toString", "MatrixPrintForm", function(x,
         allfoots$prov_footer <- wrap_txt(allfoots$prov_footer, max_width)
     }
 
-    paste0(paste(
+    # Final return
+    paste0(
+      paste(
         c(
-            titles_txt,
+            titles_txt, # .do_inset(div, inset) happens if there are any titles
             .do_inset(txt_head, inset),
             .do_inset(div, inset),
             .do_inset(txt_body, inset),
@@ -571,77 +657,147 @@ new_line_warning <- function(str_v) {
   }
 }
 
-#' Wrap a string to within a maximum width
-#' @param str character(1). String to be wrapped
-#' @param max_width numeric(1). Maximum width, in characters, that the
-#' text should be wrapped at.
-#' @param hard logical(1). Should hard wrapping (embedding newlines in
-#' the incoming strings) or soft (breaking wrapped strings into vectors
-#' of length >1) be used. Defaults to `FALSE` (i.e. soft wrapping).
+
+#' Wrap a string to within a precise width
 #'
-#' @details Word wrapping happens as with \link[base:strwrap]{base::strwrap}
+#' @description
+#' Core wrapping functionality that preserve white spaces. Only `"\n"` is not supported
+#' by core functionality [stringi::stri_wrap()]. This is usually solved before hand by
+#' [matrix_form()]. If the width is smaller than any large word, these will be truncated
+#' after `width` characters. If the split leaves trailing groups of empty spaces,
+#' they will be dropped.
+#'
+#' @param str character. String to be wrapped. If it is a character vector or
+#'   a list, it will be looped as a list and returned with `unlist(use.names = FALSE)`.
+#' @param width numeric(1). Width, in characters, that the
+#'   text should be wrapped at.
+#' @param collapse character(1) or `NULL`. If the words that have been split should
+#'   be pasted together with the collapse character. This is usually done internally
+#'   with `"\n"` to have the wrapping updated along with other internal values.
+#' @param smart logical(1). Defaults to `TRUE`. It attempts to calculate the optimal
+#'   word split if there are some words that exceed inserted `width`. It does so by
+#'   considering the preceding word (if present) and adding a piece of the word to split
+#'   if there is space for it. This option uses a recurrent for loop, hence it may be
+#'   expansive for large texts with a relatively small width.
+#'
+#' @details Word wrapping happens as with [stringi::stri_wrap()]
 #'   with the following exception: individual words which are longer
 #'   than `max_width` are broken up in a way that fits with the rest of the
 #'   word wrapping.
 #'
-#' @return A string (`wrap_string` or character vector (`wrap_txt`) containing
-#'   the hard or soft word-wrapped content.
+#' @return A string if `str` is one element and if `collapse = NULL`. Otherwise, is
+#'   a list of elements (if `length(str) > 1`) that can contain strings or vector of
+#'   characters (if `collapse = NULL`).
 #'
+#' @examples
+#' str <- list("  , something really  \\tnot  very good", # \t needs to be escaped
+#'             "  but I keep it12   ")
+#' wrap_string(str, 5, collapse = "\n")
+#'
+#' @name wrap_string
 #' @export
-wrap_string <- function(str, max_width, hard = FALSE) {
-  stopifnot(is.character(str) && length(str) == 1)
-  naive <- strwrap(str, max_width + 1)
-  while (any(nchar(naive) > max_width)) {
-    good <- character()
-    bwi <- which(nchar(naive) > max_width)[1]
-    curbw <- naive[bwi]
-    if (bwi > 2) {
-      good <- c(good, naive[1:(bwi - 2)])
-    }
-    if (bwi > 1) {
-      str_before <- naive[bwi - 1]
-    } else {
-      str_before <- ""
-    }
-    room <- max_width - nchar(str_before) - (bwi > 1)
-    if (room <= 0) {
-      toadd <- c(str_before, substr(curbw, 1, max_width))
-      room <- 0
-      leftover <- substr(curbw, max_width + 1, nchar(curbw))
-    } else {
-      goodpart <- substr(curbw, 1, room)
-      if (nzchar(str_before)) {
-        toadd <- paste(str_before, goodpart)
-      } else {
-        toadd <- goodpart
-      }
-      leftover <- substr(curbw, room + 1, nchar(curbw))
-    }
-    good <- c(good, toadd)
-    if (bwi == length(naive)) {
-      good <- c(good, leftover)
-    } else {
-      good <- c(
-        good,
-        paste(leftover, naive[bwi + 1]),
-        if (bwi < length(naive) - 1) naive[seq(bwi + 2, length(naive))]
+wrap_string <- function(str, width, collapse = NULL, smart = TRUE) {
+  if (length(str) > 1) {
+    return(
+      unlist(
+        lapply(str, wrap_string, width = width, collapse = collapse, smart = smart),
+        use.names = FALSE
       )
+    )
+  }
+  str <- unlist(str, use.names = FALSE) # it happens is one list element
+  if (!length(str) || !nzchar(str) || is.na(str)) {
+    return(str)
+  }
+  checkmate::assert_character(str)
+  checkmate::assert_int(width, lower = 1)
+  checkmate::assert_flag(smart)
+
+  if (any(grepl("\\n", str))) {
+    stop("Found \\n in a string that was meant to be wrapped. This should not happen ",
+         "because matrix_form should take care of them before this step (toString, ",
+         "i.e. the printing machinery). Please contact the maintaner or file an issue.")
+  }
+
+  # str can be also a vector or list. In this case simplify manages the output
+  ret <- stringi::stri_wrap(str,
+    width = width,
+    normalize = FALSE, # keeps spaces
+    simplify = TRUE, # If FALSE makes it a list with str elements
+    indent = 0
+  )
+  # Check if it went fine
+  if (any(nchar(ret) > width)) {
+    which_exceeded <- which(nchar(ret) > width)
+
+    if (smart) {
+      # Recursive for loop to take word interval
+      for (we_i in which_exceeded) {
+        # Is there space for some part of the next word?
+        char_threshold <- width * (2 / 3) + 0.01 # if too little space -> no previous word
+        smart_condition <- nchar(ret[we_i - 1]) + 1 < char_threshold # +1 is for spaces
+        if (we_i - 1 > 0 && smart_condition) {
+          we_interval <- unique(c(we_i - 1, we_i))
+          we_interval <- we_interval[
+            (we_interval < (length(ret) + 1)) &
+            (we_interval > 0)
+          ]
+        } else {
+          we_interval <- we_i
+        }
+        # Split words and collapse (needs unique afterwards)
+        ret[we_interval] <- split_words_by(
+          paste0(ret[we_interval], collapse = " "),
+          width
+        )
+        # Paste together and rerun
+        ret <- paste0(unique(ret), collapse = " ")
+        return(wrap_string(str = ret, width = width, collapse = collapse, smart = smart))
+      }
+    } else {
+      values_that_exceeded <- ret[which_exceeded]
+      # Split the words, paste, and rerun
+      ret[which_exceeded] <- split_words_by(values_that_exceeded, width)
+      ret <- paste0(ret, collapse = " ")
+      return(wrap_string(str = ret, width = width, collapse = collapse, smart = smart))
     }
-    str <- paste(good, collapse = " ")
-    naive <- strwrap(str, max_width + 1)
   }
-  if (hard) {
-    naive <- paste(naive, collapse = "\n")
+
+  if (!is.null(collapse)) {
+    return(paste0(ret, collapse = collapse))
   }
-  naive
+
+  return(ret)
 }
 
-#' @param txt character. A vector of strings that should be (independently)
-#' text-wrapped.
-#' @rdname wrap_string
+# Helper fnc to split the words and collapse them with space
+split_words_by <- function(wrd, width) {
+  vapply(wrd, function(wrd_i) {
+    init_v <- seq(1, nchar(wrd_i), by = width)
+    end_v <- c(init_v[-1] - 1, nchar(wrd_i))
+    fin_str_v <- substring(wrd_i, init_v, end_v)
+    is_only_spaces <- grepl("^\\s+$", fin_str_v)
+
+    # We pop only spaces at this point
+    if (all(is_only_spaces)) {
+      fin_str_v <- fin_str_v[1] # keep only one width-sized empty
+    } else {
+      fin_str_v <- fin_str_v[!is_only_spaces] # hybrid text + \s
+    }
+
+    # Collapse the string
+    paste0(fin_str_v, collapse = " ")
+  }, character(1), USE.NAMES = FALSE)
+}
+
+#' @describeIn wrap_string function that flattens the list of wrapped strings with
+#'   `unist(str, use.names = FALSE)`. This is deprecated, use [wrap_string()] instead.
+#' @examples
+#' wrap_txt(str, 5, collapse = NULL)
+#'
 #' @export
-wrap_txt <- function(txt, max_width, hard = FALSE) {
-  unlist(lapply(txt, wrap_string, max_width = max_width, hard = hard), use.names = FALSE)
+wrap_txt <- function(str, width, collapse = NULL) {
+  unlist(wrap_string(str, width, collapse), use.names = FALSE)
 }
 
 pad_vert_top <- function(x, len) {

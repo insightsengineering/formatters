@@ -3,35 +3,58 @@
 \name{wrap_string}
 \alias{wrap_string}
 \alias{wrap_txt}
-\title{Wrap a string to within a maximum width}
+\title{Wrap a string to within a precise width}
 \usage{
-wrap_string(str, max_width, hard = FALSE)
+wrap_string(str, width, collapse = NULL, smart = TRUE)
 
-wrap_txt(txt, max_width, hard = FALSE)
+wrap_txt(str, width, collapse = NULL)
 }
 \arguments{
-\item{str}{character(1). String to be wrapped}
+\item{str}{character. String to be wrapped. If it is a character vector or
+a list, it will be looped as a list and returned with \code{unlist(use.names = FALSE)}.}
 
-\item{max_width}{numeric(1). Maximum width, in characters, that the
+\item{width}{numeric(1). Width, in characters, that the
 text should be wrapped at.}
 
-\item{hard}{logical(1). Should hard wrapping (embedding newlines in
-the incoming strings) or soft (breaking wrapped strings into vectors
-of length >1) be used. Defaults to \code{FALSE} (i.e. soft wrapping).}
+\item{collapse}{character(1) or \code{NULL}. If the words that have been split should
+be pasted together with the collapse character. This is usually done internally
+with \code{"\\n"} to have the wrapping updated along with other internal values.}
 
-\item{txt}{character. A vector of strings that should be (independently)
-text-wrapped.}
+\item{smart}{logical(1). Defaults to \code{TRUE}. It attempts to calculate the optimal
+word split if there are some words that exceed inserted \code{width}. It does so by
+considering the preceding word (if present) and adding a piece of the word to split
+if there is space for it. This option uses a recurrent for loop, hence it may be
+expansive for large texts with a relatively small width.}
 }
 \value{
-A string (\code{wrap_string} or character vector (\code{wrap_txt}) containing
-the hard or soft word-wrapped content.
+A string if \code{str} is one element and if \code{collapse = NULL}. Otherwise, is
+a list of elements (if \code{length(str) > 1}) that can contain strings or vector of
+characters (if \code{collapse = NULL}).
 }
 \description{
-Wrap a string to within a maximum width
+Core wrapping functionality that preserve white spaces. Only \code{"\\n"} is not supported
+by core functionality \code{\link[stringi:stri_wrap]{stringi::stri_wrap()}}. This is usually solved before hand by
+\code{\link[=matrix_form]{matrix_form()}}. If the width is smaller than any large word, these will be truncated
+after \code{width} characters. If the split leaves trailing groups of empty spaces,
+they will be dropped.
 }
 \details{
-Word wrapping happens as with \link[base:strwrap]{base::strwrap}
+Word wrapping happens as with \code{\link[stringi:stri_wrap]{stringi::stri_wrap()}}
 with the following exception: individual words which are longer
 than \code{max_width} are broken up in a way that fits with the rest of the
 word wrapping.
+}
+\section{Functions}{
+\itemize{
+\item \code{wrap_txt()}: function that flattens the list of wrapped strings with
+\code{unist(str, use.names = FALSE)}. This is deprecated, use \code{\link[=wrap_string]{wrap_string()}} instead.
+
+}}
+\examples{
+str <- list("  , something really  \\\\tnot  very good", # \t needs to be escaped
+            "  but I keep it12   ")
+wrap_string(str, 5, collapse = "\n")
+
+wrap_txt(str, 5, collapse = NULL)
+
 }

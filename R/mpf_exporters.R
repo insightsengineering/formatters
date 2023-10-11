@@ -87,7 +87,8 @@ export_as_txt <- function(x,
     }
     ## we dont' set widths here because we already but that info on mpf
     ## so its on each of the pages.
-    strings <- vapply(pages, toString, "", hsep = hsep, tf_wrap = tf_wrap, max_width = max_width)
+    strings <- vapply(pages, toString, "", widths = NULL,
+                      hsep = hsep, tf_wrap = tf_wrap, max_width = max_width)
     res <- paste(strings, collapse = page_break)
 
     if(is.null(file))
@@ -408,7 +409,7 @@ export_as_rtf <- function(x,
     if(is.null(names(margins)))
         names(margins) <- marg_order
 
-    fullmf <- matrix_form(x)
+    fullmf <- matrix_form(x, indent_rownames = TRUE)
     req_ncols <- ncol(fullmf) + as.numeric(mf_has_rlabels(fullmf))
     if(!is.null(colwidths) && length(colwidths) != req_ncols)
         stop("non-null colwidths argument must have length ncol(x) (+ 1 if row labels are present) [",

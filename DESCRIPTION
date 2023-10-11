@@ -31,6 +31,7 @@ Suggests:
     huxtable (>= 2.0.0),
     knitr (>= 1.42),
     r2rtf (>= 0.3.2),
+    stringi (>= 1.6),
     testthat (>= 3.0.4)
 VignetteBuilder:
     knitr
