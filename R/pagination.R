@@ -328,7 +328,8 @@ find_pag <- function(pagdf,
                      verbose = FALSE,
                      row = TRUE,
                      have_col_fnotes = FALSE,
-                     div_height = 1L) {
+                     div_height = 1L,
+                     do_error = FALSE) {
   origuess <- guess
   while (guess >= start && !valid_pag(pagdf, guess,
     start = start, rlpp = rlpp, min_sibs = min_siblings,
@@ -338,7 +339,27 @@ find_pag <- function(pagdf,
     guess <- guess - 1
   }
   if (guess < start) {
-    stop("Unable to find any valid pagination between ", start, " and ", origuess)
+    if (isFALSE(do_error)) {
+      find_pag(pagdf = pagdf,
+             start = start,
+             guess = origuess,
+             rlpp = rlpp,
+             min_siblings = min_siblings,
+             nosplitin = nosplitin,
+             verbose = TRUE,
+             row = row,
+             have_col_fnotes = have_col_fnotes,
+             div_height = div_height,
+             do_error = TRUE)
+    }
+    stop("Unable to find any valid pagination split\ between ", start, " and ", origuess,
+         ifelse(row, " rows", " columns"), ". \n",
+         "Inserted ", ifelse(row, "cpp (column-space, content per page) ",
+                             " lpp (row-space, lines per page) "),
+         ":", pagdf$par_extent[start] + rlpp, "\n",
+         "Need-to-repeat-in-each-page space (key values): ", pagdf$par_extent[start], "\n",
+         "Remaining space: ", rlpp, "\n",
+         "Current space needed (with padding): ", pagdf$self_extent[start])
   }
   guess
 }
