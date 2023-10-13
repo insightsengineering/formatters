@@ -175,7 +175,11 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
   correct_indentation <- vapply(seq_along(mf_lgrp), function(xx) {
     grouping <- mf_lgrp[xx]
     if (nzchar(real_indent[grouping])) {
-      return(stringi::stri_detect(mf_str[xx, 1], regex = paste0("^", real_indent[grouping])))
+      has_correct_indentation <- stringi::stri_detect(
+        mf_str[xx, 1],
+        regex = paste0("^", real_indent[grouping])
+      )
+      return(has_correct_indentation || !nzchar(mf_str[xx, 1])) # "" is still an ok indentation
     }
     # Cases where no indent are true by definition
     return(TRUE)

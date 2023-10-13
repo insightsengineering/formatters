@@ -24,14 +24,14 @@ mform_handle_newlines <- function(matform) {
     # Header indices
     hdr_inds <- 1:nr_header
     ## groundwork for sad haxx to get tl to not be messed up
-    if (has_topleft) {
-        tl <- strmat[hdr_inds, 1]
-        strmat[hdr_inds, 1] <- ""
-        ## recalc them without topleft cause thats handled separately
-        row_nlines <- apply(strmat, 1, function(x) max(vapply(x, nlines, 1L), 1L))
-    } else {
-      tl <- character()
-    }
+    # if (has_topleft) {
+    #     tl <- strmat[hdr_inds, 1]
+    #     strmat[hdr_inds, 1] <- ""
+    #     ## recalc them without topleft cause thats handled separately
+    #     row_nlines <- apply(strmat, 1, function(x) max(vapply(x, nlines, 1L), 1L))
+    # } else {
+    #   tl <- character()
+    # }
     ## used below even though we don't store it on the resulting object
     new_nlines_hdr <- sum(row_nlines[hdr_inds])
     newstrmat <- rbind(
@@ -49,15 +49,15 @@ mform_handle_newlines <- function(matform) {
       expand_mat_rows(frmmat[-1 * hdr_inds, , drop = FALSE], row_nlines[-hdr_inds])
     )
     ## sad haxx :(
-    if (has_topleft) {
-      newtl <- unlist(strsplit(tl, "\n"))
-      if (length(newtl) > new_nlines_hdr) {
-        stop("Expanding top-left material resulted in more lines (", length(newtl), # nocov
-             "than fit in the header.") # nocov
-      }
-      newstrmat[1:new_nlines_hdr, 1] <- c(newtl, rep("", new_nlines_hdr - length(newtl)))
-      newfrmmat[1:new_nlines_hdr, 1] <- "xx"
-    }
+    # if (has_topleft) {
+    #   newtl <- unlist(strsplit(tl, "\n"))
+    #   if (length(newtl) > new_nlines_hdr) {
+    #     stop("Expanding top-left material resulted in more lines (", length(newtl), # nocov
+    #          "than fit in the header.") # nocov
+    #   }
+    #   newstrmat[1:new_nlines_hdr, 1] <- c(newtl, rep("", new_nlines_hdr - length(newtl)))
+    #   newfrmmat[1:new_nlines_hdr, 1] <- "xx"
+    # }
     mf_strings(matform) <- newstrmat
     mf_formats(matform) <- newfrmmat
     mf_spans(matform) <- expand_mat_rows(mf_spans(matform), row_nlines, rep_vec_to_len)
@@ -238,7 +238,6 @@ MatrixPrintForm <- function(strings = NULL,
         ncols = ncs,
         class = c("MatrixPrintForm", "list")
     )
-
 
     ## .do_mat_expand(ret)
     if (expand_newlines) {
