@@ -59,37 +59,46 @@ export_as_txt <- function(x,
                           rep_cols = num_rep_cols(x),
                           verbose = FALSE,
                           page_break = "\\s\\n") {
-
-    if(paginate) {
-        pages <- paginate_to_mpfs(x,
-                                  page_type = page_type,
-                                  font_family = font_family,
-                                  font_size = font_size,
-                                  lineheight = lineheight,
-                                  landscape = landscape,
-                                  pg_width = pg_width,
-                                  pg_height = pg_height,
-                                  margins = margins,
-                                  lpp = lpp,
-                                  cpp = cpp,
-                                  min_siblings = min_siblings,
-                                  nosplitin = nosplitin,
-                                  colwidths = colwidths,
-                                  tf_wrap = tf_wrap,
-                                  max_width = max_width,
-                                  indent_size = indent_size,
-                                  verbose = verbose,
-                                  rep_cols = rep_cols)
-    } else {
-        mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size)
-        mf_col_widths(mf) <- colwidths %||% propose_column_widths(mf)
-        pages <- list(mf)
+    x_to_txt <- function(x) {
+      if(paginate) {
+          pages <- paginate_to_mpfs(x,
+                                    page_type = page_type,
+                                    font_family = font_family,
+                                    font_size = font_size,
+                                    lineheight = lineheight,
+                                    landscape = landscape,
+                                    pg_width = pg_width,
+                                    pg_height = pg_height,
+                                    margins = margins,
+                                    lpp = lpp,
+                                    cpp = cpp,
+                                    min_siblings = min_siblings,
+                                    nosplitin = nosplitin,
+                                    colwidths = colwidths,
+                                    tf_wrap = tf_wrap,
+                                    max_width = max_width,
+                                    indent_size = indent_size,
+                                    verbose = verbose,
+                                    rep_cols = rep_cols)
+      } else {
+          mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size)
+          mf_col_widths(mf) <- colwidths %||% propose_column_widths(mf)
+          pages <- list(mf)
+      }
+      ## we dont' set widths here because we already but that info on mpf
+      ## so its on each of the pages.
+      strings <- vapply(pages, toString, "", widths = NULL,
+                        hsep = hsep, tf_wrap = tf_wrap, max_width = max_width)
+      res <- paste(strings, collapse = page_break)
+      res
     }
-    ## we dont' set widths here because we already but that info on mpf
-    ## so its on each of the pages.
-    strings <- vapply(pages, toString, "", widths = NULL,
-                      hsep = hsep, tf_wrap = tf_wrap, max_width = max_width)
-    res <- paste(strings, collapse = page_break)
+
+    if (is.list(x) && is(x[[1]], "listing_df")) {
+      list_res <- lapply(x, x_to_txt)
+      res <- paste(list_res, collapse = "\\s\\n")
+    } else {
+      res <- x_to_txt(x)
+    }
 
     if(is.null(file))
         res
