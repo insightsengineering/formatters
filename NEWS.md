@@ -1,5 +1,6 @@
 ## formatters 0.5.3.9002
  * Fixed a bug in `paginate_to_mpfs()` so that formatting in listings key columns is retained with pagination [`insightsengineering/rlistings#155`](https://github.com/insightsengineering/rlistings/issues/155).
+ * Updated `export_as_txt` to allow lists of listings as input. This enables listing pagination with pages by parameter.
 
 ## formatters 0.5.3
  * Decimal alignment now throws informative error if scientific notation is used.
