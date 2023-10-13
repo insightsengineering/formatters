@@ -93,9 +93,9 @@ export_as_txt <- function(x,
       res
     }
 
-    if (is.list(x) && is(x[[1]], "listing_df")) {
+    if (is(x[[1]], "listing_df")) {
       list_res <- lapply(x, x_to_txt)
-      res <- paste(list_res, collapse = "\\s\\n")
+      res <- paste(list_res, collapse = page_break)
     } else {
       res <- x_to_txt(x)
     }
