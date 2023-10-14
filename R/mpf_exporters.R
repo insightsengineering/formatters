@@ -94,6 +94,7 @@ export_as_txt <- function(x,
     }
 
     if (is(x[[1]], "listing_df")) {
+      if (!"rep_cols" %in% as.list(match.call())) rep_cols <- num_rep_cols(x[[1]])
       list_res <- lapply(x, x_to_txt)
       res <- paste(list_res, collapse = page_break)
     } else {
