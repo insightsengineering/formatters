@@ -24,13 +24,16 @@ mform_handle_newlines <- function(matform) {
     # Header indices
     hdr_inds <- 1:nr_header
 
+    # Padder should be bottom aligned if no topleft (case of rlistings)
+    tl_padder <- ifelse(has_topleft, pad_vert_top, pad_vert_bottom)
+
     ## used below even though we don't store it on the resulting object
     new_nlines_hdr <- sum(row_nlines[hdr_inds])
     newstrmat <- rbind(
       cbind(
         expand_mat_rows(strmat[hdr_inds, 1, drop = FALSE],
                         row_nlines[hdr_inds],
-                        cpadder = pad_vert_top # topleft info is top aligned
+                        cpadder = tl_padder # topleft info is top aligned
         ),
         expand_mat_rows(strmat[hdr_inds, -1, drop = FALSE],
                         row_nlines[hdr_inds],
@@ -205,7 +208,6 @@ MatrixPrintForm <- function(strings = NULL,
                             colwidths = NULL,
                             indent_size = 2) {
     display <- disp_from_spans(spans)
-
 
     ncs <- if (has_rowlabs) ncol(strings) - 1 else ncol(strings)
     ret <- structure(
