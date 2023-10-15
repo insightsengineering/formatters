@@ -47,7 +47,7 @@ test_that("pagination works", {
     strs <- mf_strings(dfmf_sillytopleft)
     strs[1,1] <- "ha\nha\nha\nha\nha\nha\n"
     mf_strings(dfmf_sillytopleft) <- strs
-    expect_error(formatters:::mform_handle_newlines(dfmf_sillytopleft))
+    expect_silent(formatters:::mform_handle_newlines(dfmf_sillytopleft))
 
     dfmf_cont <- dfmf
     mf_rinfo(dfmf_cont)$node_class <- "ContentRow"
