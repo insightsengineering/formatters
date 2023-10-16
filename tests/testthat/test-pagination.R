@@ -70,7 +70,7 @@ test_that("pagination works", {
     dfmf2 <- formatters:::mform_handle_newlines(dfmf2)
     expect_identical(
         dfmf2$strings[1:2, 1:2],
-        matrix(c("tleft mats", "", "m", "pg"), nrow = 2, ncol = 2)
+        matrix(c("", "tleft mats", "m", "pg"), nrow = 2, ncol = 2)
     )
 
 

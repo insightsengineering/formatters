@@ -24,8 +24,8 @@ mform_handle_newlines <- function(matform) {
     # Header indices
     hdr_inds <- 1:nr_header
 
-    # Padder should be bottom aligned if no topleft (case of rlistings)
-    tl_padder <- ifelse(has_topleft, pad_vert_top, pad_vert_bottom)
+    # False: Padder should be bottom aligned if no topleft (case of rlistings)
+    # It is always bottom: tl_padder <- ifelse(has_topleft, pad_vert_top, pad_vert_bottom)
 
     ## used below even though we don't store it on the resulting object
     new_nlines_hdr <- sum(row_nlines[hdr_inds])
@@ -33,7 +33,7 @@ mform_handle_newlines <- function(matform) {
       cbind(
         expand_mat_rows(strmat[hdr_inds, 1, drop = FALSE],
                         row_nlines[hdr_inds],
-                        cpadder = tl_padder # topleft info is top aligned
+                        cpadder = pad_vert_bottom # topleft info is NOT top aligned
         ),
         expand_mat_rows(strmat[hdr_inds, -1, drop = FALSE],
                         row_nlines[hdr_inds],
@@ -46,7 +46,7 @@ mform_handle_newlines <- function(matform) {
       cbind(
         expand_mat_rows(frmmat[hdr_inds, 1, drop = FALSE],
                         row_nlines[hdr_inds],
-                        cpadder = pad_vert_top
+                        cpadder = pad_vert_bottom 
         ),
         expand_mat_rows(frmmat[hdr_inds, -1, drop = FALSE],
                         row_nlines[hdr_inds],
