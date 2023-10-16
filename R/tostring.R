@@ -754,8 +754,12 @@ wrap_string <- function(str, width, collapse = NULL, smart = TRUE) {
           paste0(ret[we_interval], collapse = " "),
           width
         )
+        # Taking out repetitions if there are more than one
+        if (length(we_interval) > 1) {
+          ret <- ret[-we_interval[-1]]
+        }
         # Paste together and rerun
-        ret <- paste0(unique(ret), collapse = " ")
+        ret <- paste0(ret, collapse = " ")
         return(wrap_string(str = ret, width = width, collapse = collapse, smart = smart))
       }
     } else {
