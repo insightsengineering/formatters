@@ -808,12 +808,12 @@ wrap_txt <- function(str, width, collapse = NULL) {
   unlist(wrap_string(str, width, collapse), use.names = FALSE)
 }
 
-pad_vert_top <- function(x, len) {
-  c(x, rep("", len - length(x)))
+pad_vert_top <- function(x, len, default = "") {
+  c(x, rep(default, len - length(x)))
 }
 
-pad_vert_bottom <- function(x, len) {
-  c(rep("", len - length(x)), x)
+pad_vert_bottom <- function(x, len, default = "") {
+  c(rep(default, len - length(x)), x)
 }
 
 pad_vec_to_len <- function(vec, len, cpadder = pad_vert_top, rlpadder = cpadder) {
