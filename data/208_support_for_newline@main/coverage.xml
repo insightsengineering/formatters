@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.941636268890047" branch-rate="0" lines-covered="1807" lines-valid="1919" branches-covered="0" branches-valid="0" complexity="0" version="3.6.3" timestamp="2023-10-16 08:34:31.66424">
+<coverage line-rate="0.941605839416058" branch-rate="0" lines-covered="1806" lines-valid="1918" branches-covered="0" branches-valid="0" complexity="0" version="3.6.3" timestamp="2023-10-16 09:21:19.907118">
   <sources>
     <source>/__w/formatters/formatters/formatters</source>
   </sources>
   <packages>
-    <package name="formatters" line-rate="0.941636268890047" branch-rate="0" complexity="0">
+    <package name="formatters" line-rate="0.941605839416058" branch-rate="0" complexity="0">
       <classes>
         <class name="format_value.R" filename="R/format_value.R" line-rate="0.928934010152284" branch-rate="0" complexity="0">
           <methods>
@@ -1062,7 +1062,7 @@
             <line number="180" hits="1" branch="false"/>
           </lines>
         </class>
-        <class name="matrix_form.R" filename="R/matrix_form.R" line-rate="0.935560859188544" branch-rate="0" complexity="0">
+        <class name="matrix_form.R" filename="R/matrix_form.R" line-rate="0.935406698564593" branch-rate="0" complexity="0">
           <methods>
             <method name="mform_handle_newlines" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
@@ -1073,7 +1073,6 @@
                 <line number="20" hits="115" branch="false"/>
                 <line number="23" hits="115" branch="false"/>
                 <line number="25" hits="6" branch="false"/>
-                <line number="28" hits="6" branch="false"/>
                 <line number="31" hits="6" branch="false"/>
                 <line number="32" hits="6" branch="false"/>
                 <line number="33" hits="6" branch="false"/>
@@ -1855,7 +1854,6 @@
             <line number="20" hits="115" branch="false"/>
             <line number="23" hits="115" branch="false"/>
             <line number="25" hits="6" branch="false"/>
-            <line number="28" hits="6" branch="false"/>
             <line number="31" hits="6" branch="false"/>
             <line number="32" hits="6" branch="false"/>
             <line number="33" hits="6" branch="false"/>
@@ -4247,12 +4245,12 @@
             </method>
             <method name="pad_vert_top" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="812" hits="2444" branch="false"/>
+                <line number="812" hits="2436" branch="false"/>
               </lines>
             </method>
             <method name="pad_vert_bottom" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="816" hits="82" branch="false"/>
+                <line number="816" hits="90" branch="false"/>
               </lines>
             </method>
             <method name="pad_vec_to_len" signature="" line-rate="1" branch-rate="0" complexity="0">
@@ -4802,8 +4800,8 @@
             <line number="797" hits="42" branch="false"/>
             <line number="798" hits="42" branch="false"/>
             <line number="808" hits="112" branch="false"/>
-            <line number="812" hits="2444" branch="false"/>
-            <line number="816" hits="82" branch="false"/>
+            <line number="812" hits="2436" branch="false"/>
+            <line number="816" hits="90" branch="false"/>
             <line number="820" hits="240" branch="false"/>
             <line number="821" hits="240" branch="false"/>
             <line number="822" hits="240" branch="false"/>
