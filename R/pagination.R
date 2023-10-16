@@ -352,8 +352,8 @@ find_pag <- function(pagdf,
              div_height = div_height,
              do_error = TRUE)
     }
-    stop("Unable to find any valid pagination split\ between ", start, " and ", origuess,
-         ifelse(row, " rows", " columns"), ". \n",
+    stop("Unable to find any valid pagination split\ between ", ifelse(row, "rows ", "columns "), start, " and ", origuess,
+          ". \n",
          "Inserted ", ifelse(row, "cpp (column-space, content per page) ",
                              "lpp (row-space, lines per page) "),
          ": ", pagdf$par_extent[start] + rlpp, "\n",
