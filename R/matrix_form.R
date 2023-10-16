@@ -56,22 +56,9 @@ mform_handle_newlines <- function(matform) {
     )
 
     newfrmmat <- rbind(
-<<<<<<< HEAD
       expand_mat_rows(frmmat[hdr_inds, , drop = FALSE],
                       row_nlines[hdr_inds],
                       cpadder = pad_vert_bottom),
-=======
-      cbind(
-        expand_mat_rows(frmmat[hdr_inds, 1, drop = FALSE],
-                        row_nlines[hdr_inds],
-                        cpadder = pad_vert_bottom 
-        ),
-        expand_mat_rows(frmmat[hdr_inds, -1, drop = FALSE],
-                        row_nlines[hdr_inds],
-                        cpadder = pad_vert_bottom
-        )
-      ),
->>>>>>> c5097352e1ea56b4a9834650ad2e0322758aa30c
       expand_mat_rows(frmmat[-1 * hdr_inds, , drop = FALSE], row_nlines[-hdr_inds])
     )
 
