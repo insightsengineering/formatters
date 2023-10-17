@@ -200,12 +200,8 @@ test_that("wrap_strings work", {
   # Now a string that needs smarter wrapping # Where to start word split?
   str <- "A very long content to_be_wrapped_and_splitted and then something"
   expect_identical(
-    length(wrap_string(str, 18, smart = TRUE)), # more compact
-    length(wrap_string(str, 18, smart = FALSE)) - 1L
-  )
-  expect_identical(
-    wrap_string(str, 4, smart = TRUE),
-    wrap_string(str, 4, smart = FALSE)
+    length(wrap_string(str, 18)), # more compact
+    4L
   )
 
   # Check for avoidance of infinite loops - C stack exceeding

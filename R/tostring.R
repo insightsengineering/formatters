@@ -684,11 +684,6 @@ new_line_warning <- function(str_v) {
 #' @param collapse character(1) or `NULL`. If the words that have been split should
 #'   be pasted together with the collapse character. This is usually done internally
 #'   with `"\n"` to have the wrapping updated along with other internal values.
-#' @param smart logical(1). Defaults to `TRUE`. It attempts to calculate the optimal
-#'   word split if there are some words that exceed inserted `width`. It does so by
-#'   considering the preceding word (if present) and adding a piece of the word to split
-#'   if there is space for it. This option uses a recurrent for loop, hence it may be
-#'   expansive for large texts with a relatively small width.
 #'
 #' @details Word wrapping happens as with [stringi::stri_wrap()]
 #'   with the following exception: individual words which are longer
@@ -706,11 +701,11 @@ new_line_warning <- function(str_v) {
 #'
 #' @name wrap_string
 #' @export
-wrap_string <- function(str, width, collapse = NULL, smart = TRUE) {
+wrap_string <- function(str, width, collapse = NULL) {
   if (length(str) > 1) {
     return(
       unlist(
-        lapply(str, wrap_string, width = width, collapse = collapse, smart = smart),
+        lapply(str, wrap_string, width = width, collapse = collapse),
         use.names = FALSE
       )
     )
@@ -721,7 +716,6 @@ wrap_string <- function(str, width, collapse = NULL, smart = TRUE) {
   }
   checkmate::assert_character(str)
   checkmate::assert_int(width, lower = 1)
-  checkmate::assert_flag(smart)
 
   if (any(grepl("\\n", str))) {
     stop("Found \\n in a string that was meant to be wrapped. This should not happen ",
@@ -736,49 +730,44 @@ wrap_string <- function(str, width, collapse = NULL, smart = TRUE) {
   if (any(nchar(ret) > width)) {
     which_exceeded <- which(nchar(ret) > width)
 
-    if (smart) {
-      # Recursive for loop to take word interval
-      for (we_i in which_exceeded) {
-        # Is there space for some part of the next word?
-        char_threshold <- width * (2 / 3) + 0.01 # if too little space -> no previous word
-        smart_condition <- nchar(ret[we_i - 1]) + 1 < char_threshold # +1 is for spaces
-        if (we_i - 1 > 0 && smart_condition) {
-          we_interval <- unique(c(we_i - 1, we_i))
-          we_interval <- we_interval[
-            (we_interval < (length(ret) + 1)) &
-            (we_interval > 0)
-          ]
-        } else {
-          we_interval <- we_i
-        }
-        # Split words and collapse (needs unique afterwards)
-        ret[we_interval] <- split_words_by(
-          paste0(ret[we_interval], collapse = " "),
-          width
-        )
-        # Taking out repetitions if there are more than one
-        if (length(we_interval) > 1) {
-          ret <- ret[-we_interval[-1]]
-        }
+    # Recursive for loop to take word interval
+    for (we_i in which_exceeded) {
+      # Is there space for some part of the next word?
+      char_threshold <- width * (2 / 3) + 0.01 # if too little space -> no previous word
+      smart_condition <- nchar(ret[we_i - 1]) + 1 < char_threshold # +1 is for spaces
+      if (we_i - 1 > 0 && smart_condition) {
+        we_interval <- unique(c(we_i - 1, we_i))
+        we_interval <- we_interval[
+          (we_interval < (length(ret) + 1)) &
+          (we_interval > 0)
+        ]
+      } else {
+        we_interval <- we_i
       }
-    } else {
-      values_that_exceeded <- ret[which_exceeded]
-      # Split the words, paste, and rerun
-      ret[which_exceeded] <- split_words_by(values_that_exceeded, width)
-    }
+      # Split words and collapse (needs unique afterwards)
+      ret[we_interval] <- split_words_by(
+        paste0(ret[we_interval], collapse = " "),
+        width
+      )
+      # Taking out repetitions if there are more than one
+      if (length(we_interval) > 1) {
+        ret <- ret[-we_interval[-1]]
+        we_interval <- we_interval[1]
+      }
+      # Paste together and rerun if it is not the same as original ret
+      ret_collapse <- paste0(ret, collapse = " ")
 
-    # Paste together and rerun if it is not the same as original ret
-    ret_collapse <- paste0(ret, collapse = " ")
-
-    # Checking if we are stuck in a loop
-    ori_wrapped_txt_v <- .go_stri_wrap(str, width)
-    cur_wrapped_txt_v <- .go_stri_wrap(ret_collapse, width)
-    how_many_are_the_same <- length(intersect(ori_wrapped_txt_v, cur_wrapped_txt_v))
-    if (how_many_are_the_same != length(ori_wrapped_txt_v)) {
-      return(wrap_string(str = ret_collapse, width = width, collapse = collapse, smart = smart))
-    } else {
-      # help function: Very rare case where the recursion is stuck in a loop
-      ret <- force_split_words_by(ret, width)
+      # Checking if we are stuck in a loop
+      ori_wrapped_txt_v <- .go_stri_wrap(str, width)
+      cur_wrapped_txt_v <- .go_stri_wrap(ret_collapse, width)
+      how_many_are_the_same <- length(intersect(ori_wrapped_txt_v, cur_wrapped_txt_v))
+      if (how_many_are_the_same != length(ori_wrapped_txt_v)) {
+        return(wrap_string(str = ret_collapse, width = width, collapse = collapse))
+      } else {
+        # help function: Very rare case where the recursion is stuck in a loop
+        ret_tmp <- force_split_words_by(ret[we_interval], width) # here we_interval is only one ind
+        ret <- append(ret[-we_interval], ret_tmp, we_interval)
+      }
     }
   }
 
