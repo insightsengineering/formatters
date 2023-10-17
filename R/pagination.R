@@ -993,7 +993,7 @@ paginate_to_mpfs <- function(obj,
                                      verbose = verbose)
 
     # This needs to be fixed better
-    if (inherits(obj[[1]], "listing_df") && length(obj) < 2) {
+    if (inherits(fpags[[1]], "listing_df") && length(fpags) < 2) {
       pagmats <- lapply(
         page_indices$pag_row_indices,
         function(ii) {
