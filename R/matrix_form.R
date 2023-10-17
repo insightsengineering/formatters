@@ -15,6 +15,8 @@ mform_handle_newlines <- function(matform) {
   has_topleft <- mf_has_topleft(matform)
   strmat <- mf_strings(matform)
   frmmat <- mf_formats(matform)
+  spamat <- mf_spans(matform)
+  alimat <- mf_aligns(matform)
   nr_header <- mf_nrheader(matform)
   hdr_inds <- 1:nr_header
 
@@ -28,6 +30,15 @@ mform_handle_newlines <- function(matform) {
     tl_to_add_back <- strsplit(paste0(tl, collapse = "\n"), split = "\n", fixed = TRUE)[[1]]
     how_many_nl <- length(tl_to_add_back)
   }
+
+  # pre-proc in case of wrapping and \n
+  line_grouping <- mf_lgrouping(matform)
+  strmat <- .compress_mat(strmat, line_grouping, "nl")
+  frmmat <- .compress_mat(frmmat, line_grouping, "unique") # never not unique
+  spamat <- .compress_mat(spamat, line_grouping, "unique")
+  alimat <- .compress_mat(alimat, line_grouping, "unique")
+  line_grouping <- unique(line_grouping)
+
   # nlines detects if there is a newline character
   row_nlines <- apply(strmat, 1, function(x) max(vapply(x, nlines, 1L), 1L))
 
@@ -73,13 +84,35 @@ mform_handle_newlines <- function(matform) {
 
     mf_strings(matform) <- newstrmat
     mf_formats(matform) <- newfrmmat
-    mf_spans(matform) <- expand_mat_rows(mf_spans(matform), row_nlines, rep_vec_to_len)
-    mf_aligns(matform) <- expand_mat_rows(mf_aligns(matform), row_nlines, rep_vec_to_len)
+    mf_spans(matform) <- expand_mat_rows(spamat, row_nlines, rep_vec_to_len)
+    mf_aligns(matform) <- expand_mat_rows(alimat, row_nlines, rep_vec_to_len)
 ##    mf_display(matform) <- expand_mat_rows(mf_display(matform), row_nlines, rep_vec_to_len)
-    mf_lgrouping(matform) <- rep(mf_lgrouping(matform), times = row_nlines)
+    mf_lgrouping(matform) <- rep(line_grouping, times = row_nlines)
   }
 
   matform
+}
+
+# Helper function to recompact the lines following line groupings to then have them expanded again
+.compress_mat <- function(mat, line_grouping, collapse_method = c("nl", "unique")) {
+  list_compacted_mat <- lapply(unique(line_grouping), function(lg){
+    apply(mat, 2, function(mat_cols) {
+      col_vec <- mat_cols[which(line_grouping == lg)]
+      if (collapse_method[1] == "nl") {
+        paste0(col_vec, collapse = "\n")
+      } else {
+        val <- unique(col_vec)
+        val <- val[nzchar(val)]
+        if (length(val) > 1) {
+          stop("Problem in linegroupings! Some do not have the same values.") # nocov
+        } else if(length(val) < 1) {
+          val <- "" # Case in which it is only ""
+        }
+        val[[1]]
+      }
+    })
+  })
+  do.call("rbind", list_compacted_mat)
 }
 
 disp_from_spans <- function(spans) {

@@ -98,13 +98,14 @@ test_that("exporters work", {
         mymf <- MatrixPrintForm(strings = strs, aligns = matrix("center", ncol = 2, nrow = 5),
                                 formats = matrix("xx", ncol = 2, nrow = 5),
                                 spans = matrix(1L, ncol = 2, nrow = 5),
+                                has_topleft = FALSE,
                                 line_grouping = c(1, 1, 2, 3, 4),
                                 nrow_header = 2,
                                 row_info = rinfo)
 
         mymf_out <- toString(mymf, hsep = "-")
-        expct_lns <- c("  hi          lo     ",
-                       "            there    ",
+        expct_lns <- c("              lo     ",
+                       "  hi        there    ",
                        "(N=50)   (N=whoknows)",
                        "---------------------",
                        "value       value    ",
