@@ -730,12 +730,8 @@ wrap_string <- function(str, width, collapse = NULL, smart = TRUE) {
   }
 
   # str can be also a vector or list. In this case simplify manages the output
-  ret <- stringi::stri_wrap(str,
-    width = width,
-    normalize = FALSE, # keeps spaces
-    simplify = TRUE, # If FALSE makes it a list with str elements
-    indent = 0
-  )
+  ret <- .go_stri_wrap(str, width)
+
   # Check if it went fine
   if (any(nchar(ret) > width)) {
     which_exceeded <- which(nchar(ret) > width)
@@ -764,16 +760,25 @@ wrap_string <- function(str, width, collapse = NULL, smart = TRUE) {
         if (length(we_interval) > 1) {
           ret <- ret[-we_interval[-1]]
         }
-        # Paste together and rerun
-        ret <- paste0(ret, collapse = " ")
-        return(wrap_string(str = ret, width = width, collapse = collapse, smart = smart))
       }
     } else {
       values_that_exceeded <- ret[which_exceeded]
       # Split the words, paste, and rerun
       ret[which_exceeded] <- split_words_by(values_that_exceeded, width)
-      ret <- paste0(ret, collapse = " ")
-      return(wrap_string(str = ret, width = width, collapse = collapse, smart = smart))
+    }
+
+    # Paste together and rerun if it is not the same as original ret
+    ret_collapse <- paste0(ret, collapse = " ")
+
+    # Checking if we are stuck in a loop
+    ori_wrapped_txt_v <- .go_stri_wrap(str, width)
+    cur_wrapped_txt_v <- .go_stri_wrap(ret_collapse, width)
+    how_many_are_the_same <- length(intersect(ori_wrapped_txt_v, cur_wrapped_txt_v))
+    if (how_many_are_the_same != length(ori_wrapped_txt_v)) {
+      return(wrap_string(str = ret_collapse, width = width, collapse = collapse, smart = smart))
+    } else {
+      # help function: Very rare case where the recursion is stuck in a loop
+      ret <- force_split_words_by(ret, width)
     }
   }
 
@@ -784,6 +789,33 @@ wrap_string <- function(str, width, collapse = NULL, smart = TRUE) {
   return(ret)
 }
 
+.go_stri_wrap <- function(str, w) {
+  stringi::stri_wrap(str,
+    width = w,
+    normalize = FALSE, # keeps spaces
+    simplify = TRUE, # If FALSE makes it a list with str elements
+    indent = 0
+  )
+}
+
+# help function: Very rare case where the recursion is stuck in a loop
+force_split_words_by <- function(ret, width) {
+  which_exceeded <- which(nchar(ret) > width)
+  ret_tmp <- NULL
+  for (ii in seq_along(ret)) {
+    if (ii %in% which_exceeded) {
+      wrd_i <- ret[ii]
+      init_v <- seq(1, nchar(wrd_i), by = width)
+      end_v <- c(init_v[-1] - 1, nchar(wrd_i))
+      str_v_tmp <- stringi::stri_sub(wrd_i, from = init_v, to = end_v)
+      ret_tmp <- c(ret_tmp, str_v_tmp[!grepl("^\\s+$", str_v_tmp) & nzchar(str_v_tmp)])
+    } else {
+      ret_tmp <- c(ret_tmp, ret[ii])
+    }
+  }
+  ret_tmp
+}
+
 # Helper fnc to split the words and collapse them with space
 split_words_by <- function(wrd, width) {
   vapply(wrd, function(wrd_i) {
@@ -791,7 +823,6 @@ split_words_by <- function(wrd, width) {
     end_v <- c(init_v[-1] - 1, nchar(wrd_i))
     fin_str_v <- substring(wrd_i, init_v, end_v)
     is_only_spaces <- grepl("^\\s+$", fin_str_v)
-
     # We pop only spaces at this point
     if (all(is_only_spaces)) {
       fin_str_v <- fin_str_v[1] # keep only one width-sized empty

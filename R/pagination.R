@@ -992,21 +992,29 @@ paginate_to_mpfs <- function(obj,
                                      rep_cols = rep_cols,
                                      verbose = verbose)
 
-    if (any(inherits(obj, "listing_df"))) {
-      pagmats <- lapply(page_indices$pag_row_indices,
-                        function(ii) matrix_form(obj[ii, ], TRUE, TRUE,
-                                                 indent_size = indent_size))
+    # This needs to be fixed better
+    if (inherits(obj[[1]], "listing_df") && length(obj) < 2) {
+      pagmats <- lapply(
+        page_indices$pag_row_indices,
+        function(ii) {
+          mf_tmp <- matrix_form(obj[ii, ], TRUE, TRUE, indent_size = indent_size)
+          mf_col_widths(mf_tmp) <- colwidths
+          mf_tmp
+        }
+      )
     } else {
       pagmats <- lapply(page_indices$pag_row_indices, function(ii) {
           mpf_subset_rows(mpf, ii)
       })
     }
+
     ## these chunks now carry around their (correctly subset) col widths...
     res <- lapply(pagmats, function(matii) {
         lapply(page_indices$pag_col_indices, function(jj) {
             mpf_subset_cols(matii, jj)
         })
     })
+
     unlist(res, recursive = FALSE)
 }
 
