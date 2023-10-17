@@ -18,13 +18,14 @@ mform_handle_newlines <- function(matform) {
   spamat <- mf_spans(matform)
   alimat <- mf_aligns(matform)
   nr_header <- mf_nrheader(matform)
+  nl_inds_header <- seq(1, mf_nlheader(matform))
   hdr_inds <- 1:nr_header
 
   # hack that is necessary only if bottom aligned
   topleft_has_nl_char <- FALSE
   if (has_topleft) {
-    tl <- strmat[hdr_inds, 1, drop = TRUE]
-    strmat[hdr_inds, 1] <- ""
+    tl <- strmat[nl_inds_header, 1, drop = TRUE]
+    strmat[nl_inds_header, 1] <- ""
     tl <- tl[nzchar(tl)] # we are not interested in initial "" but we cover initial \n
     topleft_has_nl_char <- any(grepl("\n", tl))
     tl_to_add_back <- strsplit(paste0(tl, collapse = "\n"), split = "\n", fixed = TRUE)[[1]]
@@ -42,8 +43,8 @@ mform_handle_newlines <- function(matform) {
   # nlines detects if there is a newline character
   row_nlines <- apply(strmat, 1, function(x) max(vapply(x, nlines, 1L), 1L))
 
-  if (has_topleft && (sum(row_nlines[hdr_inds]) < how_many_nl)) {
-    row_nlines[1] <- row_nlines[1] + how_many_nl - sum(row_nlines[hdr_inds])
+  if (has_topleft && (sum(row_nlines[nl_inds_header]) < how_many_nl)) {
+    row_nlines[1] <- row_nlines[1] + how_many_nl - sum(row_nlines[nl_inds_header])
   }
 
   # There is something to change
