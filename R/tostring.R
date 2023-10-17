@@ -798,24 +798,6 @@ wrap_string <- function(str, width, collapse = NULL, smart = TRUE) {
   )
 }
 
-# help function: Very rare case where the recursion is stuck in a loop
-force_split_words_by <- function(ret, width) {
-  which_exceeded <- which(nchar(ret) > width)
-  ret_tmp <- NULL
-  for (ii in seq_along(ret)) {
-    if (ii %in% which_exceeded) {
-      wrd_i <- ret[ii]
-      init_v <- seq(1, nchar(wrd_i), by = width)
-      end_v <- c(init_v[-1] - 1, nchar(wrd_i))
-      str_v_tmp <- stringi::stri_sub(wrd_i, from = init_v, to = end_v)
-      ret_tmp <- c(ret_tmp, str_v_tmp[!grepl("^\\s+$", str_v_tmp) & nzchar(str_v_tmp)])
-    } else {
-      ret_tmp <- c(ret_tmp, ret[ii])
-    }
-  }
-  ret_tmp
-}
-
 # Helper fnc to split the words and collapse them with space
 split_words_by <- function(wrd, width) {
   vapply(wrd, function(wrd_i) {
