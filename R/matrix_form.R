@@ -15,49 +15,62 @@ mform_handle_newlines <- function(matform) {
   has_topleft <- mf_has_topleft(matform)
   strmat <- mf_strings(matform)
   frmmat <- mf_formats(matform)
+  nr_header <- mf_nrheader(matform)
+  hdr_inds <- 1:nr_header
+
+  # hack that is necessary only if bottom aligned
+  topleft_has_nl_char <- FALSE
+  if (has_topleft) {
+    tl <- strmat[hdr_inds, 1, drop = TRUE]
+    strmat[hdr_inds, 1] <- ""
+    tl <- tl[nzchar(tl)] # we are not interested in initial "" but we cover initial \n
+    topleft_has_nl_char <- any(grepl("\n", tl))
+    tl_to_add_back <- strsplit(paste0(tl, collapse = "\n"), split = "\n", fixed = TRUE)[[1]]
+    how_many_nl <- length(tl_to_add_back)
+  }
   # nlines detects if there is a newline character
   row_nlines <- apply(strmat, 1, function(x) max(vapply(x, nlines, 1L), 1L))
-  nr_header <- mf_nrheader(matform)
+
+  if (has_topleft && (sum(row_nlines[hdr_inds]) < how_many_nl)) {
+    row_nlines[1] <- row_nlines[1] + how_many_nl - sum(row_nlines[hdr_inds])
+  }
 
   # There is something to change
-  if (any(row_nlines > 1)) {
-    # Header indices
-    hdr_inds <- 1:nr_header
-    ## groundwork for sad haxx to get tl to not be messed up
-    if (has_topleft) {
-        tl <- strmat[hdr_inds, 1]
-        strmat[hdr_inds, 1] <- ""
-        ## recalc them without topleft cause thats handled separately
-        row_nlines <- apply(strmat, 1, function(x) max(vapply(x, nlines, 1L), 1L))
-    } else {
-      tl <- character()
-    }
-    ## used below even though we don't store it on the resulting object
-    new_nlines_hdr <- sum(row_nlines[hdr_inds])
+  if (any(row_nlines > 1) || topleft_has_nl_char) {
+
+    # False: Padder should be bottom aligned if no topleft (case of rlistings)
+    # It is always bottom: tl_padder <- ifelse(has_topleft, pad_vert_top, pad_vert_bottom)
+
     newstrmat <- rbind(
-      expand_mat_rows(strmat[hdr_inds, , drop = FALSE],
-        row_nlines[hdr_inds],
-        cpadder = pad_vert_bottom
+      cbind(
+        expand_mat_rows(strmat[hdr_inds, 1, drop = FALSE],
+                        row_nlines[hdr_inds],
+                        cpadder = pad_vert_bottom # topleft info is NOT top aligned
+        ),
+        expand_mat_rows(strmat[hdr_inds, -1, drop = FALSE],
+                        row_nlines[hdr_inds],
+                        cpadder = pad_vert_bottom # colnames are bottom aligned
+        )
       ),
       expand_mat_rows(strmat[-1 * hdr_inds, , drop = FALSE], row_nlines[-hdr_inds])
     )
+
     newfrmmat <- rbind(
       expand_mat_rows(frmmat[hdr_inds, , drop = FALSE],
-        row_nlines[hdr_inds],
-        cpadder = pad_vert_bottom
-      ),
+                      row_nlines[hdr_inds],
+                      cpadder = pad_vert_bottom),
       expand_mat_rows(frmmat[-1 * hdr_inds, , drop = FALSE], row_nlines[-hdr_inds])
     )
-    ## sad haxx :(
+
     if (has_topleft) {
-      newtl <- unlist(strsplit(tl, "\n"))
-      if (length(newtl) > new_nlines_hdr) {
-        stop("Expanding top-left material resulted in more lines (", length(newtl), # nocov
-             "than fit in the header.") # nocov
+      starts_from_ind <- if (sum(row_nlines[hdr_inds]) - how_many_nl > 0){
+        sum(row_nlines[hdr_inds]) - how_many_nl
+      } else {
+        0
       }
-      newstrmat[1:new_nlines_hdr, 1] <- c(newtl, rep("", new_nlines_hdr - length(newtl)))
-      newfrmmat[1:new_nlines_hdr, 1] <- "xx"
+      newstrmat[starts_from_ind + seq_along(tl_to_add_back), 1] <- tl_to_add_back
     }
+
     mf_strings(matform) <- newstrmat
     mf_formats(matform) <- newfrmmat
     mf_spans(matform) <- expand_mat_rows(mf_spans(matform), row_nlines, rep_vec_to_len)
@@ -211,7 +224,6 @@ MatrixPrintForm <- function(strings = NULL,
                             indent_size = 2) {
     display <- disp_from_spans(spans)
 
-
     ncs <- if (has_rowlabs) ncol(strings) - 1 else ncol(strings)
     ret <- structure(
         list(
@@ -238,7 +250,6 @@ MatrixPrintForm <- function(strings = NULL,
         ncols = ncs,
         class = c("MatrixPrintForm", "list")
     )
-
 
     ## .do_mat_expand(ret)
     if (expand_newlines) {

@@ -175,7 +175,11 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
   correct_indentation <- vapply(seq_along(mf_lgrp), function(xx) {
     grouping <- mf_lgrp[xx]
     if (nzchar(real_indent[grouping])) {
-      return(stringi::stri_detect(mf_str[xx, 1], regex = paste0("^", real_indent[grouping])))
+      has_correct_indentation <- stringi::stri_detect(
+        mf_str[xx, 1],
+        regex = paste0("^", real_indent[grouping])
+      )
+      return(has_correct_indentation || !nzchar(mf_str[xx, 1])) # "" is still an ok indentation
     }
     # Cases where no indent are true by definition
     return(TRUE)
@@ -750,8 +754,12 @@ wrap_string <- function(str, width, collapse = NULL, smart = TRUE) {
           paste0(ret[we_interval], collapse = " "),
           width
         )
+        # Taking out repetitions if there are more than one
+        if (length(we_interval) > 1) {
+          ret <- ret[-we_interval[-1]]
+        }
         # Paste together and rerun
-        ret <- paste0(unique(ret), collapse = " ")
+        ret <- paste0(ret, collapse = " ")
         return(wrap_string(str = ret, width = width, collapse = collapse, smart = smart))
       }
     } else {
@@ -800,12 +808,12 @@ wrap_txt <- function(str, width, collapse = NULL) {
   unlist(wrap_string(str, width, collapse), use.names = FALSE)
 }
 
-pad_vert_top <- function(x, len) {
-  c(x, rep("", len - length(x)))
+pad_vert_top <- function(x, len, default = "") {
+  c(x, rep(default, len - length(x)))
 }
 
-pad_vert_bottom <- function(x, len) {
-  c(rep("", len - length(x)), x)
+pad_vert_bottom <- function(x, len, default = "") {
+  c(rep(default, len - length(x)), x)
 }
 
 pad_vec_to_len <- function(vec, len, cpadder = pad_vert_top, rlpadder = cpadder) {
