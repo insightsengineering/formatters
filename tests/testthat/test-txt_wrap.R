@@ -206,6 +206,7 @@ test_that("wrap_strings work", {
 
   # Check for avoidance of infinite loops - C stack exceeding
   expect_identical(wrap_string("6.5", 1), c("6", ".", "5"))
+  expect_silent(wrap_string("6.5 and something else. 4.3", 1))
 })
 
 test_that("toString wrapping avoid trimming whitespaces", {

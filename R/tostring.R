@@ -731,7 +731,8 @@ wrap_string <- function(str, width, collapse = NULL) {
     which_exceeded <- which(nchar(ret) > width)
 
     # Recursive for loop to take word interval
-    for (we_i in which_exceeded) {
+    while (length(which_exceeded) > 0) {
+      we_i <- which_exceeded[1]
       # Is there space for some part of the next word?
       char_threshold <- width * (2 / 3) + 0.01 # if too little space -> no previous word
       smart_condition <- nchar(ret[we_i - 1]) + 1 < char_threshold # +1 is for spaces
@@ -760,13 +761,13 @@ wrap_string <- function(str, width, collapse = NULL) {
       # Checking if we are stuck in a loop
       ori_wrapped_txt_v <- .go_stri_wrap(str, width)
       cur_wrapped_txt_v <- .go_stri_wrap(ret_collapse, width)
-      how_many_are_the_same <- length(intersect(ori_wrapped_txt_v, cur_wrapped_txt_v))
-      if (how_many_are_the_same != length(ori_wrapped_txt_v)) {
+      if (!setequal(ori_wrapped_txt_v, cur_wrapped_txt_v)) {
         return(wrap_string(str = ret_collapse, width = width, collapse = collapse))
       } else {
         # help function: Very rare case where the recursion is stuck in a loop
         ret_tmp <- force_split_words_by(ret[we_interval], width) # here we_interval is only one ind
-        ret <- append(ret[-we_interval], ret_tmp, we_interval)
+        ret <- append(ret, ret_tmp, we_interval)[-we_interval]
+        which_exceeded <- which(nchar(ret) > width)
       }
     }
   }
