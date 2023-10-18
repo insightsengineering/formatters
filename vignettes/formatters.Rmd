@@ -135,7 +135,7 @@ matrix_form.data.frame <- function(df) {
     strings = strings,
     aligns = aligns,
     spans = matrix(1, nrow = fnr, ncol = fnc),
-    formats = NULL,
+    formats = matrix("", nrow = fnr, ncol = fnc),
     row_info = rowdf,
     has_topleft = FALSE,
     nlines_header = 1,

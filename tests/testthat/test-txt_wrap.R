@@ -200,13 +200,13 @@ test_that("wrap_strings work", {
   # Now a string that needs smarter wrapping # Where to start word split?
   str <- "A very long content to_be_wrapped_and_splitted and then something"
   expect_identical(
-    length(wrap_string(str, 18, smart = TRUE)), # more compact
-    length(wrap_string(str, 18, smart = FALSE)) - 1L
+    length(wrap_string(str, 18)), # more compact
+    4L
   )
-  expect_identical(
-    wrap_string(str, 4, smart = TRUE),
-    wrap_string(str, 4, smart = FALSE)
-  )
+
+  # Check for avoidance of infinite loops - C stack exceeding
+  expect_identical(wrap_string("6.5", 1), c("6", ".", "5"))
+  expect_silent(wrap_string("6.5 and something else. 4.3", 1))
 })
 
 test_that("toString wrapping avoid trimming whitespaces", {
