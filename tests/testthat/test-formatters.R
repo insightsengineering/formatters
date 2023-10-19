@@ -537,11 +537,9 @@ spans <- matrix(byrow = TRUE, ncol = 2,
 
 aligns <- matrix(byrow = TRUE, ncol = 2,
                  "center")
-fmts <- matrix(byrow = TRUE, ncol = 2,
-                 "xx")
+fmts <- matrix(byrow = TRUE, ncol = 2, "xx")
 
-rinfo <- formatters:::pagdfrow(nm = "row", lab = "row", rnum = 1,
-                                   pth = "row", extent = 1, rclass = "silly")
+rinfo <- formatters:::pagdfrow(nm = "row", lab = "row", rnum = 1, pth = "row", extent = 1, rclass = "silly")
 
 mpf <- MatrixPrintForm(strings = strs, spans = spans, aligns = aligns,
                        formats = fmts, row_info = rinfo,

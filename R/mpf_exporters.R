@@ -394,16 +394,16 @@ mpf_to_rtf <- function(mpf,
 #' @export
 
 export_as_rtf <- function(x,
-                      file = NULL,
-                      colwidths = propose_column_widths(matrix_form(x, TRUE)),
-                      page_type = "letter",
-                      pg_width = page_dim(page_type)[if (landscape) 2 else 1],
-                      pg_height = page_dim(page_type)[if (landscape) 1 else 2],
-                      landscape = FALSE,
-                      margins = c(bottom = .5, left = .75, top = .5, right = .75),
-                      font_size = 8,
-                      font_family = "Courier",
-                      ...) {
+                          file = NULL,
+                          colwidths = propose_column_widths(matrix_form(x, TRUE)),
+                          page_type = "letter",
+                          pg_width = page_dim(page_type)[if (landscape) 2 else 1],
+                          pg_height = page_dim(page_type)[if (landscape) 1 else 2],
+                          landscape = FALSE,
+                          margins = c(bottom = .5, left = .75, top = .5, right = .75),
+                          font_size = 8,
+                          font_family = "Courier",
+                          ...) {
     if (!requireNamespace("r2rtf"))
         stop("RTF export requires the r2rtf package, please install it.")
     if (is.null(names(margins)))
@@ -418,13 +418,15 @@ export_as_rtf <- function(x,
     true_width <- pg_width - sum(margins[c("left", "right")])
     true_height <- pg_height - sum(margins[c("top", "bottom")])
 
-    mpfs <- paginate_to_mpfs(fullmf, font_family = font_family, font_size = font_size,
-                           pg_width = true_width,
-                           pg_height = true_height,
-                           margins = c(bottom = 0, left = 0, top = 0, right = 0),
-                           lineheight = 1.25,
-                           colwidths = colwidths,
-                           ...)
+    mpfs <- paginate_to_mpfs(
+      fullmf, font_family = font_family, font_size = font_size,
+      pg_width = true_width,
+      pg_height = true_height,
+      margins = c(bottom = 0, left = 0, top = 0, right = 0),
+      lineheight = 1.25,
+      colwidths = colwidths,
+      ...
+    )
 
     rtftxts <- lapply(mpfs, function(mf) {
       r2rtf::rtf_encode(mpf_to_rtf(mf,

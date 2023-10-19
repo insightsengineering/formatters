@@ -523,8 +523,7 @@ mf_fnote_df <- function(mf) {
 }
 
 `mf_fnote_df<-` <- function(mf, value) {
-    stopifnot(is.null(value) || (
-        is.data.frame(value) && identical(names(value), names(ref_df_row()))))
+    stopifnot(is.null(value) || (is.data.frame(value) && identical(names(value), names(ref_df_row()))))
     mf$ref_fnote_df <- value
     mf
 }
@@ -584,9 +583,8 @@ update_mf_rinfo_extents <- function(mform) {
     stopifnot(all(mapdf$row_num == rinfo$abs_rownumber))
 
 
-    new_par_exts <- vapply(rinfo$reprint_inds,
-                           function(idx) {
-        sum(0L, mapdf$raw_extent[mapdf$row_num %in% idx])
+    new_par_exts <- vapply(rinfo$reprint_inds, function(idx) {
+      sum(0L, mapdf$raw_extent[mapdf$row_num %in% idx])
     }, 1L)
 
     rinfo$self_extent <- new_exts

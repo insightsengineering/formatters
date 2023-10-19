@@ -57,8 +57,7 @@ test_that("toString() throws a warning when newline is in string", {
   prov_footer(bmf) <- "some\nvery\nspacious\nfooter"
   bmf$ref_footnotes <- "some\nvery\nspacious\nreference"
   expect_silent(toString(bmf, tf_wrap = FALSE))
-  expect_warning(expect_error(toString(bmf, tf_wrap = TRUE),
-                                "in a string that was meant to be wrapped"))
+  expect_warning(expect_error(toString(bmf, tf_wrap = TRUE), "in a string that was meant to be wrapped"))
   # xxx the warning will go away as it is not necessary once \\n will be added
 })
 
@@ -175,8 +174,7 @@ test_that("row label wrapping has identical indentation", {
 
 test_that("wrap_strings work", {
   # \t needs to be escaped -> it should be an error xxx
-  str <- list("  , something really  \\tnot  very good",
-           "  but I keep it12   ")
+  str <- list("  , something really  \\tnot  very good", "  but I keep it12   ")
 
   # size is smaller than bigger word -> dealing with empty spaces
   expect_identical(

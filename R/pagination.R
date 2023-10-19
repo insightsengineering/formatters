@@ -130,7 +130,7 @@ pagdfrow <- function(row,
                      nrowrefs = 0L,
                      ncellrefs = 0L,
                      nreflines = 0L,
-#                     ref_df = .make_ref_df(NULL, NULL),
+                     # ref_df = .make_ref_df(NULL, NULL),
                      force_page = FALSE,
                      page_title = NA_character_,
                      trailing_sep = NA_character_) {
@@ -297,21 +297,19 @@ valid_pag <- function(pagdf,
 
     inplay <- nosplit[(nosplit %in% intersect(curpth, nxtpth))]
     if (length(inplay) > 0) {
-      ok_split <- vapply(inplay,
-                   function(var) {
-          !identical(curpth[match(var, curpth) + 1],
-                     nxtpth[match(var, nxtpth) + 1])
-      },
-      TRUE)
+      ok_split <- vapply(inplay, function(var) {
+        !identical(curpth[match(var, curpth) + 1], nxtpth[match(var, nxtpth) + 1])
+      }, TRUE)
 
       curvals <- curpth[match(inplay, curpth) + 1]
       # nxtvals <- nxtpth[match(inplay, nxtpth) + 1]
       if (!all(ok_split)) {
         if (verbose) {
           message(
-              "\t....................... FAIL: nosplit variable [",
-              inplay[min(which(!ok_split))], "] would be constant [",
-              curvals, "] across this pagebreak.")
+            "\t....................... FAIL: nosplit variable [",
+            inplay[min(which(!ok_split))], "] would be constant [",
+            curvals, "] across this pagebreak."
+          )
         }
         return(FALSE)
       }
@@ -345,27 +343,31 @@ find_pag <- function(pagdf,
   }
   if (guess < start) {
     if (isFALSE(do_error)) {
-      find_pag(pagdf = pagdf,
-             start = start,
-             guess = origuess,
-             rlpp = rlpp,
-             min_siblings = min_siblings,
-             nosplitin = nosplitin,
-             verbose = TRUE,
-             row = row,
-             have_col_fnotes = have_col_fnotes,
-             div_height = div_height,
-             do_error = TRUE)
+      find_pag(
+        pagdf = pagdf,
+        start = start,
+        guess = origuess,
+        rlpp = rlpp,
+        min_siblings = min_siblings,
+        nosplitin = nosplitin,
+        verbose = TRUE,
+        row = row,
+        have_col_fnotes = have_col_fnotes,
+        div_height = div_height,
+        do_error = TRUE
+      )
     }
-    stop("Unable to find any valid pagination split\ between ",
-         ifelse(row, "rows ", "columns "), start, " and ", origuess,
-          ". \n",
-         "Inserted ", ifelse(row, "cpp (column-space, content per page) ",
-                             "lpp (row-space, lines per page) "),
-         ": ", pagdf$par_extent[start] + rlpp, "\n",
-         "Need-to-repeat-in-each-page space (key values): ", pagdf$par_extent[start], "\n",
-         "Remaining space: ", rlpp, "\n",
-         "Current space needed (with padding): ", pagdf$self_extent[start])
+    stop(
+      "Unable to find any valid pagination split\ between ",
+       ifelse(row, "rows ", "columns "), start, " and ", origuess,
+        ". \n",
+       "Inserted ", ifelse(row, "cpp (column-space, content per page) ",
+                           "lpp (row-space, lines per page) "),
+       ": ", pagdf$par_extent[start] + rlpp, "\n",
+       "Need-to-repeat-in-each-page space (key values): ", pagdf$par_extent[start], "\n",
+       "Remaining space: ", rlpp, "\n",
+       "Current space needed (with padding): ", pagdf$self_extent[start]
+    )
   }
   guess
 }
@@ -599,14 +601,16 @@ calc_lcpp <- function(page_type = NULL,
                       inset
                       ) {
 
-    pg_lcpp <- page_lcpp(page_type = page_type,
-                      landscape = landscape,
-                      font_family = font_family,
-                      font_size = font_size,
-                      lineheight = lineheight,
-                      margins = margins,
-                      pg_width = pg_width,
-                      pg_height = pg_height)
+    pg_lcpp <- page_lcpp(
+      page_type = page_type,
+      landscape = landscape,
+      font_family = font_family,
+      font_size = font_size,
+      lineheight = lineheight,
+      margins = margins,
+      pg_width = pg_width,
+      pg_height = pg_height
+    )
 
     if (non_null_na(lpp)) {
         lpp <- pg_lcpp$lpp
@@ -788,26 +792,26 @@ splice_idx_lists <- function(lsts) {
 #'
 #' paginate_to_mpfs(mpf, pg_width = 5, pg_height = 3)
 paginate_indices <- function(obj,
-                     page_type = "letter",
-                     font_family = "Courier",
-                     font_size = 8,
-                     lineheight = 1,
-                     landscape = FALSE,
-                     pg_width = NULL,
-                     pg_height = NULL,
-                     margins = c(top = .5, bottom = .5, left = .75, right = .75),
-                     lpp = NA_integer_,
-                     cpp = NA_integer_,
-                     min_siblings = 2,
-                     nosplitin = character(),
-                     colwidths = NULL,
-                     tf_wrap = FALSE,
-                     max_width = NULL,
-                     indent_size = 2,
-                     pg_size_spec = NULL,
-                     rep_cols = num_rep_cols(obj),
-                     col_gap = 3,
-                     verbose = FALSE) {
+                             page_type = "letter",
+                             font_family = "Courier",
+                             font_size = 8,
+                             lineheight = 1,
+                             landscape = FALSE,
+                             pg_width = NULL,
+                             pg_height = NULL,
+                             margins = c(top = .5, bottom = .5, left = .75, right = .75),
+                             lpp = NA_integer_,
+                             cpp = NA_integer_,
+                             min_siblings = 2,
+                             nosplitin = character(),
+                             colwidths = NULL,
+                             tf_wrap = FALSE,
+                             max_width = NULL,
+                             indent_size = 2,
+                             pg_size_spec = NULL,
+                             rep_cols = num_rep_cols(obj),
+                             col_gap = 3,
+                             verbose = FALSE) {
 
 
     ## this MUST alsways return a list, inluding list(obj) when
@@ -865,21 +869,23 @@ paginate_indices <- function(obj,
 
 
     if (is.null(pg_size_spec)) {
-        pg_size_spec <- calc_lcpp(page_type = page_type,
-                        font_family = font_family,
-                        font_size = font_size,
-                        lineheight = lineheight,
-                        landscape = landscape,
-                        pg_width = pg_width,
-                        pg_height = pg_height,
-                        margins = margins,
-                        lpp = lpp,
-                        cpp = cpp,
-                        tf_wrap = tf_wrap,
-                        max_width = max_width,
-                        colwidths = colwidths,
-                        inset = table_inset(mpf),
-                        col_gap = col_gap)
+        pg_size_spec <- calc_lcpp(
+          page_type = page_type,
+          font_family = font_family,
+          font_size = font_size,
+          lineheight = lineheight,
+          landscape = landscape,
+          pg_width = pg_width,
+          pg_height = pg_height,
+          margins = margins,
+          lpp = lpp,
+          cpp = cpp,
+          tf_wrap = tf_wrap,
+          max_width = max_width,
+          colwidths = colwidths,
+          inset = table_inset(mpf),
+          col_gap = col_gap
+        )
     }
 
     ## we can't support forced pagination in paginate_indices because
@@ -925,26 +931,26 @@ setMethod("has_page_title", "ANY", function(obj) length(page_titles(obj)) > 0)
 #' @rdname paginate_indices
 #' @export
 paginate_to_mpfs <- function(obj,
-                     page_type = "letter",
-                     font_family = "Courier",
-                     font_size = 8,
-                     lineheight = 1,
-                     landscape = FALSE,
-                     pg_width = NULL,
-                     pg_height = NULL,
-                     margins = c(top = .5, bottom = .5, left = .75, right = .75),
-                     lpp = NA_integer_,
-                     cpp = NA_integer_,
-                     min_siblings = 2,
-                     nosplitin = character(),
-                     colwidths = NULL,
-                     tf_wrap = FALSE,
-                     max_width = NULL,
-                     indent_size = 2,
-                     pg_size_spec = NULL,
-                     rep_cols = num_rep_cols(obj),
-                     col_gap = 2,
-                     verbose = FALSE) {
+                             page_type = "letter",
+                             font_family = "Courier",
+                             font_size = 8,
+                             lineheight = 1,
+                             landscape = FALSE,
+                             pg_width = NULL,
+                             pg_height = NULL,
+                             margins = c(top = .5, bottom = .5, left = .75, right = .75),
+                             lpp = NA_integer_,
+                             cpp = NA_integer_,
+                             min_siblings = 2,
+                             nosplitin = character(),
+                             colwidths = NULL,
+                             tf_wrap = FALSE,
+                             max_width = NULL,
+                             indent_size = 2,
+                             pg_size_spec = NULL,
+                             rep_cols = num_rep_cols(obj),
+                             col_gap = 2,
+                             verbose = FALSE) {
     mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size)
     if (is.null(colwidths))
         colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf)
@@ -955,21 +961,23 @@ paginate_to_mpfs <- function(obj,
 
 
     if (is.null(pg_size_spec)) {
-        pg_size_spec <- calc_lcpp(page_type = page_type,
-                        font_family = font_family,
-                        font_size = font_size,
-                        lineheight = lineheight,
-                        landscape = landscape,
-                        pg_width = pg_width,
-                        pg_height = pg_height,
-                        margins = margins,
-                        lpp = lpp,
-                        cpp = cpp,
-                        tf_wrap = tf_wrap,
-                        max_width = max_width,
-                        colwidths = colwidths,
-                        inset = table_inset(mpf),
-                        col_gap = col_gap)
+        pg_size_spec <- calc_lcpp(
+          page_type = page_type,
+          font_family = font_family,
+          font_size = font_size,
+          lineheight = lineheight,
+          landscape = landscape,
+          pg_width = pg_width,
+          pg_height = pg_height,
+          margins = margins,
+          lpp = lpp,
+          cpp = cpp,
+          tf_wrap = tf_wrap,
+          max_width = max_width,
+          colwidths = colwidths,
+          inset = table_inset(mpf),
+          col_gap = col_gap
+        )
     }
     ## this MUST alsways return a list, inluding list(obj) when
     ## no forced pagination is needed! otherwise stuff breaks for things
@@ -983,12 +991,14 @@ paginate_to_mpfs <- function(obj,
     ## but we will if we ever allow force_paginate to do horiz
     ## pagination.
     if (length(fpags) > 1) {
-        deep_pag <- lapply(fpags, paginate_to_mpfs,
-                      pg_size_spec = pg_size_spec,
-                      colwidths = colwidths,
-                      min_siblings = min_siblings,
-                      nosplitin = nosplitin,
-                      verbose = verbose)
+        deep_pag <- lapply(
+          fpags, paginate_to_mpfs,
+          pg_size_spec = pg_size_spec,
+          colwidths = colwidths,
+          min_siblings = min_siblings,
+          nosplitin = nosplitin,
+          verbose = verbose
+        )
         return(unlist(deep_pag, recursive = FALSE))
     } else if (has_page_title(fpags[[1]])) {
       obj <- fpags[[1]]
@@ -1149,27 +1159,29 @@ diagnose_pagination <- function(obj,
 
     mpf <- matrix_form(obj, TRUE)
     msgres <- capture.output({
-      tmp <- try(paginate_to_mpfs(
-        obj,
-        page_type = page_type,
-        font_family = font_family,
-        font_size = font_size,
-        lineheight = lineheight,
-        landscape = landscape,
-        pg_width = pg_width,
-        pg_height = pg_height,
-        margins = margins,
-        lpp = lpp,
-        cpp = cpp,
-        tf_wrap = tf_wrap,
-        max_width = max_width,
-        colwidths = colwidths,
-        col_gap = col_gap,
-        min_siblings = min_siblings,
-        nosplitin = nosplitin,
-        verbose = TRUE))
-      },
-      type = "message"
+      tmp <- try(
+        paginate_to_mpfs(
+          obj,
+          page_type = page_type,
+          font_family = font_family,
+          font_size = font_size,
+          lineheight = lineheight,
+          landscape = landscape,
+          pg_width = pg_width,
+          pg_height = pg_height,
+          margins = margins,
+          lpp = lpp,
+          cpp = cpp,
+          tf_wrap = tf_wrap,
+          max_width = max_width,
+          colwidths = colwidths,
+          col_gap = col_gap,
+          min_siblings = min_siblings,
+          nosplitin = nosplitin,
+          verbose = TRUE
+        )
+      )
+      }, type = "message"
     )
     if (is(tmp, "try-error") && grepl("Width of row labels equal to or larger", tmp)) {
         cond <- attr(tmp, "condition")

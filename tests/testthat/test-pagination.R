@@ -232,15 +232,17 @@ test_that("pagination works", {
     dfmf2 <- structure(dfmf, class = c("fakeclass", class(dfmf)))
 
     setOldClass(class(dfmf2))
-    setMethod("do_forced_paginate",
-              "fakeclass",
-              function(obj) {
+    setMethod(
+      "do_forced_paginate",
+      "fakeclass",
+      function(obj) {
         pt1 <- formatters:::mpf_subset_rows(obj, 1)
         class(pt1) <- setdiff(class(obj), "fakeclass")
         pt2 <- formatters:::mpf_subset_rows(obj, 2:32)
         class(pt2) <- setdiff(class(obj), "fakeclass")
         list(pt1, pt2)
-    })
+      }
+    )
 
     res <- paginate_to_mpfs(dfmf2, pg_width = 4, pg_height = 4,
                             margins = rep(0, 4),
@@ -330,6 +332,5 @@ test_that("spans and string matrix match after pagination
   test <- basic_matrix_form(df)
   pag_test <- paginate_to_mpfs(test)
 
-  expect_identical(
-    dim(pag_test[[1]]$spans), dim(pag_test[[1]]$strings))
+  expect_identical(dim(pag_test[[1]]$spans), dim(pag_test[[1]]$strings))
 })

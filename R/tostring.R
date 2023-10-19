@@ -588,16 +588,15 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
     # Final return
     paste0(
-      paste(
-        c(
-            titles_txt, # .do_inset(div, inset) happens if there are any titles
-            .do_inset(txt_head, inset),
-            .do_inset(div, inset),
-            .do_inset(txt_body, inset),
-            .footer_inset_helper(allfoots, div, inset)
-        ),
-        collapse = "\n"
-    ), "\n")
+      paste(c(
+        titles_txt, # .do_inset(div, inset) happens if there are any titles
+        .do_inset(txt_head, inset),
+        .do_inset(div, inset),
+        .do_inset(txt_body, inset),
+        .footer_inset_helper(allfoots, div, inset)
+      ), collapse = "\n"),
+      "\n"
+    )
 })
 
 .do_inset <- function(x, inset) {
