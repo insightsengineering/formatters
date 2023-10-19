@@ -400,7 +400,7 @@ export_as_rtf <- function(x,
                       pg_width = page_dim(page_type)[if (landscape) 2 else 1],
                       pg_height = page_dim(page_type)[if (landscape) 1 else 2],
                       landscape = FALSE,
-                      margins = c(bottom = .5, left = .75, top=.5, right = .75),
+                      margins = c(bottom = .5, left = .75, top = .5, right = .75),
                       font_size = 8,
                       font_family = "Courier",
                       ...) {

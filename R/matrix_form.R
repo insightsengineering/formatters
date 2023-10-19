@@ -347,14 +347,14 @@ infer_ref_info <- function(mform, colspace_only) {
     ## they're nested so \\2 is the inner one, without the brackets
     refs <- gsub("^[^{]*([{]([^}]+)[}]){0,1}$", "\\2", strs)
     ## handle spanned values
-    refs[!mf_display(mform)[idx,]] <- ""
+    refs[!mf_display(mform)[idx, ]] <- ""
 
     ## we want to count across rows first, not down columns, cause
     ## thats how footnote numbering works
     refs_inorder <- as.vector(t(refs))
     keepem <- nzchar(refs_inorder)
     if (sum(keepem) == 0)
-        return(ref_df_row()[0,])
+        return(ref_df_row()[0, ])
 
     refs_spl <- strsplit(refs_inorder[keepem], ", ", fixed = TRUE)
     runvec <- vapply(refs_spl, length, 1L)
@@ -375,7 +375,7 @@ infer_ref_info <- function(mform, colspace_only) {
                       row = rep(row_index, times = runvec),
                       col = rep(col_index, times = runvec))
     ret$msg <- vapply(ret$symbol, function(sym) {
-        fullmsg <- unique(grep(paste0("{",sym, "}"), fixed = TRUE, mf_rfnotes(mform), value = TRUE))
+        fullmsg <- unique(grep(paste0("{", sym, "}"), fixed = TRUE, mf_rfnotes(mform), value = TRUE))
         gsub("^[{][^}]+[}] - ", "", fullmsg)
     }, "")
 
@@ -387,7 +387,7 @@ infer_ref_info <- function(mform, colspace_only) {
     ret$ref_index <- seq_len(nrow(ret))
     ##
     ret$nlines <- vapply(paste0("{", ret$symbol, "} - ", ret$msg), nlines, 1L)
-    ret <- ret[,names(ref_df_row())]
+    ret <- ret[, names(ref_df_row())]
     ret
 }
 
@@ -528,10 +528,10 @@ splice_fnote_info_in <- function(df, refdf, row = TRUE) {
         return(df)
 
     colnm <- ifelse(row, "row", "col")
-    refdf <- refdf[!is.na(refdf[[colnm]]),]
+    refdf <- refdf[!is.na(refdf[[colnm]]), ]
 
     refdf_spl <- split(refdf, refdf[[colnm]])
-    df$ref_info_df <- replicate(nrow(df), list(ref_df_row()[0,]))
+    df$ref_info_df <- replicate(nrow(df), list(ref_df_row()[0, ]))
     df$ref_info_df[as.integer(names(refdf_spl))] <- refdf_spl
     df
 }
@@ -554,14 +554,14 @@ update_mf_nlines <- function(mform, colwidths, max_width) {
 update_mf_rinfo_extents <- function(mform) {
     rinfo <- mf_rinfo(mform)
     refdf_all <- mf_fnote_df(mform)
-    refdf_rows <- refdf_all[!is.na(refdf_all$row),]
+    refdf_rows <- refdf_all[!is.na(refdf_all$row), ]
     if (NROW(rinfo) == 0)
         return(mform)
     lgrp <- mf_lgrouping(mform) - mf_nrheader(mform)
     lgrp <- lgrp[lgrp > 0]
     rf_nlines <- vapply(seq_len(max(lgrp)), function(ii) {
 
-        refdfii <- refdf_rows[refdf_rows$row == ii,]
+        refdfii <- refdf_rows[refdf_rows$row == ii, ]
         refdfii <- refdfii[!duplicated(refdfii$symbol), ]
         if (NROW(refdfii) == 0L)
             return(0L)
@@ -857,7 +857,7 @@ reconstruct_basic_fnote_list <- function(mf) {
     refdf <- mf_fnote_df(mf)
     if (NROW(refdf) == 0)
         return(NULL)
-    refdf <- refdf[!duplicated(refdf$symbol),]
+    refdf <- refdf[!duplicated(refdf$symbol), ]
     paste0("{", refdf$symbol, "} - ", refdf$msg)
 }
 
@@ -925,7 +925,7 @@ truncate_one_span <- function(spanrow, j) {
 }
 
 truncate_spans <- function(spans, j) {
-  if (length(spans[1,]) == 1) {
+  if (length(spans[1, ]) == 1) {
     as.matrix(apply(spans, 1, truncate_one_span, j = j))
   } else {
     t(apply(spans, 1, truncate_one_span, j = j))
@@ -936,7 +936,7 @@ truncate_spans <- function(spans, j) {
 mpf_subset_rows <- function(mf, i) {
     nlh <- mf_nlheader(mf)
     lgrps <- mf_lgrouping(mf)
-    row_lgrps <- tail(lgrps, -1*nlh)
+    row_lgrps <- tail(lgrps, -1 * nlh)
     nrs <- length(unique(row_lgrps))
     ncolrows <- length(unique(lgrps[seq_len(nlh)]))
 
@@ -951,13 +951,13 @@ mpf_subset_rows <- function(mf, i) {
 
     old_nas <- is.na(refdf$row)
     refdf$row <- map_to_new(refdf$row, row_map)
-    refdf <- refdf[old_nas | !is.na(refdf$row),]
+    refdf <- refdf[old_nas | !is.na(refdf$row), ]
     refdf <- fix_fnote_df(refdf)
     mf_fnote_df(mf) <- refdf
 
     rinfo <- mf_rinfo(mf)
 
-    rinfo <- rinfo[rinfo$abs_rownumber %in% i,]
+    rinfo <- rinfo[rinfo$abs_rownumber %in% i, ]
 
     rinfo$abs_rownumber <- map_to_new(rinfo$abs_rownumber, row_map)
     mf_rinfo(mf) <- rinfo

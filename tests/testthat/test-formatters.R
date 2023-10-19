@@ -294,7 +294,7 @@ test_that("formats work", {
         list("5.1" = htmltools::tagList(format_value(5.123, "xx.x"), NULL))
     )
 
-    expect_identical(format_value(c(500,1), "N=xx (xx%)"),
+    expect_identical(format_value(c(500, 1), "N=xx (xx%)"),
                      "N=500 (100%)")
 
     ## errors
@@ -642,7 +642,7 @@ test_that("behavior of decimal alignments on non-numbers", {
     ## have the ability to do that.
 
     bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
-    mf_strings(bmf)[-c(1,2), 2] <- letters[1:3]
+    mf_strings(bmf)[-c(1, 2), 2] <- letters[1:3]
     bmf2 <- bmf
 
     mf_aligns(bmf)[-1, 2] <- "decimal"

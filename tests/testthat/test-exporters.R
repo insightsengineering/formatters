@@ -129,4 +129,3 @@ test_that("export_as_txt maintains repeated columns when paginate is TRUE", {
   expect_identical(length(gregexpr(c("cyl"), pag_out)[[1]]), 2L)
   expect_identical(length(gregexpr(c("disp"), pag_out)[[1]]), 2L)
 })
-

@@ -169,7 +169,7 @@ calc_ref_nlines_df <- function(pagdf) {
     if (NROW(refdf) == 0)
         return(ref_df_row()[0, ])
     unqsyms <- !duplicated(refdf$symbol)
-    refdf[unqsyms, ,drop = FALSE]
+    refdf[unqsyms, , drop = FALSE]
 }
 
 
@@ -229,7 +229,7 @@ valid_pag <- function(pagdf,
   }
   raw_rowlines <- sum(pagdf[start:guess, "self_extent"] - pagdf[start:guess, "nreflines"])
 
-  refdf_ii <- calc_ref_nlines_df(pagdf[start:guess,])
+  refdf_ii <- calc_ref_nlines_df(pagdf[start:guess, ])
   reflines <- if (row) sum(refdf_ii$nlines, 0L) else 0L
   if (reflines > 0 && !have_col_fnotes)
       reflines <- reflines + div_height + 1L
@@ -247,7 +247,7 @@ valid_pag <- function(pagdf,
           structtype_abr <- ifelse(row, "rows", "cols")
           spacetype <- ifelse(row, "lines", "chars")
           spacetype_abr <- ifelse(row, "lns", "chrs")
-          msg <- build_fail_msg(row, lines, raw_rowlines, start, guess, rep_ext, length(pagdf$reprint_inds[[start]]),reflines, NROW(refdf_ii), sectlines)
+          msg <- build_fail_msg(row, lines, raw_rowlines, start, guess, rep_ext, length(pagdf$reprint_inds[[start]]), reflines, NROW(refdf_ii), sectlines)
           message(msg)
       }
       return(FALSE)
@@ -649,7 +649,7 @@ calc_rlpp <- function(pg_size_spec, mf, colwidths, tf_wrap, verbose) {
                 tlines, " title and ", cinfo_lines, " table header lines")
 
     refdf <- mf_fnote_df(mf)
-    cfn_df <- refdf[is.na(refdf$row) & !is.na(refdf$col),]
+    cfn_df <- refdf[is.na(refdf$row) & !is.na(refdf$col), ]
 
     flines <- 0L
     mnfoot <- main_footer(mf)
@@ -893,7 +893,7 @@ paginate_indices <- function(obj,
     if (is.null(pg_size_spec$lpp))
         pag_row_indices <- list(seq_len(mf_nrow(mpf)))
     else
-        pag_row_indices <- pag_indices_inner(pagdf= mf_rinfo(mpf),
+        pag_row_indices <- pag_indices_inner(pagdf = mf_rinfo(mpf),
                                              rlpp = calc_rlpp(pg_size_spec, mpf, colwidths = colwidths, tf_wrap = tf_wrap,
                                                               verbose = verbose),
                                              verbose = verbose,
@@ -1181,7 +1181,7 @@ diagnose_pagination <- function(obj,
 
     msgdf <- data.frame(abs_rownumber = unique(rownum),
                         final_pag_result = rowmsgs, stringsAsFactors = FALSE)
-    rdf <-mf_rinfo(mpf)[, c("abs_rownumber", "label", "self_extent", "par_extent", "node_class")]
+    rdf <- mf_rinfo(mpf)[, c("abs_rownumber", "label", "self_extent", "par_extent", "node_class")]
     rdf$pag_attempted <- rdf$abs_rownumber %in% rownum
     row_diagnose <- merge(rdf, msgdf, by = "abs_rownumber", all.x = TRUE)
 

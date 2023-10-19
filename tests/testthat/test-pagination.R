@@ -27,7 +27,7 @@ test_that("pagination works", {
 
 
     ## silly coverage for bizarre (/impossible) error cases
-    dfmf_b <- basic_matrix_form(mtcars,parent_path = c("root_split", "level1"))
+    dfmf_b <- basic_matrix_form(mtcars, parent_path = c("root_split", "level1"))
     ## expect_error(pag_indices_inner(mf_rinfo(dfmf_b),
     ##                                8,
     ##                                min_siblings = 0,
@@ -40,12 +40,12 @@ test_that("pagination works", {
                                   verbose = TRUE),
                  "Unable to find any valid pagination")
 
-    expect_error(mf_rinfo(dfmf) <- mtcars[1:3,])
+    expect_error(mf_rinfo(dfmf) <- mtcars[1:3, ])
     dfmf_sillytopleft <- dfmf
     ## XXXX no setter for this so we're doing something terrible. sadface
     dfmf_sillytopleft$has_topleft <- TRUE
     strs <- mf_strings(dfmf_sillytopleft)
-    strs[1,1] <- "ha\nha\nha\nha\nha\nha\n"
+    strs[1, 1] <- "ha\nha\nha\nha\nha\nha\n"
     mf_strings(dfmf_sillytopleft) <- strs
     expect_silent(formatters:::mform_handle_newlines(dfmf_sillytopleft))
 

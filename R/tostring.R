@@ -92,7 +92,7 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
     cell_widths_mat <- .calc_cell_widths(mat, widths, col_gap)
 
     # Check that indentation is correct (it works only for body)
-    .check_indentation(mat, row_col_width = cell_widths_mat[ , 1, drop = TRUE])
+    .check_indentation(mat, row_col_width = cell_widths_mat[, 1, drop = TRUE])
     mod_ind_list <- .modify_indentation(mat, cell_widths_mat, do_what = "remove")
     mfs <- mod_ind_list[["mfs"]]
     cell_widths_mat <- mod_ind_list[["cell_widths_mat"]]
@@ -318,7 +318,7 @@ decimal_align <- function(string_mat, align_mat) {
                 if (any(more_than_one)) {
                     stop("Decimal alignment is not supported for multiple values. ",
                          "Found the following string with multiple numbers ",
-                         "(first 3 selected from column ", col_i[1],"): '",
+                         "(first 3 selected from column ", col_i[1], "): '",
                          paste0(col_ia[more_than_one][seq(1, 3)],
                                 collapse = "', '"), "'")
                 }
