@@ -180,7 +180,8 @@ build_fail_msg <- function(row, lines, raw_rowlines,
         spacetype <- "lines"
         spacetype_abr <- "lns"
         structtype_abr <- "rws"
-        sprintf("\t....................... FAIL: requires %d %s [raw: %d %s (%d %s), rep. context: %d %s (%d %s), refs: %d %s (%d)  sect. divs: %d %s].",
+        sprintf(paste("\t....................... FAIL: requires %d %s [raw: %d %s (%d %s), rep.",
+                      "context: %d %s (%d %s), refs: %d %s (%d)  sect. divs: %d %s]."),
                 lines,
                 spacetype,
                 raw_rowlines,
@@ -235,7 +236,8 @@ valid_pag <- function(pagdf,
       reflines <- reflines + div_height + 1L
 
   ##  reflines <- sum(pagdf[start:guess, "nreflines"])
-  rowlines <- raw_rowlines + reflines ##sum(pagdf[start:guess, "self_extent"]) - reflines ## self extent includes reflines
+  rowlines <- raw_rowlines + reflines ##sum(pagdf[start:guess, "self_extent"]) - reflines
+  ## self extent includes reflines
   ## self extent does ***not*** currently include trailing sep
   ## we don't include the trailing_sep for guess because if we paginate here it won't be printed
   sectlines <- if (start == guess) 0L else sum(!is.na(pagdf[start:(guess - 1), "trailing_sep"]))
@@ -247,7 +249,10 @@ valid_pag <- function(pagdf,
           structtype_abr <- ifelse(row, "rows", "cols")
           spacetype <- ifelse(row, "lines", "chars")
           spacetype_abr <- ifelse(row, "lns", "chrs")
-          msg <- build_fail_msg(row, lines, raw_rowlines, start, guess, rep_ext, length(pagdf$reprint_inds[[start]]), reflines, NROW(refdf_ii), sectlines)
+          msg <- build_fail_msg(
+            row, lines, raw_rowlines, start, guess, rep_ext, length(pagdf$reprint_inds[[start]]),
+            reflines, NROW(refdf_ii), sectlines
+          )
           message(msg)
       }
       return(FALSE)
@@ -352,7 +357,8 @@ find_pag <- function(pagdf,
              div_height = div_height,
              do_error = TRUE)
     }
-    stop("Unable to find any valid pagination split\ between ", ifelse(row, "rows ", "columns "), start, " and ", origuess,
+    stop("Unable to find any valid pagination split\ between ",
+         ifelse(row, "rows ", "columns "), start, " and ", origuess,
           ". \n",
          "Inserted ", ifelse(row, "cpp (column-space, content per page) ",
                              "lpp (row-space, lines per page) "),
@@ -894,8 +900,10 @@ paginate_indices <- function(obj,
         pag_row_indices <- list(seq_len(mf_nrow(mpf)))
     else
         pag_row_indices <- pag_indices_inner(pagdf = mf_rinfo(mpf),
-                                             rlpp = calc_rlpp(pg_size_spec, mpf, colwidths = colwidths, tf_wrap = tf_wrap,
-                                                              verbose = verbose),
+                                             rlpp = calc_rlpp(
+                                               pg_size_spec, mpf, colwidths = colwidths,
+                                               tf_wrap = tf_wrap, verbose = verbose
+                                             ),
                                              verbose = verbose,
                                              min_siblings = min_siblings,
                                              nosplitin = nosplitin)
@@ -1058,9 +1066,11 @@ paginate_to_mpfs <- function(obj,
 #'
 #' \describe{
 #' \item{`lpp_diagnostics`}{diagnostic information regarding lines per page}
-#' \item{`row_diagnostics`}{basic information about rows, whether pagination was attempted after each row, and the final result of such an attempt, if made}
+#' \item{`row_diagnostics`}{basic information about rows, whether pagination was attempted
+#'   after each row, and the final result of such an attempt, if made}
 #' \item{`cpp_diagnostics}{diagnostic information regarding columns per page}
-#' \item{`col_diagnostics`}{(very) basic information about leaf columns, whether pagination was attempted after each leaf column, ad the final result of such attempts, if made}
+#' \item{`col_diagnostics`}{(very) basic information about leaf columns, whether pagination
+#'   was attempted after each leaf column, ad the final result of such attempts, if made}
 #' }
 #'
 #' @note  For  `diagnose_pagination`,   the  column  labels  are  not

@@ -315,7 +315,14 @@ MatrixPrintForm <- function(strings = NULL,
 #'
 #' @export
 #'
-ref_df_row <- function(row_path = NA_character_, col_path = NA_character_, row = NA_integer_, col = NA_integer_, symbol = NA_character_, ref_index = NA_integer_, msg = NA_character_, max_width = NULL) {
+ref_df_row <- function(row_path = NA_character_,
+                       col_path = NA_character_,
+                       row = NA_integer_,
+                       col = NA_integer_,
+                       symbol = NA_character_,
+                       ref_index = NA_integer_,
+                       msg = NA_character_,
+                       max_width = NULL) {
     nlines <- nlines(msg, max_width = max_width)
     data.frame(row_path = I(list(row_path)),
                col_path = I(list(col_path)),

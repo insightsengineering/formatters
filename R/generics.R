@@ -90,8 +90,8 @@ setMethod("make_row_df", "MatrixPrintForm", function(tt, colwidths = NULL, visib
 
 #' Transform `rtable` to a list of matrices which can be used for outputting
 #'
-#' Although `rtables` are represented as a tree data structure when outputting the table to ASCII or HTML it is useful to
-#' map the `rtable` to an in between state with the formatted cells in a matrix form.
+#' Although `rtables` are represented as a tree data structure when outputting the table to ASCII or HTML it is
+#' useful to map the `rtable` to an in between state with the formatted cells in a matrix form.
 #'
 #' @param obj ANY. Object to be transformed into a ready-to-render form (a `MatrixPrintForm` object)
 #' @param indent_rownames logical(1), if TRUE the column with the row names in the `strings` matrix of has indented row

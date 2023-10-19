@@ -437,7 +437,10 @@ export_as_rtf <- function(x,
       ))
     })
     restxt <- paste(rtftxts[[1]]$start,
-                    paste(sapply(rtftxts, function(x) x$body), collapse = "\n{\\pard\\fs2\\par}\\page{\\pard\\fs2\\par}\n"),
+                    paste(
+                      sapply(rtftxts, function(x) x$body),
+                      collapse = "\n{\\pard\\fs2\\par}\\page{\\pard\\fs2\\par}\n"
+                    ),
                     rtftxts[[1]]$end)
     if (!is.null(file))
         cat(restxt, file = file)
