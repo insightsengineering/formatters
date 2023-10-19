@@ -1,7 +1,9 @@
-## formatters 0.5.3.9005
+## formatters 0.5.4
  * Fixed a bug in `paginate_to_mpfs()` so that formatting in listings key columns is retained with pagination [`insightsengineering/rlistings#155`](https://github.com/insightsengineering/rlistings/issues/155).
  * Improved error message for pagination when `cpp` or `lpp` is too small in comparison to the column or row widths.
  * Added full support of newline characters in any part of `rtables` objects.
+ * Modified default vertical alignment for top left information to bottom.
+ * Rework of `wrap_string` so to allow space characters to be used and wrapped.
 
 ## formatters 0.5.3
  * Decimal alignment now throws informative error if scientific notation is used.
