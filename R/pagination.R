@@ -630,7 +630,7 @@ calc_lcpp <- function(page_type = NULL,
 
 calc_rlpp <- function(pg_size_spec, mf, colwidths, tf_wrap, verbose) {
     lpp <- pg_size_spec$lpp
-    max_width = pg_size_spec$max_width
+    max_width <- pg_size_spec$max_width
 
     dh <- divider_height(mf)
     if (any(nzchar(all_titles(mf)))) {
