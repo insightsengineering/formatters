@@ -82,16 +82,18 @@ setMethod("make_row_df", "MatrixPrintForm", function(tt, colwidths = NULL, visib
                                                      sibpos = NA_integer_,
                                                      nsibs = NA_integer_,
                                                      max_width = NULL) {
-  stop("make_row_df can be used only on {rtables} table objects, and not on `matrix_form`-",
-       "generated objects (MatrixPrintForm).")
+  stop(
+    "make_row_df can be used only on {rtables} table objects, and not on `matrix_form`-",
+    "generated objects (MatrixPrintForm)."
+  )
 })
 ## nocov end
 
 
 #' Transform `rtable` to a list of matrices which can be used for outputting
 #'
-#' Although `rtables` are represented as a tree data structure when outputting the table to ASCII or HTML it is useful to
-#' map the `rtable` to an in between state with the formatted cells in a matrix form.
+#' Although `rtables` are represented as a tree data structure when outputting the table to ASCII or HTML it is
+#' useful to map the `rtable` to an in between state with the formatted cells in a matrix form.
 #'
 #' @param obj ANY. Object to be transformed into a ready-to-render form (a `MatrixPrintForm` object)
 #' @param indent_rownames logical(1), if TRUE the column with the row names in the `strings` matrix of has indented row
@@ -189,10 +191,7 @@ setMethod(
     if (length(x) == 0) {
       0L
     } else {
-      sum(unlist(vapply(x, nlines, NA_integer_,
-        colwidths = colwidths,
-        max_width = max_width
-      )))
+      sum(unlist(vapply(x, nlines, NA_integer_, colwidths = colwidths, max_width = max_width)))
     }
   }
 )

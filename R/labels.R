@@ -1,7 +1,3 @@
-
-
-
-
 #' Return an object with a label attribute
 #'
 #' @param x an object

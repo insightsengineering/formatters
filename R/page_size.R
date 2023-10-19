@@ -102,7 +102,7 @@ font_lcpi <- function(font_family = "Courier", font_size = 8, lineheight = 1) {
   gp <- gpar(fontfamily = font_family, fontsize = font_size, lineheight = lineheight)
   pushViewport(plotViewport(gp = gp))
   if (convertWidth(unit(1, "strwidth", "."), "inches", valueOnly = TRUE) !=
-    convertWidth(unit(1, "strwidth", "M"), "inches", valueOnly = TRUE)) {
+    convertWidth(unit(1, "strwidth", "M"), "inches", valueOnly = TRUE)) { # nolint
     stop(
       "The font family you selected - ",
       font_family,
@@ -156,34 +156,37 @@ page_lcpp <- function(page_type = page_types(),
                       margins = c(top = .5, bottom = .5, left = .75, right = .75),
                       pg_width = NULL,
                       pg_height = NULL) {
-    if(is.null(page_type))
-        page_type <- page_types()[1]
-    else
-        page_type <- match.arg(page_type)
+  if (is.null(page_type)) {
+    page_type <- page_types()[1]
+  } else {
+    page_type <- match.arg(page_type)
+  }
 
-    if(is.null(names(margins)))
-        names(margins) <- marg_order
-    else
-        margins <- margins[marg_order]
-    if(any(is.na(margins)))
-        stop("margins argument must have names 'bottom', 'left', 'top' and 'right'.")
-    lcpi <- font_lcpi(
-        font_family = font_family,
-        font_size = font_size,
-        lineheight = lineheight
-    )
+  if (is.null(names(margins))) {
+    names(margins) <- marg_order
+  } else {
+    margins <- margins[marg_order]
+  }
+  if (any(is.na(margins))) {
+    stop("margins argument must have names 'bottom', 'left', 'top' and 'right'.")
+  }
+  lcpi <- font_lcpi(
+    font_family = font_family,
+    font_size = font_size,
+    lineheight = lineheight
+  )
 
-    wdpos <- ifelse(landscape, 2, 1)
-    pg_width <- pg_width %||% pg_dim_names[[page_type]][wdpos]
-    pg_height <- pg_height %||% pg_dim_names[[page_type]][-wdpos]
+  wdpos <- ifelse(landscape, 2, 1)
+  pg_width <- pg_width %||% pg_dim_names[[page_type]][wdpos]
+  pg_height <- pg_height %||% pg_dim_names[[page_type]][-wdpos]
 
-    pg_width <- pg_width - sum(margins[c("left", "right")])
-    pg_height <- pg_height - sum(margins[c("top", "bottom")])
+  pg_width <- pg_width - sum(margins[c("left", "right")])
+  pg_height <- pg_height - sum(margins[c("top", "bottom")])
 
-    list(
-        cpp = floor(lcpi[["cpi"]] * pg_width),
-        lpp = floor(lcpi[["lpi"]] * pg_height)
-    )
+  list(
+    cpp = floor(lcpi[["cpi"]] * pg_width),
+    lpp = floor(lcpi[["lpi"]] * pg_height)
+  )
 }
 
 ## pg_types <- list(

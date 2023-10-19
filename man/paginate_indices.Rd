@@ -165,8 +165,10 @@ For \code{diagnose_pagination} a list containing:
 
 \describe{
 \item{\code{lpp_diagnostics}}{diagnostic information regarding lines per page}
-\item{\code{row_diagnostics}}{basic information about rows, whether pagination was attempted after each row, and the final result of such an attempt, if made}
-\item{\verb{cpp_diagnostics\}\{diagnostic information regarding columns per page\} \\item\{}col_diagnostics`}{(very) basic information about leaf columns, whether pagination was attempted after each leaf column, ad the final result of such attempts, if made}
+\item{\code{row_diagnostics}}{basic information about rows, whether pagination was attempted
+after each row, and the final result of such an attempt, if made}
+\item{\verb{cpp_diagnostics\}\{diagnostic information regarding columns per page\} \\item\{}col_diagnostics`}{(very) basic information about leaf columns, whether pagination
+was attempted after each leaf column, ad the final result of such attempts, if made}
 }
 }
 \description{
@@ -254,8 +256,8 @@ paginate_to_mpfs(mpf, pg_width = 5, pg_height = 3)
 
 diagnose_pagination(mpf, pg_width = 5, pg_height = 3)
 clws <- propose_column_widths(mpf)
-clws[1] <- floor(clws[1]/3)
+clws[1] <- floor(clws[1] / 3)
 dgnost <- diagnose_pagination(mpf, pg_width = 5, pg_height = 3, colwidths = clws)
-try(diagnose_pagination(mpf, pg_width = 1)) #fails
+try(diagnose_pagination(mpf, pg_width = 1)) # fails
 
 }
