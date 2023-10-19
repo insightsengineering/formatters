@@ -75,7 +75,7 @@ test_that("exporters work", {
 
 
     ## export_as_rtf rudimentary coverage
-    if(requireNamespace("r2rtf")) {
+    if (requireNamespace("r2rtf")) {
         fil4 <- tempfile(fileext = ".rtf")
         export_as_rtf(dfmf, file = fil4)
         expect_true(file.exists(fil4))

@@ -40,7 +40,7 @@ test_that("pagination works", {
                                   verbose = TRUE),
                  "Unable to find any valid pagination")
 
-    expect_error({mf_rinfo(dfmf) <- mtcars[1:3,]})
+    expect_error(mf_rinfo(dfmf) <- mtcars[1:3,])
     dfmf_sillytopleft <- dfmf
     ## XXXX no setter for this so we're doing something terrible. sadface
     dfmf_sillytopleft$has_topleft <- TRUE
@@ -199,7 +199,7 @@ test_that("pagination works", {
   "invalid value for table_inset"
   )
 
-    expect_error({mf_spans(df3mf) <- matrix(1, nrow = 2, ncol = 3)})
+    expect_error(mf_spans(df3mf) <- matrix(1, nrow = 2, ncol = 3))
 
     ## matrix_form on a matrix form a no op
     expect_identical(df3mf, matrix_form(df3mf))
@@ -247,7 +247,7 @@ test_that("pagination works", {
                             margins = rep(0, 4),
                             min_siblings = 0, verbose = TRUE)
 
-    expect_identical(page_lcpp( pg_width = 4, pg_height = 4,
+    expect_identical(page_lcpp(pg_width = 4, pg_height = 4,
                                margins = rep(0, 4)),
                      list(cpp = 60, lpp = 36))
 
@@ -275,17 +275,24 @@ test_that("pagination works", {
 
     ## the ;TRUE is a hack becasue expect_success didn't do what it seems like it should
     ## this will fail if the first part befoer the ; throws an error.
-    expect_true({diagnose_pagination(dfmf, lpp = NULL, cpp = 60); TRUE})
-    expect_true({dgnostic <- diagnose_pagination(dfmf, lpp = 60, cpp = NULL); TRUE})
-    expect_true({dgnostic <- diagnose_pagination(dfmf2, pg_width = 4, pg_height = 4,
-                                                 margins = rep(0, 4),
-                                                 min_siblings = 0); TRUE})
+    expect_true({
+      diagnose_pagination(dfmf, lpp = NULL, cpp = 60)
+      TRUE
+    })
+    expect_true({
+      dgnostic <- diagnose_pagination(dfmf, lpp = 60, cpp = NULL)
+      TRUE
+    })
+    expect_true({
+      dgnostic <- diagnose_pagination(dfmf2, pg_width = 4, pg_height = 4, margins = rep(0, 4), min_siblings = 0)
+      TRUE
+    })
 
     ## diagnose_pagination when no valid pagination is found
-    expect_true({dgnostic <- diagnose_pagination(dfmf_b,
-                                                 lpp = 8 + 2,
-                                                 min_siblings = 0,
-                                                 nosplitin = "root_split"); TRUE})
+    expect_true({
+      dgnostic <- diagnose_pagination(dfmf_b, lpp = 8 + 2, min_siblings = 0, nosplitin = "root_split")
+      TRUE
+    })
 
 })
 test_that("page to lcpp stuff works", {

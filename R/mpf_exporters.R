@@ -39,8 +39,8 @@ export_as_txt <- function(x,
                           file = NULL,
                           page_type = NULL,
                           landscape = FALSE,
-                          pg_width = page_dim(page_type)[if(landscape) 2 else 1],
-                          pg_height = page_dim(page_type)[if(landscape) 1 else 2],
+                          pg_width = page_dim(page_type)[if (landscape) 2 else 1],
+                          pg_height = page_dim(page_type)[if (landscape) 1 else 2],
                           font_family = "Courier",
                           font_size = 8,  # grid parameters
                           lineheight = 1L,
@@ -60,7 +60,7 @@ export_as_txt <- function(x,
                           verbose = FALSE,
                           page_break = "\\s\\n") {
 
-    if(paginate) {
+    if (paginate) {
         pages <- paginate_to_mpfs(x,
                                   page_type = page_type,
                                   font_family = font_family,
@@ -91,7 +91,7 @@ export_as_txt <- function(x,
                       hsep = hsep, tf_wrap = tf_wrap, max_width = max_width)
     res <- paste(strings, collapse = page_break)
 
-    if(is.null(file))
+    if (is.null(file))
         res
     else
         cat(res, file = file)
@@ -397,21 +397,21 @@ export_as_rtf <- function(x,
                       file = NULL,
                       colwidths = propose_column_widths(matrix_form(x, TRUE)),
                       page_type = "letter",
-                      pg_width = page_dim(page_type)[if(landscape) 2 else 1],
-                      pg_height = page_dim(page_type)[if(landscape) 1 else 2],
+                      pg_width = page_dim(page_type)[if (landscape) 2 else 1],
+                      pg_height = page_dim(page_type)[if (landscape) 1 else 2],
                       landscape = FALSE,
                       margins = c(bottom = .5, left = .75, top=.5, right = .75),
                       font_size = 8,
                       font_family = "Courier",
                       ...) {
-    if(!requireNamespace("r2rtf"))
+    if (!requireNamespace("r2rtf"))
         stop("RTF export requires the r2rtf package, please install it.")
-    if(is.null(names(margins)))
+    if (is.null(names(margins)))
         names(margins) <- marg_order
 
     fullmf <- matrix_form(x, indent_rownames = TRUE)
     req_ncols <- ncol(fullmf) + as.numeric(mf_has_rlabels(fullmf))
-    if(!is.null(colwidths) && length(colwidths) != req_ncols)
+    if (!is.null(colwidths) && length(colwidths) != req_ncols)
         stop("non-null colwidths argument must have length ncol(x) (+ 1 if row labels are present) [",
              req_ncols, "], got length ", length(colwidths))
 
@@ -426,17 +426,20 @@ export_as_rtf <- function(x,
                            colwidths = colwidths,
                            ...)
 
-    rtftxts <- lapply(mpfs, function(mf) r2rtf::rtf_encode(mpf_to_rtf(mf,
-                                                                       colwidths = mf_col_widths(mf),
-                                                                       page_type = page_type,
-                                                                       pg_width = pg_width,
-                                                                       pg_height = pg_height,
-                                                                       font_size = font_size,
-                                                                       margins = c(top = 0, left = 0, bottom = 0, right = 0))))
+    rtftxts <- lapply(mpfs, function(mf) {
+      r2rtf::rtf_encode(mpf_to_rtf(mf,
+                                   colwidths = mf_col_widths(mf),
+                                   page_type = page_type,
+                                   pg_width = pg_width,
+                                   pg_height = pg_height,
+                                   font_size = font_size,
+                                   margins = c(top = 0, left = 0, bottom = 0, right = 0)
+      ))
+    })
     restxt <- paste(rtftxts[[1]]$start,
                     paste(sapply(rtftxts, function(x) x$body), collapse = "\n{\\pard\\fs2\\par}\\page{\\pard\\fs2\\par}\n"),
                     rtftxts[[1]]$end)
-    if(!is.null(file))
+    if (!is.null(file))
         cat(restxt, file = file)
     else
         restxt

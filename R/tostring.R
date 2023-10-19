@@ -240,7 +240,7 @@ is_dec_align <- function(vec) {
   # "c" is not an alignment method we define in `formatters`,
   # but the reverse dependency package `tables` will need
     sdiff <- setdiff(vec, c(list_valid_aligns(), "c"))
-    if(length(sdiff) > 0)
+    if (length(sdiff) > 0)
         stop("Invalid text-alignment(s): ",
              paste(sdiff, collapse = ", "))
     grepl("dec", vec)
@@ -302,7 +302,7 @@ decimal_align <- function(string_mat, align_mat) {
             if (length(col_ia) > 0) {
                 # Special case: scientific notation
                 has_sc_not <- grepl("\\d+[e|E][\\+|\\-]\\d+", col_ia)
-                if(any(has_sc_not)) {
+                if (any(has_sc_not)) {
                   stop("Found values using scientific notation between the ones that",
                        " needs to be decimal aligned (aligns is decimal, dec_left or dec_right).",
                        " Please consider using format functions to get a complete decimal ",
@@ -347,7 +347,7 @@ decimal_align <- function(string_mat, align_mat) {
                     }
                 }, USE.NAMES = FALSE)
                 ## figure out whether we need space separators (at least one had a "." or not)
-                if(!any(grepl("[^[:space:]]", separator)))
+                if (!any(grepl("[^[:space:]]", separator)))
                     separator <- gsub("[[:space:]]*", "", separator)
                 ## modify the piece with spaces
                 left_mod <- paste0(spaces(max(nchar(left), na.rm = TRUE) - nchar(left)), left)
