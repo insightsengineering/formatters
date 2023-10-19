@@ -231,14 +231,13 @@ test_that("pagination works", {
     ## coverage for forced pagination support
     dfmf2 <- structure(dfmf, class = c("fakeclass", class(dfmf)))
 
-    mf_subset_rows <- formatters:::mpf_subset_rows
     setOldClass(class(dfmf2))
     setMethod("do_forced_paginate",
               "fakeclass",
               function(obj) {
-        pt1 <- mf_subset_rows(obj, 1)
+        pt1 <- formatters:::mpf_subset_rows(obj, 1)
         class(pt1) <- setdiff(class(obj), "fakeclass")
-        pt2 <- mf_subset_rows(obj, 2:32)
+        pt2 <- formatters:::mpf_subset_rows(obj, 2:32)
         class(pt2) <- setdiff(class(obj), "fakeclass")
         list(pt1, pt2)
     })
