@@ -60,7 +60,8 @@ export_as_txt <- function(x,
                           page_break = "\\s\\n") {
 
   if (paginate) {
-    pages <- paginate_to_mpfs(x,
+    pages <- paginate_to_mpfs(
+      x,
       page_type = page_type,
       font_family = font_family,
       font_size = font_size,
@@ -78,7 +79,8 @@ export_as_txt <- function(x,
       max_width = max_width,
       indent_size = indent_size,
       verbose = verbose,
-      rep_cols = rep_cols)
+      rep_cols = rep_cols
+    )
   } else {
     mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size)
     mf_col_widths(mf) <- colwidths %||% propose_column_widths(mf)
@@ -86,8 +88,10 @@ export_as_txt <- function(x,
   }
   ## we dont' set widths here because we already but that info on mpf
   ## so its on each of the pages.
-  strings <- vapply(pages, toString, "", widths = NULL,
-    hsep = hsep, tf_wrap = tf_wrap, max_width = max_width)
+  strings <- vapply(
+    pages, toString, "", widths = NULL,
+    hsep = hsep, tf_wrap = tf_wrap, max_width = max_width
+  )
   res <- paste(strings, collapse = page_break)
 
   if (is.null(file))
@@ -411,8 +415,10 @@ export_as_rtf <- function(x,
   fullmf <- matrix_form(x, indent_rownames = TRUE)
   req_ncols <- ncol(fullmf) + as.numeric(mf_has_rlabels(fullmf))
   if (!is.null(colwidths) && length(colwidths) != req_ncols)
-    stop("non-null colwidths argument must have length ncol(x) (+ 1 if row labels are present) [",
-      req_ncols, "], got length ", length(colwidths))
+    stop(
+      "non-null colwidths argument must have length ncol(x) (+ 1 if row labels are present) [",
+      req_ncols, "], got length ", length(colwidths)
+    )
 
   true_width <- pg_width - sum(margins[c("left", "right")])
   true_height <- pg_height - sum(margins[c("top", "bottom")])
@@ -437,12 +443,14 @@ export_as_rtf <- function(x,
       margins = c(top = 0, left = 0, bottom = 0, right = 0)
     ))
   })
-  restxt <- paste(rtftxts[[1]]$start,
+  restxt <- paste(
+    rtftxts[[1]]$start,
     paste(
       sapply(rtftxts, function(x) x$body),
       collapse = "\n{\\pard\\fs2\\par}\\page{\\pard\\fs2\\par}\n"
     ),
-    rtftxts[[1]]$end)
+    rtftxts[[1]]$end
+  )
   if (!is.null(file))
     cat(restxt, file = file)
   else

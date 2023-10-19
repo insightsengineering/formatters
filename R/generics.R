@@ -82,8 +82,10 @@ setMethod("make_row_df", "MatrixPrintForm", function(tt, colwidths = NULL, visib
                                                      sibpos = NA_integer_,
                                                      nsibs = NA_integer_,
                                                      max_width = NULL) {
-  stop("make_row_df can be used only on {rtables} table objects, and not on `matrix_form`-",
-    "generated objects (MatrixPrintForm).")
+  stop(
+    "make_row_df can be used only on {rtables} table objects, and not on `matrix_form`-",
+    "generated objects (MatrixPrintForm)."
+  )
 })
 ## nocov end
 
@@ -189,10 +191,7 @@ setMethod(
     if (length(x) == 0) {
       0L
     } else {
-      sum(unlist(vapply(x, nlines, NA_integer_,
-        colwidths = colwidths,
-        max_width = max_width
-      )))
+      sum(unlist(vapply(x, nlines, NA_integer_, colwidths = colwidths, max_width = max_width)))
     }
   }
 )

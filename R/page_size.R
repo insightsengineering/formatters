@@ -102,7 +102,7 @@ font_lcpi <- function(font_family = "Courier", font_size = 8, lineheight = 1) {
   gp <- gpar(fontfamily = font_family, fontsize = font_size, lineheight = lineheight)
   pushViewport(plotViewport(gp = gp))
   if (convertWidth(unit(1, "strwidth", "."), "inches", valueOnly = TRUE) !=
-    convertWidth(unit(1, "strwidth", "M"), "inches", valueOnly = TRUE)) {
+    convertWidth(unit(1, "strwidth", "M"), "inches", valueOnly = TRUE)) { # nolint
     stop(
       "The font family you selected - ",
       font_family,

@@ -68,9 +68,11 @@ mform_handle_newlines <- function(matform) {
     )
 
     newfrmmat <- rbind(
-      expand_mat_rows(frmmat[hdr_inds, , drop = FALSE],
+      expand_mat_rows(
+        frmmat[hdr_inds, , drop = FALSE],
         row_nlines[hdr_inds],
-        cpadder = pad_vert_bottom),
+        cpadder = pad_vert_bottom
+      ),
       expand_mat_rows(frmmat[-1 * hdr_inds, , drop = FALSE], row_nlines[-hdr_inds])
     )
 
@@ -324,7 +326,8 @@ ref_df_row <- function(row_path = NA_character_,
                        msg = NA_character_,
                        max_width = NULL) {
   nlines <- nlines(msg, max_width = max_width)
-  data.frame(row_path = I(list(row_path)),
+  data.frame(
+    row_path = I(list(row_path)),
     col_path = I(list(col_path)),
     row = row,
     col = col,
@@ -332,7 +335,8 @@ ref_df_row <- function(row_path = NA_character_,
     ref_index = ref_index,
     msg = msg,
     nlines = nlines,
-    stringsAsFactors = FALSE)
+    stringsAsFactors = FALSE
+  )
 }
 
 
@@ -368,8 +372,9 @@ infer_ref_info <- function(mform, colspace_only) {
 
 
 
-  row_index <- as.vector(t(do.call(cbind, replicate(ncol(strs),
-    list(mf_lgrouping(mform)[idx] - mf_nlheader(mform))))))[keepem]
+  row_index <- as.vector(
+    t(do.call(cbind, replicate(ncol(strs), list(mf_lgrouping(mform)[idx] - mf_nlheader(mform)))))
+  )[keepem]
   row_index[row_index < 1] <- NA_integer_
   c_torep <- if (hasrlbs) c(NA_integer_, seq(1, ncol(strs) - 1)) else seq_len(ncol(strs))
   col_index <- rep(c_torep, nrow(strs))[keepem]
@@ -377,10 +382,12 @@ infer_ref_info <- function(mform, colspace_only) {
 
 
 
-  ret <- data.frame(symbol = unlist(refs_spl),
+  ret <- data.frame(
+    symbol = unlist(refs_spl),
     row_path = I(mf_rinfo(mform)$path[rep(row_index, times = runvec)]),
     row = rep(row_index, times = runvec),
-    col = rep(col_index, times = runvec))
+    col = rep(col_index, times = runvec)
+  )
   ret$msg <- vapply(ret$symbol, function(sym) {
     fullmsg <- unique(grep(paste0("{", sym, "}"), fixed = TRUE, mf_rfnotes(mform), value = TRUE))
     gsub("^[{][^}]+[}] - ", "", fullmsg)
@@ -512,8 +519,10 @@ mf_col_widths <- function(mf) {
 
 `mf_col_widths<-` <- function(mf, value) {
   if (!is.null(value) && length(value) != NCOL(mf_strings(mf)))
-    stop("Number of column widths (", length(value), ") does not match ",
-      "number of columns in strings matrix (", NCOL(mf_strings(mf)), ").")
+    stop(
+      "Number of column widths (", length(value), ") does not match ",
+      "number of columns in strings matrix (", NCOL(mf_strings(mf)), ")."
+    )
   mf$col_widths <- value
   mf
 }
@@ -578,8 +587,10 @@ update_mf_rinfo_extents <- function(mform) {
   stopifnot(length(raw_self_exts) == length(rf_nlines))
   new_exts <- raw_self_exts + rf_nlines
 
-  mapdf <- data.frame(row_num = as.integer(names(new_exts)),
-    raw_extent = raw_self_exts)
+  mapdf <- data.frame(
+    row_num = as.integer(names(new_exts)),
+    raw_extent = raw_self_exts
+  )
   stopifnot(all(mapdf$row_num == rinfo$abs_rownumber))
 
 
@@ -599,10 +610,12 @@ update_mf_ref_nlines <- function(mform, max_width) {
   if (NROW(refdf) == 0)
     return(mform)
 
-  refdf$nlines <- vapply(paste0("{", refdf$symbol, "} - ", refdf$msg),
+  refdf$nlines <- vapply(
+    paste0("{", refdf$symbol, "} - ", refdf$msg),
     nlines,
     max_width = max_width,
-    1L)
+    1L
+  )
   mf_fnote_df(mform) <- refdf
   shove_refdf_into_rowinfo(mform)
 }
@@ -686,10 +699,12 @@ update_mf_ref_nlines <- function(mform, max_width) {
   lgrps <- mf_lgrouping(mf)
   nrs <- length(unique(lgrps[-seq_len(mf_nlheader(mf))]))
   if (NROW(value) != nrs)
-    stop("Rows in new row_info component (",
+    stop(
+      "Rows in new row_info component (",
       NROW(value),
       ") does not match number of rows reflected in line_grouping component (",
-      nrs, ")")
+      nrs, ")"
+    )
   mf$row_info <- value
   mf
 }
@@ -698,8 +713,10 @@ update_mf_ref_nlines <- function(mform, max_width) {
 #' @rdname mpf_accessors
 `mf_cinfo<-` <- function(mf, value) {
   if (NROW(value) > 0 && NROW(value) != ncol(mf))
-    stop("Number of rows in new cinfo (", NROW(value), ") does not match ",
-      "number of columns (", ncol(mf), ")")
+    stop(
+      "Number of rows in new cinfo (", NROW(value), ") does not match ",
+      "number of columns (", ncol(mf), ")"
+    )
   mf$col_info <- value
   mf
 }

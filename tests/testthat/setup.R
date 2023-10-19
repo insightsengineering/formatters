@@ -11,9 +11,11 @@ make_basemf_fnotes <- function() {
   dfmf$strings[10, 1:2] <- paste(dfmf$strings[10, 1:2], "{*}")
   dfmf$strings[11, 4:5] <- paste(dfmf$strings[11, 4:5], "{*}")
 
-  mf_rfnotes(dfmf) <- c("{1} - fnote 1 is the coolest",
+  mf_rfnotes(dfmf) <- c(
+    "{1} - fnote 1 is the coolest",
     "{2} - no way, fnote 2 forever",
-    "{*} - symbooollllssss")
+    "{*} - symbooollllssss"
+  )
 
   dfmf <- formatters:::mform_build_refdf(dfmf)
   mf_rfnotes(dfmf) <- formatters:::reconstruct_basic_fnote_list(dfmf)

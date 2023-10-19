@@ -11,20 +11,24 @@ test_that("pagination works", {
 
 
   ## min_siblings following siblings test
-  pagindices <- pag_indices_inner(mf_rinfo(dfmf),
+  pagindices <- pag_indices_inner(
+    mf_rinfo(dfmf),
     25,
     min_siblings = 10,
-    verbose = TRUE)
-  expect_equal(length(pagindices[[1]]),
-    21)
+    verbose = TRUE
+  )
+  expect_equal(
+    length(pagindices[[1]]),
+    21
+  )
 
   ## min siblings preceding test
-  expect_error(pag_indices_inner(mf_rinfo(dfmf),
+  expect_error(pag_indices_inner(
+    mf_rinfo(dfmf),
     25,
     min_siblings = 30,
-    verbose = TRUE))
-
-
+    verbose = TRUE
+  ))
 
   ## silly coverage for bizarre (/impossible) error cases
   dfmf_b <- basic_matrix_form(mtcars, parent_path = c("root_split", "level1"))
@@ -33,12 +37,16 @@ test_that("pagination works", {
   ##                                min_siblings = 0,
   ##                                nosplitin = "root_split",
   ##                                verbose = TRUE))
-  expect_error(paginate_to_mpfs(dfmf_b,
-    lpp = 8 + 2,
-    min_siblings = 0,
-    nosplitin = "root_split",
-    verbose = TRUE),
-  "Unable to find any valid pagination")
+  expect_error(
+    paginate_to_mpfs(
+      dfmf_b,
+      lpp = 8 + 2,
+      min_siblings = 0,
+      nosplitin = "root_split",
+      verbose = TRUE
+    ),
+    "Unable to find any valid pagination"
+  )
 
   expect_error(mf_rinfo(dfmf) <- mtcars[1:3, ])
   dfmf_sillytopleft <- dfmf
@@ -56,11 +64,15 @@ test_that("pagination works", {
   ##                                min_siblings = 0,
   ##                                verbose = TRUE))
 
-  expect_error(paginate_to_mpfs(dfmf_cont,
-    lpp = 8 + 2,
-    min_siblings = 0,
-    verbose = TRUE),
-  "Unable to find any valid pagination")
+  expect_error(
+    paginate_to_mpfs(
+      dfmf_cont,
+      lpp = 8 + 2,
+      min_siblings = 0,
+      verbose = TRUE
+    ),
+    "Unable to find any valid pagination"
+  )
 
   ## https://github.com/insightsengineering/rtables/issues/318
   dfmf2 <- dfmf
@@ -107,12 +119,13 @@ test_that("pagination works", {
 
   ## expect_true(all(lengths(hpaginds) == 2L))
 
-  hpagmpfs <- paginate_to_mpfs(df2mf,
+  hpagmpfs <- paginate_to_mpfs(
+    df2mf,
     lpp = 8 + 2,
     min_siblings = 0,
-    verbose = TRUE)
-  expect_true(all(sapply(hpagmpfs,
-    function(x) max(mf_lgrouping(x)) - mf_nrheader(x)) == 2L))
+    verbose = TRUE
+  )
+  expect_true(all(sapply(hpagmpfs, function(x) max(mf_lgrouping(x)) - mf_nrheader(x)) == 2L))
 
 
   ## vpaginds <- vert_pag_indices(df2mf, cpp = 40, verbose = TRUE)
@@ -122,19 +135,24 @@ test_that("pagination works", {
   ##   c(3L, 3L, 3L, 2L, 1L)
   ## )
 
-  vpagmpfs <- paginate_to_mpfs(df2mf,
+  vpagmpfs <- paginate_to_mpfs(
+    df2mf,
     cpp = 40,
     verbose = TRUE,
-    pg_height = 100000)
+    pg_height = 100000
+  )
 
-  expect_identical(sapply(vpagmpfs, ncol),
-    c(3L, 3L, 3L, 2L, 1L))
+  expect_identical(
+    sapply(vpagmpfs, ncol),
+    c(3L, 3L, 3L, 2L, 1L)
+  )
 
-
-  vpagmpfs2 <- paginate_to_mpfs(df2mf,
+  vpagmpfs2 <- paginate_to_mpfs(
+    df2mf,
     cpp = 39,
     verbose = TRUE,
-    pg_height = 100000)
+    pg_height = 100000
+  )
 
   expect_identical(
     sapply(vpagmpfs2, ncol),
@@ -151,20 +169,28 @@ test_that("pagination works", {
   vpaginds3 <- vert_pag_indices(df2mf, cpp = 44, verbose = TRUE, rep_cols = 1L)
 
   ## make sure it was repeated as requested
-  expect_identical(sapply(vpaginds3, function(x) x[1]),
-    rep(1L, 5))
+  expect_identical(
+    sapply(vpaginds3, function(x) x[1]),
+    rep(1L, 5)
+  )
 
   ## make sure it doesn't appear more than once
-  expect_identical(sapply(vpaginds3, function(x) sum(x == 1L)),
-    rep(1L, 5))
+  expect_identical(
+    sapply(vpaginds3, function(x) sum(x == 1L)),
+    rep(1L, 5)
+  )
 
 
   ## they all appear
-  expect_equal(sort(unique(unlist(vpaginds3))),
-    1:12)
+  expect_equal(
+    sort(unique(unlist(vpaginds3))),
+    1:12
+  )
 
-  expect_identical(lengths(vpaginds3),
-    c(3L, 3L, 3L, 4L, 3L))
+  expect_identical(
+    lengths(vpaginds3),
+    c(3L, 3L, 3L, 4L, 3L)
+  )
 
   df3 <- data.frame(
     x = 1:5, y = c(1:3, 8, 9),
@@ -217,16 +243,20 @@ test_that("pagination works", {
   ## also covered partially in closely related export test
 
   dfmf <- make_basemf_fnotes()
-  expect_error(paginate_indices(dfmf, lpp = 15, cpp = 10000, verbose = TRUE),
-    "Unable to find any valid pagination")
+  expect_error(
+    paginate_indices(dfmf, lpp = 15, cpp = 10000, verbose = TRUE),
+    "Unable to find any valid pagination"
+  )
 
+  expect_error(
+    paginate_indices(dfmf, lpp = 2, cpp = 10000, verbose = TRUE),
+    "Lines of repeated context .* larger than specified lines per page"
+  )
 
-  expect_error(paginate_indices(dfmf, lpp = 2, cpp = 10000, verbose = TRUE),
-    "Lines of repeated context .* larger than specified lines per page")
-
-  res <- paginate_to_mpfs(dfmf, pg_width = 4, pg_height = 4, margins = rep(0, 4),
-    min_siblings = 0, verbose = TRUE)
-
+  res <- paginate_to_mpfs(
+    dfmf, pg_width = 4, pg_height = 4, margins = rep(0, 4),
+    min_siblings = 0, verbose = TRUE
+  )
 
   ## coverage for forced pagination support
   dfmf2 <- structure(dfmf, class = c("fakeclass", class(dfmf)))
@@ -244,13 +274,13 @@ test_that("pagination works", {
     }
   )
 
-  res <- paginate_to_mpfs(dfmf2, pg_width = 4, pg_height = 4,
+  res <- paginate_to_mpfs(
+    dfmf2, pg_width = 4, pg_height = 4,
     margins = rep(0, 4),
-    min_siblings = 0, verbose = TRUE)
+    min_siblings = 0, verbose = TRUE
+  )
 
-  expect_identical(page_lcpp(pg_width = 4, pg_height = 4,
-    margins = rep(0, 4)),
-  list(cpp = 60, lpp = 36))
+  expect_identical(page_lcpp(pg_width = 4, pg_height = 4, margins = rep(0, 4)), list(cpp = 60, lpp = 36))
 
 
   ## first vertical pagination is "forced" after row 1,
@@ -266,9 +296,7 @@ test_that("pagination works", {
   expect_true(all(resnls <= 36))
   expect_equal(resnls[4], 36)
 
-
-  expect_error(paginate_indices(dfmf2),
-    "forced pagination is required for this object")
+  expect_error(paginate_indices(dfmf2), "forced pagination is required for this object")
   ## diagnose_pagination smoke test coverage
   ## actual functionality cannot be tested because it relies on capturing
   ## the message stream which testthat is already doing and
@@ -305,8 +333,10 @@ test_that("page to lcpp stuff works", {
     list(cpp = 72, lpp = 60)
   )
 
-  expect_identical(formatters:::calc_lcpp(),
-    formatters:::calc_lcpp(page_type = "letter"))
+  expect_identical(
+    formatters:::calc_lcpp(),
+    formatters:::calc_lcpp(page_type = "letter")
+  )
 
 })
 
@@ -325,12 +355,14 @@ test_that("non-monospaced fonts are caught", {
   )
 })
 
-test_that("spans and string matrix match after pagination
-          when table has single column", {
+test_that("spans and string matrix match after pagination when table has single column", {
 
   df <- as.data.frame(mtcars[, 1])
   test <- basic_matrix_form(df)
   pag_test <- paginate_to_mpfs(test)
 
-  expect_identical(dim(pag_test[[1]]$spans), dim(pag_test[[1]]$strings))
+  expect_identical(
+    dim(pag_test[[1]]$spans),
+    dim(pag_test[[1]]$strings)
+  )
 })

@@ -12,9 +12,11 @@ test_that("exporters work", {
   dfmf$strings[10, 1:3] <- paste(dfmf$strings[10, 1:3], "{*}")
   dfmf$strings[11, 4:6] <- paste(dfmf$strings[11, 4:6], "{*}")
 
-  mf_rfnotes(dfmf) <- c("{1} - fnote 1 is the coolest",
+  mf_rfnotes(dfmf) <- c(
+    "{1} - fnote 1 is the coolest",
     "{2} - no way, fnote 2 forever",
-    "{*} - symbooollllssss")
+    "{*} - symbooollllssss"
+  )
 
   dfmf <- formatters:::mform_build_refdf(dfmf)
   mf_rfnotes(dfmf) <- formatters:::reconstruct_basic_fnote_list(dfmf)
@@ -35,43 +37,44 @@ test_that("exporters work", {
 
   ## 2 pages, 1 page break
   pbreak_pos <- grep("~", exptlines, fixed = TRUE)
-  expect_identical(length(pbreak_pos),
-    1L)
+  expect_identical(length(pbreak_pos), 1L)
 
   ## one per page
   sym_msg_pos <- grep("{*} - symbooollllssss", exptlines, fixed = TRUE)
 
-  expect_identical(length(grep("{*} - symbooollllssss", exptlines, fixed = TRUE)),
-    2L)
-  expect_true(sym_msg_pos[1] < pbreak_pos &&
-    sym_msg_pos[2] > pbreak_pos)
+  expect_identical(length(grep("{*} - symbooollllssss", exptlines, fixed = TRUE)), 2L)
+  expect_true(sym_msg_pos[1] < pbreak_pos && sym_msg_pos[2] > pbreak_pos)
 
   ## 4 on first page, incl the message, 2 on second page incl message
-  expect_identical(length(grep("{*}", exptlines, fixed = TRUE)),
-    6L)
+  expect_identical(length(grep("{*}", exptlines, fixed = TRUE)), 6L)
 
 
 
   exp_h_pags <- 3L
   exp_v_pags <- 2L
   fil3 <- tempfile(fileext = ".txt")
-  export_as_txt(dfmf, pg_height = 4, pg_width = 4, file = fil3, page_break = "~~~~\n",
-    margins = rep(0, 4))
+  export_as_txt(
+    dfmf, pg_height = 4, pg_width = 4, file = fil3, page_break = "~~~~\n",
+    margins = rep(0, 4)
+  )
   exptlines <- readLines(fil3)
 
   msg_1_pos <- grep("{1} - fnote 1 is the coolest", exptlines, fixed = TRUE)
-  expect_identical(length(msg_1_pos),
-    1L)
+  expect_identical(length(msg_1_pos), 1L)
 
   msg_asterisk_pos <- grep("{*} - symbooollllssss", exptlines, fixed = TRUE)
-  expect_identical(length(msg_asterisk_pos),
-    exp_h_pags)
+  expect_identical(
+    length(msg_asterisk_pos),
+    exp_h_pags
+  )
 
   expect_true(msg_1_pos > min(msg_asterisk_pos))
 
 
-  expect_identical(length(grep("~", exptlines, fixed = TRUE)),
-    exp_h_pags * exp_v_pags - 1L)
+  expect_identical(
+    length(grep("~", exptlines, fixed = TRUE)),
+    exp_h_pags * exp_v_pags - 1L
+  )
 
 
   ## export_as_rtf rudimentary coverage
@@ -86,12 +89,13 @@ test_that("exporters work", {
   ## https://github.com/insightsengineering/rtables/issues/634
 
   test_that("mpf_subset_rows works when there are newlines/wrapping in column labels", {
-    strs <- matrix(c("hi", "lo",
+    strs <- matrix(c(
+      "hi", "lo",
       "", "there",
       "(N=50)", "(N=whoknows)",
       "value", "value",
-      "value2", "value2"),
-    nrow = 5, byrow = TRUE)
+      "value2", "value2"
+    ), nrow = 5, byrow = TRUE)
 
     rinfo <- rbind(
       pagdfrow(
@@ -101,26 +105,34 @@ test_that("exporters work", {
         nm = "what2", lab = "what2", rnum = 2, pth = list(), extent = 1L, nsibs = 1, sibpos = 1, rclass = "what"
       )
     )
-    mymf <- MatrixPrintForm(strings = strs, aligns = matrix("center", ncol = 2, nrow = 5),
+    mymf <- MatrixPrintForm(
+      strings = strs, aligns = matrix("center", ncol = 2, nrow = 5),
       formats = matrix("xx", ncol = 2, nrow = 5),
       spans = matrix(1L, ncol = 2, nrow = 5),
       has_topleft = FALSE,
       line_grouping = c(1, 1, 2, 3, 4),
       nrow_header = 2,
-      row_info = rinfo)
+      row_info = rinfo
+    )
 
     mymf_out <- toString(mymf, hsep = "-")
-    expct_lns <- c("              lo     ",
+    expct_lns <- c(
+      "              lo     ",
       "  hi        there    ",
       "(N=50)   (N=whoknows)",
       "---------------------",
       "value       value    ",
-      "value2      value2   \n")
-    expect_identical(mymf_out,
-      paste(expct_lns, collapse = "\n"))
+      "value2      value2   \n"
+    )
+    expect_identical(
+      mymf_out,
+      paste(expct_lns, collapse = "\n")
+    )
     newmf <- formatters:::mpf_subset_rows(mymf, 1)
-    expect_identical(toString(newmf, hsep = "-"),
-      paste(c(expct_lns[1:5], ""), collapse = "\n"))
+    expect_identical(
+      toString(newmf, hsep = "-"),
+      paste(c(expct_lns[1:5], ""), collapse = "\n")
+    )
   })
 })
 

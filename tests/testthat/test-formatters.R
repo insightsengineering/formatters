@@ -294,8 +294,7 @@ test_that("formats work", {
     list("5.1" = htmltools::tagList(format_value(5.123, "xx.x"), NULL))
   )
 
-  expect_identical(format_value(c(500, 1), "N=xx (xx%)"),
-    "N=500 (100%)")
+  expect_identical(format_value(c(500, 1), "N=xx (xx%)"), "N=500 (100%)")
 
   ## errors
 
@@ -459,21 +458,19 @@ test_that("all valid format labels can be applied without error", {
 })
 
 ## silly coverage things
-expect_identical(padstr("hi", 4, "center"),
-  " hi ")
-expect_identical(padstr("hi", 4, "left"),
-  "hi  ")
-expect_identical(padstr("hi", 4, "right"),
-  "  hi")
-expect_identical(padstr(NA, 4, "center"),
-  "<NA>")
+expect_identical(padstr("hi", 4, "center"), " hi ")
+expect_identical(padstr("hi", 4, "left"), "hi  ")
+expect_identical(padstr("hi", 4, "right"), "  hi")
+expect_identical(padstr(NA, 4, "center"), "<NA>")
 
 expect_error(padstr(c("hi", "lo"), 5))
 expect_error(padstr(5, "hi"))
 
 
-expect_identical(spans_to_viscell(c(2, 2, 2, 2, 1, 3, 3, 3)),
-  c(TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE))
+expect_identical(
+  spans_to_viscell(c(2, 2, 2, 2, 1, 3, 3, 3)),
+  c(TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE)
+)
 
 expect_equal(nlines(character()), 0)
 
@@ -484,21 +481,19 @@ stupidobj <- NA_real_
 obj_na_str(stupidobj) <- "wat"
 obj_format(stupidobj) <- "xx.x"
 expect_silent(obj_align(stupidobj) <- "left") # setter for ANY align
-expect_identical(format_value(stupidobj,
-  format = obj_format(stupidobj),
-  na_str = obj_na_str(stupidobj)),
-"wat")
+expect_identical(
+  format_value(stupidobj, format = obj_format(stupidobj), na_str = obj_na_str(stupidobj)),
+  "wat"
+)
 expect_identical(obj_align(stupidobj), "left") # getter for ANY align
 
 ## XXX I'm not sure if we use this functionality anywhere
 ## and as I note in the code implementing it its dangerous and I'm
 ## not convinced we want it. Remove this test once we learn our lesson
 ## and remove the list method
-mylst <- list("hi",
-  c("there\nyou", "person", "ahoy"))
+mylst <- list("hi", c("there\nyou", "person", "ahoy"))
 expect_equal(nlines(mylst), 5)
-expect_equal(nlines(list()),
-  0)
+expect_equal(nlines(list()), 0)
 
 
 
@@ -535,18 +530,18 @@ spans <- matrix(byrow = TRUE, ncol = 2,
     2, 2)
 )
 
-aligns <- matrix(byrow = TRUE, ncol = 2,
-  "center")
+aligns <- matrix(byrow = TRUE, ncol = 2, "center")
 fmts <- matrix(byrow = TRUE, ncol = 2, "xx")
 
 rinfo <- formatters:::pagdfrow(nm = "row", lab = "row", rnum = 1, pth = "row", extent = 1, rclass = "silly")
 
-mpf <- MatrixPrintForm(strings = strs, spans = spans, aligns = aligns,
+mpf <- MatrixPrintForm(
+  strings = strs, spans = spans, aligns = aligns,
   formats = fmts, row_info = rinfo,
-  nlines_header = 1, nrow_header = 1, has_topleft = FALSE)
+  nlines_header = 1, nrow_header = 1, has_topleft = FALSE
+)
 
-expect_equal(length(grep("spn_val", toString(mpf))),
-  1L)
+expect_equal(length(grep("spn_val", toString(mpf))), 1L)
 
 ### Decimal Alignment Testing ================
 test_that("error when widths are < than decimal aligned values", {
@@ -664,8 +659,10 @@ test_that("behavior of decimal alignments on non-numbers", {
   mf_aligns(bmf4)[-1, 2] <- "center"
   ## have to pass it propose_column_widths cause manually modifying
   ## the string matrix doesn't update the cached default col widths
-  expect_identical(toString(bmf3, propose_column_widths(bmf3)),
-    toString(bmf4, propose_column_widths(bmf4)))
+  expect_identical(
+    toString(bmf3, propose_column_widths(bmf3)),
+    toString(bmf4, propose_column_widths(bmf4))
+  )
 })
 
 test_that("Decimal alignment: a specific case with larger widths", {
@@ -834,8 +831,10 @@ test_that("All 2d cases for decimal alignment", {
   bmf$aligns[, 2] <- "decimal"
   bmf$aligns[, 3] <- "dec_right"
   bmf$col_widths <- NULL
-  expect_error(res_dec <- strsplit(toString(bmf, hsep = "-"), "\\n")[[1]],
-    regexp = "*first 3 selected from column dec_left*")
+  expect_error(
+    res_dec <- strsplit(toString(bmf, hsep = "-"), "\\n")[[1]],
+    regexp = "*first 3 selected from column dec_left*"
+  )
 
   # expected <- c(
   #   "                          dec_left                     decimal",

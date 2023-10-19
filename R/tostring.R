@@ -142,9 +142,7 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
     paste0(rep(ind_std, ii), collapse = "")
   }, character(1))
 
-  if (!is.null(row_col_width) &&
-    any(row_col_width > 0)
-  && !is.null(mf_rinfo(mat))) { # third is rare case
+  if (!is.null(row_col_width) && any(row_col_width > 0) && !is.null(mf_rinfo(mat))) { # third is rare case
     # Self consistency test for row_col_width (same groups should have same width)
     # This should not be necessary (nocov)
     consistency_check <- vapply(unique(mf_lgrp), function(ii) {
@@ -164,10 +162,12 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
     # xxx I think all of the above is a bit buggy honestly (check ContentRows!!!)
 
     if (any(nchar_real_indent > unique_row_col_width)) {
-      stop("Inserted width for row label column is not wide enough. ",
+      stop(
+        "Inserted width for row label column is not wide enough. ",
         "We found the following rows that do not have at least indentation * ind_size + 1",
         " characters to allow text to be shown after indentation: ",
-        paste0(which(nchar(real_indent) + 1 > unique_row_col_width), collapse = " "))
+        paste0(which(nchar(real_indent) + 1 > unique_row_col_width), collapse = " ")
+      )
     }
   }
 
@@ -186,8 +186,10 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
   }, logical(1))
 
   if (any(!correct_indentation)) {
-    stop("We discovered indentation mismatches between the matrix_form and the indentation",
-      " predefined in mf_rinfo. This should not happen. Contact the maintainer.") # nocov
+    stop(
+      "We discovered indentation mismatches between the matrix_form and the indentation",
+      " predefined in mf_rinfo. This should not happen. Contact the maintainer."
+    ) # nocov
   }
 }
 # Helper function that takes out or adds the proper indentation
@@ -241,8 +243,7 @@ is_dec_align <- function(vec) {
   # but the reverse dependency package `tables` will need
   sdiff <- setdiff(vec, c(list_valid_aligns(), "c"))
   if (length(sdiff) > 0)
-    stop("Invalid text-alignment(s): ",
-      paste(sdiff, collapse = ", "))
+    stop("Invalid text-alignment(s): ", paste(sdiff, collapse = ", "))
   grepl("dec", vec)
 }
 
@@ -303,10 +304,12 @@ decimal_align <- function(string_mat, align_mat) {
         # Special case: scientific notation
         has_sc_not <- grepl("\\d+[e|E][\\+|\\-]\\d+", col_ia)
         if (any(has_sc_not)) {
-          stop("Found values using scientific notation between the ones that",
+          stop(
+            "Found values using scientific notation between the ones that",
             " needs to be decimal aligned (aligns is decimal, dec_left or dec_right).",
             " Please consider using format functions to get a complete decimal ",
-            "(e.g. formatC).")
+            "(e.g. formatC)."
+          )
         }
 
         ## Count the number of numbers in the string
@@ -316,11 +319,13 @@ decimal_align <- function(string_mat, align_mat) {
         }, logical(1))
         ## Throw error in case any have more than 1 numbers
         if (any(more_than_one)) {
-          stop("Decimal alignment is not supported for multiple values. ",
+          stop(
+            "Decimal alignment is not supported for multiple values. ",
             "Found the following string with multiple numbers ",
             "(first 3 selected from column ", col_i[1], "): '",
-            paste0(col_ia[more_than_one][seq(1, 3)],
-              collapse = "', '"), "'")
+            paste0(col_ia[more_than_one][seq(1, 3)], collapse = "', '"),
+            "'"
+          )
         }
         ## General split (only one match -> the first)
         main_regexp <- regexpr("\\d+", col_ia)
@@ -330,8 +335,10 @@ decimal_align <- function(string_mat, align_mat) {
         something_left <- sapply(strsplit(col_ia, "\\d+"), "[[", 1)
         left <- paste0(something_left, left)
         if (!checkmate::test_set_equal(paste0(left, right), col_ia))
-          stop("Split string list lost some piece along the way. This ",
-            "should not have happened. Please contact the maintainer.") # nocov
+          stop(
+            "Split string list lost some piece along the way. This ",
+            "should not have happened. Please contact the maintainer."
+          ) # nocov
         separator <- sapply(right, function(x) {
           if (nzchar(x)) {
             substr(x, 1, 1)
@@ -420,19 +427,23 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
   # Check for \n in mat strings -> if there are any, matrix_form did not work
   if (any(grepl("\n", mf_strings(mat)))) {
-    stop("Found newline characters (\\n) in string matrix produced by matrix_form. ",
+    stop(
+      "Found newline characters (\\n) in string matrix produced by matrix_form. ",
       "This is not supported and implies missbehavior on the first parsing (in matrix_form). ",
-      "Please contact the maintainer or file an issue.") # nocov
+      "Please contact the maintainer or file an issue."
+    ) # nocov
   }
 
   # Check that expansion worked for header -> should not happen
   if (!is.null(mf_rinfo(mat)) && # rare case of rtables::rtable()
-    (length(mf_lgrouping(mat)) != nrow(mf_strings(mat)) || # non-unique grouping test
-      mf_nrheader(mat) + nrow(mf_rinfo(mat)) != length(unique(mf_lgrouping(mat))))) {
-    stop("The sum of the expected nrows header and nrows of content table does ",
+    (length(mf_lgrouping(mat)) != nrow(mf_strings(mat)) || # non-unique grouping test # nolint
+      mf_nrheader(mat) + nrow(mf_rinfo(mat)) != length(unique(mf_lgrouping(mat))))) { # nolint
+    stop(
+      "The sum of the expected nrows header and nrows of content table does ",
       "not match the number of rows in the string matrix. To our knowledge, ",
       "this is usually of a problem in solving newline characters (\\n) in the header. ",
-      "Please contact the maintaner or file an issue.") # nocov
+      "Please contact the maintaner or file an issue."
+    ) # nocov
   }
 
   inset <- table_inset(mat)
@@ -717,9 +728,11 @@ wrap_string <- function(str, width, collapse = NULL) {
   checkmate::assert_int(width, lower = 1)
 
   if (any(grepl("\\n", str))) {
-    stop("Found \\n in a string that was meant to be wrapped. This should not happen ",
+    stop(
+      "Found \\n in a string that was meant to be wrapped. This should not happen ",
       "because matrix_form should take care of them before this step (toString, ",
-      "i.e. the printing machinery). Please contact the maintaner or file an issue.")
+      "i.e. the printing machinery). Please contact the maintaner or file an issue."
+    )
   }
 
   # str can be also a vector or list. In this case simplify manages the output

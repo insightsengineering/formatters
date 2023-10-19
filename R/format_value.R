@@ -84,10 +84,7 @@ list_valid_aligns <- function() {
 #' @name check_formats
 #' @export
 is_valid_format <- function(x, stop_otherwise = FALSE) {
-  is_valid <- is.null(x) ||
-    (length(x) == 1 &&
-      (is.function(x) ||
-        x %in% unlist(list_valid_format_labels())))
+  is_valid <- is.null(x) || (length(x) == 1 && (is.function(x) || x %in% unlist(list_valid_format_labels())))
 
   if (stop_otherwise && !is_valid) {
     stop("format needs to be a format label, sprintf_format object, a function, or NULL")
@@ -110,8 +107,7 @@ check_aligns <- function(algn) {
     stop("Got missing-value for text alignment.")
   invalid <- setdiff(algn, list_valid_aligns())
   if (length(invalid) > 0) {
-    stop("Unsupported text-alignment(s): ",
-      paste(invalid, collapse = ", "))
+    stop("Unsupported text-alignment(s): ", paste(invalid, collapse = ", "))
   }
   invisible(TRUE)
 }
@@ -431,9 +427,12 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
 setClassUnion("FormatSpec", c("NULL", "character", "function", "list"))
 setClassUnion("characterOrNULL", c("NULL", "character"))
 setClass("fmt_config",
-  slots = c(format = "FormatSpec",
+  slots = c(
+    format = "FormatSpec",
     format_na_str = "characterOrNULL",
-    align = "characterOrNULL"))
+    align = "characterOrNULL"
+  )
+)
 
 #' Format Configuration
 #'
