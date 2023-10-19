@@ -355,7 +355,6 @@ test_that("formats work", {
     format_value(NA, format = "xx.x", na_str = NA_character_),
     "NA"
   )
-
 })
 
 test_that("sprintf formats work", {
@@ -520,14 +519,20 @@ mf_rinfo(dfmf_wrong)$indent <- 1L
 expect_error(toString(dfmf_wrong, widths = cwths))
 ## annoying direct constructor calls to ensure full coverage
 
-strs <- matrix(byrow = TRUE, ncol = 2,
-  c("lab1", "lab2",
-    "spn_val", "spn_val")
+strs <- matrix(
+  byrow = TRUE, ncol = 2,
+  c(
+    "lab1", "lab2",
+    "spn_val", "spn_val"
+  )
 )
 
-spans <- matrix(byrow = TRUE, ncol = 2,
-  c(1, 1,
-    2, 2)
+spans <- matrix(
+  byrow = TRUE, ncol = 2,
+  c(
+    1, 1,
+    2, 2
+  )
 )
 
 aligns <- matrix(byrow = TRUE, ncol = 2, "center")

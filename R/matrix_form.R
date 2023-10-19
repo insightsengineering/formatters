@@ -49,7 +49,6 @@ mform_handle_newlines <- function(matform) {
 
   # There is something to change
   if (any(row_nlines > 1) || topleft_has_nl_char) {
-
     # False: Padder should be bottom aligned if no topleft (case of rlistings)
     # It is always bottom: tl_padder <- ifelse(has_topleft, pad_vert_top, pad_vert_bottom)
 
@@ -119,7 +118,6 @@ mform_handle_newlines <- function(matform) {
 }
 
 disp_from_spans <- function(spans) {
-
   display <- matrix(rep(TRUE, length(spans)), ncol = ncol(spans))
 
   print_cells_mat <- spans == 1L
@@ -575,7 +573,6 @@ update_mf_rinfo_extents <- function(mform) {
   lgrp <- mf_lgrouping(mform) - mf_nrheader(mform)
   lgrp <- lgrp[lgrp > 0]
   rf_nlines <- vapply(seq_len(max(lgrp)), function(ii) {
-
     refdfii <- refdf_rows[refdf_rows$row == ii, ]
     refdfii <- refdfii[!duplicated(refdfii$symbol), ]
     if (NROW(refdfii) == 0L)
@@ -871,7 +868,6 @@ basic_matrix_form <- function(df, parent_path = "root") {
 map_to_new <- function(old, map) {
   inds <- match(old, map$old_idx)
   map$new_idx[inds]
-
 }
 
 
@@ -987,7 +983,6 @@ mpf_subset_rows <- function(mf, i) {
   mf <- shove_refdf_into_rowinfo(mf)
   mf_rfnotes(mf) <- reconstruct_basic_fnote_list(mf)
   mf
-
 }
 
 
@@ -997,7 +992,6 @@ mpf_subset_rows <- function(mf, i) {
 ## column information that will need to be touched up
 ## but lets be careful and do a bit more anyway
 mpf_subset_cols <- function(mf, j) {
-
   nc <- ncol(mf)
   if (is.logical(j) || all(j < 0))
     j <- seq_len(nc)[j]

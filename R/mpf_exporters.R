@@ -1,6 +1,5 @@
 .need_pag <- function(page_type, pg_width, pg_height, cpp, lpp) {
   !(is.null(page_type) && is.null(pg_width) && is.null(pg_height) && is.null(cpp) && is.null(lpp))
-
 }
 
 #' Export a table-like object to plain (ASCII) text with page break
@@ -58,7 +57,6 @@ export_as_txt <- function(x,
                           rep_cols = num_rep_cols(x),
                           verbose = FALSE,
                           page_break = "\\s\\n") {
-
   if (paginate) {
     pages <- paginate_to_mpfs(
       x,
@@ -89,7 +87,8 @@ export_as_txt <- function(x,
   ## we dont' set widths here because we already but that info on mpf
   ## so its on each of the pages.
   strings <- vapply(
-    pages, toString, "", widths = NULL,
+    pages, toString, "",
+    widths = NULL,
     hsep = hsep, tf_wrap = tf_wrap, max_width = max_width
   )
   res <- paste(strings, collapse = page_break)
@@ -424,7 +423,8 @@ export_as_rtf <- function(x,
   true_height <- pg_height - sum(margins[c("top", "bottom")])
 
   mpfs <- paginate_to_mpfs(
-    fullmf, font_family = font_family, font_size = font_size,
+    fullmf,
+    font_family = font_family, font_size = font_size,
     pg_width = true_width,
     pg_height = true_height,
     margins = c(bottom = 0, left = 0, top = 0, right = 0),

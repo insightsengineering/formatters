@@ -54,7 +54,8 @@ test_that("exporters work", {
   exp_v_pags <- 2L
   fil3 <- tempfile(fileext = ".txt")
   export_as_txt(
-    dfmf, pg_height = 4, pg_width = 4, file = fil3, page_break = "~~~~\n",
+    dfmf,
+    pg_height = 4, pg_width = 4, file = fil3, page_break = "~~~~\n",
     margins = rep(0, 4)
   )
   exptlines <- readLines(fil3)

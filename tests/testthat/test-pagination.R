@@ -254,7 +254,8 @@ test_that("pagination works", {
   )
 
   res <- paginate_to_mpfs(
-    dfmf, pg_width = 4, pg_height = 4, margins = rep(0, 4),
+    dfmf,
+    pg_width = 4, pg_height = 4, margins = rep(0, 4),
     min_siblings = 0, verbose = TRUE
   )
 
@@ -275,7 +276,8 @@ test_that("pagination works", {
   )
 
   res <- paginate_to_mpfs(
-    dfmf2, pg_width = 4, pg_height = 4,
+    dfmf2,
+    pg_width = 4, pg_height = 4,
     margins = rep(0, 4),
     min_siblings = 0, verbose = TRUE
   )
@@ -322,7 +324,6 @@ test_that("pagination works", {
     dgnostic <- diagnose_pagination(dfmf_b, lpp = 8 + 2, min_siblings = 0, nosplitin = "root_split")
     TRUE
   })
-
 })
 test_that("page to lcpp stuff works", {
   expect_identical(
@@ -337,12 +338,10 @@ test_that("page to lcpp stuff works", {
     formatters:::calc_lcpp(),
     formatters:::calc_lcpp(page_type = "letter")
   )
-
 })
 
 
 test_that("non-monospaced fonts are caught", {
-
   ## non-monospaced fonts
   expect_error(page_lcpp(font_family = "Times"), "does not appear to be monospaced")
 
@@ -356,7 +355,6 @@ test_that("non-monospaced fonts are caught", {
 })
 
 test_that("spans and string matrix match after pagination when table has single column", {
-
   df <- as.data.frame(mtcars[, 1])
   test <- basic_matrix_form(df)
   pag_test <- paginate_to_mpfs(test)

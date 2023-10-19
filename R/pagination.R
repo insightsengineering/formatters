@@ -180,25 +180,27 @@ build_fail_msg <- function(row, lines, raw_rowlines,
     spacetype <- "lines"
     spacetype_abr <- "lns"
     structtype_abr <- "rws"
-    sprintf(paste(
-      "\t....................... FAIL: requires %d %s [raw: %d %s (%d %s), rep.",
-      "context: %d %s (%d %s), refs: %d %s (%d)  sect. divs: %d %s]."
-    ),
-    lines,
-    spacetype,
-    raw_rowlines,
-    spacetype_abr,
-    guess - start + 1, # because it includes both start and guess
-    structtype_abr,
-    rep_ext,
-    spacetype_abr,
-    n_reprint,
-    structtype_abr,
-    reflines,
-    spacetype_abr,
-    n_refs,
-    sectlines,
-    spacetype_abr)
+    sprintf(
+      paste(
+        "\t....................... FAIL: requires %d %s [raw: %d %s (%d %s), rep.",
+        "context: %d %s (%d %s), refs: %d %s (%d)  sect. divs: %d %s]."
+      ),
+      lines,
+      spacetype,
+      raw_rowlines,
+      spacetype_abr,
+      guess - start + 1, # because it includes both start and guess
+      structtype_abr,
+      rep_ext,
+      spacetype_abr,
+      n_reprint,
+      structtype_abr,
+      reflines,
+      spacetype_abr,
+      n_refs,
+      sectlines,
+      spacetype_abr
+    )
   } else { ## !row
     spacetype <- "chars"
     spacetype_abr <- "chars"
@@ -499,7 +501,6 @@ vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, r
 }
 
 mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf)) {
-
   if (!is(rep_cols, "numeric") || is.na(rep_cols) || rep_cols < 0) {
     stop("got invalid number of columns to be repeated: ", rep_cols)
   }
@@ -603,7 +604,6 @@ calc_lcpp <- function(page_type = NULL,
                       colwidths,
                       col_gap,
                       inset) {
-
   pg_lcpp <- page_lcpp(
     page_type = page_type,
     landscape = landscape,
@@ -670,7 +670,8 @@ calc_rlpp <- function(pg_size_spec, mf, colwidths, tf_wrap, verbose) {
   havemn <- length(mnfoot) && any(nzchar(mnfoot))
   if (havemn)
     flines <- nlines(
-      mnfoot, colwidths = colwidths,
+      mnfoot,
+      colwidths = colwidths,
       max_width = max_width - table_inset(mf)
     )
   prfoot <- prov_footer(mf)
@@ -706,7 +707,6 @@ calc_rlpp <- function(pg_size_spec, mf, colwidths, tf_wrap, verbose) {
 
 
 calc_rcpp <- function(pg_size_spec, mf, colwidths) {
-
   cpp <- pg_size_spec$cpp
 
   cpp - table_inset(mf) - colwidths[1] - mf_colgap(mf)
@@ -718,7 +718,6 @@ splice_idx_lists <- function(lsts) {
     pag_row_indices = do.call(c, lapply(lsts, function(xi) xi$pag_row_indices)),
     pag_col_indices = do.call(c, lapply(lsts, function(yi) yi$pag_col_indices))
   )
-
 }
 
 
@@ -822,8 +821,6 @@ paginate_indices <- function(obj,
                              rep_cols = num_rep_cols(obj),
                              col_gap = 3,
                              verbose = FALSE) {
-
-
   ## this MUST alsways return a list, inluding list(obj) when
   ## no forced pagination is needed! otherwise stuff breaks for things
   ## based on s3 classes that are lists underneath!!!
@@ -920,7 +917,8 @@ paginate_indices <- function(obj,
     pag_row_indices <- pag_indices_inner(
       pagdf = mf_rinfo(mpf),
       rlpp = calc_rlpp(
-        pg_size_spec, mpf, colwidths = colwidths,
+        pg_size_spec, mpf,
+        colwidths = colwidths,
         tf_wrap = tf_wrap, verbose = verbose
       ),
       verbose = verbose,
@@ -932,7 +930,8 @@ paginate_indices <- function(obj,
     pag_col_indices <- list(seq_len(mf_ncol(mpf)))
   else
     pag_col_indices <- vert_pag_indices(
-      mpf, cpp = pg_size_spec$cpp, colwidths = colwidths,
+      mpf,
+      cpp = pg_size_spec$cpp, colwidths = colwidths,
       rep_cols = rep_cols, verbose = verbose
     )
 
@@ -1150,8 +1149,6 @@ diagnose_pagination <- function(obj,
                                 col_gap = 2,
                                 verbose = FALSE,
                                 ...) {
-
-
   fpag <- do_forced_paginate(obj)
   if (length(fpag) > 1) {
     return(lapply(
@@ -1177,30 +1174,32 @@ diagnose_pagination <- function(obj,
   }
 
   mpf <- matrix_form(obj, TRUE)
-  msgres <- capture.output({
-    tmp <- try(
-      paginate_to_mpfs(
-        obj,
-        page_type = page_type,
-        font_family = font_family,
-        font_size = font_size,
-        lineheight = lineheight,
-        landscape = landscape,
-        pg_width = pg_width,
-        pg_height = pg_height,
-        margins = margins,
-        lpp = lpp,
-        cpp = cpp,
-        tf_wrap = tf_wrap,
-        max_width = max_width,
-        colwidths = colwidths,
-        col_gap = col_gap,
-        min_siblings = min_siblings,
-        nosplitin = nosplitin,
-        verbose = TRUE
+  msgres <- capture.output(
+    {
+      tmp <- try(
+        paginate_to_mpfs(
+          obj,
+          page_type = page_type,
+          font_family = font_family,
+          font_size = font_size,
+          lineheight = lineheight,
+          landscape = landscape,
+          pg_width = pg_width,
+          pg_height = pg_height,
+          margins = margins,
+          lpp = lpp,
+          cpp = cpp,
+          tf_wrap = tf_wrap,
+          max_width = max_width,
+          colwidths = colwidths,
+          col_gap = col_gap,
+          min_siblings = min_siblings,
+          nosplitin = nosplitin,
+          verbose = TRUE
+        )
       )
-    )
-  }, type = "message"
+    },
+    type = "message"
   )
   if (is(tmp, "try-error") && grepl("Width of row labels equal to or larger", tmp)) {
     cond <- attr(tmp, "condition")

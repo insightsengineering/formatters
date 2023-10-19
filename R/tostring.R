@@ -70,7 +70,6 @@ default_hsep <- d_hsep_factory()
 
 # Main function that does the wrapping
 do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
-
   col_gap <- mf_colgap(mat)
   ncchar <- sum(widths) + (length(widths) - 1) * col_gap
   inset <- table_inset(mat)
@@ -705,8 +704,10 @@ new_line_warning <- function(str_v) {
 #'   characters (if `collapse = NULL`).
 #'
 #' @examples
-#' str <- list("  , something really  \\tnot  very good", # \t needs to be escaped
-#'   "  but I keep it12   ")
+#' str <- list(
+#'   "  , something really  \\tnot  very good", # \t needs to be escaped
+#'   "  but I keep it12   "
+#' )
 #' wrap_string(str, 5, collapse = "\n")
 #'
 #' @name wrap_string
