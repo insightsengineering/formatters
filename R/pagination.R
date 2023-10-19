@@ -254,10 +254,10 @@ valid_pag <- function(pagdf,
   rep_ext <- pagdf$par_extent[start]
   if (lines > rlpp) {
     if (verbose) {
-      # structtype <- ifelse(row, "rows", "columns")
-      # structtype_abr <- ifelse(row, "rows", "cols")
-      # spacetype <- ifelse(row, "lines", "chars")
-      # spacetype_abr <- ifelse(row, "lns", "chrs")
+      structtype <- ifelse(row, "rows", "columns")
+      structtype_abr <- ifelse(row, "rows", "cols")
+      spacetype <- ifelse(row, "lines", "chars")
+      spacetype_abr <- ifelse(row, "lns", "chrs")
       msg <- build_fail_msg(
         row, lines, raw_rowlines, start, guess, rep_ext, length(pagdf$reprint_inds[[start]]),
         reflines, NROW(refdf_ii), sectlines
@@ -311,7 +311,7 @@ valid_pag <- function(pagdf,
       }, TRUE)
 
       curvals <- curpth[match(inplay, curpth) + 1]
-      # nxtvals <- nxtpth[match(inplay, nxtpth) + 1]
+      nxtvals <- nxtpth[match(inplay, nxtpth) + 1]
       if (!all(ok_split)) {
         if (verbose) {
           message(
@@ -482,7 +482,7 @@ vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, r
   }
 
   has_rlabs <- mf_has_rlabels(mf)
-  # rlabs_flag <- as.integer(has_rlabs)
+  rlabs_flag <- as.integer(has_rlabs)
   rlab_extent <- if (has_rlabs) clwds[1] else 0L
 
   # rep_extent <- pdf$par_extent[nrow(pdf)]
@@ -511,7 +511,7 @@ mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf)) {
   clwds <- (colwidths %||% mf_col_widths(mf)) %||% propose_column_widths(mf)
   has_rlabs <- mf_has_rlabels(mf)
   rlabs_flag <- as.integer(has_rlabs)
-  # rlab_extent <- if (has_rlabs) clwds[1] else 0L
+  rlab_extent <- if (has_rlabs) clwds[1] else 0L
   sqstart <- rlabs_flag + 1L # rep_cols + 1L
 
   pdfrows <- lapply(

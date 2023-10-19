@@ -124,7 +124,7 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
 # It sees if there is AT LEAST the indentation contained in rinfo
 .check_indentation <- function(mat, row_col_width = NULL) {
   # mf_nrheader(mat) # not useful
-  # mf_nlh <- mf_nlheader(mat)
+  mf_nlh <- mf_nlheader(mat)
   mf_lgrp <- mf_lgrouping(mat)
   mf_str <- mf_strings(mat)
   # we base everything on the groupings -> unique indentation identifiers
@@ -195,7 +195,7 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
 .modify_indentation <- function(mat, cell_widths_mat, do_what = c("remove", "add")) {
   # Extract info
   mfs <- mf_strings(mat) # we work on mfs
-  # mf_nlh <- mf_nlheader(mat)
+  mf_nlh <- mf_nlheader(mat)
   mf_l <- mf_lgrouping(mat)
   if (!is.null(mf_rinfo(mat))) { # this happens in rare cases with rtables::rtable()
     mf_ind <- c(rep(0, mf_nrheader(mat)), mf_rinfo(mat)$indent) # XXX to fix with topleft
