@@ -1,4 +1,3 @@
-
 #' @importFrom htmltools tags tagList
 
 formats_1d <- c(
@@ -107,12 +106,12 @@ is_valid_format <- function(x, stop_otherwise = FALSE) {
 #' @name check_formats
 #' @export
 check_aligns <- function(algn) {
-    if (anyNA(algn))
-        stop("Got missing-value for text alignment.")
-    invalid <- setdiff(algn, list_valid_aligns())
-    if (length(invalid) > 0) {
-        stop("Unsupported text-alignment(s): ",
-             paste(invalid, collapse = ", "))
+  if (anyNA(algn))
+    stop("Got missing-value for text alignment.")
+  invalid <- setdiff(algn, list_valid_aligns())
+  if (length(invalid) > 0) {
+    stop("Unsupported text-alignment(s): ",
+      paste(invalid, collapse = ", "))
   }
   invisible(TRUE)
 }
@@ -432,9 +431,9 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
 setClassUnion("FormatSpec", c("NULL", "character", "function", "list"))
 setClassUnion("characterOrNULL", c("NULL", "character"))
 setClass("fmt_config",
-         slots = c(format = "FormatSpec",
-                   format_na_str = "characterOrNULL",
-                   align = "characterOrNULL"))
+  slots = c(format = "FormatSpec",
+    format_na_str = "characterOrNULL",
+    align = "characterOrNULL"))
 
 #' Format Configuration
 #'

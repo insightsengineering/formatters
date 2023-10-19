@@ -71,54 +71,54 @@ default_hsep <- d_hsep_factory()
 # Main function that does the wrapping
 do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
 
-    col_gap <- mf_colgap(mat)
-    ncchar <- sum(widths) + (length(widths) - 1) * col_gap
-    inset <- table_inset(mat)
+  col_gap <- mf_colgap(mat)
+  ncchar <- sum(widths) + (length(widths) - 1) * col_gap
+  inset <- table_inset(mat)
 
-    ## Text wrapping checks
-    if (tf_wrap) {
-        if (is.null(max_width)) {
-            max_width <- getOption("width", 80L)
-        } else if (is.character(max_width) && identical(max_width, "auto")) {
-            max_width <- ncchar + inset
-        }
-        assert_number(max_width, lower = 0)
+  ## Text wrapping checks
+  if (tf_wrap) {
+    if (is.null(max_width)) {
+      max_width <- getOption("width", 80L)
+    } else if (is.character(max_width) && identical(max_width, "auto")) {
+      max_width <- ncchar + inset
     }
+    assert_number(max_width, lower = 0)
+  }
 
-    ## Check for having the right number of widths
-    stopifnot(length(widths) == ncol(mat$strings))
+  ## Check for having the right number of widths
+  stopifnot(length(widths) == ncol(mat$strings))
 
-    ## format the to ASCII
-    cell_widths_mat <- .calc_cell_widths(mat, widths, col_gap)
+  ## format the to ASCII
+  cell_widths_mat <- .calc_cell_widths(mat, widths, col_gap)
 
-    # Check that indentation is correct (it works only for body)
-    .check_indentation(mat, row_col_width = cell_widths_mat[, 1, drop = TRUE])
-    mod_ind_list <- .modify_indentation(mat, cell_widths_mat, do_what = "remove")
-    mfs <- mod_ind_list[["mfs"]]
-    cell_widths_mat <- mod_ind_list[["cell_widths_mat"]]
+  # Check that indentation is correct (it works only for body)
+  .check_indentation(mat, row_col_width = cell_widths_mat[, 1, drop = TRUE])
+  mod_ind_list <- .modify_indentation(mat, cell_widths_mat, do_what = "remove")
+  mfs <- mod_ind_list[["mfs"]]
+  cell_widths_mat <- mod_ind_list[["cell_widths_mat"]]
 
-    # Main wrapper
-    mf_strings(mat) <- matrix(
-        unlist(mapply(wrap_string,
-                      str = mfs,
-                      width = cell_widths_mat,
-                      collapse = "\n"
-                      )),
-        ncol = ncol(mfs)
-    )
+  # Main wrapper
+  mf_strings(mat) <- matrix(
+    unlist(mapply(wrap_string,
+      str = mfs,
+      width = cell_widths_mat,
+      collapse = "\n"
+    )),
+    ncol = ncol(mfs)
+  )
 
-    ## XXXXX this is wrong and will break for listings cause we don't know when
-    ## we need has_topleft to be FALSE!!!!!!!!!!
-    mat <- mform_handle_newlines(mat)
+  ## XXXXX this is wrong and will break for listings cause we don't know when
+  ## we need has_topleft to be FALSE!!!!!!!!!!
+  mat <- mform_handle_newlines(mat)
 
-    ## this updates extents in rinfo AND nlines in ref_fnotes_df
-    mat <- update_mf_nlines(mat, max_width = max_width)
+  ## this updates extents in rinfo AND nlines in ref_fnotes_df
+  mat <- update_mf_nlines(mat, max_width = max_width)
 
-    # Re-indenting
-    mf_strings(mat) <- .modify_indentation(mat, cell_widths_mat, do_what = "add")[["mfs"]]
-    .check_indentation(mat) # all went well
+  # Re-indenting
+  mf_strings(mat) <- .modify_indentation(mat, cell_widths_mat, do_what = "add")[["mfs"]]
+  .check_indentation(mat) # all went well
 
-    mat
+  mat
 }
 
 # Helper function to see if body indentation matches (minimum)
@@ -140,11 +140,11 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
   stopifnot(all(mf_ind >= 0))
   real_indent <- vapply(mf_ind, function(ii) {
     paste0(rep(ind_std, ii), collapse = "")
-    }, character(1))
+  }, character(1))
 
   if (!is.null(row_col_width) &&
-      any(row_col_width > 0)
-      && !is.null(mf_rinfo(mat))) { # third is rare case
+    any(row_col_width > 0)
+  && !is.null(mf_rinfo(mat))) { # third is rare case
     # Self consistency test for row_col_width (same groups should have same width)
     # This should not be necessary (nocov)
     consistency_check <- vapply(unique(mf_lgrp), function(ii) {
@@ -165,9 +165,9 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
 
     if (any(nchar_real_indent > unique_row_col_width)) {
       stop("Inserted width for row label column is not wide enough. ",
-           "We found the following rows that do not have at least indentation * ind_size + 1",
-           " characters to allow text to be shown after indentation: ",
-           paste0(which(nchar(real_indent) + 1 > unique_row_col_width), collapse = " "))
+        "We found the following rows that do not have at least indentation * ind_size + 1",
+        " characters to allow text to be shown after indentation: ",
+        paste0(which(nchar(real_indent) + 1 > unique_row_col_width), collapse = " "))
     }
   }
 
@@ -187,7 +187,7 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
 
   if (any(!correct_indentation)) {
     stop("We discovered indentation mismatches between the matrix_form and the indentation",
-         " predefined in mf_rinfo. This should not happen. Contact the maintainer.") # nocov
+      " predefined in mf_rinfo. This should not happen. Contact the maintainer.") # nocov
   }
 }
 # Helper function that takes out or adds the proper indentation
@@ -233,17 +233,17 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
 ## take a character vector and return whether the value is
 ## a string version of a number or not
 is_number_str <- function(vec) {
-    is.na(as.numeric(vec))
+  is.na(as.numeric(vec))
 }
 
 is_dec_align <- function(vec) {
   # "c" is not an alignment method we define in `formatters`,
   # but the reverse dependency package `tables` will need
-    sdiff <- setdiff(vec, c(list_valid_aligns(), "c"))
-    if (length(sdiff) > 0)
-        stop("Invalid text-alignment(s): ",
-             paste(sdiff, collapse = ", "))
-    grepl("dec", vec)
+  sdiff <- setdiff(vec, c(list_valid_aligns(), "c"))
+  if (length(sdiff) > 0)
+    stop("Invalid text-alignment(s): ",
+      paste(sdiff, collapse = ", "))
+  grepl("dec", vec)
 }
 
 any_dec_align <- function(vec) any(is_dec_align(vec))
@@ -264,7 +264,7 @@ any_dec_align <- function(vec) any(is_dec_align(vec))
 #'  wider column names. Decimal alignment is not supported along with cell wrapping.
 #'
 #' @examples
-#' dfmf <- basic_matrix_form(mtcars[1:5,])
+#' dfmf <- basic_matrix_form(mtcars[1:5, ])
 #' aligns <- mf_aligns(dfmf)
 #' aligns[, -c(1)] <- "dec_left"
 #' decimal_align(mf_strings(dfmf), aligns)
@@ -275,90 +275,90 @@ any_dec_align <- function(vec) any(is_dec_align(vec))
 #'
 #' @export
 decimal_align <- function(string_mat, align_mat) {
-    ## Evaluate if any values are to be decimal aligned
-    if (!any_dec_align(align_mat)) {
-        return(string_mat)
-    }
-    for (i in seq(1, ncol(string_mat))) {
-        ## Take a column and its decimal alignments
-        col_i <- as.character(string_mat[, i])
-        align_col_i <- is_dec_align(align_mat[, i])
+  ## Evaluate if any values are to be decimal aligned
+  if (!any_dec_align(align_mat)) {
+    return(string_mat)
+  }
+  for (i in seq(1, ncol(string_mat))) {
+    ## Take a column and its decimal alignments
+    col_i <- as.character(string_mat[, i])
+    align_col_i <- is_dec_align(align_mat[, i])
 
-        ## !( A || B) -> !A && !B  DeMorgan's Law
-        ## Are there any values to be decimal aligned? safe if
-        if (any(align_col_i) && any(!grepl("^[0-9]\\.", col_i))) {
-            ## Extract values not to be aligned (NAs, non-numbers,
-            ##  doesn't say "decimal" in alignment matrix)
-            ## XXX FIXME because this happens after formatting, we can't tell the difference between
-            ## non-number strings which come from na_str+ NA  value and strings which just aren't numbers.
-            ## this is a problem that should eventually be fixed.
-            nas <- vapply(col_i, is.na, FUN.VALUE = logical(1))
-            nonnum <- !grepl("[0-9]", col_i)
-            ## No grepl("[a-zA-Z]", col_i) because this excludes N=xx, e.g.
-            nonalign <- nas | nonnum | !align_col_i
-            col_ia <- col_i[!nonalign]
+    ## !( A || B) -> !A && !B  DeMorgan's Law
+    ## Are there any values to be decimal aligned? safe if
+    if (any(align_col_i) && any(!grepl("^[0-9]\\.", col_i))) {
+      ## Extract values not to be aligned (NAs, non-numbers,
+      ##  doesn't say "decimal" in alignment matrix)
+      ## XXX FIXME because this happens after formatting, we can't tell the difference between
+      ## non-number strings which come from na_str+ NA  value and strings which just aren't numbers.
+      ## this is a problem that should eventually be fixed.
+      nas <- vapply(col_i, is.na, FUN.VALUE = logical(1))
+      nonnum <- !grepl("[0-9]", col_i)
+      ## No grepl("[a-zA-Z]", col_i) because this excludes N=xx, e.g.
+      nonalign <- nas | nonnum | !align_col_i
+      col_ia <- col_i[!nonalign]
 
-            ## Do decimal alignment
-            if (length(col_ia) > 0) {
-                # Special case: scientific notation
-                has_sc_not <- grepl("\\d+[e|E][\\+|\\-]\\d+", col_ia)
-                if (any(has_sc_not)) {
-                  stop("Found values using scientific notation between the ones that",
-                       " needs to be decimal aligned (aligns is decimal, dec_left or dec_right).",
-                       " Please consider using format functions to get a complete decimal ",
-                       "(e.g. formatC).")
-                }
-
-                ## Count the number of numbers in the string
-                matches <- gregexpr("\\d+\\.\\d+|\\d+", col_ia)
-                more_than_one <- vapply(matches, function(x) {
-                    sum(attr(x, "match.length") > 0) > 1
-                }, logical(1))
-                ## Throw error in case any have more than 1 numbers
-                if (any(more_than_one)) {
-                    stop("Decimal alignment is not supported for multiple values. ",
-                         "Found the following string with multiple numbers ",
-                         "(first 3 selected from column ", col_i[1], "): '",
-                         paste0(col_ia[more_than_one][seq(1, 3)],
-                                collapse = "', '"), "'")
-                }
-                ## General split (only one match -> the first)
-                main_regexp <- regexpr("\\d+", col_ia)
-                left <- regmatches(col_ia, main_regexp, invert = FALSE)
-                right <- regmatches(col_ia, main_regexp, invert = TRUE)
-                right <- sapply(right, "[[", 2)
-                something_left <- sapply(strsplit(col_ia, "\\d+"), "[[", 1)
-                left <- paste0(something_left, left)
-                if (!checkmate::test_set_equal(paste0(left, right), col_ia))
-                    stop("Split string list lost some piece along the way. This ",
-                         "should not have happened. Please contact the maintainer.") # nocov
-                separator <- sapply(right, function(x) {
-                    if (nzchar(x)) {
-                        substr(x, 1, 1)
-                    } else {
-                        c(" ")
-                    }
-                }, USE.NAMES = FALSE)
-                right <- sapply(right, function(x) {
-                    if (nchar(x) > 1) {
-                        substr(x, 2, nchar(x))
-                    } else {
-                        c("")
-                    }
-                }, USE.NAMES = FALSE)
-                ## figure out whether we need space separators (at least one had a "." or not)
-                if (!any(grepl("[^[:space:]]", separator)))
-                    separator <- gsub("[[:space:]]*", "", separator)
-                ## modify the piece with spaces
-                left_mod <- paste0(spaces(max(nchar(left), na.rm = TRUE) - nchar(left)), left)
-                right_mod <- paste0(right, spaces(max(nchar(right), na.rm = TRUE) - nchar(right)))
-                                        # Put everything together
-                aligned <- paste(left_mod, separator, right_mod, sep = "")
-                string_mat[!nonalign, i] <- aligned
-            }
+      ## Do decimal alignment
+      if (length(col_ia) > 0) {
+        # Special case: scientific notation
+        has_sc_not <- grepl("\\d+[e|E][\\+|\\-]\\d+", col_ia)
+        if (any(has_sc_not)) {
+          stop("Found values using scientific notation between the ones that",
+            " needs to be decimal aligned (aligns is decimal, dec_left or dec_right).",
+            " Please consider using format functions to get a complete decimal ",
+            "(e.g. formatC).")
         }
+
+        ## Count the number of numbers in the string
+        matches <- gregexpr("\\d+\\.\\d+|\\d+", col_ia)
+        more_than_one <- vapply(matches, function(x) {
+          sum(attr(x, "match.length") > 0) > 1
+        }, logical(1))
+        ## Throw error in case any have more than 1 numbers
+        if (any(more_than_one)) {
+          stop("Decimal alignment is not supported for multiple values. ",
+            "Found the following string with multiple numbers ",
+            "(first 3 selected from column ", col_i[1], "): '",
+            paste0(col_ia[more_than_one][seq(1, 3)],
+              collapse = "', '"), "'")
+        }
+        ## General split (only one match -> the first)
+        main_regexp <- regexpr("\\d+", col_ia)
+        left <- regmatches(col_ia, main_regexp, invert = FALSE)
+        right <- regmatches(col_ia, main_regexp, invert = TRUE)
+        right <- sapply(right, "[[", 2)
+        something_left <- sapply(strsplit(col_ia, "\\d+"), "[[", 1)
+        left <- paste0(something_left, left)
+        if (!checkmate::test_set_equal(paste0(left, right), col_ia))
+          stop("Split string list lost some piece along the way. This ",
+            "should not have happened. Please contact the maintainer.") # nocov
+        separator <- sapply(right, function(x) {
+          if (nzchar(x)) {
+            substr(x, 1, 1)
+          } else {
+            c(" ")
+          }
+        }, USE.NAMES = FALSE)
+        right <- sapply(right, function(x) {
+          if (nchar(x) > 1) {
+            substr(x, 2, nchar(x))
+          } else {
+            c("")
+          }
+        }, USE.NAMES = FALSE)
+        ## figure out whether we need space separators (at least one had a "." or not)
+        if (!any(grepl("[^[:space:]]", separator)))
+          separator <- gsub("[[:space:]]*", "", separator)
+        ## modify the piece with spaces
+        left_mod <- paste0(spaces(max(nchar(left), na.rm = TRUE) - nchar(left)), left)
+        right_mod <- paste0(right, spaces(max(nchar(right), na.rm = TRUE) - nchar(right)))
+        # Put everything together
+        aligned <- paste(left_mod, separator, right_mod, sep = "")
+        string_mat[!nonalign, i] <- aligned
+      }
     }
-    string_mat
+  }
+  string_mat
 }
 
 # toString ---------------------------------------------------------------------
@@ -414,202 +414,202 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   max_width = NULL,
                                                   col_gap = mf_colgap(x),
                                                   hsep = default_hsep()) {
-    checkmate::assert_flag(tf_wrap)
+  checkmate::assert_flag(tf_wrap)
 
-    mat <- matrix_form(x, indent_rownames = TRUE)
+  mat <- matrix_form(x, indent_rownames = TRUE)
 
-    # Check for \n in mat strings -> if there are any, matrix_form did not work
-    if (any(grepl("\n", mf_strings(mat)))) {
-      stop("Found newline characters (\\n) in string matrix produced by matrix_form. ",
-           "This is not supported and implies missbehavior on the first parsing (in matrix_form). ",
-           "Please contact the maintainer or file an issue.") # nocov
-    }
+  # Check for \n in mat strings -> if there are any, matrix_form did not work
+  if (any(grepl("\n", mf_strings(mat)))) {
+    stop("Found newline characters (\\n) in string matrix produced by matrix_form. ",
+      "This is not supported and implies missbehavior on the first parsing (in matrix_form). ",
+      "Please contact the maintainer or file an issue.") # nocov
+  }
 
-    # Check that expansion worked for header -> should not happen
-    if (!is.null(mf_rinfo(mat)) && # rare case of rtables::rtable()
-        (length(mf_lgrouping(mat)) != nrow(mf_strings(mat)) || # non-unique grouping test
-        mf_nrheader(mat) + nrow(mf_rinfo(mat)) != length(unique(mf_lgrouping(mat))))) {
-      stop("The sum of the expected nrows header and nrows of content table does ",
-           "not match the number of rows in the string matrix. To our knowledge, ",
-           "this is usually of a problem in solving newline characters (\\n) in the header. ",
-           "Please contact the maintaner or file an issue.") # nocov
-    }
+  # Check that expansion worked for header -> should not happen
+  if (!is.null(mf_rinfo(mat)) && # rare case of rtables::rtable()
+    (length(mf_lgrouping(mat)) != nrow(mf_strings(mat)) || # non-unique grouping test
+      mf_nrheader(mat) + nrow(mf_rinfo(mat)) != length(unique(mf_lgrouping(mat))))) {
+    stop("The sum of the expected nrows header and nrows of content table does ",
+      "not match the number of rows in the string matrix. To our knowledge, ",
+      "this is usually of a problem in solving newline characters (\\n) in the header. ",
+      "Please contact the maintaner or file an issue.") # nocov
+  }
 
-    inset <- table_inset(mat)
+  inset <- table_inset(mat)
 
-    # if cells are decimal aligned, run propose column widths
-    # if the provided widths is less than proposed width, return an error
-    if (any_dec_align(mf_aligns(mat))) {
-      aligned <- propose_column_widths(x)
+  # if cells are decimal aligned, run propose column widths
+  # if the provided widths is less than proposed width, return an error
+  if (any_dec_align(mf_aligns(mat))) {
+    aligned <- propose_column_widths(x)
 
-      # catch any columns that require widths more than what is provided
-      if (!is.null(widths)) {
-        how_wide <- sapply(seq_along(widths), function(i) c(widths[i] - aligned[i]))
-        too_wide <- how_wide < 0
-        if (any(too_wide)) {
-          desc_width <- paste(paste(
-            names(which(too_wide)),
-            paste0("(", how_wide[too_wide], ")")
-          ), collapse = ", ")
-          stop(
-            "Inserted width(s) for column(s) ", desc_width,
-            " is(are) not wide enough for the desired alignment."
-          )
-        }
+    # catch any columns that require widths more than what is provided
+    if (!is.null(widths)) {
+      how_wide <- sapply(seq_along(widths), function(i) c(widths[i] - aligned[i]))
+      too_wide <- how_wide < 0
+      if (any(too_wide)) {
+        desc_width <- paste(paste(
+          names(which(too_wide)),
+          paste0("(", how_wide[too_wide], ")")
+        ), collapse = ", ")
+        stop(
+          "Inserted width(s) for column(s) ", desc_width,
+          " is(are) not wide enough for the desired alignment."
+        )
       }
     }
+  }
 
-    # Column widths are fixed here
-    if (is.null(widths)) {
-      # if mf does not have widths -> propose them
-        widths <- mf_col_widths(x) %||% propose_column_widths(x)
-    } else {
-        mf_col_widths(x) <- widths
+  # Column widths are fixed here
+  if (is.null(widths)) {
+    # if mf does not have widths -> propose them
+    widths <- mf_col_widths(x) %||% propose_column_widths(x)
+  } else {
+    mf_col_widths(x) <- widths
+  }
+
+  # Total number of characters for the table
+  ncchar <- sum(widths) + (length(widths) - 1) * col_gap
+
+  ## Text wrapping checks (widths)
+  if (tf_wrap) {
+    if (is.null(max_width)) {
+      max_width <- getOption("width", 80L)
+    } else if (is.character(max_width) && identical(max_width, "auto")) {
+      max_width <- ncchar + inset
     }
+    assert_number(max_width, lower = 0)
+  }
 
-    # Total number of characters for the table
-    ncchar <- sum(widths) + (length(widths) - 1) * col_gap
+  # Main wrapper function for table core
+  mat <- do_cell_fnotes_wrap(mat, widths, max_width = max_width, tf_wrap = tf_wrap)
 
-    ## Text wrapping checks (widths)
-    if (tf_wrap) {
-        if (is.null(max_width)) {
-            max_width <- getOption("width", 80L)
-        } else if (is.character(max_width) && identical(max_width, "auto")) {
-            max_width <- ncchar + inset
+  body <- mf_strings(mat)
+  aligns <- mf_aligns(mat)
+  keep_mat <- mf_display(mat)
+  ## spans <- mat$spans
+  ##    ri <- mat$row_info
+  ref_fnotes <- mf_rfnotes(mat)
+  nl_header <- mf_nlheader(mat)
+
+  cell_widths_mat <- .calc_cell_widths(mat, widths, col_gap)
+
+  # decimal alignment
+  if (any_dec_align(aligns)) {
+    body <- decimal_align(body, aligns)
+  }
+
+  # Content is a matrix of cells with the right amount of spaces
+  content <- matrix(mapply(padstr, body, cell_widths_mat, aligns), ncol = ncol(body))
+  content[!keep_mat] <- NA
+
+  # Define gap string and divisor string
+  gap_str <- strrep(" ", col_gap)
+  div <- substr(strrep(hsep, ncchar), 1, ncchar)
+
+  # text head (paste w/o NA content header and gap string)
+  txt_head <- apply(head(content, nl_header), 1, .paste_no_na, collapse = gap_str)
+
+  # txt body
+  sec_seps_df <- x$row_info[, c("abs_rownumber", "trailing_sep"), drop = FALSE]
+  if (!is.null(sec_seps_df) && any(!is.na(sec_seps_df$trailing_sep))) {
+    bdy_cont <- tail(content, -nl_header)
+    ## unfortunately we count "header rows" wrt line grouping so it
+    ## doesn't match the real (i.e. body) rows as is
+    row_grouping <- tail(x$line_grouping, -nl_header) - mf_nrheader(x)
+    nrbody <- NROW(bdy_cont)
+    stopifnot(length(row_grouping) == nrbody)
+    ## all rows with non-NA section divs and the final row (regardless of NA status)
+    ## fixes #77
+    sec_seps_df <- sec_seps_df[unique(c(
+      which(!is.na(sec_seps_df$trailing_sep)),
+      NROW(sec_seps_df)
+    )), ]
+    txt_body <- character()
+    sec_strt <- 1
+    section_rws <- sec_seps_df$abs_rownumber
+    for (i in seq_len(NROW(section_rws))) {
+      cur_rownum <- section_rws[i]
+      sec_end <- max(which(row_grouping == cur_rownum))
+      txt_body <- c(
+        txt_body,
+        apply(bdy_cont[seq(sec_strt, sec_end), , drop = FALSE],
+          1,
+          .paste_no_na,
+          collapse = gap_str
+        ),
+        ## don't print section dividers if they would be the last thing before the
+        ## footer divider
+        ## this also ensures an extraneous sec div won't be printed if we have non-sec-div
+        ## rows after the last sec div row (#77)
+        if (sec_end < nrbody) {
+          substr(
+            strrep(sec_seps_df$trailing_sep[i], ncchar), 1,
+            ncchar - inset
+          )
         }
-        assert_number(max_width, lower = 0)
+      )
+      sec_strt <- sec_end + 1
     }
+  } else {
+    # This is the usual default pasting
+    txt_body <- apply(tail(content, -nl_header), 1, .paste_no_na, collapse = gap_str)
+  }
 
-    # Main wrapper function for table core
-    mat <- do_cell_fnotes_wrap(mat, widths, max_width = max_width, tf_wrap = tf_wrap)
+  # retrieving titles and footers
+  allts <- all_titles(x)
 
-    body <- mf_strings(mat)
-    aligns <- mf_aligns(mat)
-    keep_mat <- mf_display(mat)
-    ## spans <- mat$spans
-    ##    ri <- mat$row_info
-    ref_fnotes <- mf_rfnotes(mat)
-    nl_header <- mf_nlheader(mat)
+  # Fix for ref_fnotes with \n characters XXX this does not count in the pagination
+  if (any(grepl("\n", ref_fnotes))) {
+    ref_fnotes <- unlist(strsplit(ref_fnotes, "\n", fixed = TRUE))
+  }
 
-    cell_widths_mat <- .calc_cell_widths(mat, widths, col_gap)
+  allfoots <- list(
+    "main_footer" = main_footer(x),
+    "prov_footer" = prov_footer(x),
+    "ref_footnotes" = ref_fnotes
+  )
+  allfoots <- allfoots[!sapply(allfoots, is.null)]
 
-    # decimal alignment
-    if (any_dec_align(aligns)) {
-      body <- decimal_align(body, aligns)
-    }
+  ## Wrapping titles if they go beyond the horizontally allowed space
+  if (tf_wrap) {
+    new_line_warning(allts)
+    allts <- wrap_txt(allts, max_width)
+  }
+  titles_txt <- if (any(nzchar(allts))) c(allts, "", .do_inset(div, inset)) else NULL
 
-    # Content is a matrix of cells with the right amount of spaces
-    content <- matrix(mapply(padstr, body, cell_widths_mat, aligns), ncol = ncol(body))
-    content[!keep_mat] <- NA
+  # Wrapping footers if they go beyond the horizontally allowed space
+  if (tf_wrap) {
+    new_line_warning(allfoots)
+    allfoots$main_footer <- wrap_txt(allfoots$main_footer, max_width - inset)
+    allfoots$ref_footnotes <- wrap_txt(allfoots$ref_footnotes, max_width - inset)
+    ## no - inset here because the prov_footer is not inset
+    allfoots$prov_footer <- wrap_txt(allfoots$prov_footer, max_width)
+  }
 
-    # Define gap string and divisor string
-    gap_str <- strrep(" ", col_gap)
-    div <- substr(strrep(hsep, ncchar), 1, ncchar)
-
-    # text head (paste w/o NA content header and gap string)
-    txt_head <- apply(head(content, nl_header), 1, .paste_no_na, collapse = gap_str)
-
-    # txt body
-    sec_seps_df <- x$row_info[, c("abs_rownumber", "trailing_sep"), drop = FALSE]
-    if (!is.null(sec_seps_df) && any(!is.na(sec_seps_df$trailing_sep))) {
-        bdy_cont <- tail(content, -nl_header)
-        ## unfortunately we count "header rows" wrt line grouping so it
-        ## doesn't match the real (i.e. body) rows as is
-        row_grouping <- tail(x$line_grouping, -nl_header) - mf_nrheader(x)
-        nrbody <- NROW(bdy_cont)
-        stopifnot(length(row_grouping) == nrbody)
-        ## all rows with non-NA section divs and the final row (regardless of NA status)
-        ## fixes #77
-        sec_seps_df <- sec_seps_df[unique(c(
-            which(!is.na(sec_seps_df$trailing_sep)),
-            NROW(sec_seps_df)
-        )), ]
-        txt_body <- character()
-        sec_strt <- 1
-        section_rws <- sec_seps_df$abs_rownumber
-        for (i in seq_len(NROW(section_rws))) {
-            cur_rownum <- section_rws[i]
-            sec_end <- max(which(row_grouping == cur_rownum))
-            txt_body <- c(
-                txt_body,
-                apply(bdy_cont[seq(sec_strt, sec_end), , drop = FALSE],
-                      1,
-                      .paste_no_na,
-                      collapse = gap_str
-                      ),
-                ## don't print section dividers if they would be the last thing before the
-                ## footer divider
-                ## this also ensures an extraneous sec div won't be printed if we have non-sec-div
-                ## rows after the last sec div row (#77)
-                if (sec_end < nrbody) {
-                    substr(
-                        strrep(sec_seps_df$trailing_sep[i], ncchar), 1,
-                        ncchar - inset
-                    )
-                }
-            )
-            sec_strt <- sec_end + 1
-        }
-    } else {
-        # This is the usual default pasting
-        txt_body <- apply(tail(content, -nl_header), 1, .paste_no_na, collapse = gap_str)
-    }
-
-    # retrieving titles and footers
-    allts <- all_titles(x)
-
-    # Fix for ref_fnotes with \n characters XXX this does not count in the pagination
-    if (any(grepl("\n", ref_fnotes))) {
-      ref_fnotes <- unlist(strsplit(ref_fnotes, "\n", fixed = TRUE))
-    }
-
-    allfoots <- list(
-        "main_footer" = main_footer(x),
-        "prov_footer" = prov_footer(x),
-        "ref_footnotes" = ref_fnotes
-    )
-    allfoots <- allfoots[!sapply(allfoots, is.null)]
-
-    ## Wrapping titles if they go beyond the horizontally allowed space
-    if (tf_wrap) {
-        new_line_warning(allts)
-        allts <- wrap_txt(allts, max_width)
-    }
-    titles_txt <- if (any(nzchar(allts))) c(allts, "", .do_inset(div, inset)) else NULL
-
-    # Wrapping footers if they go beyond the horizontally allowed space
-    if (tf_wrap) {
-        new_line_warning(allfoots)
-        allfoots$main_footer <- wrap_txt(allfoots$main_footer, max_width - inset)
-        allfoots$ref_footnotes <- wrap_txt(allfoots$ref_footnotes, max_width - inset)
-        ## no - inset here because the prov_footer is not inset
-        allfoots$prov_footer <- wrap_txt(allfoots$prov_footer, max_width)
-    }
-
-    # Final return
-    paste0(
-      paste(c(
-        titles_txt, # .do_inset(div, inset) happens if there are any titles
-        .do_inset(txt_head, inset),
-        .do_inset(div, inset),
-        .do_inset(txt_body, inset),
-        .footer_inset_helper(allfoots, div, inset)
-      ), collapse = "\n"),
-      "\n"
-    )
+  # Final return
+  paste0(
+    paste(c(
+      titles_txt, # .do_inset(div, inset) happens if there are any titles
+      .do_inset(txt_head, inset),
+      .do_inset(div, inset),
+      .do_inset(txt_body, inset),
+      .footer_inset_helper(allfoots, div, inset)
+    ), collapse = "\n"),
+    "\n"
+  )
 })
 
 .do_inset <- function(x, inset) {
-    if (inset == 0 || !any(nzchar(x))) {
-        return(x)
-    }
-    padding <- strrep(" ", inset)
-    if (is.character(x)) {
-        x <- paste0(padding, x)
-    } else if (is(x, "matrix")) {
-        x[, 1] <- .do_inset(x[, 1, drop = TRUE], inset)
-    }
-    x
+  if (inset == 0 || !any(nzchar(x))) {
+    return(x)
+  }
+  padding <- strrep(" ", inset)
+  if (is.character(x)) {
+    x <- paste0(padding, x)
+  } else if (is(x, "matrix")) {
+    x[, 1] <- .do_inset(x[, 1, drop = TRUE], inset)
+  }
+  x
 }
 
 
@@ -695,7 +695,7 @@ new_line_warning <- function(str_v) {
 #'
 #' @examples
 #' str <- list("  , something really  \\tnot  very good", # \t needs to be escaped
-#'             "  but I keep it12   ")
+#'   "  but I keep it12   ")
 #' wrap_string(str, 5, collapse = "\n")
 #'
 #' @name wrap_string
@@ -718,8 +718,8 @@ wrap_string <- function(str, width, collapse = NULL) {
 
   if (any(grepl("\\n", str))) {
     stop("Found \\n in a string that was meant to be wrapped. This should not happen ",
-         "because matrix_form should take care of them before this step (toString, ",
-         "i.e. the printing machinery). Please contact the maintaner or file an issue.")
+      "because matrix_form should take care of them before this step (toString, ",
+      "i.e. the printing machinery). Please contact the maintaner or file an issue.")
   }
 
   # str can be also a vector or list. In this case simplify manages the output
@@ -739,7 +739,7 @@ wrap_string <- function(str, width, collapse = NULL) {
         we_interval <- unique(c(we_i - 1, we_i))
         we_interval <- we_interval[
           (we_interval < (length(ret) + 1)) &
-          (we_interval > 0)
+            (we_interval > 0)
         ]
       } else {
         we_interval <- we_i

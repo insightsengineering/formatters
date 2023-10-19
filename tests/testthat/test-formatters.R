@@ -10,470 +10,470 @@ test_that("make_row_df produces custom error message if used on MatrixPrintForm"
   )
 })
 test_that("formats work", {
-    ## listing supported formats and enuring they all read as valid
-    forms <- list_valid_format_labels()
+  ## listing supported formats and enuring they all read as valid
+  forms <- list_valid_format_labels()
 
-    res <- sapply(forms, function(vc) all(sapply(vc, is_valid_format)))
-    expect_true(all(res))
+  res <- sapply(forms, function(vc) all(sapply(vc, is_valid_format)))
+  expect_true(all(res))
 
-    ## core formatter tests for format strings
+  ## core formatter tests for format strings
 
-    expect_identical(
-        format_value(values[1], format = "xx"),
-        paste(values[1])
-    )
-
-    expect_identical(
-  format_value(values[1], format = "xx."),
-  "5"
+  expect_identical(
+    format_value(values[1], format = "xx"),
+    paste(values[1])
   )
 
-    expect_identical(
-        format_value(values[1], format = "xx.x"),
-        "5.1"
-    )
-
-    expect_identical(
-        format_value(values[1], format = "xx.xx"),
-        "5.12"
-    )
-
-    expect_identical(
-        format_value(values[1], format = "xx.xxx"),
-        "5.123"
-    )
-
-    expect_identical(
-        format_value(values[1], format = "xx.xxxx"),
-        "5.1235"
-    )
-
-    expect_identical(
-        format_value(values[1], format = "xx%"),
-        paste0(values[1] * 100, "%")
-    )
-
-    expect_identical(
-        format_value(values[1], format = "xx.%"),
-        "512%"
-    )
-
-    expect_identical(
-        format_value(values[1], format = "xx.x%"),
-        "512.3%"
-    )
-
-    expect_identical(
-        format_value(values[1], format = "xx.xx%"),
-        "512.35%"
-    )
-
-    expect_identical(
-        format_value(values[1], format = "xx.xxx%"),
-        "512.346%"
-    )
-
-    expect_identical(
-        format_value(values[1], format = ">999.9"),
-        "5.1"
-    )
-
-    expect_identical(
-        format_value(10000, format = ">999.9"),
-        ">999.9"
-    )
-
-    expect_identical(
-        format_value(values[1], format = ">999.99"),
-        "5.12"
-    )
-
-    expect_identical(
-        format_value(10000, format = ">999.99"),
-        ">999.99"
-    )
-
-    expect_identical(
-        format_value(.0004, format = "x.xxxx | (<0.0001)"),
-        "0.0004"
-    )
-
-    expect_identical(
-        format_value(.00004, format = "x.xxxx | (<0.0001)"),
-        "<0.0001"
-    )
-
-    expect_identical(
-        format_value(values, format = "xx / xx"),
-        paste(values, collapse = " / ")
-    )
-
-    expect_identical(
-        format_value(values, format = "xx. / xx."),
-        "5 / 8"
-    )
-
-    expect_identical(
-        format_value(values, format = "xx.x / xx.x"),
-        "5.1 / 7.9"
-    )
-
-    expect_identical(
-        format_value(values, format = "xx.xx / xx.xx"),
-        "5.12 / 7.89"
-    )
-
-    expect_identical(
-        format_value(values, format = "xx.xxx / xx.xxx"),
-        "5.123 / 7.891"
-    )
-
-    expect_identical(
-        format_value(values, format = "xx (xx%)"),
-        paste0(values[1], " (", values[2] * 100, "%)")
-    )
-
-    expect_identical(
-        format_value(values, format = "xx (xx.%)"),
-        paste0(values[1], " (789%)")
-    )
-
-    expect_identical(
-        format_value(values, format = "xx. (xx.%)"),
-        paste0(5, " (789%)")
-    )
-
-    expect_identical(
-        format_value(values, format = "xx (xx.x%)"),
-        paste0(values[1], " (789.1%)")
-    )
-
-    expect_identical(
-        format_value(values, format = "xx (xx.xx%)"),
-        paste0(values[1], " (789.11%)")
-    )
-
-    expect_identical(
-        format_value(values, format = "xx.x (xx.x%)"),
-        "5.1 (789.1%)"
-    )
-
-    expect_identical(
-        format_value(values, format = "xx.xx (xx.xx%)"),
-        "5.12 (789.11%)"
-    )
-
-    expect_identical(
-        format_value(values, format = "xx.x (xx.x%)"),
-        "5.1 (789.1%)"
-    )
-
-    expect_identical(
-        format_value(values, format = "(xx, xx)"),
-        paste0("(", values[1], ", ", values[2], ")")
-    )
-
-    expect_identical(
-        format_value(values, format = "(xx., xx.)"),
-        "(5, 8)"
-    )
-
-    expect_identical(
-        format_value(values, format = "(xx.x, xx.x)"),
-        "(5.1, 7.9)"
-    )
-
-    expect_identical(
-        format_value(values, format = "(xx.xx, xx.xx)"),
-        "(5.12, 7.89)"
-    )
-
-    expect_identical(
-        format_value(values, format = "(xx.xxx, xx.xxx)"),
-        "(5.123, 7.891)"
-    )
-
-    expect_identical(
-        format_value(values, format = "(xx.xxxx, xx.xxxx)"),
-        "(5.1235, 7.8911)"
-    )
-
-    expect_identical(
-        format_value(values, format = "xx - xx"),
-        paste(values, collapse = " - ")
-    )
-
-    expect_identical(
-        format_value(values, format = "xx.x - xx.x"),
-        "5.1 - 7.9"
-    )
-
-    expect_identical(
-        format_value(values, format = "xx.xx - xx.xx"),
-        "5.12 - 7.89"
-    )
-
-    expect_identical(
-        format_value(values, format = "xx (xx%)"),
-        paste0(values[1], " (", values[2] * 100, "%)")
-    )
-
-    expect_identical(
-        format_value(values, format = "xx (xx)"),
-        paste0(values[1], " (", values[2], ")")
-    )
-
-
-    expect_identical(
-        format_value(values, format = "xx (xx.)"),
-        paste0(values[1], " (8)")
-    )
-
-
-    expect_identical(
-        format_value(values, format = "xx (xx.x)"),
-        paste0(values[1], " (7.9)")
-    )
-
-    expect_identical(
-        format_value(values, format = "xx (xx.xx)"),
-        paste0(values[1], " (7.89)")
-    )
-
-
-    expect_identical(
-        format_value(values, format = "xx. (xx.)"),
-        paste0(5, " (8)")
-    )
-
-
-    expect_identical(
-        format_value(values, format = "xx.x (xx.x)"),
-        "5.1 (7.9)"
-    )
-
-    expect_identical(
-        format_value(values, format = "xx.xx (xx.xx)"),
-        "5.12 (7.89)"
-    )
-
-    expect_identical(
-        format_value(values, format = "xx.x, xx.x"),
-        "5.1, 7.9"
-    )
-
-    expect_identical(
-        format_value(values, format = "xx.x to xx.x"),
-        "5.1 to 7.9"
-    )
-
-    expect_identical(
-        format_value(c(values, 10.1235), format = "xx. (xx. - xx.)"),
-        "5 (8 - 10)"
-    )
-
-    expect_identical(
-        format_value(c(values, 10.1235), format = "xx.x (xx.x - xx.x)"),
-        "5.1 (7.9 - 10.1)"
-    )
-
-    expect_identical(
-        format_value(c(values, 10.1235), format = "xx.xx (xx.xx - xx.xx)"),
-        "5.12 (7.89 - 10.12)"
-    )
-
-    expect_identical(
-        format_value(c(values, 10.1235), format = "xx.xxx (xx.xxx - xx.xxx)"),
-        "5.123 (7.891 - 10.124)"
-    )
-
-    expect_identical(format_value(NULL, "xx"), "")
-
-    expect_identical(
-        format_value(5.123, "xx.x", output = "html"),
-        list("5.1" = htmltools::tagList(format_value(5.123, "xx.x"), NULL))
-    )
-
-    expect_identical(format_value(c(500, 1), "N=xx (xx%)"),
-                     "N=500 (100%)")
-
-    ## errors
-
-    expect_error(format_value(5.1, "abcd"), "unknown format label")
-    expect_error(format_value(5.1, "xx - xx"), "are of different length")
-
-    expect_error(format_value(c(5.1, 2, 3), "xx - xx"), "are of different length")
-    ## handling NAs
-
-    results <- vapply(forms[["1d"]], function(fmt) format_value(NA, format = fmt), "")
-    justnastr <- results == "NA"
-
-    expect_true(all(justnastr))
-
-    expect_identical(
-        format_value(NA, "xx.", na_str = "-"),
-        "-"
-    )
-    expect_identical(
-        format_value(NA, "xx", na_str = "-"),
-        "-"
-    )
-
-    ## trailing 0s are correct
-    expect_identical(format_value(0, "xx."), "0")
-    expect_identical(format_value(0, "xx.x"), "0.0")
-    expect_identical(format_value(0, "xx.xx"), "0.00")
-    expect_identical(format_value(0, "xx.xxx"), "0.000")
-    expect_identical(format_value(0, "xx.xxxx"), "0.0000")
-
-
-    expect_identical(
-        format_value(c(NA, NA), format = "xx.x - xx.x", na_str = c("hi", "lo")),
-        "hi - lo"
-    )
-
-    expect_identical(
-        format_value(c(NA, NA), format = "xx.x - xx.x", na_str = "what"),
-        "what"
-    )
-
-    expect_identical(
-        format_value(c(NA, 5.2), format = "xx.x - xx.x", na_str = "what"),
-        "what - 5.2"
-    )
-
-    expect_identical(
-        format_value(c(NA, 5.2), format = "xx.x - xx.x", na_str = c("hi", "lo")),
-        "hi - 5.2"
-    )
-
-    expect_identical(
-        format_value(NA, format = "xx.x", na_str = character()),
-        "NA"
-    )
-
-    expect_identical(
-        format_value(NA, format = "xx.x", na_str = NA_character_),
-        "NA"
-    )
+  expect_identical(
+    format_value(values[1], format = "xx."),
+    "5"
+  )
+
+  expect_identical(
+    format_value(values[1], format = "xx.x"),
+    "5.1"
+  )
+
+  expect_identical(
+    format_value(values[1], format = "xx.xx"),
+    "5.12"
+  )
+
+  expect_identical(
+    format_value(values[1], format = "xx.xxx"),
+    "5.123"
+  )
+
+  expect_identical(
+    format_value(values[1], format = "xx.xxxx"),
+    "5.1235"
+  )
+
+  expect_identical(
+    format_value(values[1], format = "xx%"),
+    paste0(values[1] * 100, "%")
+  )
+
+  expect_identical(
+    format_value(values[1], format = "xx.%"),
+    "512%"
+  )
+
+  expect_identical(
+    format_value(values[1], format = "xx.x%"),
+    "512.3%"
+  )
+
+  expect_identical(
+    format_value(values[1], format = "xx.xx%"),
+    "512.35%"
+  )
+
+  expect_identical(
+    format_value(values[1], format = "xx.xxx%"),
+    "512.346%"
+  )
+
+  expect_identical(
+    format_value(values[1], format = ">999.9"),
+    "5.1"
+  )
+
+  expect_identical(
+    format_value(10000, format = ">999.9"),
+    ">999.9"
+  )
+
+  expect_identical(
+    format_value(values[1], format = ">999.99"),
+    "5.12"
+  )
+
+  expect_identical(
+    format_value(10000, format = ">999.99"),
+    ">999.99"
+  )
+
+  expect_identical(
+    format_value(.0004, format = "x.xxxx | (<0.0001)"),
+    "0.0004"
+  )
+
+  expect_identical(
+    format_value(.00004, format = "x.xxxx | (<0.0001)"),
+    "<0.0001"
+  )
+
+  expect_identical(
+    format_value(values, format = "xx / xx"),
+    paste(values, collapse = " / ")
+  )
+
+  expect_identical(
+    format_value(values, format = "xx. / xx."),
+    "5 / 8"
+  )
+
+  expect_identical(
+    format_value(values, format = "xx.x / xx.x"),
+    "5.1 / 7.9"
+  )
+
+  expect_identical(
+    format_value(values, format = "xx.xx / xx.xx"),
+    "5.12 / 7.89"
+  )
+
+  expect_identical(
+    format_value(values, format = "xx.xxx / xx.xxx"),
+    "5.123 / 7.891"
+  )
+
+  expect_identical(
+    format_value(values, format = "xx (xx%)"),
+    paste0(values[1], " (", values[2] * 100, "%)")
+  )
+
+  expect_identical(
+    format_value(values, format = "xx (xx.%)"),
+    paste0(values[1], " (789%)")
+  )
+
+  expect_identical(
+    format_value(values, format = "xx. (xx.%)"),
+    paste0(5, " (789%)")
+  )
+
+  expect_identical(
+    format_value(values, format = "xx (xx.x%)"),
+    paste0(values[1], " (789.1%)")
+  )
+
+  expect_identical(
+    format_value(values, format = "xx (xx.xx%)"),
+    paste0(values[1], " (789.11%)")
+  )
+
+  expect_identical(
+    format_value(values, format = "xx.x (xx.x%)"),
+    "5.1 (789.1%)"
+  )
+
+  expect_identical(
+    format_value(values, format = "xx.xx (xx.xx%)"),
+    "5.12 (789.11%)"
+  )
+
+  expect_identical(
+    format_value(values, format = "xx.x (xx.x%)"),
+    "5.1 (789.1%)"
+  )
+
+  expect_identical(
+    format_value(values, format = "(xx, xx)"),
+    paste0("(", values[1], ", ", values[2], ")")
+  )
+
+  expect_identical(
+    format_value(values, format = "(xx., xx.)"),
+    "(5, 8)"
+  )
+
+  expect_identical(
+    format_value(values, format = "(xx.x, xx.x)"),
+    "(5.1, 7.9)"
+  )
+
+  expect_identical(
+    format_value(values, format = "(xx.xx, xx.xx)"),
+    "(5.12, 7.89)"
+  )
+
+  expect_identical(
+    format_value(values, format = "(xx.xxx, xx.xxx)"),
+    "(5.123, 7.891)"
+  )
+
+  expect_identical(
+    format_value(values, format = "(xx.xxxx, xx.xxxx)"),
+    "(5.1235, 7.8911)"
+  )
+
+  expect_identical(
+    format_value(values, format = "xx - xx"),
+    paste(values, collapse = " - ")
+  )
+
+  expect_identical(
+    format_value(values, format = "xx.x - xx.x"),
+    "5.1 - 7.9"
+  )
+
+  expect_identical(
+    format_value(values, format = "xx.xx - xx.xx"),
+    "5.12 - 7.89"
+  )
+
+  expect_identical(
+    format_value(values, format = "xx (xx%)"),
+    paste0(values[1], " (", values[2] * 100, "%)")
+  )
+
+  expect_identical(
+    format_value(values, format = "xx (xx)"),
+    paste0(values[1], " (", values[2], ")")
+  )
+
+
+  expect_identical(
+    format_value(values, format = "xx (xx.)"),
+    paste0(values[1], " (8)")
+  )
+
+
+  expect_identical(
+    format_value(values, format = "xx (xx.x)"),
+    paste0(values[1], " (7.9)")
+  )
+
+  expect_identical(
+    format_value(values, format = "xx (xx.xx)"),
+    paste0(values[1], " (7.89)")
+  )
+
+
+  expect_identical(
+    format_value(values, format = "xx. (xx.)"),
+    paste0(5, " (8)")
+  )
+
+
+  expect_identical(
+    format_value(values, format = "xx.x (xx.x)"),
+    "5.1 (7.9)"
+  )
+
+  expect_identical(
+    format_value(values, format = "xx.xx (xx.xx)"),
+    "5.12 (7.89)"
+  )
+
+  expect_identical(
+    format_value(values, format = "xx.x, xx.x"),
+    "5.1, 7.9"
+  )
+
+  expect_identical(
+    format_value(values, format = "xx.x to xx.x"),
+    "5.1 to 7.9"
+  )
+
+  expect_identical(
+    format_value(c(values, 10.1235), format = "xx. (xx. - xx.)"),
+    "5 (8 - 10)"
+  )
+
+  expect_identical(
+    format_value(c(values, 10.1235), format = "xx.x (xx.x - xx.x)"),
+    "5.1 (7.9 - 10.1)"
+  )
+
+  expect_identical(
+    format_value(c(values, 10.1235), format = "xx.xx (xx.xx - xx.xx)"),
+    "5.12 (7.89 - 10.12)"
+  )
+
+  expect_identical(
+    format_value(c(values, 10.1235), format = "xx.xxx (xx.xxx - xx.xxx)"),
+    "5.123 (7.891 - 10.124)"
+  )
+
+  expect_identical(format_value(NULL, "xx"), "")
+
+  expect_identical(
+    format_value(5.123, "xx.x", output = "html"),
+    list("5.1" = htmltools::tagList(format_value(5.123, "xx.x"), NULL))
+  )
+
+  expect_identical(format_value(c(500, 1), "N=xx (xx%)"),
+    "N=500 (100%)")
+
+  ## errors
+
+  expect_error(format_value(5.1, "abcd"), "unknown format label")
+  expect_error(format_value(5.1, "xx - xx"), "are of different length")
+
+  expect_error(format_value(c(5.1, 2, 3), "xx - xx"), "are of different length")
+  ## handling NAs
+
+  results <- vapply(forms[["1d"]], function(fmt) format_value(NA, format = fmt), "")
+  justnastr <- results == "NA"
+
+  expect_true(all(justnastr))
+
+  expect_identical(
+    format_value(NA, "xx.", na_str = "-"),
+    "-"
+  )
+  expect_identical(
+    format_value(NA, "xx", na_str = "-"),
+    "-"
+  )
+
+  ## trailing 0s are correct
+  expect_identical(format_value(0, "xx."), "0")
+  expect_identical(format_value(0, "xx.x"), "0.0")
+  expect_identical(format_value(0, "xx.xx"), "0.00")
+  expect_identical(format_value(0, "xx.xxx"), "0.000")
+  expect_identical(format_value(0, "xx.xxxx"), "0.0000")
+
+
+  expect_identical(
+    format_value(c(NA, NA), format = "xx.x - xx.x", na_str = c("hi", "lo")),
+    "hi - lo"
+  )
+
+  expect_identical(
+    format_value(c(NA, NA), format = "xx.x - xx.x", na_str = "what"),
+    "what"
+  )
+
+  expect_identical(
+    format_value(c(NA, 5.2), format = "xx.x - xx.x", na_str = "what"),
+    "what - 5.2"
+  )
+
+  expect_identical(
+    format_value(c(NA, 5.2), format = "xx.x - xx.x", na_str = c("hi", "lo")),
+    "hi - 5.2"
+  )
+
+  expect_identical(
+    format_value(NA, format = "xx.x", na_str = character()),
+    "NA"
+  )
+
+  expect_identical(
+    format_value(NA, format = "xx.x", na_str = NA_character_),
+    "NA"
+  )
 
 })
 
 test_that("sprintf formats work", {
-    ## sprintf_format functionality
-    myfun <- sprintf_format("hi there %1.4f")
-    expect_true(is_valid_format(myfun))
-    expect_identical(
-        format_value(pi, format = myfun),
-        "hi there 3.1416"
-    )
+  ## sprintf_format functionality
+  myfun <- sprintf_format("hi there %1.4f")
+  expect_true(is_valid_format(myfun))
+  expect_identical(
+    format_value(pi, format = myfun),
+    "hi there 3.1416"
+  )
 })
 
 
 test_that("labels and miscellany", {
-    thing <- 5.1234
-    expect_true(is.null(obj_label(thing)))
-    obj_label(thing) <- "hi thing"
-    expect_identical(obj_label(thing), "hi thing")
-    expect_true(is.null(obj_format(thing)))
-    obj_format(thing) <- "xx.x"
-    expect_identical(
-        format_value(thing, obj_format(thing)),
-        "5.1"
+  thing <- 5.1234
+  expect_true(is.null(obj_label(thing)))
+  obj_label(thing) <- "hi thing"
+  expect_identical(obj_label(thing), "hi thing")
+  expect_true(is.null(obj_format(thing)))
+  obj_format(thing) <- "xx.x"
+  expect_identical(
+    format_value(thing, obj_format(thing)),
+    "5.1"
+  )
+
+
+  ## labels
+
+  x <- 15
+  expect_identical(
+    obj_label(with_label(x, "hi")),
+    "hi"
+  )
+
+  mydf <- mtcars
+  lbls <- paste("LBL: ", names(mydf))
+  var_labels(mydf) <- lbls
+  expect_identical(
+    var_labels(mydf),
+    setNames(
+      lbls,
+      names(mydf)
     )
+  )
+
+  mydf <- var_relabel(mydf, mpg = "New MPG")
+  expect_identical(
+    var_labels(mydf),
+    c(mpg = "New MPG", setNames(
+      lbls[-1],
+      names(mydf)[-1]
+    ))
+  )
 
 
-    ## labels
-
-    x <- 15
-    expect_identical(
-        obj_label(with_label(x, "hi")),
-        "hi"
-    )
-
-    mydf <- mtcars
-    lbls <- paste("LBL: ", names(mydf))
-    var_labels(mydf) <- lbls
-    expect_identical(
-        var_labels(mydf),
-        setNames(
-            lbls,
-            names(mydf)
-        )
-    )
-
-    mydf <- var_relabel(mydf, mpg = "New MPG")
-    expect_identical(
-        var_labels(mydf),
-        c(mpg = "New MPG", setNames(
-                               lbls[-1],
-                               names(mydf)[-1]
-                           ))
-    )
-
-
-    expect_true(all(is.na(var_labels(var_labels_remove(mydf)))))
+  expect_true(all(is.na(var_labels(var_labels_remove(mydf)))))
 })
 
 test_that("all valid format labels can be applied without error", {
-    ## additional full smoke test of labels without output checking
+  ## additional full smoke test of labels without output checking
 
-    values2 <- c(values, 987)
-    labs <- list_valid_format_labels()
+  values2 <- c(values, 987)
+  labs <- list_valid_format_labels()
 
-    r1 <- vapply(
-        labs[["1d"]],
-        function(lb) {
-        tmp <- format_value(values2[1], lb)
-        TRUE
+  r1 <- vapply(
+    labs[["1d"]],
+    function(lb) {
+      tmp <- format_value(values2[1], lb)
+      TRUE
     }, NA
-    )
+  )
 
-    expect_true(all(r1))
+  expect_true(all(r1))
 
-    r2 <- vapply(
-        labs[["2d"]],
-        function(lb) {
-        tmp <- format_value(values2[1:2], lb)
-        TRUE
+  r2 <- vapply(
+    labs[["2d"]],
+    function(lb) {
+      tmp <- format_value(values2[1:2], lb)
+      TRUE
     }, NA
-    )
+  )
 
-    expect_true(all(r2))
+  expect_true(all(r2))
 
 
-    r3 <- vapply(
-        labs[["3d"]],
-        function(lb) {
-        tmp <- format_value(values2, lb)
-        TRUE
+  r3 <- vapply(
+    labs[["3d"]],
+    function(lb) {
+      tmp <- format_value(values2, lb)
+      TRUE
     }, NA
-    )
+  )
 
-    expect_true(all(r3))
+  expect_true(all(r3))
 
-    expect_identical(
-        var_labels(data.frame()),
-        character()
-    )
+  expect_identical(
+    var_labels(data.frame()),
+    character()
+  )
 })
 
 ## silly coverage things
 expect_identical(padstr("hi", 4, "center"),
-                 " hi ")
+  " hi ")
 expect_identical(padstr("hi", 4, "left"),
-                 "hi  ")
+  "hi  ")
 expect_identical(padstr("hi", 4, "right"),
-                 "  hi")
+  "  hi")
 expect_identical(padstr(NA, 4, "center"),
-                 "<NA>")
+  "<NA>")
 
 expect_error(padstr(c("hi", "lo"), 5))
 expect_error(padstr(5, "hi"))
 
 
 expect_identical(spans_to_viscell(c(2, 2, 2, 2, 1, 3, 3, 3)),
-                 c(TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE))
+  c(TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE))
 
 expect_equal(nlines(character()), 0)
 
@@ -485,9 +485,9 @@ obj_na_str(stupidobj) <- "wat"
 obj_format(stupidobj) <- "xx.x"
 expect_silent(obj_align(stupidobj) <- "left") # setter for ANY align
 expect_identical(format_value(stupidobj,
-                              format = obj_format(stupidobj),
-                              na_str = obj_na_str(stupidobj)),
-                 "wat")
+  format = obj_format(stupidobj),
+  na_str = obj_na_str(stupidobj)),
+"wat")
 expect_identical(obj_align(stupidobj), "left") # getter for ANY align
 
 ## XXX I'm not sure if we use this functionality anywhere
@@ -495,10 +495,10 @@ expect_identical(obj_align(stupidobj), "left") # getter for ANY align
 ## not convinced we want it. Remove this test once we learn our lesson
 ## and remove the list method
 mylst <- list("hi",
-              c("there\nyou", "person", "ahoy"))
+  c("there\nyou", "person", "ahoy"))
 expect_equal(nlines(mylst), 5)
 expect_equal(nlines(list()),
-             0)
+  0)
 
 
 
@@ -526,27 +526,27 @@ expect_error(toString(dfmf_wrong, widths = cwths))
 ## annoying direct constructor calls to ensure full coverage
 
 strs <- matrix(byrow = TRUE, ncol = 2,
-               c("lab1", "lab2",
-                 "spn_val", "spn_val")
-               )
+  c("lab1", "lab2",
+    "spn_val", "spn_val")
+)
 
 spans <- matrix(byrow = TRUE, ncol = 2,
-                c(1, 1,
-                  2, 2)
-                )
+  c(1, 1,
+    2, 2)
+)
 
 aligns <- matrix(byrow = TRUE, ncol = 2,
-                 "center")
+  "center")
 fmts <- matrix(byrow = TRUE, ncol = 2, "xx")
 
 rinfo <- formatters:::pagdfrow(nm = "row", lab = "row", rnum = 1, pth = "row", extent = 1, rclass = "silly")
 
 mpf <- MatrixPrintForm(strings = strs, spans = spans, aligns = aligns,
-                       formats = fmts, row_info = rinfo,
-                       nlines_header = 1, nrow_header = 1, has_topleft = FALSE)
+  formats = fmts, row_info = rinfo,
+  nlines_header = 1, nrow_header = 1, has_topleft = FALSE)
 
 expect_equal(length(grep("spn_val", toString(mpf))),
-             1L)
+  1L)
 
 ### Decimal Alignment Testing ================
 test_that("error when widths are < than decimal aligned values", {
@@ -617,55 +617,55 @@ test_that("padstr works with decimal", {
 
 
 test_that("decimal alignments work when there are numbers but no decimal places", {
-    bmf <- basic_matrix_form(mtcars[1:2, c(1, 6)])
+  bmf <- basic_matrix_form(mtcars[1:2, c(1, 6)])
 
-    bmf2 <- bmf
+  bmf2 <- bmf
 
-    mf_aligns(bmf)[2:3, 2] <- "dec_right"
-    mf_aligns(bmf2)[2:3, 2] <- "right"
-    expect_identical(toString(bmf), toString(bmf2))
+  mf_aligns(bmf)[2:3, 2] <- "dec_right"
+  mf_aligns(bmf2)[2:3, 2] <- "right"
+  expect_identical(toString(bmf), toString(bmf2))
 
 
-    mf_aligns(bmf)[2:3, 2] <- "decimal"
-    mf_aligns(bmf2)[2:3, 2] <- "center"
-    expect_identical(toString(bmf), toString(bmf2))
+  mf_aligns(bmf)[2:3, 2] <- "decimal"
+  mf_aligns(bmf2)[2:3, 2] <- "center"
+  expect_identical(toString(bmf), toString(bmf2))
 
-    mf_aligns(bmf)[2:3, 2] <- "dec_left"
-    mf_aligns(bmf2)[2:3, 2] <- "left"
-    expect_identical(toString(bmf), toString(bmf2))
+  mf_aligns(bmf)[2:3, 2] <- "dec_left"
+  mf_aligns(bmf2)[2:3, 2] <- "left"
+  expect_identical(toString(bmf), toString(bmf2))
 })
 
 test_that("behavior of decimal alignments on non-numbers", {
-    ## XXX This may be converted into an error in the future but currently we don't
-    ## have the ability to do that.
+  ## XXX This may be converted into an error in the future but currently we don't
+  ## have the ability to do that.
 
-    bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
-    mf_strings(bmf)[-c(1, 2), 2] <- letters[1:3]
-    bmf2 <- bmf
+  bmf <- basic_matrix_form(mtcars[1:4, c(1, 6)])
+  mf_strings(bmf)[-c(1, 2), 2] <- letters[1:3]
+  bmf2 <- bmf
 
-    mf_aligns(bmf)[-1, 2] <- "decimal"
-    mf_aligns(bmf2)[-1, 2] <- "center"
-    expect_identical(toString(bmf), toString(bmf2))
+  mf_aligns(bmf)[-1, 2] <- "decimal"
+  mf_aligns(bmf2)[-1, 2] <- "center"
+  expect_identical(toString(bmf), toString(bmf2))
 
-    mf_aligns(bmf)[-1, 2] <- "dec_left"
-    mf_aligns(bmf2)[-1, 2] <- "left"
-    expect_identical(toString(bmf), toString(bmf2))
+  mf_aligns(bmf)[-1, 2] <- "dec_left"
+  mf_aligns(bmf2)[-1, 2] <- "left"
+  expect_identical(toString(bmf), toString(bmf2))
 
-    mf_aligns(bmf)[-1, 2] <- "dec_right"
-    mf_aligns(bmf2)[-1, 2] <- "right"
-    expect_identical(toString(bmf), toString(bmf2))
+  mf_aligns(bmf)[-1, 2] <- "dec_right"
+  mf_aligns(bmf2)[-1, 2] <- "right"
+  expect_identical(toString(bmf), toString(bmf2))
 
-    ## handles periods in string values sanely
-    bmf3 <- bmf
-    mf_strings(bmf3)[2, 3] <- "haha sentence."
-    bmf4 <- bmf3
+  ## handles periods in string values sanely
+  bmf3 <- bmf
+  mf_strings(bmf3)[2, 3] <- "haha sentence."
+  bmf4 <- bmf3
 
-    mf_aligns(bmf3)[-1, 2] <- "decimal"
-    mf_aligns(bmf4)[-1, 2] <- "center"
-    ## have to pass it propose_column_widths cause manually modifying
-    ## the string matrix doesn't update the cached default col widths
-    expect_identical(toString(bmf3, propose_column_widths(bmf3)),
-                     toString(bmf4, propose_column_widths(bmf4)))
+  mf_aligns(bmf3)[-1, 2] <- "decimal"
+  mf_aligns(bmf4)[-1, 2] <- "center"
+  ## have to pass it propose_column_widths cause manually modifying
+  ## the string matrix doesn't update the cached default col widths
+  expect_identical(toString(bmf3, propose_column_widths(bmf3)),
+    toString(bmf4, propose_column_widths(bmf4)))
 })
 
 test_that("Decimal alignment: a specific case with larger widths", {
@@ -770,8 +770,8 @@ test_that("All supported 1d format cases of decimal alignment", {
   set.seed(1)
   bmf$aligns[, 2] <- "decimal"
   sample_list_aligns <- sample(list_valid_aligns(),
-                               size = nrow(bmf$aligns),
-                               replace = TRUE
+    size = nrow(bmf$aligns),
+    replace = TRUE
   )
   bmf$strings[, 4] <- bmf$aligns[, 3] <- sample_list_aligns
 
@@ -835,7 +835,7 @@ test_that("All 2d cases for decimal alignment", {
   bmf$aligns[, 3] <- "dec_right"
   bmf$col_widths <- NULL
   expect_error(res_dec <- strsplit(toString(bmf, hsep = "-"), "\\n")[[1]],
-               regexp = "*first 3 selected from column dec_left*")
+    regexp = "*first 3 selected from column dec_left*")
 
   # expected <- c(
   #   "                          dec_left                     decimal",

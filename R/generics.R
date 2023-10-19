@@ -83,7 +83,7 @@ setMethod("make_row_df", "MatrixPrintForm", function(tt, colwidths = NULL, visib
                                                      nsibs = NA_integer_,
                                                      max_width = NULL) {
   stop("make_row_df can be used only on {rtables} table objects, and not on `matrix_form`-",
-       "generated objects (MatrixPrintForm).")
+    "generated objects (MatrixPrintForm).")
 })
 ## nocov end
 

@@ -86,7 +86,6 @@ We can build a baby example method for `data.frames` to illustrate this
 process:
 
 ```{r}
-
 ## pagdfrow supports a large number of pieces of information regarding
 ## siblings and what information should be repeated after a pagination.
 ## we ignore all that here and just give the absolutely crucial info:

@@ -46,8 +46,8 @@ test_that("tf_wordwrap and table inset work (including together)", {
 
   ## coverage for allfooter
   expect_identical(all_footers(matform),
-                   c(main_footer(matform),
-                     prov_footer(matform)))
+    c(main_footer(matform),
+      prov_footer(matform)))
 
 })
 
