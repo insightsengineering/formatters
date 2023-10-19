@@ -292,8 +292,9 @@ MatrixPrintForm <- function(strings = NULL,
 
 
   ##  ret <- shove_refdf_into_rowinfo(ret)
-  if (is.null(colwidths))
+  if (is.null(colwidths)) {
     colwidths <- propose_column_widths(ret)
+  }
   mf_col_widths(ret) <- colwidths
   ret <- mform_build_refdf(ret)
   ret
@@ -343,10 +344,11 @@ ref_df_row <- function(row_path = NA_character_,
 ## mf_cinfo(mform) should be non-null (!!!) and have the info in it
 ## in which case this becomes silly and dumb, but here we are, so here we go.
 infer_ref_info <- function(mform, colspace_only) {
-  if (colspace_only)
+  if (colspace_only) {
     idx <- seq_len(mf_nlheader(mform))
-  else
+  } else {
     idx <- seq_len(nrow(mf_strings(mform)))
+  }
 
 
   hasrlbs <- mf_has_rlabels(mform)
@@ -362,8 +364,9 @@ infer_ref_info <- function(mform, colspace_only) {
   ## thats how footnote numbering works
   refs_inorder <- as.vector(t(refs))
   keepem <- nzchar(refs_inorder)
-  if (sum(keepem) == 0)
+  if (sum(keepem) == 0) {
     return(ref_df_row()[0, ])
+  }
 
   refs_spl <- strsplit(refs_inorder[keepem], ", ", fixed = TRUE)
   runvec <- vapply(refs_spl, length, 1L)
@@ -504,10 +507,11 @@ mf_colgap <- function(mf) mf$col_gap
 
 ## XXX should this be exported? not sure if there's a point
 mf_col_paths <- function(mf) {
-  if (!is.null(mf_cinfo(mf)))
+  if (!is.null(mf_cinfo(mf))) {
     mf_cinfo(mf)$path
-  else
+  } else {
     as.list(paste0("col", seq_len(nrow(mf_strings(mf)) - mf_has_topleft(mf))))
+  }
 }
 
 
@@ -516,11 +520,12 @@ mf_col_widths <- function(mf) {
 }
 
 `mf_col_widths<-` <- function(mf, value) {
-  if (!is.null(value) && length(value) != NCOL(mf_strings(mf)))
+  if (!is.null(value) && length(value) != NCOL(mf_strings(mf))) {
     stop(
       "Number of column widths (", length(value), ") does not match ",
       "number of columns in strings matrix (", NCOL(mf_strings(mf)), ")."
     )
+  }
   mf$col_widths <- value
   mf
 }
@@ -537,8 +542,9 @@ mf_fnote_df <- function(mf) {
 
 
 splice_fnote_info_in <- function(df, refdf, row = TRUE) {
-  if (NROW(df) == 0)
+  if (NROW(df) == 0) {
     return(df)
+  }
 
   colnm <- ifelse(row, "row", "col")
   refdf <- refdf[!is.na(refdf[[colnm]]), ]
@@ -568,15 +574,17 @@ update_mf_rinfo_extents <- function(mform) {
   rinfo <- mf_rinfo(mform)
   refdf_all <- mf_fnote_df(mform)
   refdf_rows <- refdf_all[!is.na(refdf_all$row), ]
-  if (NROW(rinfo) == 0)
+  if (NROW(rinfo) == 0) {
     return(mform)
+  }
   lgrp <- mf_lgrouping(mform) - mf_nrheader(mform)
   lgrp <- lgrp[lgrp > 0]
   rf_nlines <- vapply(seq_len(max(lgrp)), function(ii) {
     refdfii <- refdf_rows[refdf_rows$row == ii, ]
     refdfii <- refdfii[!duplicated(refdfii$symbol), ]
-    if (NROW(refdfii) == 0L)
+    if (NROW(refdfii) == 0L) {
       return(0L)
+    }
     sum(refdfii$nlines)
   }, 1L)
 
@@ -604,8 +612,9 @@ update_mf_rinfo_extents <- function(mform) {
 
 update_mf_ref_nlines <- function(mform, max_width) {
   refdf <- mf_fnote_df(mform)
-  if (NROW(refdf) == 0)
+  if (NROW(refdf) == 0) {
     return(mform)
+  }
 
   refdf$nlines <- vapply(
     paste0("{", refdf$symbol, "} - ", refdf$msg),
@@ -695,13 +704,14 @@ update_mf_ref_nlines <- function(mform, max_width) {
   ## .chknrow_and_replace(mf, value, component = "row_info", noheader = TRUE)
   lgrps <- mf_lgrouping(mf)
   nrs <- length(unique(lgrps[-seq_len(mf_nlheader(mf))]))
-  if (NROW(value) != nrs)
+  if (NROW(value) != nrs) {
     stop(
       "Rows in new row_info component (",
       NROW(value),
       ") does not match number of rows reflected in line_grouping component (",
       nrs, ")"
     )
+  }
   mf$row_info <- value
   mf
 }
@@ -709,11 +719,12 @@ update_mf_ref_nlines <- function(mform, max_width) {
 #' @export
 #' @rdname mpf_accessors
 `mf_cinfo<-` <- function(mf, value) {
-  if (NROW(value) > 0 && NROW(value) != ncol(mf))
+  if (NROW(value) > 0 && NROW(value) != ncol(mf)) {
     stop(
       "Number of rows in new cinfo (", NROW(value), ") does not match ",
       "number of columns (", ncol(mf), ")"
     )
+  }
   mf$col_info <- value
   mf
 }
@@ -873,8 +884,9 @@ map_to_new <- function(old, map) {
 
 reconstruct_basic_fnote_list <- function(mf) {
   refdf <- mf_fnote_df(mf)
-  if (NROW(refdf) == 0)
+  if (NROW(refdf) == 0) {
     return(NULL)
+  }
   refdf <- refdf[!duplicated(refdf$symbol), ]
   paste0("{", refdf$symbol, "} - ", refdf$msg)
 }
@@ -895,8 +907,9 @@ fix_fnote_df <- function(df) {
 
 .mf_subset_core_mats <- function(mf, i, row = TRUE) {
   fillnum <- if (row) nrow(mf_strings(mf)) - mf_nlheader(mf) else ncol(mf)
-  if (is.logical(i) || all(i < 0))
+  if (is.logical(i) || all(i < 0)) {
     i <- seq_len(fillnum)[i]
+  }
 
   if (row) {
     nlh <- mf_nlheader(mf)
@@ -912,18 +925,20 @@ fix_fnote_df <- function(df) {
 
   mf_strings(mf) <- mf_strings(mf)[i_mat, j_mat, drop = FALSE]
   mf_lgrouping(mf) <- as.integer(as.factor(mf_lgrouping(mf)[i_mat]))
-  if (!row)
-    newspans <- truncate_spans(mf_spans(mf), j_mat) #' i' is the columns here, b/c row is FALSE
-  else
+  if (!row) {
+    newspans <- truncate_spans(mf_spans(mf), j_mat) # 'i' is the columns here, b/c row is FALSE
+  } else {
     newspans <- mf_spans(mf)[i_mat, j_mat, drop = FALSE]
+  }
   mf_spans(mf) <- newspans
   mf_formats(mf) <- mf_formats(mf)[i_mat, j_mat, drop = FALSE]
 
   mf_aligns(mf) <- mf_aligns(mf)[i_mat, j_mat, drop = FALSE]
   if (!row) {
     mf_ncol(mf) <- length(i)
-    if (!is.null(mf_col_widths(mf)))
+    if (!is.null(mf_col_widths(mf))) {
       mf_col_widths(mf) <- mf_col_widths(mf)[j_mat]
+    }
   }
   mf
 }
@@ -993,13 +1008,16 @@ mpf_subset_rows <- function(mf, i) {
 ## but lets be careful and do a bit more anyway
 mpf_subset_cols <- function(mf, j) {
   nc <- ncol(mf)
-  if (is.logical(j) || all(j < 0))
+  if (is.logical(j) || all(j < 0)) {
     j <- seq_len(nc)[j]
-  if (any(j < 0))
+  }
+  if (any(j < 0)) {
     stop("cannot mix negative and positive indices")
+  }
 
-  if (length(unique(j)) != length(j))
+  if (length(unique(j)) != length(j)) {
     stop("duplicated columns are not allowed when subsetting a matrix print form objects")
+  }
 
 
   #    j_mat <- c(if(mf_has_topleft(mf)) seq_len(nlabcol), j + nlabcol)

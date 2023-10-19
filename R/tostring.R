@@ -241,8 +241,9 @@ is_dec_align <- function(vec) {
   # "c" is not an alignment method we define in `formatters`,
   # but the reverse dependency package `tables` will need
   sdiff <- setdiff(vec, c(list_valid_aligns(), "c"))
-  if (length(sdiff) > 0)
+  if (length(sdiff) > 0) {
     stop("Invalid text-alignment(s): ", paste(sdiff, collapse = ", "))
+  }
   grepl("dec", vec)
 }
 
@@ -333,11 +334,12 @@ decimal_align <- function(string_mat, align_mat) {
         right <- sapply(right, "[[", 2)
         something_left <- sapply(strsplit(col_ia, "\\d+"), "[[", 1)
         left <- paste0(something_left, left)
-        if (!checkmate::test_set_equal(paste0(left, right), col_ia))
+        if (!checkmate::test_set_equal(paste0(left, right), col_ia)) {
           stop(
             "Split string list lost some piece along the way. This ",
             "should not have happened. Please contact the maintainer."
-          ) # nocov
+          )
+        } # nocov
         separator <- sapply(right, function(x) {
           if (nzchar(x)) {
             substr(x, 1, 1)
@@ -353,8 +355,9 @@ decimal_align <- function(string_mat, align_mat) {
           }
         }, USE.NAMES = FALSE)
         ## figure out whether we need space separators (at least one had a "." or not)
-        if (!any(grepl("[^[:space:]]", separator)))
+        if (!any(grepl("[^[:space:]]", separator))) {
           separator <- gsub("[[:space:]]*", "", separator)
+        }
         ## modify the piece with spaces
         left_mod <- paste0(spaces(max(nchar(left), na.rm = TRUE) - nchar(left)), left)
         right_mod <- paste0(right, spaces(max(nchar(right), na.rm = TRUE) - nchar(right)))

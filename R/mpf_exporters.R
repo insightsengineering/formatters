@@ -93,10 +93,11 @@ export_as_txt <- function(x,
   )
   res <- paste(strings, collapse = page_break)
 
-  if (is.null(file))
+  if (is.null(file)) {
     res
-  else
+  } else {
     cat(res, file = file)
+  }
 }
 
 
@@ -406,18 +407,21 @@ export_as_rtf <- function(x,
                           font_size = 8,
                           font_family = "Courier",
                           ...) {
-  if (!requireNamespace("r2rtf"))
+  if (!requireNamespace("r2rtf")) {
     stop("RTF export requires the r2rtf package, please install it.")
-  if (is.null(names(margins)))
+  }
+  if (is.null(names(margins))) {
     names(margins) <- marg_order
+  }
 
   fullmf <- matrix_form(x, indent_rownames = TRUE)
   req_ncols <- ncol(fullmf) + as.numeric(mf_has_rlabels(fullmf))
-  if (!is.null(colwidths) && length(colwidths) != req_ncols)
+  if (!is.null(colwidths) && length(colwidths) != req_ncols) {
     stop(
       "non-null colwidths argument must have length ncol(x) (+ 1 if row labels are present) [",
       req_ncols, "], got length ", length(colwidths)
     )
+  }
 
   true_width <- pg_width - sum(margins[c("left", "right")])
   true_height <- pg_height - sum(margins[c("top", "bottom")])
@@ -451,8 +455,9 @@ export_as_rtf <- function(x,
     ),
     rtftxts[[1]]$end
   )
-  if (!is.null(file))
+  if (!is.null(file)) {
     cat(restxt, file = file)
-  else
+  } else {
     restxt
+  }
 }

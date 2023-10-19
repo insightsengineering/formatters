@@ -156,17 +156,20 @@ page_lcpp <- function(page_type = page_types(),
                       margins = c(top = .5, bottom = .5, left = .75, right = .75),
                       pg_width = NULL,
                       pg_height = NULL) {
-  if (is.null(page_type))
+  if (is.null(page_type)) {
     page_type <- page_types()[1]
-  else
+  } else {
     page_type <- match.arg(page_type)
+  }
 
-  if (is.null(names(margins)))
+  if (is.null(names(margins))) {
     names(margins) <- marg_order
-  else
+  } else {
     margins <- margins[marg_order]
-  if (any(is.na(margins)))
+  }
+  if (any(is.na(margins))) {
     stop("margins argument must have names 'bottom', 'left', 'top' and 'right'.")
+  }
   lcpi <- font_lcpi(
     font_family = font_family,
     font_size = font_size,
