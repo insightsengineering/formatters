@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.937977099236641" branch-rate="0" lines-covered="1966" lines-valid="2096" branches-covered="0" branches-valid="0" complexity="0" version="3.6.3" timestamp="2023-10-19 16:45:05.571455">
+<coverage line-rate="0.937977099236641" branch-rate="0" lines-covered="1966" lines-valid="2096" branches-covered="0" branches-valid="0" complexity="0" version="3.6.3" timestamp="2023-10-19 17:02:19.812979">
   <sources>
     <source>/__w/formatters/formatters/formatters</source>
   </sources>
