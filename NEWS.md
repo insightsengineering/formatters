@@ -1,3 +1,5 @@
+## formatters 0.5.4.9000
+
 ## formatters 0.5.4
  * Fixed a bug in `paginate_to_mpfs()` so that formatting in listings key columns is retained with pagination [`insightsengineering/rlistings#155`](https://github.com/insightsengineering/rlistings/issues/155).
  * Improved error message for pagination when `cpp` or `lpp` is too small in comparison to the column or row widths.
