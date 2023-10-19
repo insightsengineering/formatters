@@ -27,7 +27,7 @@ happen if column widths are wider by setting parameters \code{widths} in \code{t
 wider column names. Decimal alignment is not supported along with cell wrapping.
 }
 \examples{
-dfmf <- basic_matrix_form(mtcars[1:5,])
+dfmf <- basic_matrix_form(mtcars[1:5, ])
 aligns <- mf_aligns(dfmf)
 aligns[, -c(1)] <- "dec_left"
 decimal_align(mf_strings(dfmf), aligns)

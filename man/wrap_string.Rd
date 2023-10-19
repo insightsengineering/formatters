@@ -45,8 +45,10 @@ word wrapping.
 
 }}
 \examples{
-str <- list("  , something really  \\\\tnot  very good", # \t needs to be escaped
-            "  but I keep it12   ")
+str <- list(
+  "  , something really  \\\\tnot  very good", # \t needs to be escaped
+  "  but I keep it12   "
+)
 wrap_string(str, 5, collapse = "\n")
 
 wrap_txt(str, 5, collapse = NULL)
