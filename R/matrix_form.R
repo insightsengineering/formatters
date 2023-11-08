@@ -399,7 +399,7 @@ infer_ref_info <- function(mform, colspace_only) {
   ret$col_path <- replicate(nrow(ret), list(NA_character_))
   non_na_col <- !is.na(ret$col)
   ret$col_path[non_na_col] <- col_pths[ret$col[non_na_col]]
-  ret$ref_index <- seq_len(nrow(ret))
+  ret$ref_index <- ret$symbol
   ##
   ret$nlines <- vapply(paste0("{", ret$symbol, "} - ", ret$msg), nlines, 1L)
   ret <- ret[, names(ref_df_row())]
