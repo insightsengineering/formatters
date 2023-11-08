@@ -571,6 +571,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
   # retrieving titles and footers
   allts <- all_titles(x)
 
+  ref_fnotes <- unique(ref_fnotes)
   # Fix for ref_fnotes with \n characters XXX this does not count in the pagination
   if (any(grepl("\n", ref_fnotes))) {
     ref_fnotes <- unlist(strsplit(ref_fnotes, "\n", fixed = TRUE))
