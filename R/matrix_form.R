@@ -891,20 +891,6 @@ reconstruct_basic_fnote_list <- function(mf) {
   paste0("{", refdf$symbol, "} - ", refdf$msg)
 }
 
-
-fix_fnote_df <- function(df) {
-  ind_symb <- df$symbol == as.character(df$ref_index)
-  df$ref_index <- seq_len(nrow(df))
-  df$symbol[ind_symb] <- as.character(df$ref_index[ind_symb])
-  df
-}
-
-
-
-
-
-
-
 .mf_subset_core_mats <- function(mf, i, row = TRUE) {
   fillnum <- if (row) nrow(mf_strings(mf)) - mf_nlheader(mf) else ncol(mf)
   if (is.logical(i) || all(i < 0)) {
@@ -985,7 +971,6 @@ mpf_subset_rows <- function(mf, i) {
   old_nas <- is.na(refdf$row)
   refdf$row <- map_to_new(refdf$row, row_map)
   refdf <- refdf[old_nas | !is.na(refdf$row), ]
-  refdf <- fix_fnote_df(refdf)
   mf_fnote_df(mf) <- refdf
 
   rinfo <- mf_rinfo(mf)
