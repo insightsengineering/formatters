@@ -292,5 +292,5 @@ test_that("toString and wrapping cooperates well with separator divisors", {
 
   sec_seps_df <- mf_rinfo(bmf)[, c("abs_rownumber", "trailing_sep"), drop = FALSE]
   mf_rinfo(bmf)$trailing_sep[c(1, 3, 4)] <- " "
-  toString(bmf, widths = c(4, 4, 4)) %>% cat
+  expect_silent(toString(bmf, widths = c(4, 4, 4)))
 })
