@@ -282,6 +282,7 @@ test_that("toString wrapping avoid trimming whitespaces", {
 })
 
 test_that("toString and wrapping cooperates well with separator divisors", {
+  # Fixes #221
   testdf <- iris[seq_len(5), seq_len(2)]
   rownames(testdf) <- paste("State ", LETTERS[seq_len(nrow(testdf))])
   bmf <- basic_matrix_form(testdf)
