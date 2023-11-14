@@ -64,14 +64,13 @@ test_that("pagination works", {
   ##                                min_siblings = 0,
   ##                                verbose = TRUE))
 
-  expect_error(
+  expect_silent(
     paginate_to_mpfs(
       dfmf_cont,
       lpp = 8 + 2,
       min_siblings = 0,
       verbose = TRUE
-    ),
-    "Unable to find any valid pagination"
+    )
   )
 
   ## https://github.com/insightsengineering/rtables/issues/318
