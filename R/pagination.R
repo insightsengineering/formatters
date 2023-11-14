@@ -267,6 +267,11 @@ valid_pag <- function(pagdf,
     return(FALSE)
   }
   if (rw[["node_class"]] %in% c("LabelRow", "ContentRow")) {
+    # check if it has children; if no children then valid
+    has_children <- unlist(pagdf$reprint_inds) %in% rw$abs_rownumber
+    if (!any(has_children)) {
+      return(TRUE)
+    }
     if (verbose) {
       message("\t....................... FAIL: last row is a label or content row")
     }
