@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.938124702522608" branch-rate="0" lines-covered="1971" lines-valid="2101" branches-covered="0" branches-valid="0" complexity="0" version="3.6.3" timestamp="2023-11-14 15:52:15.009342">
+<coverage line-rate="0.938183547313362" branch-rate="0" lines-covered="1973" lines-valid="2103" branches-covered="0" branches-valid="0" complexity="0" version="3.6.3" timestamp="2023-11-14 16:03:06.641501">
   <sources>
     <source>/__w/formatters/formatters/formatters</source>
   </sources>
   <packages>
-    <package name="formatters" line-rate="0.938124702522608" branch-rate="0" complexity="0">
+    <package name="formatters" line-rate="0.938183547313362" branch-rate="0" complexity="0">
       <classes>
         <class name="format_value.R" filename="R/format_value.R" line-rate="0.932642487046632" branch-rate="0" complexity="0">
           <methods>
@@ -1054,7 +1054,7 @@
             <line number="176" hits="1" branch="false"/>
           </lines>
         </class>
-        <class name="matrix_form.R" filename="R/matrix_form.R" line-rate="0.933333333333333" branch-rate="0" complexity="0">
+        <class name="matrix_form.R" filename="R/matrix_form.R" line-rate="0.933618843683084" branch-rate="0" complexity="0">
           <methods>
             <method name="mform_handle_newlines" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
@@ -1853,41 +1853,43 @@
                 <line number="963" hits="41" branch="false"/>
                 <line number="964" hits="41" branch="false"/>
                 <line number="965" hits="41" branch="false"/>
+                <line number="966" hits="41" branch="false"/>
                 <line number="967" hits="41" branch="false"/>
                 <line number="969" hits="41" branch="false"/>
                 <line number="971" hits="41" branch="false"/>
-                <line number="972" hits="41" branch="false"/>
                 <line number="973" hits="41" branch="false"/>
                 <line number="974" hits="41" branch="false"/>
+                <line number="975" hits="41" branch="false"/>
                 <line number="976" hits="41" branch="false"/>
                 <line number="978" hits="41" branch="false"/>
                 <line number="980" hits="41" branch="false"/>
-                <line number="981" hits="41" branch="false"/>
+                <line number="982" hits="41" branch="false"/>
                 <line number="983" hits="41" branch="false"/>
-                <line number="984" hits="41" branch="false"/>
                 <line number="985" hits="41" branch="false"/>
+                <line number="986" hits="41" branch="false"/>
+                <line number="987" hits="41" branch="false"/>
               </lines>
             </method>
             <method name="mpf_subset_cols" signature="" line-rate="0.833333333333333" branch-rate="0" complexity="0">
               <lines>
-                <line number="995" hits="68" branch="false"/>
-                <line number="996" hits="68" branch="false"/>
-                <line number="997" hits="0" branch="false"/>
-                <line number="999" hits="68" branch="false"/>
-                <line number="1000" hits="0" branch="false"/>
-                <line number="1003" hits="68" branch="false"/>
-                <line number="1004" hits="0" branch="false"/>
-                <line number="1009" hits="68" branch="false"/>
-                <line number="1012" hits="68" branch="false"/>
+                <line number="997" hits="68" branch="false"/>
+                <line number="998" hits="68" branch="false"/>
+                <line number="999" hits="0" branch="false"/>
+                <line number="1001" hits="68" branch="false"/>
+                <line number="1002" hits="0" branch="false"/>
+                <line number="1005" hits="68" branch="false"/>
+                <line number="1006" hits="0" branch="false"/>
+                <line number="1011" hits="68" branch="false"/>
                 <line number="1014" hits="68" branch="false"/>
-                <line number="1028" hits="68" branch="false"/>
-                <line number="1029" hits="68" branch="false"/>
+                <line number="1016" hits="68" branch="false"/>
+                <line number="1030" hits="68" branch="false"/>
                 <line number="1031" hits="68" branch="false"/>
-                <line number="1032" hits="68" branch="false"/>
                 <line number="1033" hits="68" branch="false"/>
                 <line number="1034" hits="68" branch="false"/>
                 <line number="1035" hits="68" branch="false"/>
                 <line number="1036" hits="68" branch="false"/>
+                <line number="1037" hits="68" branch="false"/>
+                <line number="1038" hits="68" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -2326,37 +2328,39 @@
             <line number="963" hits="41" branch="false"/>
             <line number="964" hits="41" branch="false"/>
             <line number="965" hits="41" branch="false"/>
+            <line number="966" hits="41" branch="false"/>
             <line number="967" hits="41" branch="false"/>
             <line number="969" hits="41" branch="false"/>
             <line number="971" hits="41" branch="false"/>
-            <line number="972" hits="41" branch="false"/>
             <line number="973" hits="41" branch="false"/>
             <line number="974" hits="41" branch="false"/>
+            <line number="975" hits="41" branch="false"/>
             <line number="976" hits="41" branch="false"/>
             <line number="978" hits="41" branch="false"/>
             <line number="980" hits="41" branch="false"/>
-            <line number="981" hits="41" branch="false"/>
+            <line number="982" hits="41" branch="false"/>
             <line number="983" hits="41" branch="false"/>
-            <line number="984" hits="41" branch="false"/>
             <line number="985" hits="41" branch="false"/>
-            <line number="995" hits="68" branch="false"/>
-            <line number="996" hits="68" branch="false"/>
-            <line number="997" hits="0" branch="false"/>
-            <line number="999" hits="68" branch="false"/>
-            <line number="1000" hits="0" branch="false"/>
-            <line number="1003" hits="68" branch="false"/>
-            <line number="1004" hits="0" branch="false"/>
-            <line number="1009" hits="68" branch="false"/>
-            <line number="1012" hits="68" branch="false"/>
+            <line number="986" hits="41" branch="false"/>
+            <line number="987" hits="41" branch="false"/>
+            <line number="997" hits="68" branch="false"/>
+            <line number="998" hits="68" branch="false"/>
+            <line number="999" hits="0" branch="false"/>
+            <line number="1001" hits="68" branch="false"/>
+            <line number="1002" hits="0" branch="false"/>
+            <line number="1005" hits="68" branch="false"/>
+            <line number="1006" hits="0" branch="false"/>
+            <line number="1011" hits="68" branch="false"/>
             <line number="1014" hits="68" branch="false"/>
-            <line number="1028" hits="68" branch="false"/>
-            <line number="1029" hits="68" branch="false"/>
+            <line number="1016" hits="68" branch="false"/>
+            <line number="1030" hits="68" branch="false"/>
             <line number="1031" hits="68" branch="false"/>
-            <line number="1032" hits="68" branch="false"/>
             <line number="1033" hits="68" branch="false"/>
             <line number="1034" hits="68" branch="false"/>
             <line number="1035" hits="68" branch="false"/>
             <line number="1036" hits="68" branch="false"/>
+            <line number="1037" hits="68" branch="false"/>
+            <line number="1038" hits="68" branch="false"/>
           </lines>
         </class>
         <class name="mpf_exporters.R" filename="R/mpf_exporters.R" line-rate="0.901408450704225" branch-rate="0" complexity="0">
