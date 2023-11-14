@@ -670,7 +670,16 @@ setMethod("toString", "MatrixPrintForm", function(x,
 reorder_ref_fnotes <- function(fns) {
   ind <- gsub("\\{(.*)\\}.*", "\\1", fns)
   ind_num <- suppressWarnings(as.numeric(ind))
-  if (!any(is.na(ind_num))) fns[order(ind_num)] else fns
+  is_num <- !is.na(ind_num)
+
+  if (all(is_num)) {
+    ord_num <- order(ind_num)
+    ord_char <- NULL
+  } else {
+    ord_num <- order(ind_num[is_num])
+    ord_char <- order(ind[!is_num])
+  }
+  c(fns[is_num][ord_num], fns[!is_num][ord_char])
 }
 
 new_line_warning <- function(str_v) {
