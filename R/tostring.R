@@ -571,7 +571,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
   # retrieving titles and footers
   allts <- all_titles(x)
 
-  ref_fnotes <- reorder_ref_fnotes(unique(ref_fnotes))
+  ref_fnotes <- reorder_ref_fnotes(ref_fnotes)
   # Fix for ref_fnotes with \n characters XXX this does not count in the pagination
   if (any(grepl("\n", ref_fnotes))) {
     ref_fnotes <- unlist(strsplit(ref_fnotes, "\n", fixed = TRUE))
@@ -668,8 +668,9 @@ setMethod("toString", "MatrixPrintForm", function(x,
 }
 
 reorder_ref_fnotes <- function(fns) {
-  ord <- as.numeric(gsub("\\{(.*)\\}.*", "\\1", fns))
-  fns[order(ord)]
+  ind <- gsub("\\{(.*)\\}.*", "\\1", fns)
+  ind_num <- suppressWarnings(as.numeric(ind))
+  if (!any(is.na(ind_num))) fns[order(ind_num)] else fns
 }
 
 new_line_warning <- function(str_v) {
