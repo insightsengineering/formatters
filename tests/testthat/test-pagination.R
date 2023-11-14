@@ -64,7 +64,7 @@ test_that("pagination works", {
   ##                                min_siblings = 0,
   ##                                verbose = TRUE))
 
-  expect_silent(
+  expect_message(
     paginate_to_mpfs(
       dfmf_cont,
       lpp = 8 + 2,
