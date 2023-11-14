@@ -904,7 +904,7 @@ test_that("reorder_ref_fnotes orders referential footnotes correctly", {
 
   expect_identical(
     res,
-    c("{1} - one", "{3} - three", "{4} - test 1", "{7} - !!", "{11} - eleven",  "{100} - test 2")
+    c("{1} - one", "{3} - three", "{4} - test 1", "{7} - !!", "{11} - eleven", "{100} - test 2")
   )
 
   # numeric and character
@@ -913,6 +913,6 @@ test_that("reorder_ref_fnotes orders referential footnotes correctly", {
 
   expect_identical(
     res,
-    c("{1} - one", "{3} - three", "{11} - eleven", "{!} - !!", "{*} - test 1",  "{**} - test 2")
+    c("{1} - one", "{3} - three", "{11} - eleven", "{!} - !!", "{*} - test 1", "{**} - test 2")
   )
 })

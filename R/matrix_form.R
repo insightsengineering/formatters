@@ -961,8 +961,10 @@ mpf_subset_rows <- function(mf, i) {
 
   ncs <- ncol(mf)
   mf <- .mf_subset_core_mats(mf, i, row = TRUE)
-  map <- data.frame(old_idx = c(seq_len(ncolrows), i + ncolrows),
-                    new_idx = c(seq_len(ncolrows), ncolrows + order(i)))
+  map <- data.frame(
+    old_idx = c(seq_len(ncolrows), i + ncolrows),
+    new_idx = c(seq_len(ncolrows), ncolrows + order(i))
+  )
 
   row_map <- data.frame(old_idx = i, new_idx = order(i))
 
