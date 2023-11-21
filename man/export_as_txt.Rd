@@ -113,7 +113,7 @@ pagination breaks be shown. Defaults to \code{FALSE}.}
 \item{page_break}{character(1).  Page break  symbol (defaults  to
 outputting \code{"\\n\\s"}).}
 
-\item{page_num}{character(1). The placehoder for page numbers. {i}
+\item{page_num}{character(1). The placeholder for page numbers. {i}
 will be replaced with current page number, {n} will be replaced with
 total page number.}
 }

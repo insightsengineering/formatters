@@ -21,7 +21,7 @@
 #' @param paginate logical(1). Whether pagination should be performed,
 #'     defaults to \code{TRUE} if page size is specified (including
 #'     the default).
-#' @param page_num  character(1). The placehoder for page numbers. {i}
+#' @param page_num  character(1). The placeholder for page numbers. {i}
 #' will be replaced with current page number, {n} will be replaced with
 #' total page number.
 #' @details if  \code{x} has an \code{num_rep_cols}  method, the value
