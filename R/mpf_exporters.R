@@ -101,11 +101,15 @@ export_as_txt <- function(x,
   page_nums <- vapply(
     seq_len(total_pages),
     function(x) {
-      sprintf(paste0("%", cpp, "s\n"), gsub("\\{i\\}", x, page_num))
+      gsub("\\{i\\}", x, page_num)
     },
     FUN.VALUE = ""
   )
-  strings <- paste0(strings, page_nums)
+  page_footer <- sprintf(paste0("%", cpp, "s\n"), page_nums)
+  if (any(nchar(page_footer) > cpp)) {
+    stop("Page footer is too large to fit the page.")
+  }
+  strings <- paste0(strings, page_footer)
   res <- paste(strings, collapse = page_break)
   if (is.null(file)) {
     res
