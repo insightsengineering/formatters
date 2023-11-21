@@ -101,7 +101,7 @@ export_as_txt <- function(x,
   page_nums <- vapply(
     seq_len(total_pages),
     function(x) {
-      sprintf("%90s\n", gsub("\\{i\\}", x, page_num))
+      sprintf(paste0("%", cpp, "s\n"), gsub("\\{i\\}", x, page_num))
     },
     FUN.VALUE = ""
   )
