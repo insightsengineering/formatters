@@ -518,6 +518,12 @@ setMethod("toString", "MatrixPrintForm", function(x,
   # Define gap string and divisor string
   gap_str <- strrep(" ", col_gap)
   div <- substr(strrep(hsep, ncchar), 1, ncchar)
+  hsd <- header_section_div(mat)
+  if (!is.na(hsd)) {
+    hsd <- substr(strrep(hsd, ncchar), 1, ncchar)
+  } else {
+    hsd <- NULL # no divisor
+  }
 
   # text head (paste w/o NA content header and gap string)
   txt_head <- apply(head(content, nl_header), 1, .paste_no_na, collapse = gap_str)
@@ -605,6 +611,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
       titles_txt, # .do_inset(div, inset) happens if there are any titles
       .do_inset(txt_head, inset),
       .do_inset(div, inset),
+      .do_inset(hsd, inset), # header_section_div if present
       .do_inset(txt_body, inset),
       .footer_inset_helper(allfoots, div, inset)
     ), collapse = "\n"),
@@ -977,7 +984,6 @@ spans_to_viscell <- function(spans) {
 ## ' mf <- matrix_form(tbl)
 ## ' propose_column_widths(mf)
 propose_column_widths <- function(x, indent_size = 2) {
-  ## stopifnot(is(x, "VTableTree"))
   if (!is(x, "MatrixPrintForm")) {
     x <- matrix_form(x, indent_rownames = TRUE, indent_size = indent_size)
   }
