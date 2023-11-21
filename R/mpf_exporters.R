@@ -21,6 +21,9 @@
 #' @param paginate logical(1). Whether pagination should be performed,
 #'     defaults to \code{TRUE} if page size is specified (including
 #'     the default).
+#' @param page_num  character(1). The placehoder for page numbers. {i}
+#' will be replaced with current page number, {n} will be replaced with
+#' total page number.
 #' @details if  \code{x} has an \code{num_rep_cols}  method, the value
 #'     returned by it will be  used for \code{rep_cols} by default, if
 #'     not, 0 will be used.
@@ -56,7 +59,8 @@ export_as_txt <- function(x,
                           nosplitin = character(),
                           rep_cols = num_rep_cols(x),
                           verbose = FALSE,
-                          page_break = "\\s\\n") {
+                          page_break = "\\s\\n",
+                          page_num = "page {i}/{n}") {
   if (paginate) {
     pages <- paginate_to_mpfs(
       x,
@@ -68,7 +72,7 @@ export_as_txt <- function(x,
       pg_width = pg_width,
       pg_height = pg_height,
       margins = margins,
-      lpp = lpp,
+      lpp = lpp - 1, # additional line for page number
       cpp = cpp,
       min_siblings = min_siblings,
       nosplitin = nosplitin,
@@ -91,8 +95,18 @@ export_as_txt <- function(x,
     widths = NULL,
     hsep = hsep, tf_wrap = tf_wrap, max_width = max_width
   )
+  checkmate::assert_string(page_num)
+  total_pages <- length(strings)
+  page_num <- gsub("\\{n\\}", total_pages, page_num)
+  page_nums <- vapply(
+    seq_len(total_pages),
+    function(x) {
+      sprintf("%90s\n", gsub("\\{i\\}", x, page_num))
+    },
+    FUN.VALUE = ""
+  )
+  strings <- paste0(strings, page_nums)
   res <- paste(strings, collapse = page_break)
-
   if (is.null(file)) {
     res
   } else {
