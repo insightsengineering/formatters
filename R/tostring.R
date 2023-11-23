@@ -671,15 +671,18 @@ reorder_ref_fnotes <- function(fns) {
   ind <- gsub("\\{(.*)\\}.*", "\\1", fns)
   ind_num <- suppressWarnings(as.numeric(ind))
   is_num <- !is.na(ind_num)
+  is_asis <- ind == fns
 
   if (all(is_num)) {
     ord_num <- order(ind_num)
     ord_char <- NULL
+    ord_other <- NULL
   } else {
     ord_num <- order(ind_num[is_num])
-    ord_char <- order(ind[!is_num])
+    ord_char <- order(ind[!is_num & !is_asis])
+    ord_other <- order(ind[is_asis])
   }
-  c(fns[is_num][ord_num], fns[!is_num][ord_char])
+  c(fns[is_num][ord_num], fns[!is_num & !is_asis][ord_char], ind[is_asis][ord_other])
 }
 
 new_line_warning <- function(str_v) {
