@@ -1,4 +1,4 @@
-## formatters 0.5.4.9002
+## formatters 0.5.4.9003
  * Applied `styler` and resolved package lint. Changed default indentation from 4 spaces to 2.
 
 ## formatters 0.5.4
