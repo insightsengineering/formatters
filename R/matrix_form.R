@@ -399,7 +399,7 @@ infer_ref_info <- function(mform, colspace_only) {
   ret$col_path <- replicate(nrow(ret), list(NA_character_))
   non_na_col <- !is.na(ret$col)
   ret$col_path[non_na_col] <- col_pths[ret$col[non_na_col]]
-  ret$ref_index <- seq_len(nrow(ret))
+  ret$ref_index <- match(ret$symbol, unique(ret$symbol))
   ##
   ret$nlines <- vapply(paste0("{", ret$symbol, "} - ", ret$msg), nlines, 1L)
   ret <- ret[, names(ref_df_row())]
@@ -891,20 +891,6 @@ reconstruct_basic_fnote_list <- function(mf) {
   paste0("{", refdf$symbol, "} - ", refdf$msg)
 }
 
-
-fix_fnote_df <- function(df) {
-  ind_symb <- df$symbol == as.character(df$ref_index)
-  df$ref_index <- seq_len(nrow(df))
-  df$symbol[ind_symb] <- as.character(df$ref_index[ind_symb])
-  df
-}
-
-
-
-
-
-
-
 .mf_subset_core_mats <- function(mf, i, row = TRUE) {
   fillnum <- if (row) nrow(mf_strings(mf)) - mf_nlheader(mf) else ncol(mf)
   if (is.logical(i) || all(i < 0)) {
@@ -975,8 +961,10 @@ mpf_subset_rows <- function(mf, i) {
 
   ncs <- ncol(mf)
   mf <- .mf_subset_core_mats(mf, i, row = TRUE)
-  map <- data.frame(old_idx = c(seq_len(ncolrows), i + ncolrows),
-                    new_idx = c(seq_len(ncolrows), ncolrows + order(i)))
+  map <- data.frame(
+    old_idx = c(seq_len(ncolrows), i + ncolrows),
+    new_idx = c(seq_len(ncolrows), ncolrows + order(i))
+  )
 
   row_map <- data.frame(old_idx = i, new_idx = order(i))
 
@@ -985,7 +973,6 @@ mpf_subset_rows <- function(mf, i) {
   old_nas <- is.na(refdf$row)
   refdf$row <- map_to_new(refdf$row, row_map)
   refdf <- refdf[old_nas | !is.na(refdf$row), ]
-  refdf <- fix_fnote_df(refdf)
   mf_fnote_df(mf) <- refdf
 
   rinfo <- mf_rinfo(mf)
