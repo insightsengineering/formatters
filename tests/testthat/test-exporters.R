@@ -69,7 +69,7 @@ test_that("exporters work", {
     exp_h_pags
   )
 
-  expect_true(msg_1_pos > min(msg_asterisk_pos))
+  expect_true(msg_1_pos < min(msg_asterisk_pos))
 
 
   expect_identical(
