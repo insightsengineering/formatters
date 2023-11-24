@@ -149,7 +149,7 @@ test_that("export_as_txt maintains repeated columns when paginate is TRUE", {
   expect_identical(length(gregexpr(c("disp"), pag_out)[[1]]), 2L)
 })
 
-test_that("export_as_txt maintains repeated columns when paginate is TRUE", {
+test_that("export_as_txt maintains horizontal separator from table", {
   dfmf <- basic_matrix_form(mtcars)
   horizontal_sep(dfmf) <- "="
   # repeat first 3 columns in each page
