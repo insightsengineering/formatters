@@ -26,7 +26,7 @@ default_hsep <- function() {
     if (any(grepl("^UTF", utils::localeToCharset()))) {
       hsep <- "\u2014"
     } else {
-      if (!warn_sent && interactive()) {
+      if (interactive()) {
         warning(
           "Detected non-UTF charset. Falling back to '-' ",
           "as default header/body separator. This warning ",

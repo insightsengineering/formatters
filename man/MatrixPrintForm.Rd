@@ -127,6 +127,9 @@ character vector.}
 \item{header_section_div}{character(1). Divider to be used between header
 and body sections.}
 
+\item{horizontal_sep}{character(1). Horizontal separator to be used for printing
+divisors between header and table body and in different footers.}
+
 \item{col_gap}{numeric(1). Space (in characters) between columns}
 
 \item{table_inset}{numeric(1). Table inset. See
@@ -158,6 +161,8 @@ when the table is rendered}
 \item{\code{page_titles}}{see argument}
 \item{\code{main_footer}}{see argument}
 \item{\code{prov_footer}}{see argument}
+\item{\code{header_section_div}}{see argument}
+\item{\code{horizontal_sep}}{see argument}
 \item{\code{col_gap}}{see argument}
 \item{\code{table_inset}}{see argument}
 }
