@@ -27,5 +27,7 @@ displayed in the current \code{charset} for use in rendering table-likes.
 }
 \examples{
 default_hsep()
+set_default_hsep("o")
+default_hsep()
 
 }
