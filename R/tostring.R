@@ -14,6 +14,8 @@
 #'
 #' @examples
 #' default_hsep()
+#' set_default_hsep("o")
+#' default_hsep()
 #'
 #' @name default_horizontal_sep
 #' @export
