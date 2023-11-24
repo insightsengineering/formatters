@@ -153,5 +153,6 @@ test_that("export_as_txt maintains horizontal separator from table", {
   dfmf <- basic_matrix_form(mtcars)
   horizontal_sep(dfmf) <- "="
   # repeat first 3 columns in each page
-  pag_out <- export_as_txt(dfmf)
+  out <- strsplit(export_as_txt(dfmf), "\n")[[1]][2]
+  expect_equal(out, paste0(rep("=", nchar(out)), collapse = ""))
 })
