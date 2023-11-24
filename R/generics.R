@@ -639,3 +639,22 @@ setGeneric("num_rep_cols", function(obj) standardGeneric("num_rep_cols"))
 #' @export
 #' @rdname num_rep_cols
 setMethod("num_rep_cols", "ANY", function(obj) 0L)
+
+# header_section_div -----------------------------------------------------------
+#' @keywords internal
+setGeneric("header_section_div", function(obj) standardGeneric("header_section_div"))
+#' @keywords internal
+setMethod(
+  "header_section_div", "MatrixPrintForm",
+  function(obj) obj$header_section_div
+)
+#' @keywords internal
+setGeneric("header_section_div<-", function(obj, value) standardGeneric("header_section_div<-"))
+#' @keywords internal
+setMethod(
+  "header_section_div<-", "MatrixPrintForm",
+  function(obj, value) {
+    obj$header_section_div <- value
+    obj
+  }
+)

@@ -23,6 +23,7 @@ MatrixPrintForm(
   page_titles = character(),
   main_footer = "",
   prov_footer = character(),
+  header_section_div = NA_character_,
   col_gap = 3,
   table_inset = 0L,
   colwidths = NULL,
@@ -47,6 +48,7 @@ matrix_print_form(
   page_titles = character(),
   main_footer = "",
   prov_footer = character(),
+  header_section_div = NA_character_,
   col_gap = 3,
   table_inset = 0L,
   colwidths = NULL,
@@ -119,6 +121,9 @@ vector.}
 
 \item{prov_footer}{character.  Provenance footer  information as a
 character vector.}
+
+\item{header_section_div}{character(1). Divider to be used between header
+and body sections.}
 
 \item{col_gap}{numeric(1). Space (in characters) between columns}
 

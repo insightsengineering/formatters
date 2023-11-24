@@ -500,7 +500,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
   aligns <- mf_aligns(mat)
   keep_mat <- mf_display(mat)
   ## spans <- mat$spans
-  ##    ri <- mat$row_info
+  mf_ri <- mf_rinfo(mat)
   ref_fnotes <- mf_rfnotes(mat)
   nl_header <- mf_nlheader(mat)
 
@@ -518,17 +518,23 @@ setMethod("toString", "MatrixPrintForm", function(x,
   # Define gap string and divisor string
   gap_str <- strrep(" ", col_gap)
   div <- substr(strrep(hsep, ncchar), 1, ncchar)
+  hsd <- header_section_div(mat)
+  if (!is.na(hsd)) {
+    hsd <- substr(strrep(hsd, ncchar), 1, ncchar)
+  } else {
+    hsd <- NULL # no divisor
+  }
 
   # text head (paste w/o NA content header and gap string)
   txt_head <- apply(head(content, nl_header), 1, .paste_no_na, collapse = gap_str)
 
   # txt body
-  sec_seps_df <- x$row_info[, c("abs_rownumber", "trailing_sep"), drop = FALSE]
+  sec_seps_df <- mf_ri[, c("abs_rownumber", "trailing_sep"), drop = FALSE]
   if (!is.null(sec_seps_df) && any(!is.na(sec_seps_df$trailing_sep))) {
     bdy_cont <- tail(content, -nl_header)
     ## unfortunately we count "header rows" wrt line grouping so it
     ## doesn't match the real (i.e. body) rows as is
-    row_grouping <- tail(x$line_grouping, -nl_header) - mf_nrheader(x)
+    row_grouping <- tail(mf_lgrouping(mat), - nl_header) - mf_nrheader(mat)
     nrbody <- NROW(bdy_cont)
     stopifnot(length(row_grouping) == nrbody)
     ## all rows with non-NA section divs and the final row (regardless of NA status)
@@ -569,7 +575,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
   }
 
   # retrieving titles and footers
-  allts <- all_titles(x)
+  allts <- all_titles(mat)
 
   ref_fnotes <- reorder_ref_fnotes(ref_fnotes)
   # Fix for ref_fnotes with \n characters XXX this does not count in the pagination
@@ -578,8 +584,8 @@ setMethod("toString", "MatrixPrintForm", function(x,
   }
 
   allfoots <- list(
-    "main_footer" = main_footer(x),
-    "prov_footer" = prov_footer(x),
+    "main_footer" = main_footer(mat),
+    "prov_footer" = prov_footer(mat),
     "ref_footnotes" = ref_fnotes
   )
   allfoots <- allfoots[!sapply(allfoots, is.null)]
@@ -606,6 +612,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
       titles_txt, # .do_inset(div, inset) happens if there are any titles
       .do_inset(txt_head, inset),
       .do_inset(div, inset),
+      .do_inset(hsd, inset), # header_section_div if present
       .do_inset(txt_body, inset),
       .footer_inset_helper(allfoots, div, inset)
     ), collapse = "\n"),
@@ -996,7 +1003,6 @@ spans_to_viscell <- function(spans) {
 ## ' mf <- matrix_form(tbl)
 ## ' propose_column_widths(mf)
 propose_column_widths <- function(x, indent_size = 2) {
-  ## stopifnot(is(x, "VTableTree"))
   if (!is(x, "MatrixPrintForm")) {
     x <- matrix_form(x, indent_rownames = TRUE, indent_size = indent_size)
   }

@@ -280,3 +280,18 @@ test_that("toString wrapping avoid trimming whitespaces", {
     res
   )
 })
+
+test_that("toString and wrapping cooperates well with separator divisors", {
+  # Fixes #221
+  testdf <- iris[seq_len(5), seq_len(2)]
+  rownames(testdf) <- paste("State ", LETTERS[seq_len(nrow(testdf))])
+  bmf <- basic_matrix_form(testdf)
+
+  # Adding topleft to wrap
+  bmf$has_topleft <- TRUE # no setter atm
+  mf_strings(bmf)[1, 1] <- "LETTERS"
+
+  sec_seps_df <- mf_rinfo(bmf)[, c("abs_rownumber", "trailing_sep"), drop = FALSE]
+  mf_rinfo(bmf)$trailing_sep[c(1, 3, 4)] <- " "
+  expect_silent(toString(bmf, widths = c(4, 4, 4)))
+})
