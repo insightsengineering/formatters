@@ -51,6 +51,7 @@ Collate:
     'generics.R'
     'labels.R'
     'mpf_exporters.R'
+    'package.R'
     'page_size.R'
     'pagination.R'
     'tostring.R'

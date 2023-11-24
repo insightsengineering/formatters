@@ -1,5 +1,11 @@
 values <- c(5.123456, 7.891112)
-test_that("Default hsep works", {
+test_that("Default horizontal separator works", {
+  expect_true(default_hsep() %in% c("\u2014", "-"))
+  expect_true(is.null(getOption("formatters_default_hsep")))
+  expect_error(set_default_hsep("foo"))
+  expect_silent(set_default_hsep("a"))
+  expect_equal(default_hsep(), "a")
+  expect_silent(set_default_hsep(NULL))
   expect_true(default_hsep() %in% c("\u2014", "-"))
 })
 test_that("make_row_df produces custom error message if used on MatrixPrintForm", {
@@ -538,7 +544,7 @@ spans <- matrix(
 aligns <- matrix(byrow = TRUE, ncol = 2, "center")
 fmts <- matrix(byrow = TRUE, ncol = 2, "xx")
 
-rinfo <- formatters:::pagdfrow(nm = "row", lab = "row", rnum = 1, pth = "row", extent = 1, rclass = "silly")
+rinfo <- pagdfrow(nm = "row", lab = "row", rnum = 1, pth = "row", extent = 1, rclass = "silly")
 
 mpf <- MatrixPrintForm(
   strings = strs, spans = spans, aligns = aligns,

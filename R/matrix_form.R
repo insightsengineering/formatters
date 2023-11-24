@@ -191,7 +191,7 @@ disp_from_spans <- function(spans) {
 #' @param page_titles character.  Page-specific titles, as a character
 #'     vector.
 #' @param main_footer character(1). Main footer as a string.
-#' @param  prov_footer character.  Provenance footer  information as a
+#' @param prov_footer character.  Provenance footer  information as a
 #'     character vector.
 #' @param header_section_div character(1). Divider to be used between header
 #'     and body sections.
@@ -255,6 +255,7 @@ MatrixPrintForm <- function(strings = NULL,
                             main_footer = "",
                             prov_footer = character(),
                             header_section_div = NA_character_,
+                            horizontal_sep = default_hsep(),
                             col_gap = 3,
                             table_inset = 0L,
                             colwidths = NULL,
@@ -278,6 +279,7 @@ MatrixPrintForm <- function(strings = NULL,
       main_footer = main_footer,
       prov_footer = prov_footer,
       header_section_div = header_section_div,
+      horizontal_sep = horizontal_sep,
       col_gap = col_gap,
       table_inset = as.integer(table_inset),
       has_topleft = has_topleft,

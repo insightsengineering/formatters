@@ -1,5 +1,3 @@
-#' @importFrom htmltools tags tagList
-
 formats_1d <- c(
   "xx", "xx.", "xx.x", "xx.xx", "xx.xxx", "xx.xxxx",
   "xx%", "xx.%", "xx.x%", "xx.xx%", "xx.xxx%", "(N=xx)", ">999.9", ">999.99",
