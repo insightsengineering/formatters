@@ -15,7 +15,7 @@
 #' @examples
 #' default_hsep()
 #'
-#' @name horizontal_sep
+#' @name default_horizontal_sep
 #' @export
 default_hsep <- function() {
   system_default_hsep <- getOption("formatters_default_hsep")
@@ -39,7 +39,7 @@ default_hsep <- function() {
   hsep
 }
 
-#' @name horizontal_sep
+#' @name default_horizontal_sep
 #' @export
 set_default_hsep <- function(hsep_chr) {
   checkmate::assert_character(hsep_chr, n.chars = 1, len = 1, null.ok = TRUE)

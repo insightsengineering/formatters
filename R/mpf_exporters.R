@@ -57,6 +57,8 @@ export_as_txt <- function(x,
                           rep_cols = num_rep_cols(x),
                           verbose = FALSE,
                           page_break = "\\s\\n") {
+
+
   if (paginate) {
     pages <- paginate_to_mpfs(
       x,

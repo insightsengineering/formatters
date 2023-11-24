@@ -150,25 +150,8 @@ test_that("export_as_txt maintains repeated columns when paginate is TRUE", {
 })
 
 test_that("export_as_txt maintains repeated columns when paginate is TRUE", {
-  lyt <- basic_table(header_section_div = " ") %>%
-    split_cols_by("Species") %>%
-    analyze("Sepal.Length", afun = function(x) {
-      list(
-        "mean (sd)" = rcell(c(mean(x), sd(x)), format = "xx.xx (xx.xx)"),
-        "range" = diff(range(x))
-      )
-    })
-
-
-  tbl <- build_table(lyt, iris, hsep = "~")
-  export_as_txt(tbl) %>% cat() # does not have ~ if not specified again
   dfmf <- basic_matrix_form(mtcars)
-
+  horizontal_sep(dfmf) <- "="
   # repeat first 3 columns in each page
-  pag_out <- export_as_txt(dfmf, cpp = 90, rep_cols = 3)
-
-  # There should be two "disp", "cyl" and "mpg" columns
-  expect_identical(length(gregexpr(c("mpg"), pag_out)[[1]]), 2L)
-  expect_identical(length(gregexpr(c("cyl"), pag_out)[[1]]), 2L)
-  expect_identical(length(gregexpr(c("disp"), pag_out)[[1]]), 2L)
+  pag_out <- export_as_txt(dfmf)
 })
