@@ -8,7 +8,7 @@
 \usage{
 default_hsep()
 
-set_default_hsep(hsep_chr)
+set_default_hsep(hsep_char)
 }
 \arguments{
 \item{hsep_char}{character(1). Character that will be set in the R environment

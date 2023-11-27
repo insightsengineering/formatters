@@ -43,9 +43,9 @@ default_hsep <- function() {
 
 #' @name default_horizontal_sep
 #' @export
-set_default_hsep <- function(hsep_chr) {
-  checkmate::assert_character(hsep_chr, n.chars = 1, len = 1, null.ok = TRUE)
-  options("formatters_default_hsep" = hsep_chr)
+set_default_hsep <- function(hsep_char) {
+  checkmate::assert_character(hsep_char, n.chars = 1, len = 1, null.ok = TRUE)
+  options("formatters_default_hsep" = hsep_char)
 }
 
 .calc_cell_widths <- function(mat, colwidths, col_gap) {
