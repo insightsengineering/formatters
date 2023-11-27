@@ -191,12 +191,12 @@ disp_from_spans <- function(spans) {
 #' @param page_titles character.  Page-specific titles, as a character
 #'     vector.
 #' @param main_footer character(1). Main footer as a string.
-#' @param prov_footer character.  Provenance footer  information as a
+#' @param prov_footer character. Provenance footer information as a
 #'     character vector.
 #' @param header_section_div character(1). Divider to be used between header
 #'     and body sections.
 #' @param horizontal_sep character(1). Horizontal separator to be used for printing
-#'     divisors between header and table body and in different footers.
+#'     divisors between header and table body and between different footers.
 #' @param expand_newlines logical(1). Should the matrix form generated
 #'     expand  rows  whose  values   contain  newlines  into  multiple
 #'     'physical'  rows  (as  they  will  appear  when  rendered  into

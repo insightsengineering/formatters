@@ -1,9 +1,9 @@
-#' @title Default horizontal Separator
+#' @title Default horizontal separator
 #'
 #' @description The default horizontal separator character which can be
 #' displayed in the current `charset` for use in rendering table-likes.
 #'
-#' @param hsep_chr character(1). Character that will be set in the R environment
+#' @param hsep_char character(1). Character that will be set in the R environment
 #'   options as default for creating the horizontal separator. It needs to be
 #'   single character. Use `getOption("formatters_default_hsep")` to get its current
 #'   value (`NULL` if not set).
