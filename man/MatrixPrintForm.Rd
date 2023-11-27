@@ -23,6 +23,8 @@ MatrixPrintForm(
   page_titles = character(),
   main_footer = "",
   prov_footer = character(),
+  header_section_div = NA_character_,
+  horizontal_sep = default_hsep(),
   col_gap = 3,
   table_inset = 0L,
   colwidths = NULL,
@@ -47,6 +49,8 @@ matrix_print_form(
   page_titles = character(),
   main_footer = "",
   prov_footer = character(),
+  header_section_div = NA_character_,
+  horizontal_sep = default_hsep(),
   col_gap = 3,
   table_inset = 0L,
   colwidths = NULL,
@@ -117,8 +121,14 @@ vector.}
 
 \item{main_footer}{character(1). Main footer as a string.}
 
-\item{prov_footer}{character.  Provenance footer  information as a
+\item{prov_footer}{character. Provenance footer information as a
 character vector.}
+
+\item{header_section_div}{character(1). Divider to be used between header
+and body sections.}
+
+\item{horizontal_sep}{character(1). Horizontal separator to be used for printing
+divisors between header and table body and between different footers.}
 
 \item{col_gap}{numeric(1). Space (in characters) between columns}
 
@@ -151,6 +161,8 @@ when the table is rendered}
 \item{\code{page_titles}}{see argument}
 \item{\code{main_footer}}{see argument}
 \item{\code{prov_footer}}{see argument}
+\item{\code{header_section_div}}{see argument}
+\item{\code{horizontal_sep}}{see argument}
 \item{\code{col_gap}}{see argument}
 \item{\code{table_inset}}{see argument}
 }

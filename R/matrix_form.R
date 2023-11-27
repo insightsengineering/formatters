@@ -191,8 +191,12 @@ disp_from_spans <- function(spans) {
 #' @param page_titles character.  Page-specific titles, as a character
 #'     vector.
 #' @param main_footer character(1). Main footer as a string.
-#' @param  prov_footer character.  Provenance footer  information as a
+#' @param prov_footer character. Provenance footer information as a
 #'     character vector.
+#' @param header_section_div character(1). Divider to be used between header
+#'     and body sections.
+#' @param horizontal_sep character(1). Horizontal separator to be used for printing
+#'     divisors between header and table body and between different footers.
 #' @param expand_newlines logical(1). Should the matrix form generated
 #'     expand  rows  whose  values   contain  newlines  into  multiple
 #'     'physical'  rows  (as  they  will  appear  when  rendered  into
@@ -224,6 +228,8 @@ disp_from_spans <- function(spans) {
 #' \item{\code{page_titles}}{see argument}
 #' \item{\code{main_footer}}{see argument}
 #' \item{\code{prov_footer}}{see argument}
+#' \item{\code{header_section_div}}{see argument}
+#' \item{\code{horizontal_sep}}{see argument}
 #' \item{\code{col_gap}}{see argument}
 #' \item{\code{table_inset}}{see argument}
 #' }
@@ -252,6 +258,8 @@ MatrixPrintForm <- function(strings = NULL,
                             page_titles = character(),
                             main_footer = "",
                             prov_footer = character(),
+                            header_section_div = NA_character_,
+                            horizontal_sep = default_hsep(),
                             col_gap = 3,
                             table_inset = 0L,
                             colwidths = NULL,
@@ -274,6 +282,8 @@ MatrixPrintForm <- function(strings = NULL,
       page_titles = page_titles,
       main_footer = main_footer,
       prov_footer = prov_footer,
+      header_section_div = header_section_div,
+      horizontal_sep = horizontal_sep,
       col_gap = col_gap,
       table_inset = as.integer(table_inset),
       has_topleft = has_topleft,
@@ -399,7 +409,7 @@ infer_ref_info <- function(mform, colspace_only) {
   ret$col_path <- replicate(nrow(ret), list(NA_character_))
   non_na_col <- !is.na(ret$col)
   ret$col_path[non_na_col] <- col_pths[ret$col[non_na_col]]
-  ret$ref_index <- seq_len(nrow(ret))
+  ret$ref_index <- match(ret$symbol, unique(ret$symbol))
   ##
   ret$nlines <- vapply(paste0("{", ret$symbol, "} - ", ret$msg), nlines, 1L)
   ret <- ret[, names(ref_df_row())]
@@ -891,20 +901,6 @@ reconstruct_basic_fnote_list <- function(mf) {
   paste0("{", refdf$symbol, "} - ", refdf$msg)
 }
 
-
-fix_fnote_df <- function(df) {
-  ind_symb <- df$symbol == as.character(df$ref_index)
-  df$ref_index <- seq_len(nrow(df))
-  df$symbol[ind_symb] <- as.character(df$ref_index[ind_symb])
-  df
-}
-
-
-
-
-
-
-
 .mf_subset_core_mats <- function(mf, i, row = TRUE) {
   fillnum <- if (row) nrow(mf_strings(mf)) - mf_nlheader(mf) else ncol(mf)
   if (is.logical(i) || all(i < 0)) {
@@ -975,8 +971,10 @@ mpf_subset_rows <- function(mf, i) {
 
   ncs <- ncol(mf)
   mf <- .mf_subset_core_mats(mf, i, row = TRUE)
-  map <- data.frame(old_idx = c(seq_len(ncolrows), i + ncolrows),
-                    new_idx = c(seq_len(ncolrows), ncolrows + order(i)))
+  map <- data.frame(
+    old_idx = c(seq_len(ncolrows), i + ncolrows),
+    new_idx = c(seq_len(ncolrows), ncolrows + order(i))
+  )
 
   row_map <- data.frame(old_idx = i, new_idx = order(i))
 
@@ -985,7 +983,6 @@ mpf_subset_rows <- function(mf, i) {
   old_nas <- is.na(refdf$row)
   refdf$row <- map_to_new(refdf$row, row_map)
   refdf <- refdf[old_nas | !is.na(refdf$row), ]
-  refdf <- fix_fnote_df(refdf)
   mf_fnote_df(mf) <- refdf
 
   rinfo <- mf_rinfo(mf)

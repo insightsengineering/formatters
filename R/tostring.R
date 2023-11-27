@@ -1,43 +1,52 @@
-## this can't be tested from within R
-# nocov start
-#' @importFrom stats na.omit
-#' @importFrom utils head tail localeToCharset
-#' @import checkmate
-
-d_hsep_factory <- function() {
-  warn_sent <- FALSE
-  function() {
-    if (any(grepl("^UTF", localeToCharset()))) {
-      "\u2014"
-    } else {
-      if (!warn_sent && interactive()) {
-        message(
-          "Detected non-UTF charset. Falling back to '-' ",
-          "as default header/body separator. This warning ",
-          "will only be shown once per R session."
-        )
-        warn_sent <<- TRUE
-      }
-      "-"
-    }
-  }
-}
-
-#' Default horizontal Separator
+#' @title Default horizontal separator
 #'
-#' The default horizontal separator character which can be
+#' @description The default horizontal separator character which can be
 #' displayed in the current `charset` for use in rendering table-likes.
+#'
+#' @param hsep_char character(1). Character that will be set in the R environment
+#'   options as default for creating the horizontal separator. It needs to be
+#'   single character. Use `getOption("formatters_default_hsep")` to get its current
+#'   value (`NULL` if not set).
 #'
 #' @return `unicode` 2014 (long dash for generating solid horizontal line)
 #' if in a locale that uses a UTF character set, otherwise an ASCII hyphen
 #' with a once-per-session warning.
 #'
-#' @export
 #' @examples
 #' default_hsep()
-default_hsep <- d_hsep_factory()
+#' set_default_hsep("o")
+#' default_hsep()
+#'
+#' @name default_horizontal_sep
+#' @export
+default_hsep <- function() {
+  system_default_hsep <- getOption("formatters_default_hsep")
 
-# nocov end
+  if (is.null(system_default_hsep)) {
+    if (any(grepl("^UTF", utils::localeToCharset()))) {
+      hsep <- "\u2014"
+    } else {
+      if (interactive()) {
+        warning(
+          "Detected non-UTF charset. Falling back to '-' ",
+          "as default header/body separator. This warning ",
+          "will only be shown once per R session."
+        ) # nocov
+      } # nocov
+      hsep <- "-" # nocov
+    }
+  } else {
+    hsep <- system_default_hsep
+  }
+  hsep
+}
+
+#' @name default_horizontal_sep
+#' @export
+set_default_hsep <- function(hsep_char) {
+  checkmate::assert_character(hsep_char, n.chars = 1, len = 1, null.ok = TRUE)
+  options("formatters_default_hsep" = hsep_char)
+}
 
 .calc_cell_widths <- function(mat, colwidths, col_gap) {
   spans <- mat$spans
@@ -383,17 +392,19 @@ decimal_align <- function(string_mat, align_mat) {
 #' `max_width`), or horizontal separator character (e.g. `hsep = "+"`).
 #'
 #' @inheritParams MatrixPrintForm
-#' @param widths numeric (or  NULL). (proposed) widths for the columns
+#' @param widths numeric (or  `NULL`). (proposed) widths for the columns
 #'     of \code{x}. The expected length  of this numeric vector can be
 #'     retrieved with  `ncol() + 1`  as the  column of row  names must
 #'     also be considered.
 #' @param hsep character(1). Characters to repeat to create
-#'     header/body separator line.
+#'     header/body separator line. If `NULL`, the object value will be
+#'     used. If `" "`, an empty separator will be printed. Check [default_hsep()]
+#'     for more information.
 #' @param tf_wrap logical(1). Should  the texts for  title, subtitle,
 #'     and footnotes be wrapped?
-#' @param max_width integer(1), character(1) or NULL. Width that title
+#' @param max_width integer(1), character(1) or `NULL`. Width that title
 #'     and   footer   (including   footnotes)  materials   should   be
-#'     word-wrapped to. If NULL, it is  set to the current print width
+#'     word-wrapped to. If `NULL`, it is  set to the current print width
 #'     of the  session (`getOption("width")`). If set to `"auto"`,
 #'     the width of the table (plus any table inset) is used. Ignored
 #'     completely if `tf_wrap` is `FALSE`.
@@ -422,7 +433,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   tf_wrap = FALSE,
                                                   max_width = NULL,
                                                   col_gap = mf_colgap(x),
-                                                  hsep = default_hsep()) {
+                                                  hsep = NULL) {
   checkmate::assert_flag(tf_wrap)
 
   mat <- matrix_form(x, indent_rownames = TRUE)
@@ -500,7 +511,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
   aligns <- mf_aligns(mat)
   keep_mat <- mf_display(mat)
   ## spans <- mat$spans
-  ##    ri <- mat$row_info
+  mf_ri <- mf_rinfo(mat)
   ref_fnotes <- mf_rfnotes(mat)
   nl_header <- mf_nlheader(mat)
 
@@ -517,18 +528,27 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
   # Define gap string and divisor string
   gap_str <- strrep(" ", col_gap)
+  if (is.null(hsep)) {
+    hsep <- horizontal_sep(mat)
+  }
   div <- substr(strrep(hsep, ncchar), 1, ncchar)
+  hsd <- header_section_div(mat)
+  if (!is.na(hsd)) {
+    hsd <- substr(strrep(hsd, ncchar), 1, ncchar)
+  } else {
+    hsd <- NULL # no divisor
+  }
 
   # text head (paste w/o NA content header and gap string)
   txt_head <- apply(head(content, nl_header), 1, .paste_no_na, collapse = gap_str)
 
   # txt body
-  sec_seps_df <- x$row_info[, c("abs_rownumber", "trailing_sep"), drop = FALSE]
+  sec_seps_df <- mf_ri[, c("abs_rownumber", "trailing_sep"), drop = FALSE]
   if (!is.null(sec_seps_df) && any(!is.na(sec_seps_df$trailing_sep))) {
     bdy_cont <- tail(content, -nl_header)
     ## unfortunately we count "header rows" wrt line grouping so it
     ## doesn't match the real (i.e. body) rows as is
-    row_grouping <- tail(x$line_grouping, -nl_header) - mf_nrheader(x)
+    row_grouping <- tail(mf_lgrouping(mat), - nl_header) - mf_nrheader(mat)
     nrbody <- NROW(bdy_cont)
     stopifnot(length(row_grouping) == nrbody)
     ## all rows with non-NA section divs and the final row (regardless of NA status)
@@ -569,16 +589,17 @@ setMethod("toString", "MatrixPrintForm", function(x,
   }
 
   # retrieving titles and footers
-  allts <- all_titles(x)
+  allts <- all_titles(mat)
 
+  ref_fnotes <- reorder_ref_fnotes(ref_fnotes)
   # Fix for ref_fnotes with \n characters XXX this does not count in the pagination
   if (any(grepl("\n", ref_fnotes))) {
     ref_fnotes <- unlist(strsplit(ref_fnotes, "\n", fixed = TRUE))
   }
 
   allfoots <- list(
-    "main_footer" = main_footer(x),
-    "prov_footer" = prov_footer(x),
+    "main_footer" = main_footer(mat),
+    "prov_footer" = prov_footer(mat),
     "ref_footnotes" = ref_fnotes
   )
   allfoots <- allfoots[!sapply(allfoots, is.null)]
@@ -605,6 +626,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
       titles_txt, # .do_inset(div, inset) happens if there are any titles
       .do_inset(txt_head, inset),
       .do_inset(div, inset),
+      .do_inset(hsd, inset), # header_section_div if present
       .do_inset(txt_body, inset),
       .footer_inset_helper(allfoots, div, inset)
     ), collapse = "\n"),
@@ -664,6 +686,24 @@ setMethod("toString", "MatrixPrintForm", function(x,
     )
   }
   footer_txt
+}
+
+reorder_ref_fnotes <- function(fns) {
+  ind <- gsub("\\{(.*)\\}.*", "\\1", fns)
+  ind_num <- suppressWarnings(as.numeric(ind))
+  is_num <- !is.na(ind_num)
+  is_asis <- ind == fns
+
+  if (all(is_num)) {
+    ord_num <- order(ind_num)
+    ord_char <- NULL
+    ord_other <- NULL
+  } else {
+    ord_num <- order(ind_num[is_num])
+    ord_char <- order(ind[!is_num & !is_asis])
+    ord_other <- order(ind[is_asis])
+  }
+  c(fns[is_num][ord_num], fns[!is_num & !is_asis][ord_char], ind[is_asis][ord_other])
 }
 
 new_line_warning <- function(str_v) {
@@ -977,7 +1017,6 @@ spans_to_viscell <- function(spans) {
 ## ' mf <- matrix_form(tbl)
 ## ' propose_column_widths(mf)
 propose_column_widths <- function(x, indent_size = 2) {
-  ## stopifnot(is(x, "VTableTree"))
   if (!is(x, "MatrixPrintForm")) {
     x <- matrix_form(x, indent_rownames = TRUE, indent_size = indent_size)
   }

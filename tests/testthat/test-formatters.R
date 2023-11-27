@@ -1,5 +1,10 @@
 values <- c(5.123456, 7.891112)
-test_that("Default hsep works", {
+test_that("Default horizontal separator works", {
+  expect_true(is.null(getOption("formatters_default_hsep")))
+  expect_error(set_default_hsep("foo"))
+  expect_silent(set_default_hsep("a"))
+  expect_equal(default_hsep(), "a")
+  expect_silent(set_default_hsep(NULL))
   expect_true(default_hsep() %in% c("\u2014", "-"))
 })
 test_that("make_row_df produces custom error message if used on MatrixPrintForm", {
@@ -538,7 +543,7 @@ spans <- matrix(
 aligns <- matrix(byrow = TRUE, ncol = 2, "center")
 fmts <- matrix(byrow = TRUE, ncol = 2, "xx")
 
-rinfo <- formatters:::pagdfrow(nm = "row", lab = "row", rnum = 1, pth = "row", extent = 1, rclass = "silly")
+rinfo <- pagdfrow(nm = "row", lab = "row", rnum = 1, pth = "row", extent = 1, rclass = "silly")
 
 mpf <- MatrixPrintForm(
   strings = strs, spans = spans, aligns = aligns,
@@ -895,4 +900,33 @@ test_that("fmt_config works as expected", {
   expect_silent(obj_format(x) <- function() {})
   expect_silent(obj_na_str(x) <- "something wrong")
   expect_silent(obj_align(x) <- "something wrong")
+})
+
+test_that("reorder_ref_fnotes orders referential footnotes correctly", {
+  # all numeric
+  rf <- c("{4} - test 1", "{1} - one", "{11} - eleven", "{100} - test 2", "{3} - three", "{7} - !!")
+  res <- reorder_ref_fnotes(rf)
+
+  expect_identical(
+    res,
+    c("{1} - one", "{3} - three", "{4} - test 1", "{7} - !!", "{11} - eleven", "{100} - test 2")
+  )
+
+  # numeric and character
+  rf <- c("{*} - test 1", "{1} - one", "{11} - eleven", "{**} - test 2", "{3} - three", "{!} - !!")
+  res <- reorder_ref_fnotes(rf)
+
+  expect_identical(
+    res,
+    c("{1} - one", "{3} - three", "{11} - eleven", "{!} - !!", "{*} - test 1", "{**} - test 2")
+  )
+
+  # with asterisks
+  rf <- c("{*} - test 1", "{1} - one", "** eleven", "{**} - test 2", "* three", "{!} - !!")
+  res <- reorder_ref_fnotes(rf)
+
+  expect_identical(
+    res,
+    c("{1} - one", "{!} - !!", "{*} - test 1", "{**} - test 2", "* three", "** eleven")
+  )
 })

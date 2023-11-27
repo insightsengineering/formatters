@@ -1,7 +1,7 @@
 Package: formatters
 Title: ASCII Formatting for Values and Tables
-Version: 0.5.4.9002
-Date: 2023-10-19
+Version: 0.5.4.9005
+Date: 2023-11-27
 Authors@R: c(
     person("Gabriel", "Becker", , "gabembecker@gmail.com", role = "aut",
            comment = "original creator of the package"),
@@ -51,6 +51,7 @@ Collate:
     'generics.R'
     'labels.R'
     'mpf_exporters.R'
+    'package.R'
     'page_size.R'
     'pagination.R'
     'tostring.R'
