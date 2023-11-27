@@ -4,14 +4,14 @@
 \alias{default_horizontal_sep}
 \alias{default_hsep}
 \alias{set_default_hsep}
-\title{Default horizontal Separator}
+\title{Default horizontal separator}
 \usage{
 default_hsep()
 
 set_default_hsep(hsep_chr)
 }
 \arguments{
-\item{hsep_chr}{character(1). Character that will be set in the R environment
+\item{hsep_char}{character(1). Character that will be set in the R environment
 options as default for creating the horizontal separator. It needs to be
 single character. Use \code{getOption("formatters_default_hsep")} to get its current
 value (\code{NULL} if not set).}

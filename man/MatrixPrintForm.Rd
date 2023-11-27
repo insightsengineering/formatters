@@ -121,14 +121,14 @@ vector.}
 
 \item{main_footer}{character(1). Main footer as a string.}
 
-\item{prov_footer}{character.  Provenance footer  information as a
+\item{prov_footer}{character. Provenance footer information as a
 character vector.}
 
 \item{header_section_div}{character(1). Divider to be used between header
 and body sections.}
 
 \item{horizontal_sep}{character(1). Horizontal separator to be used for printing
-divisors between header and table body and in different footers.}
+divisors between header and table body and between different footers.}
 
 \item{col_gap}{numeric(1). Space (in characters) between columns}
 
