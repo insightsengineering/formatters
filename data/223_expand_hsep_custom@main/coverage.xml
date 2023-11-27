@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.934579439252337" branch-rate="0" lines-covered="2000" lines-valid="2140" branches-covered="0" branches-valid="0" complexity="0" version="3.6.3" timestamp="2023-11-24 16:11:45.861208">
+<coverage line-rate="0.934579439252337" branch-rate="0" lines-covered="2000" lines-valid="2140" branches-covered="0" branches-valid="0" complexity="0" version="3.6.3" timestamp="2023-11-27 08:48:08.984948">
   <sources>
     <source>/__w/formatters/formatters/formatters</source>
   </sources>
@@ -4079,10 +4079,10 @@
           <methods>
             <method name="default_hsep" signature="" line-rate="0.5" branch-rate="0" complexity="0">
               <lines>
-                <line number="23" hits="33" branch="false"/>
-                <line number="25" hits="33" branch="false"/>
-                <line number="26" hits="32" branch="false"/>
-                <line number="27" hits="32" branch="false"/>
+                <line number="23" hits="32" branch="false"/>
+                <line number="25" hits="32" branch="false"/>
+                <line number="26" hits="31" branch="false"/>
+                <line number="27" hits="31" branch="false"/>
                 <line number="29" hits="0" branch="false"/>
                 <line number="30" hits="0" branch="false"/>
                 <line number="31" hits="0" branch="false"/>
@@ -4090,7 +4090,7 @@
                 <line number="33" hits="0" branch="false"/>
                 <line number="34" hits="0" branch="false"/>
                 <line number="39" hits="1" branch="false"/>
-                <line number="41" hits="33" branch="false"/>
+                <line number="41" hits="32" branch="false"/>
               </lines>
             </method>
             <method name="set_default_hsep" signature="" line-rate="1" branch-rate="0" complexity="0">
@@ -4858,10 +4858,10 @@
             </method>
           </methods>
           <lines>
-            <line number="23" hits="33" branch="false"/>
-            <line number="25" hits="33" branch="false"/>
-            <line number="26" hits="32" branch="false"/>
-            <line number="27" hits="32" branch="false"/>
+            <line number="23" hits="32" branch="false"/>
+            <line number="25" hits="32" branch="false"/>
+            <line number="26" hits="31" branch="false"/>
+            <line number="27" hits="31" branch="false"/>
             <line number="29" hits="0" branch="false"/>
             <line number="30" hits="0" branch="false"/>
             <line number="31" hits="0" branch="false"/>
@@ -4869,7 +4869,7 @@
             <line number="33" hits="0" branch="false"/>
             <line number="34" hits="0" branch="false"/>
             <line number="39" hits="1" branch="false"/>
-            <line number="41" hits="33" branch="false"/>
+            <line number="41" hits="32" branch="false"/>
             <line number="47" hits="3" branch="false"/>
             <line number="48" hits="2" branch="false"/>
             <line number="52" hits="152" branch="false"/>
