@@ -47,7 +47,7 @@ export_as_txt <- function(x,
                           cpp = NA_integer_,
                           lpp = NA_integer_,
                           ...,
-                          hsep = default_hsep(),
+                          hsep = NULL,
                           indent_size = 2,
                           tf_wrap = paginate,
                           max_width = NULL,
@@ -57,6 +57,8 @@ export_as_txt <- function(x,
                           rep_cols = num_rep_cols(x),
                           verbose = FALSE,
                           page_break = "\\s\\n") {
+
+
   if (paginate) {
     pages <- paginate_to_mpfs(
       x,

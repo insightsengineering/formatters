@@ -658,3 +658,21 @@ setMethod(
     obj
   }
 )
+# horizontal_sep ---------------------------------------------------------------
+#' @keywords internal
+setGeneric("horizontal_sep", function(obj) standardGeneric("horizontal_sep"))
+#' @keywords internal
+setMethod(
+  "horizontal_sep", "MatrixPrintForm",
+  function(obj) obj$horizontal_sep
+)
+#' @keywords internal
+setGeneric("horizontal_sep<-", function(obj, value) standardGeneric("horizontal_sep<-"))
+#' @keywords internal
+setMethod(
+  "horizontal_sep<-", "MatrixPrintForm",
+  function(obj, value) {
+    obj$horizontal_sep <- value
+    obj
+  }
+)

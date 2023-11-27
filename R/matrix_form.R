@@ -191,10 +191,12 @@ disp_from_spans <- function(spans) {
 #' @param page_titles character.  Page-specific titles, as a character
 #'     vector.
 #' @param main_footer character(1). Main footer as a string.
-#' @param  prov_footer character.  Provenance footer  information as a
+#' @param prov_footer character. Provenance footer information as a
 #'     character vector.
 #' @param header_section_div character(1). Divider to be used between header
 #'     and body sections.
+#' @param horizontal_sep character(1). Horizontal separator to be used for printing
+#'     divisors between header and table body and between different footers.
 #' @param expand_newlines logical(1). Should the matrix form generated
 #'     expand  rows  whose  values   contain  newlines  into  multiple
 #'     'physical'  rows  (as  they  will  appear  when  rendered  into
@@ -226,6 +228,8 @@ disp_from_spans <- function(spans) {
 #' \item{\code{page_titles}}{see argument}
 #' \item{\code{main_footer}}{see argument}
 #' \item{\code{prov_footer}}{see argument}
+#' \item{\code{header_section_div}}{see argument}
+#' \item{\code{horizontal_sep}}{see argument}
 #' \item{\code{col_gap}}{see argument}
 #' \item{\code{table_inset}}{see argument}
 #' }
@@ -255,6 +259,7 @@ MatrixPrintForm <- function(strings = NULL,
                             main_footer = "",
                             prov_footer = character(),
                             header_section_div = NA_character_,
+                            horizontal_sep = default_hsep(),
                             col_gap = 3,
                             table_inset = 0L,
                             colwidths = NULL,
@@ -278,6 +283,7 @@ MatrixPrintForm <- function(strings = NULL,
       main_footer = main_footer,
       prov_footer = prov_footer,
       header_section_div = header_section_div,
+      horizontal_sep = horizontal_sep,
       col_gap = col_gap,
       table_inset = as.integer(table_inset),
       has_topleft = has_topleft,
