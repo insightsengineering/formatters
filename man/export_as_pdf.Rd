@@ -5,7 +5,7 @@
 \title{Export as PDF}
 \usage{
 export_as_pdf(
-  tt,
+  x,
   file,
   page_type = "letter",
   landscape = FALSE,
@@ -14,9 +14,10 @@ export_as_pdf(
   width = NULL,
   height = NULL,
   margins = c(4, 4, 4, 4),
+  min_siblings = 2,
   font_family = "Courier",
-  fontsize = 8,
-  font_size = fontsize,
+  font_size = 8,
+  fontsize = font_size,
   paginate = TRUE,
   lpp = NULL,
   cpp = NULL,
@@ -24,13 +25,13 @@ export_as_pdf(
   indent_size = 2,
   tf_wrap = TRUE,
   max_width = NULL,
-  colwidths = propose_column_widths(matrix_form(tt, TRUE)),
+  colwidths = propose_column_widths(matrix_form(x, TRUE)),
   ...
 )
 }
 \arguments{
-\item{tt}{\code{TableTree} (or related class). A \code{TableTree} object representing a
-populated table.}
+\item{x}{ANY.  The  table-like object  to  export.  Must have  an
+applicable \code{matrix_form} method.}
 
 \item{file}{file to write, must have \code{.pdf} extension}
 
@@ -56,14 +57,17 @@ inches}
 \item{margins}{numeric(4). The number of lines/characters of margin on the
 bottom, left, top, and right sides of the page.}
 
+\item{min_siblings}{numeric. Minimum sibling rows which must appear on either side of pagination row for a
+mid-subtable split to be valid. Defaults to 2.}
+
 \item{font_family}{character(1). Name of a font family. An error
 will be thrown if the family named is not monospaced. Defaults
 to Courier.}
 
+\item{font_size}{numeric(1). Font size, defaults to 12.}
+
 \item{fontsize}{Deprecated,  please use  \code{font_size}. the  size of
 text (in points)}
-
-\item{font_size}{numeric(1). Font size, defaults to 12.}
 
 \item{paginate}{logical(1). Whether pagination should be performed,
 defaults to \code{TRUE} if page size is specified (including

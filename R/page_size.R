@@ -87,7 +87,6 @@ page_dim <- function(page_type) {
 #' @return named list with `cpi` and `lpi`, the characters and lines per
 #' inch, respectively.
 #'
-#' @export
 #' @examples
 #' font_lcpi()
 #'
