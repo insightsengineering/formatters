@@ -88,11 +88,13 @@ page_dim <- function(page_type) {
 #' inch, respectively.
 #'
 #' @examples
+#' \dontrun{
 #' font_lcpi()
 #'
 #' font_lcpi(font_size = 8)
 #'
 #' font_lcpi(font_size = 8, lineheight = 1.1)
+#' }
 font_lcpi <- function(font_family = "Courier", font_size = 8, lineheight = 1) {
   tmppdf <- tempfile(fileext = ".pdf")
   pdf(tmppdf)
