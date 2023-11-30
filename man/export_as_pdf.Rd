@@ -25,8 +25,7 @@ export_as_pdf(
   indent_size = 2,
   tf_wrap = TRUE,
   max_width = NULL,
-  colwidths = propose_column_widths(matrix_form(x, TRUE)),
-  ...
+  colwidths = propose_column_widths(matrix_form(x, TRUE))
 )
 }
 \arguments{
@@ -102,8 +101,6 @@ completely if \code{tf_wrap} is \code{FALSE}.}
 
 \item{colwidths}{numeric vector.  Column widths (in characters) for
 use with vertical pagination.}
-
-\item{...}{arguments passed on to \code{rtables::paginate_table}}
 }
 \description{
 The PDF output is based on the ASCII output created with \code{toString}
@@ -119,7 +116,6 @@ Title and footer materials are also word-wrapped by default
 defined above, as the default \code{max_width}.
 }
 \examples{
-
 \dontrun{
 tf <- tempfile(fileext = ".pdf")
 export_as_pdf(basic_matrix_form(mtcars), pg_width = 4, file = tf, pg_height = 4)

@@ -57,8 +57,6 @@ export_as_txt <- function(x,
                           rep_cols = num_rep_cols(x),
                           verbose = FALSE,
                           page_break = "\\s\\n") {
-
-
   if (paginate) {
     pages <- paginate_to_mpfs(
       x,
@@ -483,7 +481,6 @@ export_as_rtf <- function(x,
 #'     text (in points)
 #' @param margins numeric(4). The number of lines/characters of margin on the
 #'     bottom, left, top, and right sides of the page.
-#' @param ... arguments passed on to `rtables::paginate_table`
 #'
 #' @importFrom grDevices pdf
 #' @importFrom grid textGrob grid.newpage gpar pushViewport plotViewport unit grid.draw
@@ -507,7 +504,6 @@ export_as_rtf <- function(x,
 #' @export
 #'
 #' @examples
-#'
 #' \dontrun{
 #' tf <- tempfile(fileext = ".pdf")
 #' export_as_pdf(basic_matrix_form(mtcars), pg_width = 4, file = tf, pg_height = 4)
@@ -519,8 +515,8 @@ export_as_pdf <- function(x,
                           file,
                           page_type = "letter",
                           landscape = FALSE,
-                          pg_width = page_dim(page_type)[if(landscape) 2 else 1],
-                          pg_height = page_dim(page_type)[if(landscape) 1 else 2],
+                          pg_width = page_dim(page_type)[if (landscape) 2 else 1],
+                          pg_height = page_dim(page_type)[if (landscape) 1 else 2],
                           width = NULL,
                           height = NULL, # passed to pdf()
                           margins = c(4, 4, 4, 4),
@@ -535,36 +531,39 @@ export_as_pdf <- function(x,
                           indent_size = 2,
                           tf_wrap = TRUE,
                           max_width = NULL,
-                          colwidths = propose_column_widths(matrix_form(x, TRUE)),
-                          ...
-) {
+                          colwidths = propose_column_widths(matrix_form(x, TRUE))) {
   stopifnot(tools::file_ext(file) != ".pdf")
-  if(!is.null(colwidths) && length(colwidths) != ncol(x) + 1)
-    stop("non-null colwidths argument must have length ncol(tt) + 1 [",
-         ncol(x) + 1, "], got length ", length(colwidths))
+  if (!is.null(colwidths) && length(colwidths) != ncol(x) + 1) {
+    stop(
+      "non-null colwidths argument must have length ncol(tt) + 1 [",
+      ncol(x) + 1, "], got length ", length(colwidths)
+    )
+  }
   gp_plot <- grid::gpar(fontsize = font_size, fontfamily = font_family)
 
-  if(missing(font_size) && !missing(fontsize))
+  if (missing(font_size) && !missing(fontsize)) {
     font_size <- fontsize
+  }
   pdf(file = file, width = pg_width, height = pg_height)
   on.exit(dev.off())
   grid::grid.newpage()
   grid::pushViewport(grid::plotViewport(margins = margins, gp = gp_plot))
 
-  cur_gpar <-  grid::get.gpar()
+  cur_gpar <- grid::get.gpar()
   if (is.null(lpp)) {
     lpp <- floor(grid::convertHeight(grid::unit(1, "npc"), "lines", valueOnly = TRUE) /
-                   (cur_gpar$cex * cur_gpar$lineheight)) - sum(margins[c(1, 3)]) # bottom, top
+      (cur_gpar$cex * cur_gpar$lineheight)) - sum(margins[c(1, 3)]) # bottom, top
   }
-  if(is.null(cpp)) {
+  if (is.null(cpp)) {
     cpp <- floor(grid::convertWidth(grid::unit(1, "npc"), "inches", valueOnly = TRUE) *
-                   font_lcpi(font_family, font_size, cur_gpar$lineheight)$cpi) - sum(margins[c(2, 4)]) # left, right
+      font_lcpi(font_family, font_size, cur_gpar$lineheight)$cpi) - sum(margins[c(2, 4)]) # left, right
   }
-  if(tf_wrap && is.null(max_width))
+  if (tf_wrap && is.null(max_width)) {
     max_width <- cpp
+  }
 
-  if (paginate) {
-    tbls <- paginate_to_mpfs(
+  tbls <- if (paginate) {
+    paginate_to_mpfs(
       x,
       page_type = page_type,
       font_family = font_family,
@@ -591,10 +590,13 @@ export_as_pdf <- function(x,
 
   gtbls <- lapply(tbls, function(txt) {
     grid::textGrob(
-      label = toString(txt, widths = colwidths + 1, hsep = hsep,
-                       tf_wrap = tf_wrap, max_width = max_width),
+      label = toString(txt,
+        widths = colwidths + 1, hsep = hsep,
+        tf_wrap = tf_wrap, max_width = max_width
+      ),
       x = grid::unit(0, "npc"), y = grid::unit(1, "npc"),
-      just = c("left", "top"))
+      just = c("left", "top")
+    )
   })
 
   npages <- length(gtbls)
@@ -610,18 +612,20 @@ export_as_pdf <- function(x,
     }
 
     if (grid::convertHeight(grid::grobHeight(g), "inches", valueOnly = TRUE) >
-        grid::convertHeight(grid::unit(1, "npc"), "inches", valueOnly = TRUE)) {
+      grid::convertHeight(grid::unit(1, "npc"), "inches", valueOnly = TRUE)) {
       exceeds_height[i] <- TRUE
       warning("height of page ", i, " exceeds the available space")
     }
     if (grid::convertWidth(grid::grobWidth(g), "inches", valueOnly = TRUE) >
-        grid::convertWidth(grid::unit(1, "npc"), "inches", valueOnly = TRUE)) {
+      grid::convertWidth(grid::unit(1, "npc"), "inches", valueOnly = TRUE)) {
       exceeds_width[i] <- TRUE
       warning("width of page ", i, " exceeds the available space")
     }
 
     grid::grid.draw(g)
   }
-  list(file = file, npages = npages, exceeds_width = exceeds_width, exceeds_height = exceeds_height,
-       lpp = lpp, cpp = cpp)
+  list(
+    file = file, npages = npages, exceeds_width = exceeds_width, exceeds_height = exceeds_height,
+    lpp = lpp, cpp = cpp
+  )
 }
