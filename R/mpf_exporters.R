@@ -465,28 +465,24 @@ export_as_rtf <- function(x,
 
 #' Export as PDF
 #'
-#' The PDF output is based on the ASCII output created with `toString`
+#' The PDF output is based on the ASCII output created with [toString()]
 #'
 #' @inheritParams export_as_txt
-#' @inheritParams toString
-#' @inheritParams grid::plotViewport
-#' @inheritParams rtables::paginate_table
 #' @param file file to write, must have `.pdf` extension
-#' @param   width  Deprecated,  please  use   `pg_width`  or  specify
-#'     `page_type`.  The width of  the graphics  region in inches
-#' @param  height  Deprecated,  please  use  `pg_height`  or  specify
-#'     `page_type`. The height of  the graphics  region in
-#'     inches
-#' @param  fontsize Deprecated,  please use  `font_size`. the  size of
-#'     text (in points)
+#' @param width Deprecated, please use `pg_width` or specify
+#'   `page_type`. The width of the graphics region in inches
+#' @param height Deprecated, please use `pg_height` or specify
+#'   `page_type`. The height of the graphics region in inches
+#' @param fontsize Deprecated, please use `font_size`. The size of
+#'   text (in points)
 #' @param margins numeric(4). The number of lines/characters of margin on the
-#'     bottom, left, top, and right sides of the page.
+#'   bottom, left, top, and right sides of the page.
 #'
 #' @importFrom grDevices pdf
 #' @importFrom grid textGrob grid.newpage gpar pushViewport plotViewport unit grid.draw
 #'   convertWidth convertHeight grobHeight grobWidth
 #'
-#' @details By default, pagination is performed, with default
+#' @details By default, pagination is performed with default
 #' `cpp` and `lpp` defined by specified page dimensions and margins.
 #' User-specified `lpp` and `cpp` values override this, and should
 #' be used with caution.
@@ -495,8 +491,7 @@ export_as_rtf <- function(x,
 #' (unlike when printed to the terminal), with `cpp`, as
 #' defined above, as the default `max_width`.
 #'
-#' @seealso [formatters::export_as_txt()]
-#'
+#' @seealso [export_as_txt()]
 #'
 #' @importFrom grid textGrob get.gpar
 #' @importFrom grDevices dev.off
@@ -507,6 +502,7 @@ export_as_rtf <- function(x,
 #' \dontrun{
 #' tf <- tempfile(fileext = ".pdf")
 #' export_as_pdf(basic_matrix_form(mtcars), pg_width = 4, file = tf, pg_height = 4)
+#'
 #' tf <- tempfile(fileext = ".pdf")
 #' export_as_pdf(basic_matrix_form(mtcars), file = tf, lpp = 8)
 #' }
@@ -560,11 +556,11 @@ export_as_pdf <- function(x,
   cur_gpar <- grid::get.gpar()
   if (is.null(lpp)) {
     lpp <- floor(grid::convertHeight(grid::unit(1, "npc"), "lines", valueOnly = TRUE) /
-      (cur_gpar$cex * cur_gpar$lineheight)) - sum(margins[c(1, 3)]) # bottom, top
+      (cur_gpar$cex * cur_gpar$lineheight)) - sum(margins[c(1, 3)]) # bottom, top # nolint
   }
   if (is.null(cpp)) {
     cpp <- floor(grid::convertWidth(grid::unit(1, "npc"), "inches", valueOnly = TRUE) *
-      formatters:::font_lcpi(font_family, font_size, cur_gpar$lineheight)$cpi) - sum(margins[c(2, 4)]) # left, right
+      formatters:::font_lcpi(font_family, font_size, cur_gpar$lineheight)$cpi) - sum(margins[c(2, 4)]) # left, right # nolint
   }
   if (tf_wrap && is.null(max_width)) {
     max_width <- cpp
@@ -620,12 +616,12 @@ export_as_pdf <- function(x,
     }
 
     if (grid::convertHeight(grid::grobHeight(g), "inches", valueOnly = TRUE) >
-      grid::convertHeight(grid::unit(1, "npc"), "inches", valueOnly = TRUE)) {
+      grid::convertHeight(grid::unit(1, "npc"), "inches", valueOnly = TRUE)) { # nolint
       exceeds_height[i] <- TRUE
       warning("height of page ", i, " exceeds the available space")
     }
     if (grid::convertWidth(grid::grobWidth(g), "inches", valueOnly = TRUE) >
-      grid::convertWidth(grid::unit(1, "npc"), "inches", valueOnly = TRUE)) {
+      grid::convertWidth(grid::unit(1, "npc"), "inches", valueOnly = TRUE)) { # nolint
       exceeds_width[i] <- TRUE
       warning("width of page ", i, " exceeds the available space")
     }
