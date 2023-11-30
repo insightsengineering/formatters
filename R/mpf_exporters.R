@@ -535,11 +535,19 @@ export_as_pdf <- function(x,
   stopifnot(tools::file_ext(file) != ".pdf")
   if (!is.null(colwidths) && length(colwidths) != ncol(x) + 1) {
     stop(
-      "non-null colwidths argument must have length ncol(tt) + 1 [",
+      "non-null colwidths argument must have length ncol(x) + 1 [",
       ncol(x) + 1, "], got length ", length(colwidths)
     )
   }
   gp_plot <- grid::gpar(fontsize = font_size, fontfamily = font_family)
+
+  if (!is.null(height)) {
+    pg_height <- height
+  }
+
+  if (!is.null(width)) {
+    pg_width <- width
+  }
 
   if (missing(font_size) && !missing(fontsize)) {
     font_size <- fontsize
@@ -556,7 +564,7 @@ export_as_pdf <- function(x,
   }
   if (is.null(cpp)) {
     cpp <- floor(grid::convertWidth(grid::unit(1, "npc"), "inches", valueOnly = TRUE) *
-      font_lcpi(font_family, font_size, cur_gpar$lineheight)$cpi) - sum(margins[c(2, 4)]) # left, right
+      formatters:::font_lcpi(font_family, font_size, cur_gpar$lineheight)$cpi) - sum(margins[c(2, 4)]) # left, right
   }
   if (tf_wrap && is.null(max_width)) {
     max_width <- cpp
