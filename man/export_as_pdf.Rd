@@ -25,7 +25,7 @@ export_as_pdf(
   indent_size = 2,
   tf_wrap = TRUE,
   max_width = NULL,
-  colwidths = propose_column_widths(matrix_form(x, TRUE))
+  colwidths = propose_column_widths(x)
 )
 }
 \arguments{
@@ -46,12 +46,11 @@ be inverted  for landscape?  Defaults to  \code{FALSE}, ignored when
 
 \item{pg_height}{numeric(1). Page height in inches.}
 
-\item{width}{Deprecated,  please  use   \code{pg_width}  or  specify
-\code{page_type}.  The width of  the graphics  region in inches}
+\item{width}{Deprecated, please use \code{pg_width} or specify
+\code{page_type}. The width of the graphics region in inches}
 
-\item{height}{Deprecated,  please  use  \code{pg_height}  or  specify
-\code{page_type}. The height of  the graphics  region in
-inches}
+\item{height}{Deprecated, please use \code{pg_height} or specify
+\code{page_type}. The height of the graphics region in inches}
 
 \item{margins}{numeric(4). The number of lines/characters of margin on the
 bottom, left, top, and right sides of the page.}
@@ -65,7 +64,7 @@ to Courier.}
 
 \item{font_size}{numeric(1). Font size, defaults to 12.}
 
-\item{fontsize}{Deprecated,  please use  \code{font_size}. the  size of
+\item{fontsize}{Deprecated, please use \code{font_size}. The size of
 text (in points)}
 
 \item{paginate}{logical(1). Whether pagination should be performed,
@@ -103,10 +102,10 @@ completely if \code{tf_wrap} is \code{FALSE}.}
 use with vertical pagination.}
 }
 \description{
-The PDF output is based on the ASCII output created with \code{toString}
+The PDF output is based on the ASCII output created with \code{\link[=toString]{toString()}}
 }
 \details{
-By default, pagination is performed, with default
+By default, pagination is performed with default
 \code{cpp} and \code{lpp} defined by specified page dimensions and margins.
 User-specified \code{lpp} and \code{cpp} values override this, and should
 be used with caution.
@@ -118,11 +117,11 @@ defined above, as the default \code{max_width}.
 \examples{
 \dontrun{
 tf <- tempfile(fileext = ".pdf")
-export_as_pdf(basic_matrix_form(mtcars), pg_width = 4, file = tf, pg_height = 4)
+export_as_pdf(basic_matrix_form(mtcars), file = tf, pg_height = 4)
+
 tf <- tempfile(fileext = ".pdf")
 export_as_pdf(basic_matrix_form(mtcars), file = tf, lpp = 8)
 }
-
 }
 \seealso{
 \code{\link[=export_as_txt]{export_as_txt()}}

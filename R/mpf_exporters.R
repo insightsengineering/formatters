@@ -501,12 +501,11 @@ export_as_rtf <- function(x,
 #' @examples
 #' \dontrun{
 #' tf <- tempfile(fileext = ".pdf")
-#' export_as_pdf(basic_matrix_form(mtcars), pg_width = 4, file = tf, pg_height = 4)
+#' export_as_pdf(basic_matrix_form(mtcars), file = tf, pg_height = 4)
 #'
 #' tf <- tempfile(fileext = ".pdf")
 #' export_as_pdf(basic_matrix_form(mtcars), file = tf, lpp = 8)
 #' }
-#'
 export_as_pdf <- function(x,
                           file,
                           page_type = "letter",
@@ -527,7 +526,7 @@ export_as_pdf <- function(x,
                           indent_size = 2,
                           tf_wrap = TRUE,
                           max_width = NULL,
-                          colwidths = propose_column_widths(matrix_form(x, TRUE))) {
+                          colwidths = propose_column_widths(x)) {
   stopifnot(tools::file_ext(file) != ".pdf")
   if (!is.null(colwidths) && length(colwidths) != ncol(x) + 1) {
     stop(
@@ -560,14 +559,14 @@ export_as_pdf <- function(x,
   }
   if (is.null(cpp)) {
     cpp <- floor(grid::convertWidth(grid::unit(1, "npc"), "inches", valueOnly = TRUE) *
-      formatters:::font_lcpi(font_family, font_size, cur_gpar$lineheight)$cpi) - sum(margins[c(2, 4)]) # left, right # nolint
+      font_lcpi(font_family, font_size, cur_gpar$lineheight)$cpi) - sum(margins[c(2, 4)]) # left, right # nolint
   }
   if (tf_wrap && is.null(max_width)) {
     max_width <- cpp
   }
 
-  tbls <- if (paginate) {
-    paginate_to_mpfs(
+  if (paginate) {
+    tbls <- paginate_to_mpfs(
       x,
       page_type = page_type,
       font_family = font_family,
@@ -589,13 +588,15 @@ export_as_pdf <- function(x,
       rep_cols = num_rep_cols(x)
     )
   } else {
-    list(x)
+    mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size)
+    mf_col_widths(mf) <- colwidths %||% propose_column_widths(mf)
+    tbls <- list(mf)
   }
 
   gtbls <- lapply(tbls, function(txt) {
     grid::textGrob(
       label = toString(txt,
-        widths = colwidths + 1, hsep = hsep,
+        widths = txt$col_widths + 1, hsep = hsep,
         tf_wrap = tf_wrap, max_width = max_width
       ),
       x = grid::unit(0, "npc"), y = grid::unit(1, "npc"),
