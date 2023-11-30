@@ -1,5 +1,10 @@
-## formatters 0.5.4.9002
+## formatters 0.5.4.9006
  * Applied `styler` and resolved package lint. Changed default indentation from 4 spaces to 2.
+ * Fixed wrapping and section dividers error.
+ * Allowed section divider between header and table body.
+ * Added the possibility of setting a general default using `set_default_hsep()` that sets up the option `getOption("formatters_default_hsep")`.
+ * Fixed infinite loop in `wrap_string` that was caused by a bug in `stringi::stri_wrap` not wrapping small
+   strings with dots and spaces correctly.
 
 ## formatters 0.5.4
  * Fixed a bug in `paginate_to_mpfs()` so that formatting in listings key columns is retained with pagination [`insightsengineering/rlistings#155`](https://github.com/insightsengineering/rlistings/issues/155).

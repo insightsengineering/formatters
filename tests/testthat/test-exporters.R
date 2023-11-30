@@ -18,9 +18,9 @@ test_that("exporters work", {
     "{*} - symbooollllssss"
   )
 
-  dfmf <- formatters:::mform_build_refdf(dfmf)
-  mf_rfnotes(dfmf) <- formatters:::reconstruct_basic_fnote_list(dfmf)
-  formatters:::mf_col_widths(dfmf) <- propose_column_widths(dfmf)
+  dfmf <- mform_build_refdf(dfmf)
+  mf_rfnotes(dfmf) <- reconstruct_basic_fnote_list(dfmf)
+  mf_col_widths(dfmf) <- propose_column_widths(dfmf)
   ## covered below
   ## fil <- tempfile(fileext = ".rtf")
 
@@ -69,7 +69,7 @@ test_that("exporters work", {
     exp_h_pags
   )
 
-  expect_true(msg_1_pos > min(msg_asterisk_pos))
+  expect_true(msg_1_pos < min(msg_asterisk_pos))
 
 
   expect_identical(
@@ -129,7 +129,7 @@ test_that("exporters work", {
       mymf_out,
       paste(expct_lns, collapse = "\n")
     )
-    newmf <- formatters:::mpf_subset_rows(mymf, 1)
+    newmf <- mpf_subset_rows(mymf, 1)
     expect_identical(
       toString(newmf, hsep = "-"),
       paste(c(expct_lns[1:5], ""), collapse = "\n")
@@ -147,4 +147,12 @@ test_that("export_as_txt maintains repeated columns when paginate is TRUE", {
   expect_identical(length(gregexpr(c("mpg"), pag_out)[[1]]), 2L)
   expect_identical(length(gregexpr(c("cyl"), pag_out)[[1]]), 2L)
   expect_identical(length(gregexpr(c("disp"), pag_out)[[1]]), 2L)
+})
+
+test_that("export_as_txt maintains horizontal separator from table", {
+  dfmf <- basic_matrix_form(mtcars)
+  horizontal_sep(dfmf) <- "="
+  # repeat first 3 columns in each page
+  out <- strsplit(export_as_txt(dfmf), "\n")[[1]][2]
+  expect_equal(out, paste0(rep("=", nchar(out)), collapse = ""))
 })

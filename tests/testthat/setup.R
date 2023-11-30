@@ -17,8 +17,8 @@ make_basemf_fnotes <- function() {
     "{*} - symbooollllssss"
   )
 
-  dfmf <- formatters:::mform_build_refdf(dfmf)
-  mf_rfnotes(dfmf) <- formatters:::reconstruct_basic_fnote_list(dfmf)
-  formatters:::mf_col_widths(dfmf) <- propose_column_widths(dfmf)
+  dfmf <- mform_build_refdf(dfmf)
+  mf_rfnotes(dfmf) <- reconstruct_basic_fnote_list(dfmf)
+  mf_col_widths(dfmf) <- propose_column_widths(dfmf)
   dfmf
 }

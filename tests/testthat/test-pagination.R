@@ -55,7 +55,7 @@ test_that("pagination works", {
   strs <- mf_strings(dfmf_sillytopleft)
   strs[1, 1] <- "ha\nha\nha\nha\nha\nha\n"
   mf_strings(dfmf_sillytopleft) <- strs
-  expect_silent(formatters:::mform_handle_newlines(dfmf_sillytopleft))
+  expect_silent(mform_handle_newlines(dfmf_sillytopleft))
 
   dfmf_cont <- dfmf
   mf_rinfo(dfmf_cont)$node_class <- "ContentRow"
@@ -79,7 +79,7 @@ test_that("pagination works", {
   dfmf2$strings[1, 2] <- "m\npg"
   dfmf2$strings[1, 1] <- "tleft mats"
   dfmf2$has_topleft <- TRUE
-  dfmf2 <- formatters:::mform_handle_newlines(dfmf2)
+  dfmf2 <- mform_handle_newlines(dfmf2)
   expect_identical(
     dfmf2$strings[1:2, 1:2],
     matrix(c("", "tleft mats", "m", "pg"), nrow = 2, ncol = 2)
@@ -267,9 +267,9 @@ test_that("pagination works", {
     "do_forced_paginate",
     "fakeclass",
     function(obj) {
-      pt1 <- formatters:::mpf_subset_rows(obj, 1)
+      pt1 <- mpf_subset_rows(obj, 1)
       class(pt1) <- setdiff(class(obj), "fakeclass")
-      pt2 <- formatters:::mpf_subset_rows(obj, 2:32)
+      pt2 <- mpf_subset_rows(obj, 2:32)
       class(pt2) <- setdiff(class(obj), "fakeclass")
       list(pt1, pt2)
     }
@@ -335,8 +335,8 @@ test_that("page to lcpp stuff works", {
   )
 
   expect_identical(
-    formatters:::calc_lcpp(),
-    formatters:::calc_lcpp(page_type = "letter")
+    calc_lcpp(),
+    calc_lcpp(page_type = "letter")
   )
 })
 
@@ -348,8 +348,8 @@ test_that("non-monospaced fonts are caught", {
   expect_identical(
     page_lcpp("a4"),
     page_lcpp(
-      pg_width = formatters:::pg_dim_names$a4[[1]],
-      pg_height = formatters:::pg_dim_names$a4[[2]]
+      pg_width = pg_dim_names$a4[[1]],
+      pg_height = pg_dim_names$a4[[2]]
     )
   )
 })
