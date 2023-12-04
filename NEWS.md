@@ -1,4 +1,5 @@
 ## formatters 0.5.4.9006
+ * Migrated `export_as_pdf` from `rtables`. Now using `paginate_to_mpfs` function. Made `font_lcpi` function internal.
  * Applied `styler` and resolved package lint. Changed default indentation from 4 spaces to 2.
  * Fixed wrapping and section dividers error.
  * Allowed section divider between header and table body.
