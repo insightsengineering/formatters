@@ -92,6 +92,7 @@ reference:
     contents:
       - export_as_txt
       - export_as_rtf
+      - export_as_pdf
       - mpf_to_rtf
   - title: Miscellany
     desc: Other documented functions not interesting to end users
@@ -102,7 +103,6 @@ reference:
       - ifnotlen0
       - table_inset
       - default_horizontal_sep
-      - font_lcpi
       - mf_strings
       - page_lcpp
       - page_types
