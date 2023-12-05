@@ -2,7 +2,7 @@
  * Applied `styler` and resolved package lint. Changed default indentation from 4 spaces to 2.
  * Added the possibility of setting a general default using `set_default_hsep()` that sets up the option `getOption("formatters_default_hsep")`.
  * Allowed section divider between header and table body.
- * Support for combining duplicate referential footnotes.
+ * Added support for combining duplicate referential footnotes.
  * Migrated `export_as_pdf` from `rtables`. Now using `paginate_to_mpfs` function. Made `font_lcpi` function internal.
  * Fixed wrapping and section dividers error.
  * Fixed infinite loop in `wrap_string` that was caused by a bug in `stringi::stri_wrap` not wrapping small
