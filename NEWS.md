@@ -1,3 +1,5 @@
+## formatters 0.5.5.9000
+
 ## formatters 0.5.5
  * Applied `styler` and resolved package lint. Changed default indentation from 4 spaces to 2.
  * Added the possibility of setting a general default using `set_default_hsep()` that sets up the option `getOption("formatters_default_hsep")`.
