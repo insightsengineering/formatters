@@ -1,4 +1,5 @@
 ## formatters 0.5.5.9001
+ * Added "N=xx" format and unit test for it
 
 ## formatters 0.5.5
  * Applied `styler` and resolved package lint. Changed default indentation from 4 spaces to 2.

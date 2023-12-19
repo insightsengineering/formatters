@@ -300,6 +300,8 @@ test_that("formats work", {
   )
 
   expect_identical(format_value(c(500, 1), "N=xx (xx%)"), "N=500 (100%)")
+  expect_identical(format_value(c(500), "N=xx"), "N=500")
+  expect_identical(format_value(c(500), "(N=xx)"), "(N=500)")
 
   ## errors
 
@@ -783,7 +785,8 @@ test_that("All supported 1d format cases of decimal alignment", {
   bmf$strings[, 4] <- bmf$aligns[, 3] <- sample_list_aligns
 
   expect_error(cw <- propose_column_widths(bmf), regexp = "*1.1111 | (<0.0001)*")
-  bmf$aligns[nrow(bmf$aligns), c(2, 3)] <- "center"
+  notallowed <- grep("1.1111 | (<0.0001)", bmf$strings[,2], fixed = TRUE)
+  bmf$aligns[notallowed, c(2, 3)] <- "center"
   cw <- propose_column_widths(bmf)
   cw[3] <- cw[3] + 4
   res_dec <- strsplit(toString(bmf, widths = cw, hsep = "-"), "\\n")[[1]]
@@ -805,7 +808,8 @@ test_that("All supported 1d format cases of decimal alignment", {
     "l       (N=11)                       (N=11)       dec_right",
     "m        >999.9                          >999.9   right    ",
     "n        >999.99          >999.99                 dec_left ",
-    "o   1.1111 | (<0.0001)     1.1111 | (<0.0001)     dec_left "
+    "o   1.1111 | (<0.0001)     1.1111 | (<0.0001)     dec_left ",
+    "p        N=11                              N=11   right    "
   )
   expect_identical(res_dec, expected)
 })
