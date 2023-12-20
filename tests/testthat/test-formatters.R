@@ -785,7 +785,7 @@ test_that("All supported 1d format cases of decimal alignment", {
   bmf$strings[, 4] <- bmf$aligns[, 3] <- sample_list_aligns
 
   expect_error(cw <- propose_column_widths(bmf), regexp = "*1.1111 | (<0.0001)*")
-  notallowed <- grep("1.1111 | (<0.0001)", bmf$strings[,2], fixed = TRUE)
+  notallowed <- grep("1.1111 | (<0.0001)", bmf$strings[, 2], fixed = TRUE)
   bmf$aligns[notallowed, c(2, 3)] <- "center"
   cw <- propose_column_widths(bmf)
   cw[3] <- cw[3] + 4
