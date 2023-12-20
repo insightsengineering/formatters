@@ -1,7 +1,7 @@
 formats_1d <- c(
   "xx", "xx.", "xx.x", "xx.xx", "xx.xxx", "xx.xxxx",
-  "xx%", "xx.%", "xx.x%", "xx.xx%", "xx.xxx%", "(N=xx)", ">999.9", ">999.99",
-  "x.xxxx | (<0.0001)", "N=xx"
+  "xx%", "xx.%", "xx.x%", "xx.xx%", "xx.xxx%", "(N=xx)", "N=xx", ">999.9", ">999.99",
+  "x.xxxx | (<0.0001)"
 )
 
 formats_2d <- c(
