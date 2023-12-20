@@ -1,4 +1,4 @@
-## formatters 0.5.5.9001
+## formatters 0.5.5.9002
  * Added "N=xx" format and unit test for it
 
 ## formatters 0.5.5
