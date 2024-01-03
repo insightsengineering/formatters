@@ -57,8 +57,6 @@ export_as_txt <- function(x,
                           rep_cols = num_rep_cols(x),
                           verbose = FALSE,
                           page_break = "\\s\\n") {
-
-
   if (paginate) {
     pages <- paginate_to_mpfs(
       x,
@@ -462,4 +460,177 @@ export_as_rtf <- function(x,
   } else {
     restxt
   }
+}
+
+
+#' Export as PDF
+#'
+#' The PDF output is based on the ASCII output created with [toString()]
+#'
+#' @inheritParams export_as_txt
+#' @param file file to write, must have `.pdf` extension
+#' @param width Deprecated, please use `pg_width` or specify
+#'   `page_type`. The width of the graphics region in inches
+#' @param height Deprecated, please use `pg_height` or specify
+#'   `page_type`. The height of the graphics region in inches
+#' @param fontsize Deprecated, please use `font_size`. The size of
+#'   text (in points)
+#' @param margins numeric(4). The number of lines/characters of margin on the
+#'   bottom, left, top, and right sides of the page.
+#'
+#' @importFrom grDevices pdf
+#' @importFrom grid textGrob grid.newpage gpar pushViewport plotViewport unit grid.draw
+#'   convertWidth convertHeight grobHeight grobWidth
+#'
+#' @details By default, pagination is performed with default
+#' `cpp` and `lpp` defined by specified page dimensions and margins.
+#' User-specified `lpp` and `cpp` values override this, and should
+#' be used with caution.
+#'
+#' Title and footer materials are also word-wrapped by default
+#' (unlike when printed to the terminal), with `cpp`, as
+#' defined above, as the default `max_width`.
+#'
+#' @seealso [export_as_txt()]
+#'
+#' @importFrom grid textGrob get.gpar
+#' @importFrom grDevices dev.off
+#' @importFrom tools file_ext
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' tf <- tempfile(fileext = ".pdf")
+#' export_as_pdf(basic_matrix_form(mtcars), file = tf, pg_height = 4)
+#'
+#' tf <- tempfile(fileext = ".pdf")
+#' export_as_pdf(basic_matrix_form(mtcars), file = tf, lpp = 8)
+#' }
+export_as_pdf <- function(x,
+                          file,
+                          page_type = "letter",
+                          landscape = FALSE,
+                          pg_width = page_dim(page_type)[if (landscape) 2 else 1],
+                          pg_height = page_dim(page_type)[if (landscape) 1 else 2],
+                          width = NULL,
+                          height = NULL, # passed to pdf()
+                          margins = c(4, 4, 4, 4),
+                          min_siblings = 2,
+                          font_family = "Courier",
+                          font_size = 8,
+                          fontsize = font_size,
+                          paginate = TRUE,
+                          lpp = NULL,
+                          cpp = NULL,
+                          hsep = "-",
+                          indent_size = 2,
+                          tf_wrap = TRUE,
+                          max_width = NULL,
+                          colwidths = propose_column_widths(x)) {
+  stopifnot(tools::file_ext(file) != ".pdf")
+  if (!is.null(colwidths) && length(colwidths) != ncol(x) + 1) {
+    stop(
+      "non-null colwidths argument must have length ncol(x) + 1 [",
+      ncol(x) + 1, "], got length ", length(colwidths)
+    )
+  }
+  gp_plot <- grid::gpar(fontsize = font_size, fontfamily = font_family)
+
+  if (!is.null(height)) {
+    pg_height <- height
+  }
+
+  if (!is.null(width)) {
+    pg_width <- width
+  }
+
+  if (missing(font_size) && !missing(fontsize)) {
+    font_size <- fontsize
+  }
+  pdf(file = file, width = pg_width, height = pg_height)
+  on.exit(dev.off())
+  grid::grid.newpage()
+  grid::pushViewport(grid::plotViewport(margins = margins, gp = gp_plot))
+
+  cur_gpar <- grid::get.gpar()
+  if (is.null(lpp)) {
+    lpp <- floor(grid::convertHeight(grid::unit(1, "npc"), "lines", valueOnly = TRUE) /
+      (cur_gpar$cex * cur_gpar$lineheight)) - sum(margins[c(1, 3)]) # bottom, top # nolint
+  }
+  if (is.null(cpp)) {
+    cpp <- floor(grid::convertWidth(grid::unit(1, "npc"), "inches", valueOnly = TRUE) *
+      font_lcpi(font_family, font_size, cur_gpar$lineheight)$cpi) - sum(margins[c(2, 4)]) # left, right # nolint
+  }
+  if (tf_wrap && is.null(max_width)) {
+    max_width <- cpp
+  }
+
+  if (paginate) {
+    tbls <- paginate_to_mpfs(
+      x,
+      page_type = page_type,
+      font_family = font_family,
+      font_size = font_size,
+      lineheight = cur_gpar$lineheight,
+      landscape = landscape,
+      pg_width = pg_width,
+      pg_height = pg_height,
+      margins = margins,
+      lpp = lpp,
+      cpp = cpp,
+      min_siblings = min_siblings,
+      nosplitin = character(),
+      colwidths = colwidths,
+      tf_wrap = tf_wrap,
+      max_width = max_width,
+      indent_size = indent_size,
+      verbose = FALSE,
+      rep_cols = num_rep_cols(x)
+    )
+  } else {
+    mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size)
+    mf_col_widths(mf) <- colwidths %||% propose_column_widths(mf)
+    tbls <- list(mf)
+  }
+
+  gtbls <- lapply(tbls, function(txt) {
+    grid::textGrob(
+      label = toString(txt,
+        widths = txt$col_widths + 1, hsep = hsep,
+        tf_wrap = tf_wrap, max_width = max_width
+      ),
+      x = grid::unit(0, "npc"), y = grid::unit(1, "npc"),
+      just = c("left", "top")
+    )
+  })
+
+  npages <- length(gtbls)
+  exceeds_width <- rep(FALSE, npages)
+  exceeds_height <- rep(FALSE, npages)
+
+  for (i in seq_along(gtbls)) {
+    g <- gtbls[[i]]
+
+    if (i > 1) {
+      grid::grid.newpage()
+      grid::pushViewport(grid::plotViewport(margins = margins, gp = gp_plot))
+    }
+
+    if (grid::convertHeight(grid::grobHeight(g), "inches", valueOnly = TRUE) >
+      grid::convertHeight(grid::unit(1, "npc"), "inches", valueOnly = TRUE)) { # nolint
+      exceeds_height[i] <- TRUE
+      warning("height of page ", i, " exceeds the available space")
+    }
+    if (grid::convertWidth(grid::grobWidth(g), "inches", valueOnly = TRUE) >
+      grid::convertWidth(grid::unit(1, "npc"), "inches", valueOnly = TRUE)) { # nolint
+      exceeds_width[i] <- TRUE
+      warning("width of page ", i, " exceeds the available space")
+    }
+
+    grid::grid.draw(g)
+  }
+  list(
+    file = file, npages = npages, exceeds_width = exceeds_width, exceeds_height = exceeds_height,
+    lpp = lpp, cpp = cpp
+  )
 }

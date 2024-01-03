@@ -817,13 +817,17 @@ wrap_string <- function(str, width, collapse = NULL) {
       # Checking if we are stuck in a loop
       ori_wrapped_txt_v <- .go_stri_wrap(str, width)
       cur_wrapped_txt_v <- .go_stri_wrap(ret_collapse, width)
-      if (!setequal(ori_wrapped_txt_v, cur_wrapped_txt_v)) {
-        return(wrap_string(str = ret_collapse, width = width, collapse = collapse))
-      } else {
+      broken_char_ori <- sum(nchar(ori_wrapped_txt_v) > width) # how many issues there were
+      broken_char_cur <- sum(nchar(cur_wrapped_txt_v) > width) # how many issues there are
+
+      if (setequal(ori_wrapped_txt_v, cur_wrapped_txt_v) ||
+          broken_char_cur >= broken_char_ori) { # we did not solve the current issue!
         # help function: Very rare case where the recursion is stuck in a loop
         ret_tmp <- force_split_words_by(ret[we_interval], width) # here we_interval is only one ind
         ret <- append(ret, ret_tmp, we_interval)[-we_interval]
         which_exceeded <- which(nchar(ret) > width)
+      } else {
+        return(wrap_string(str = ret_collapse, width = width, collapse = collapse))
       }
     }
   }

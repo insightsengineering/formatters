@@ -1,6 +1,6 @@
 formats_1d <- c(
   "xx", "xx.", "xx.x", "xx.xx", "xx.xxx", "xx.xxxx",
-  "xx%", "xx.%", "xx.x%", "xx.xx%", "xx.xxx%", "(N=xx)", ">999.9", ">999.99",
+  "xx%", "xx.%", "xx.x%", "xx.xx%", "xx.xxx%", "(N=xx)", "N=xx", ">999.9", ">999.99",
   "x.xxxx | (<0.0001)"
 )
 
@@ -316,6 +316,7 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
       "xx.xx%" = paste0(round_fmt(x * 100, digits = 2, na_str = na_str), "%"),
       "xx.xxx%" = paste0(round_fmt(x * 100, digits = 3, na_str = na_str), "%"),
       "(N=xx)" = paste0("(N=", round_fmt(x, digits = NA, na_str = na_str), ")"),
+      "N=xx" = paste0("N=", round_fmt(x, digits = NA, na_str = na_str)),
       ">999.9" = ifelse(x > 999.9, ">999.9", round_fmt(x, digits = 1, na_str = na_str)),
       ">999.99" = ifelse(x > 999.99, ">999.99", round_fmt(x, digits = 2, na_str = na_str)),
       "x.xxxx | (<0.0001)" = ifelse(x < 0.0001, "<0.0001", round_fmt(x, digits = 4, na_str = na_str)),
