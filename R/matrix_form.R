@@ -729,10 +729,10 @@ update_mf_ref_nlines <- function(mform, max_width) {
 #' @export
 #' @rdname mpf_accessors
 `mf_cinfo<-` <- function(mf, value) {
-  if (NROW(value) > 0 && NROW(value) != ncol(mf)) {
+  if (NROW(value) > 0 && NROW(value) != mf_ncol(mf)) {
     stop(
       "Number of rows in new cinfo (", NROW(value), ") does not match ",
-      "number of columns (", ncol(mf), ")"
+      "number of columns (", mf_ncol(mf), ")"
     )
   }
   mf$col_info <- value
@@ -805,7 +805,7 @@ mpf_has_rlabels <- function(mf) {
 
 #' @export
 #' @rdname mpf_accessors
-mf_has_rlabels <- function(mf) ncol(mf$strings) > ncol(mf)
+mf_has_rlabels <- function(mf) ncol(mf$strings) > mf_ncol(mf)
 
 #' Create spoof matrix form from a data.frame
 #'
@@ -902,7 +902,7 @@ reconstruct_basic_fnote_list <- function(mf) {
 }
 
 .mf_subset_core_mats <- function(mf, i, row = TRUE) {
-  fillnum <- if (row) nrow(mf_strings(mf)) - mf_nlheader(mf) else ncol(mf)
+  fillnum <- if (row) nrow(mf_strings(mf)) - mf_nlheader(mf) else mf_ncol(mf)
   if (is.logical(i) || all(i < 0)) {
     i <- seq_len(fillnum)[i]
   }
@@ -969,7 +969,7 @@ mpf_subset_rows <- function(mf, i) {
   nrs <- length(unique(row_lgrps))
   ncolrows <- length(unique(lgrps[seq_len(nlh)]))
 
-  ncs <- ncol(mf)
+  ncs <- mf_ncol(mf)
   mf <- .mf_subset_core_mats(mf, i, row = TRUE)
   map <- data.frame(
     old_idx = c(seq_len(ncolrows), i + ncolrows),
@@ -1004,7 +1004,7 @@ mpf_subset_rows <- function(mf, i) {
 ## column information that will need to be touched up
 ## but lets be careful and do a bit more anyway
 mpf_subset_cols <- function(mf, j) {
-  nc <- ncol(mf)
+  nc <- mf_ncol(mf)
   if (is.logical(j) || all(j < 0)) {
     j <- seq_len(nc)[j]
   }

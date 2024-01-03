@@ -268,14 +268,24 @@ valid_pag <- function(pagdf,
   }
   if (rw[["node_class"]] %in% c("LabelRow", "ContentRow")) {
     # check if it has children; if no children then valid
-    has_children <- unlist(pagdf$reprint_inds) %in% rw$abs_rownumber
-    if (!any(has_children)) {
-      return(TRUE)
+    has_children <- rw$abs_rownumber %in% unlist(pagdf$reprint_inds)
+    if (rw$abs_rownumber == nrow(pagdf)) {
+      if (verbose) {
+        message("\t....................... EXCEPTION: last row is a label or content row but in lpp")
+      }
+    } else if (any(has_children)) {
+      if (verbose) {
+        message(
+          "\t....................... EXCEPTION: last row is a label or content row",
+          " but does not have rows and row groups depending on it"
+        )
+      }
+    } else {
+      if (verbose) {
+        message("\t....................... FAIL: last row is a label or content row")
+      }
+      return(FALSE)
     }
-    if (verbose) {
-      message("\t....................... FAIL: last row is a label or content row")
-    }
-    return(FALSE)
   }
 
   sibpos <- rw[["pos_in_siblings"]]
@@ -357,7 +367,8 @@ find_pag <- function(pagdf,
     guess <- guess - 1
   }
   if (guess < start) {
-    if (isFALSE(do_error)) {
+    # Repeat pagination process to see what went wrong with verbose on
+    if (isFALSE(do_error) && isFALSE(verbose)) {
       find_pag(
         pagdf = pagdf,
         start = start,
@@ -369,13 +380,13 @@ find_pag <- function(pagdf,
         row = row,
         have_col_fnotes = have_col_fnotes,
         div_height = div_height,
-        do_error = TRUE
+        do_error = TRUE # only used to avoid loop
       )
     }
     stop(
       "Unable to find any valid pagination split\ between ",
       ifelse(row, "rows ", "columns "), start, " and ", origuess, ". \n",
-      "Inserted ", ifelse(row, "cpp (column-space, content per page) ", "lpp (row-space, lines per page) "),
+      "Inserted ", ifelse(row, "lpp (row-space, lines per page) ", "cpp (column-space, content per page) "),
       ": ", pagdf$par_extent[start] + rlpp, "\n",
       "Need-to-repeat-in-each-page space (key values): ", pagdf$par_extent[start], "\n",
       "Remaining space: ", rlpp, "\n",
