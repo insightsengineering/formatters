@@ -806,10 +806,10 @@ test_that("All supported 1d format cases of decimal alignment", {
     "j          11.11%        11.11%                   left     ",
     "k          11.111%                      11.111%   dec_right",
     "l       (N=11)                       (N=11)       dec_right",
-    "m        >999.9                          >999.9   right    ",
-    "n        >999.99          >999.99                 dec_left ",
-    "o   1.1111 | (<0.0001)     1.1111 | (<0.0001)     dec_left ",
-    "p        N=11                              N=11   right    "
+    "m        N=11                              N=11   right    ",
+    "n        >999.9           >999.9                  dec_left ",
+    "o        >999.99          >999.99                 dec_left ",
+    "p   1.1111 | (<0.0001)     1.1111 | (<0.0001)     right    "
   )
   expect_identical(res_dec, expected)
 })
