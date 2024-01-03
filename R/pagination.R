@@ -273,11 +273,11 @@ valid_pag <- function(pagdf,
       if (verbose) {
         message("\t....................... EXCEPTION: last row is a label or content row but in lpp")
       }
-    } else if (any(has_children)) {
+    } else if (!any(has_children)) {
       if (verbose) {
         message(
-          "\t....................... EXCEPTION: last row is a label or content row",
-          " but does not have rows and row groups depending on it"
+          "\t....................... EXCEPTION: last row is a label or content row\n",
+          "but does not have rows and row groups depending on it"
         )
       }
     } else {
