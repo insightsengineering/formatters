@@ -205,6 +205,13 @@ test_that("wrap_strings work", {
   # Check for avoidance of infinite loops - C stack exceeding
   expect_identical(wrap_string("6.5", 1), c("6", ".", "5"))
   expect_silent(wrap_string("6.5 and something else. 4.3", 1))
+
+  # Second case of loop (different length - check breaks)
+  expect_identical(formatters::wrap_string("10. 1 6.5", 2), c("10", " .", "1", "6.", "5"))
+  expect_identical(
+    formatters::wrap_string("10  . 1 6.5 5 . 4", 2),
+    c("10", " .", "1", "6.", "5", "5 ", " .", "4")
+  )
 })
 
 test_that("toString wrapping avoid trimming whitespaces", {
@@ -279,4 +286,19 @@ test_that("toString wrapping avoid trimming whitespaces", {
     ),
     res
   )
+})
+
+test_that("toString and wrapping cooperates well with separator divisors", {
+  # Fixes #221
+  testdf <- iris[seq_len(5), seq_len(2)]
+  rownames(testdf) <- paste("State ", LETTERS[seq_len(nrow(testdf))])
+  bmf <- basic_matrix_form(testdf)
+
+  # Adding topleft to wrap
+  bmf$has_topleft <- TRUE # no setter atm
+  mf_strings(bmf)[1, 1] <- "LETTERS"
+
+  sec_seps_df <- mf_rinfo(bmf)[, c("abs_rownumber", "trailing_sep"), drop = FALSE]
+  mf_rinfo(bmf)$trailing_sep[c(1, 3, 4)] <- " "
+  expect_silent(toString(bmf, widths = c(4, 4, 4)))
 })

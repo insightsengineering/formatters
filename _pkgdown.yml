@@ -17,6 +17,9 @@ navbar:
       icon: fa-github
       href: https://github.com/insightsengineering/formatters
 reference:
+  - title: Formatters Overview
+    contents:
+      - formatters-package
   - title: Formatting Values
     desc: Functions related to applying formats to values
     contents:
@@ -89,6 +92,7 @@ reference:
     contents:
       - export_as_txt
       - export_as_rtf
+      - export_as_pdf
       - mpf_to_rtf
   - title: Miscellany
     desc: Other documented functions not interesting to end users
@@ -98,8 +102,7 @@ reference:
       - wrap_txt
       - ifnotlen0
       - table_inset
-      - default_hsep
-      - font_lcpi
+      - default_horizontal_sep
       - mf_strings
       - page_lcpp
       - page_types

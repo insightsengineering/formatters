@@ -1,5 +1,10 @@
 values <- c(5.123456, 7.891112)
-test_that("Default hsep works", {
+test_that("Default horizontal separator works", {
+  expect_true(is.null(getOption("formatters_default_hsep")))
+  expect_error(set_default_hsep("foo"))
+  expect_silent(set_default_hsep("a"))
+  expect_equal(default_hsep(), "a")
+  expect_silent(set_default_hsep(NULL))
   expect_true(default_hsep() %in% c("\u2014", "-"))
 })
 test_that("make_row_df produces custom error message if used on MatrixPrintForm", {
@@ -295,6 +300,8 @@ test_that("formats work", {
   )
 
   expect_identical(format_value(c(500, 1), "N=xx (xx%)"), "N=500 (100%)")
+  expect_identical(format_value(c(500), "N=xx"), "N=500")
+  expect_identical(format_value(c(500), "(N=xx)"), "(N=500)")
 
   ## errors
 
@@ -538,7 +545,7 @@ spans <- matrix(
 aligns <- matrix(byrow = TRUE, ncol = 2, "center")
 fmts <- matrix(byrow = TRUE, ncol = 2, "xx")
 
-rinfo <- formatters:::pagdfrow(nm = "row", lab = "row", rnum = 1, pth = "row", extent = 1, rclass = "silly")
+rinfo <- pagdfrow(nm = "row", lab = "row", rnum = 1, pth = "row", extent = 1, rclass = "silly")
 
 mpf <- MatrixPrintForm(
   strings = strs, spans = spans, aligns = aligns,
@@ -778,7 +785,8 @@ test_that("All supported 1d format cases of decimal alignment", {
   bmf$strings[, 4] <- bmf$aligns[, 3] <- sample_list_aligns
 
   expect_error(cw <- propose_column_widths(bmf), regexp = "*1.1111 | (<0.0001)*")
-  bmf$aligns[nrow(bmf$aligns), c(2, 3)] <- "center"
+  notallowed <- grep("1.1111 | (<0.0001)", bmf$strings[, 2], fixed = TRUE)
+  bmf$aligns[notallowed, c(2, 3)] <- "center"
   cw <- propose_column_widths(bmf)
   cw[3] <- cw[3] + 4
   res_dec <- strsplit(toString(bmf, widths = cw, hsep = "-"), "\\n")[[1]]
@@ -798,9 +806,10 @@ test_that("All supported 1d format cases of decimal alignment", {
     "j          11.11%        11.11%                   left     ",
     "k          11.111%                      11.111%   dec_right",
     "l       (N=11)                       (N=11)       dec_right",
-    "m        >999.9                          >999.9   right    ",
-    "n        >999.99          >999.99                 dec_left ",
-    "o   1.1111 | (<0.0001)     1.1111 | (<0.0001)     dec_left "
+    "m        N=11                              N=11   right    ",
+    "n        >999.9           >999.9                  dec_left ",
+    "o        >999.99          >999.99                 dec_left ",
+    "p   1.1111 | (<0.0001)     1.1111 | (<0.0001)     right    "
   )
   expect_identical(res_dec, expected)
 })
@@ -895,4 +904,33 @@ test_that("fmt_config works as expected", {
   expect_silent(obj_format(x) <- function() {})
   expect_silent(obj_na_str(x) <- "something wrong")
   expect_silent(obj_align(x) <- "something wrong")
+})
+
+test_that("reorder_ref_fnotes orders referential footnotes correctly", {
+  # all numeric
+  rf <- c("{4} - test 1", "{1} - one", "{11} - eleven", "{100} - test 2", "{3} - three", "{7} - !!")
+  res <- reorder_ref_fnotes(rf)
+
+  expect_identical(
+    res,
+    c("{1} - one", "{3} - three", "{4} - test 1", "{7} - !!", "{11} - eleven", "{100} - test 2")
+  )
+
+  # numeric and character
+  rf <- c("{*} - test 1", "{1} - one", "{11} - eleven", "{**} - test 2", "{3} - three", "{!} - !!")
+  res <- reorder_ref_fnotes(rf)
+
+  expect_identical(
+    res,
+    c("{1} - one", "{3} - three", "{11} - eleven", "{!} - !!", "{*} - test 1", "{**} - test 2")
+  )
+
+  # with asterisks
+  rf <- c("{*} - test 1", "{1} - one", "** eleven", "{**} - test 2", "* three", "{!} - !!")
+  res <- reorder_ref_fnotes(rf)
+
+  expect_identical(
+    res,
+    c("{1} - one", "{!} - !!", "{*} - test 1", "{**} - test 2", "* three", "** eleven")
+  )
 })

@@ -18,3 +18,5 @@
 ^staged_dependencies\.yaml$
 ^temp$
 ~$
+pkgdown
+^pkgdown$
