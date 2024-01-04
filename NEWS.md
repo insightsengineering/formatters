@@ -1,5 +1,6 @@
 ## formatters 0.5.5.9003
  * Added "N=xx" format and unit test for it
+ * Allow tables with content rows in the end be exported.
 
 ## formatters 0.5.5
  * Applied `styler` and resolved package lint. Changed default indentation from 4 spaces to 2.
