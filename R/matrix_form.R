@@ -234,7 +234,6 @@ disp_from_spans <- function(spans) {
 #'     if non-NULL, must have length equal to `ncol(strings)`
 #' @param indent_size numeric(1). Number of spaces to be used per level of indent (if supported by
 #' the relevant method). Defaults to 2.
-#' @export
 #' @return An object of class `MatrixPrintForm`. Currently this is
 #' implemented as an S3 class inheriting from list with the following
 #' elements:
@@ -267,6 +266,11 @@ disp_from_spans <- function(spans) {
 #' \item{\code{ncols}}{number of columns \emph{of the table}, not including
 #' any row names/row labels}
 #' }
+#'
+#' @examples
+#' basic_matrix_form(iris) # calls matrix_form that calls this constructor
+#'
+#' @export
 MatrixPrintForm <- function(strings = NULL,
                             spans,
                             aligns,

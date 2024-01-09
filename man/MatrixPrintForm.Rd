@@ -155,3 +155,7 @@ Matrix Print Form - Intermediate Representation for ASCII Table Printing
 The bare constructor for the \code{MatrixPrintForm} should generally
 only be called by \code{matrix_form} custom methods, and almost never from other code.
 }
+\examples{
+basic_matrix_form(iris) # calls matrix_form that calls this constructor
+
+}
