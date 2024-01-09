@@ -925,9 +925,9 @@ reconstruct_basic_fnote_list <- function(mf) {
   if (is.logical(i) || all(i < 0)) {
     i <- seq_len(fillnum)[i]
   }
+  nlh <- mf_nlheader(mf)
 
   if (row) {
-    nlh <- mf_nlheader(mf)
     ncolrows <- mf_nrheader(mf)
     i_mat <- c(seq_len(nlh), which(mf_lgrouping(mf) %in% (i + ncolrows)))
     j_mat <- seq_len(ncol(mf_strings(mf)))
@@ -937,9 +937,43 @@ reconstruct_basic_fnote_list <- function(mf) {
     j_mat <- c(seq_len(nlabcol), i + nlabcol)
   }
 
+  tmp_strmat <- mf_strings(mf)[i_mat, j_mat, drop = FALSE]
+  empty_keycols <- !nzchar(tmp_strmat[-seq_len(nlh), , drop = FALSE][1, ])
 
-  mf_strings(mf) <- mf_strings(mf)[i_mat, j_mat, drop = FALSE]
+  # Fix for missing labels in key columns (only for rlistings)
+  if (
+    nrow(tmp_strmat) > 1 && # safe check for empty listings
+    all(mf_rinfo(mf)$node_class == "listing_df") && # only for rlistings
+    any(empty_keycols) # only if there are missing keycol labels
+  ) {
+    # find the first non-empty label in the key columns
+    keycols_needed <- mf_strings(mf)[, empty_keycols, drop = FALSE]
+    first_nonempty <- apply(keycols_needed, 2, function(x) {
+      section_ind <- i_mat[-seq_len(nlh)][1]
+      sec_ind_no_header <- seq_len(section_ind)[-seq_len(nlh)]
+      tail(x[sec_ind_no_header][nzchar(x[sec_ind_no_header])], 1)
+    })
+
+    # if there are only "" the previous returns character()
+    any_chr_empty <- if (length(first_nonempty) > 1) {
+      vapply(first_nonempty, length, numeric(1))
+    } else {
+      length(first_nonempty)
+    }
+    if (any(any_chr_empty == 0L)) {
+      warning("There are empty key columns in the listing. ",
+              "We keep empty strings for each page.")
+      first_nonempty[any_chr_empty == 0L] <- ""
+    }
+
+    # replace the empty labels with the first non-empty label
+    tmp_strmat[nlh + 1, empty_keycols] <- unlist(first_nonempty)
+  }
+
+  mf_strings(mf) <- tmp_strmat
+
   mf_lgrouping(mf) <- as.integer(as.factor(mf_lgrouping(mf)[i_mat]))
+
   if (!row) {
     newspans <- truncate_spans(mf_spans(mf), j_mat) # 'i' is the columns here, b/c row is FALSE
   } else {
