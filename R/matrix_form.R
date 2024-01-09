@@ -21,7 +21,7 @@ mform_handle_newlines <- function(matform) {
   nl_inds_header <- seq(1, mf_nlheader(matform))
   hdr_inds <- 1:nr_header
 
-  # hack that is necessary only if bottom aligned
+  # hack that is necessary only if top-left is bottom aligned (default)
   topleft_has_nl_char <- FALSE
   if (has_topleft) {
     tl <- strmat[nl_inds_header, 1, drop = TRUE]
@@ -43,6 +43,7 @@ mform_handle_newlines <- function(matform) {
   # nlines detects if there is a newline character
   row_nlines <- apply(strmat, 1, function(x) max(vapply(x, nlines, 1L), 1L))
 
+  # Correction for the case where there are more lines for topleft material than for cols
   if (has_topleft && (sum(row_nlines[nl_inds_header]) < how_many_nl)) {
     row_nlines[1] <- row_nlines[1] + how_many_nl - sum(row_nlines[nl_inds_header])
   }
@@ -92,7 +93,32 @@ mform_handle_newlines <- function(matform) {
     mf_lgrouping(matform) <- rep(line_grouping, times = row_nlines)
   }
 
+  # Solve \n in titles
+  if (any(grepl("\n", all_titles(matform)))) {
+    if (any(grepl("\n", main_title(matform)))) {
+      tmp_title_vec <- .quick_handle_nl(main_title(matform))
+      main_title(matform) <- tmp_title_vec[1]
+      subtitles(matform) <- c(tmp_title_vec[-1], .quick_handle_nl(subtitles(matform)))
+    } else {
+      subtitles(matform) <- .quick_handle_nl(subtitles(matform))
+    }
+  }
+
+  # Solve \n in footers
+  main_footer(matform) <- .quick_handle_nl(main_footer(matform))
+  prov_footer(matform) <- .quick_handle_nl(prov_footer(matform))
+
+  # xxx \n in page titles are not working atm (I think)
+
   matform
+}
+
+.quick_handle_nl <- function(str_v) {
+  if (any(grepl("\n", str_v))) {
+    return(unlist(strsplit(str_v, "\n", fixed = TRUE)))
+  } else {
+    return(str_v)
+  }
 }
 
 # Helper function to recompact the lines following line groupings to then have them expanded again
@@ -437,13 +463,6 @@ mform_build_refdf <- function(mform) {
 
 
 
-
-
-
-## constructor with snake_case naming convention
-#' @rdname MatrixPrintForm
-#' @export
-matrix_print_form <- MatrixPrintForm
 
 
 ## hide the implementation behind abstraction in case we decide we want a real class someday
@@ -871,7 +890,7 @@ basic_matrix_form <- function(df, parent_path = "root") {
     )
   )
 
-  ret <- matrix_print_form(
+  ret <- matrix_form(
     strings = strings,
     aligns = aligns,
     spans = matrix(1, nrow = fnr, ncol = fnc),

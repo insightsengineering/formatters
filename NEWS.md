@@ -1,6 +1,9 @@
 ## formatters 0.5.5.9004
- * Added "N=xx" format and unit test for it
+ * Added "N=xx" format and unit test for it.
  * Allow tables with content rows in the end be exported.
+ * Removed reduntant references to `matrix_print_form` function.
+ * Fixed new line expansion for listings.
+ * Moved new line expansion for decorations from `rtables`' `matrix_form` to `formatters`' constructor `MatrixPrintForm`.
 
 ## formatters 0.5.5
  * Applied `styler` and resolved package lint. Changed default indentation from 4 spaces to 2.
@@ -54,8 +57,8 @@
  * `MatrixPrintForm` objects infer detailed referential footnote information from their `strings` element for backward compatibility.
  * Fix to test that failed on old Windows CRAN machine due to imperfect UTF support there.
  * If `lpp` and `cpp` in pagination or exporter functions are assigned to `NULL`, no pagination in the vertical or horizontal direction happens, respectively. 
-* The new default of `NA_integer_` for `lpp` and `cpp` now means those values should be inferred from page size.
-* Added `hexSticker` logo.
+ * The new default of `NA_integer_` for `lpp` and `cpp` now means those values should be inferred from page size.
+ * Added `hexSticker` logo.
 
 ## formatters 0.4.0
  * Cell values and row labels are now word-wrapped based on column widths (`widths` in `toString` and `colwidths` in pagination and exporters.

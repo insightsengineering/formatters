@@ -2,36 +2,9 @@
 % Please edit documentation in R/matrix_form.R
 \name{MatrixPrintForm}
 \alias{MatrixPrintForm}
-\alias{matrix_print_form}
 \title{Matrix Print Form - Intermediate Representation for ASCII Table Printing}
 \usage{
 MatrixPrintForm(
-  strings = NULL,
-  spans,
-  aligns,
-  formats,
-  row_info,
-  line_grouping = seq_len(NROW(strings)),
-  ref_fnotes = list(),
-  nlines_header,
-  nrow_header,
-  has_topleft = TRUE,
-  has_rowlabs = has_topleft,
-  expand_newlines = TRUE,
-  main_title = "",
-  subtitles = character(),
-  page_titles = character(),
-  main_footer = "",
-  prov_footer = character(),
-  header_section_div = NA_character_,
-  horizontal_sep = default_hsep(),
-  col_gap = 3,
-  table_inset = 0L,
-  colwidths = NULL,
-  indent_size = 2
-)
-
-matrix_print_form(
   strings = NULL,
   spans,
   aligns,

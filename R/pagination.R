@@ -570,7 +570,7 @@ mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf)) {
 #' @param extents integer. Number of lines each row will take to print, defaults to 1 for all rows
 #' @param rclass character. Class(es) for the rows. Defaults to "NA"
 #'
-#' @return A data.frame suitable for use in both the `matrix_print_form` constructor and the pagination machinery
+#' @return A data.frame suitable for use in both the `matrix_form` constructor and the pagination machinery
 #'
 #' @examples
 #'
