@@ -890,7 +890,7 @@ basic_matrix_form <- function(df, parent_path = "root") {
     )
   )
 
-  ret <- matrix_form(
+  ret <- MatrixPrintForm(
     strings = strings,
     aligns = aligns,
     spans = matrix(1, nrow = fnr, ncol = fnc),
