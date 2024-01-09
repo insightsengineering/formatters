@@ -941,11 +941,9 @@ reconstruct_basic_fnote_list <- function(mf) {
   empty_keycols <- !nzchar(tmp_strmat[-seq_len(nlh), , drop = FALSE][1, ])
 
   # Fix for missing labels in key columns (only for rlistings)
-  if (
-    nrow(tmp_strmat) > 1 && # safe check for empty listings
-      all(mf_rinfo(mf)$node_class == "listing_df") && # only for rlistings
-      any(empty_keycols) # only if there are missing keycol labels
-  ) {
+  if (nrow(tmp_strmat) > 1 && # safe check for empty listings
+    all(mf_rinfo(mf)$node_class == "listing_df") && # only for rlistings
+    any(empty_keycols)) { # only if there are missing keycol labels
     # find the first non-empty label in the key columns
     keycols_needed <- mf_strings(mf)[, empty_keycols, drop = FALSE]
     first_nonempty <- apply(keycols_needed, 2, function(x) {

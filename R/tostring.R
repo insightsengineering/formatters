@@ -820,8 +820,8 @@ wrap_string <- function(str, width, collapse = NULL) {
       broken_char_ori <- sum(nchar(ori_wrapped_txt_v) > width) # how many issues there were
       broken_char_cur <- sum(nchar(cur_wrapped_txt_v) > width) # how many issues there are
 
-      if (setequal(ori_wrapped_txt_v, cur_wrapped_txt_v) ||
-        broken_char_cur >= broken_char_ori) { # we did not solve the current issue!
+      # if still broken, we did not solve the current issue!
+      if (setequal(ori_wrapped_txt_v, cur_wrapped_txt_v) || broken_char_cur >= broken_char_ori) {
         # help function: Very rare case where the recursion is stuck in a loop
         ret_tmp <- force_split_words_by(ret[we_interval], width) # here we_interval is only one ind
         ret <- append(ret, ret_tmp, we_interval)[-we_interval]
