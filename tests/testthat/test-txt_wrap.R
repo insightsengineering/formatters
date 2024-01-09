@@ -51,14 +51,13 @@ test_that("tf_wordwrap and table inset work (including together)", {
   )
 })
 
-test_that("toString() throws a warning when newline is in string", {
+test_that("toString() is when newline is in string as matrix_form constructor expands all newlines", {
   bmf <- basic_matrix_form(iris)
   main_title(bmf) <- "some\nvery\nspacious\ntitle"
   prov_footer(bmf) <- "some\nvery\nspacious\nfooter"
   bmf$ref_footnotes <- "some\nvery\nspacious\nreference"
   expect_silent(toString(bmf, tf_wrap = FALSE))
-  expect_warning(expect_error(toString(bmf, tf_wrap = TRUE), "in a string that was meant to be wrapped"))
-  # xxx the warning will go away as it is not necessary once \\n will be added
+  expect_silent(toString(bmf, tf_wrap = TRUE))
 })
 
 test_that("works with words that are too big (no warning)", {
