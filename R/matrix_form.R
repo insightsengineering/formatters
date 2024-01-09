@@ -943,8 +943,8 @@ reconstruct_basic_fnote_list <- function(mf) {
   # Fix for missing labels in key columns (only for rlistings)
   if (
     nrow(tmp_strmat) > 1 && # safe check for empty listings
-    all(mf_rinfo(mf)$node_class == "listing_df") && # only for rlistings
-    any(empty_keycols) # only if there are missing keycol labels
+      all(mf_rinfo(mf)$node_class == "listing_df") && # only for rlistings
+      any(empty_keycols) # only if there are missing keycol labels
   ) {
     # find the first non-empty label in the key columns
     keycols_needed <- mf_strings(mf)[, empty_keycols, drop = FALSE]
@@ -961,8 +961,10 @@ reconstruct_basic_fnote_list <- function(mf) {
       length(first_nonempty)
     }
     if (any(any_chr_empty == 0L)) {
-      warning("There are empty key columns in the listing. ",
-              "We keep empty strings for each page.")
+      warning(
+        "There are empty key columns in the listing. ",
+        "We keep empty strings for each page."
+      )
       first_nonempty[any_chr_empty == 0L] <- ""
     }
 

@@ -548,7 +548,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
     bdy_cont <- tail(content, -nl_header)
     ## unfortunately we count "header rows" wrt line grouping so it
     ## doesn't match the real (i.e. body) rows as is
-    row_grouping <- tail(mf_lgrouping(mat), - nl_header) - mf_nrheader(mat)
+    row_grouping <- tail(mf_lgrouping(mat), -nl_header) - mf_nrheader(mat)
     nrbody <- NROW(bdy_cont)
     stopifnot(length(row_grouping) == nrbody)
     ## all rows with non-NA section divs and the final row (regardless of NA status)
@@ -821,7 +821,7 @@ wrap_string <- function(str, width, collapse = NULL) {
       broken_char_cur <- sum(nchar(cur_wrapped_txt_v) > width) # how many issues there are
 
       if (setequal(ori_wrapped_txt_v, cur_wrapped_txt_v) ||
-          broken_char_cur >= broken_char_ori) { # we did not solve the current issue!
+        broken_char_cur >= broken_char_ori) { # we did not solve the current issue!
         # help function: Very rare case where the recursion is stuck in a loop
         ret_tmp <- force_split_words_by(ret[we_interval], width) # here we_interval is only one ind
         ret <- append(ret, ret_tmp, we_interval)[-we_interval]
