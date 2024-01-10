@@ -446,6 +446,12 @@ setMethod("toString", "MatrixPrintForm", function(x,
       "Please contact the maintainer or file an issue."
     ) # nocov
   }
+  if (any(grepl("\r", mf_strings(mat)))) {
+    stop(
+      "Found recursive special characters (\\r) in string matrix produced by matrix_form. ",
+      "This special character is not supported and should be removed."
+    ) # nocov
+  }
 
   # Check that expansion worked for header -> should not happen
   if (!is.null(mf_rinfo(mat)) && # rare case of rtables::rtable()
