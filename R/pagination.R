@@ -381,7 +381,7 @@ find_pag <- function(pagdf,
                      have_col_fnotes = FALSE,
                      div_height = 1L,
                      do_error = FALSE) {
-  if (row){
+  if (row) {
     if (verbose) {
       message("--------- ROW-WISE: Checking possible pagination for page ", current_page)
     }
@@ -429,9 +429,9 @@ find_pag <- function(pagdf,
       "Context-relevant additional ", ifelse(row, "header/footers lines", "fixed column characters"),
       ": ", context_lpp_or_cpp, "\n",
       ifelse(row,
-             paste("Limit of allowed row lines per page:", rlpp, "\n"),
-             paste("Check the minimum allowed column characters per page in the last FAIL(ed) attempt. \n"))
-      ,
+        paste("Limit of allowed row lines per page:", rlpp, "\n"),
+        paste("Check the minimum allowed column characters per page in the last FAIL(ed) attempt. \n")
+      ),
       "Note: take a look at the last FAIL(ed) attempt above to see what went wrong. It could be, for example, ",
       "that the inserted column width induces some wrapping, hence the inserted number of lines (lpp) is not enough."
     )
