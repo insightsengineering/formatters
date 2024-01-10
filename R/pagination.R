@@ -1189,7 +1189,7 @@ paginate_to_mpfs <- function(obj,
 
 # Shallow copy of get_keycols
 .keycols_from_listing <- function(obj){
-  names(which(sapply(df, inherits, what = "listing_keycol")))
+  names(which(sapply(obj, inherits, what = "listing_keycol")))
 }
 
 
