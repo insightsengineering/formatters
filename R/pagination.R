@@ -1000,7 +1000,7 @@ paginate_indices <- function(obj,
   if (NROW(mfri) > 0 && .is_listing(mpf)) {
     # Lets determine the groupings created by keycols
     keycols_grouping_df <- NULL
-    keycols <- get_keycols(obj)
+    keycols <- .keycols_from_listing(obj)
     for (i in seq_along(keycols)) {
       kcol <- keycols[i]
       kcolvec <- obj[[kcol]]
@@ -1164,7 +1164,7 @@ paginate_to_mpfs <- function(obj,
   )
 
   ind_keycols <- if (.is_listing(mpf)) {
-    which(colnames(obj) %in% get_keycols(obj))
+    which(colnames(obj) %in% .keycols_from_listing(obj))
   } else {
     NULL
   }
@@ -1185,6 +1185,11 @@ paginate_to_mpfs <- function(obj,
 
 .is_listing <- function(mpf) {
   all(mf_rinfo(mpf)$node_class == "listing_df")
+}
+
+# Shallow copy of get_keycols
+.keycols_from_listing <- function(obj){
+  names(which(sapply(df, inherits, what = "listing_keycol")))
 }
 
 
