@@ -924,7 +924,7 @@ reconstruct_basic_fnote_list <- function(mf) {
   paste0("{", refdf$symbol, "} - ", refdf$msg)
 }
 
-.mf_subset_core_mats <- function(mf, i, row = TRUE) {
+.mf_subset_core_mats <- function(mf, i, keycols = NULL, row = TRUE) {
   fillnum <- if (row) nrow(mf_strings(mf)) - mf_nlheader(mf) else mf_ncol(mf)
   if (is.logical(i) || all(i < 0)) {
     i <- seq_len(fillnum)[i]
@@ -942,11 +942,14 @@ reconstruct_basic_fnote_list <- function(mf) {
   }
 
   tmp_strmat <- mf_strings(mf)[i_mat, j_mat, drop = FALSE]
-  empty_keycols <- !nzchar(tmp_strmat[-seq_len(nlh), , drop = FALSE][1, ])
+  if (is.null(keycols)) {
+    keycols <- ncol(tmp_strmat) # safenet for when using row = FALSE
+  }
+  empty_keycols <- !nzchar(tmp_strmat[-seq_len(nlh), keycols, drop = FALSE][1, ])
 
   # Fix for missing labels in key columns (only for rlistings)
   if (nrow(tmp_strmat) > 1 && # safe check for empty listings
-      all(mf_rinfo(mf)$node_class == "listing_df") && # nolint # only for rlistings
+      .is_listing(mf) && # nolint # only for rlistings
       any(empty_keycols)) { # only if there are missing keycol labels
     # find the first non-empty label in the key columns
     keycols_needed <- mf_strings(mf)[, empty_keycols, drop = FALSE]
@@ -1019,7 +1022,7 @@ truncate_spans <- function(spans, j) {
 }
 
 
-mpf_subset_rows <- function(mf, i) {
+mpf_subset_rows <- function(mf, i, keycols = NULL) {
   nlh <- mf_nlheader(mf)
   lgrps <- mf_lgrouping(mf)
   row_lgrps <- tail(lgrps, -1 * nlh)
@@ -1027,7 +1030,7 @@ mpf_subset_rows <- function(mf, i) {
   ncolrows <- length(unique(lgrps[seq_len(nlh)]))
 
   ncs <- mf_ncol(mf)
-  mf <- .mf_subset_core_mats(mf, i, row = TRUE)
+  mf <- .mf_subset_core_mats(mf, i, keycols = keycols, row = TRUE)
   map <- data.frame(
     old_idx = c(seq_len(ncolrows), i + ncolrows),
     new_idx = c(seq_len(ncolrows), ncolrows + order(i))
