@@ -4,6 +4,8 @@
  * Removed redundant references to `matrix_print_form` constructor (now only `MatrixPrintForm`).
  * Moved new line expansion for decorations from `rtables`' `matrix_form` to `formatters`' constructor `MatrixPrintForm` so to cover also `rlistings`.
  * Fixed pagination unexpected counts for `rlistings`' pagination by removing the manual subsetting workaround and fixing [`insightsengineering/rlistings#155`](https://github.com/insightsengineering/rlistings/issues/155).
+ * Improved relevant information feedback during pagination.
+ * Removed the possibility to set `min_siblings > 0` when dealing with listings. This allows smooth pagination when having only 2 lines.
 
 ## formatters 0.5.5
  * Applied `styler` and resolved package lint. Changed default indentation from 4 spaces to 2.

@@ -184,11 +184,11 @@ build_fail_msg <- function(row, lines, raw_rowlines,
     spacetype_abr <- "lns"
     structtype_abr <- "rws"
     sprintf(
-      paste(
-        "\t- FAIL: rows selected for pagination require %d %s while only %d are available from ",
+      paste0(
+        "  FAIL: rows selected for pagination require %d %s while only %d are available from ",
         "lpp = %d and %d header/footers lines.\n",
-        "\t        details: [raw: %d %s (%d %s), rep. context: %d %s (%d %s), ",
-        "refs: %d %s (%d)  sect. divs: %d %s]."
+        "        details: [raw: %d %s (%d %s), rep. context: %d %s (%d %s), ",
+        "refs: %d %s (%d) sect. divs: %d %s]."
       ),
       lines,
       spacetype,
@@ -214,7 +214,7 @@ build_fail_msg <- function(row, lines, raw_rowlines,
     spacetype_abr <- "chars"
     structtype_abr <- "cols"
     sprintf(
-      "\t -> FAIL: selected columns require %d %s (%d %s).",
+      "  FAIL: selected columns require %d %s (%d %s).",
       lines,
       spacetype,
       guess - start + 1, # because it includes both start and guess
@@ -240,14 +240,13 @@ valid_pag <- function(pagdf,
 
   if (verbose) {
     message(
-      "Attempting pagination between ", start, " and ", guess, " ",
+      "-> Attempting pagination between ", start, " and ", guess, " ",
       paste(ifelse(row, "row", "column"))
     )
   }
 
   # Fix for counting the right number of lines when there is wrapping on a keycols
-  if (.is_listing(pagdf)) {
-    browser()
+  if (.is_listing(pagdf) && !is.null(pagdf$self_extent_page_break)) {
     pagdf$self_extent[start] <- pagdf$self_extent_page_break[start]
   }
 
@@ -290,18 +289,18 @@ valid_pag <- function(pagdf,
     has_children <- rw$abs_rownumber %in% unlist(pagdf$reprint_inds)
     if (rw$abs_rownumber == nrow(pagdf)) {
       if (verbose) {
-        message("\t -> EXCEPTION: last row is a label or content row but in lpp")
+        message("  EXCEPTION: last row is a label or content row but in lpp")
       }
     } else if (!any(has_children)) {
       if (verbose) {
         message(
-          "\t -> EXCEPTION: last row is a label or content row\n",
+          "  EXCEPTION: last row is a label or content row\n",
           "but does not have rows and row groups depending on it"
         )
       }
     } else {
       if (verbose) {
-        message("\t -> FAIL: last row is a label or content row")
+        message("  FAIL: last row is a label or content row")
       }
       return(FALSE)
     }
@@ -317,7 +316,7 @@ valid_pag <- function(pagdf,
       retfalse <- TRUE
       if (verbose) {
         message(
-          "\t -> FAIL: last row had only ", sibpos - 1,
+          "  FAIL: last row had only ", sibpos - 1,
           " preceding siblings, needed ", min_sibs
         )
       }
@@ -325,7 +324,7 @@ valid_pag <- function(pagdf,
       retfalse <- TRUE
       if (verbose) {
         message(
-          "\t -> FAIL: last row had only ", nsib - sibpos - 1,
+          "  FAIL: last row had only ", nsib - sibpos - 1,
           " following siblings, needed ", min_sibs
         )
       }
@@ -350,7 +349,7 @@ valid_pag <- function(pagdf,
       if (!all(ok_split)) {
         if (verbose) {
           message(
-            "\t -> FAIL: nosplit variable [",
+            "  FAIL: nosplit variable [",
             inplay[min(which(!ok_split))], "] would be constant [",
             curvals, "] across this pagebreak."
           )
@@ -362,18 +361,19 @@ valid_pag <- function(pagdf,
 
   # Usual output when found
   if (verbose) {
-    message("\t -> OK [", lines + rep_ext, if (row) " lines]" else " chars]")
+    message("  OK [", lines + rep_ext, if (row) " lines]" else " chars]")
   }
   TRUE
 }
 
 
 find_pag <- function(pagdf,
+                     current_page,
                      start,
                      guess,
                      rlpp,
-                     lpp,
-                     context_lpp,
+                     lpp_or_cpp,
+                     context_lpp_or_cpp,
                      min_siblings,
                      nosplitin = character(),
                      verbose = FALSE,
@@ -381,11 +381,21 @@ find_pag <- function(pagdf,
                      have_col_fnotes = FALSE,
                      div_height = 1L,
                      do_error = FALSE) {
+  if (row){
+    if (verbose) {
+      message("--------- ROW-WISE: Checking possible pagination for page ", current_page)
+    }
+  } else {
+    if (verbose) {
+      message("========= COLUMN-WISE: Checking possible pagination for page ", current_page)
+    }
+  }
+
   origuess <- guess
   while (guess >= start && !valid_pag(
     pagdf, guess,
     start = start,
-    rlpp = rlpp, lpp = lpp, context_lpp = context_lpp,
+    rlpp = rlpp, lpp = lpp_or_cpp, context_lpp = context_lpp_or_cpp, # only lpp goes to row pagination
     min_sibs = min_siblings,
     nosplit = nosplitin, verbose, row = row,
     have_col_fnotes = have_col_fnotes,
@@ -400,7 +410,7 @@ find_pag <- function(pagdf,
         pagdf = pagdf,
         start = start,
         guess = origuess,
-        rlpp = rlpp, lpp = lpp, context_lpp = context_lpp,
+        rlpp = rlpp, lpp_or_cpp = lpp_or_cpp, context_lpp_or_cpp = context_lpp_or_cpp,
         min_siblings = min_siblings,
         nosplitin = nosplitin,
         verbose = TRUE,
@@ -411,13 +421,19 @@ find_pag <- function(pagdf,
       )
     }
     stop(
-      "Unable to find any valid pagination split\ between ",
+      "-------------------------------------- Error Summary ----------------------------------------\n",
+      "Unable to find any valid pagination split for page ", current_page, " between ",
       ifelse(row, "rows ", "columns "), start, " and ", origuess, ". \n",
       "Inserted ", ifelse(row, "lpp (row-space, lines per page) ", "cpp (column-space, content per page) "),
-      ": ", pagdf$par_extent[start] + rlpp, "\n",
-      "Need-to-repeat-in-each-page space (key values): ", pagdf$par_extent[start], "\n",
-      "Remaining space: ", rlpp, "\n",
-      "Current space needed (with padding): ", pagdf$self_extent[start]
+      ": ", lpp_or_cpp, "\n",
+      "Context-relevant additional ", ifelse(row, "header/footers lines", "fixed column characters"),
+      ": ", context_lpp_or_cpp, "\n",
+      ifelse(row,
+             paste("Limit of allowed row lines per page:", rlpp, "\n"),
+             paste("Check the minimum allowed column characters per page in the last FAIL(ed) attempt. \n"))
+      ,
+      "Note: take a look at the last FAIL(ed) attempt above to see what went wrong. It could be, for example, ",
+      "that the inserted column width induces some wrapping, hence the inserted number of lines (lpp) is not enough."
     )
   }
   guess
@@ -437,22 +453,29 @@ find_pag <- function(pagdf,
 #'
 #' @inheritSection pagination_algo Pagination Algorithm
 #' @param pagdf data.frame. A pagination info data.frame as created by
-#' either `make_rows_df` or `make_cols_df`.
+#'   either `make_rows_df` or `make_cols_df`.
 #' @param rlpp numeric. Maximum number of \emph{row} lines per page (not including header materials), including
 #'   (re)printed header and context rows
-#' @param lpp numeric.
+#' @param lpp_or_cpp numeric. Total maximum number of \emph{row} lines or content (column-wise characters) per page
+#'   (including header materials and context rows). This is only for informative results with `verbose = TRUE`.
+#'   It will print `NA` if not specified by the pagination machinery.
+#' @param context_lpp_or_cpp numeric. Total number of context \emph{row} lines or content (column-wise characters)
+#'   per page (including header materials). Uses `NA` if not specified by the pagination machinery and is only
+#'   for informative results with `verbose = TRUE`.
 #' @param min_siblings  numeric. Minimum sibling rows which must appear on either side of pagination row for a
-#'   mid-subtable split to be valid. Defaults to 2.
+#'   mid-subtable split to be valid. Defaults to 2 for tables. It is automatically turned off
+#'   (by using only 0) for listings.
 #' @param nosplitin character. List of names of sub-tables where page-breaks are not allowed, regardless of other
 #'   considerations. Defaults to none.
 #' @param verbose logical(1). Should additional informative messages about the search for
-#' pagination breaks be shown. Defaults to \code{FALSE}.
+#'   pagination breaks be shown. Defaults to \code{FALSE}.
 #' @param row logical(1). Is pagination happening in row
-#' space (`TRUE`, the default) or column space (`FALSE`)
+#'   space (`TRUE`, the default) or column space (`FALSE`)
 #' @param have_col_fnotes logical(1). Does the table-like object being rendered have
-#' column-associated referential footnotes.
+#'   column-associated referential footnotes.
 #' @param div_height numeric(1). The height of the divider line when the
-#' associated object is rendered. Defaults to `1`.
+#'   associated object is rendered. Defaults to `1`.
+#'
 #' @return A list containing the vector of row numbers, broken up by page
 #'
 #' @examples
@@ -463,7 +486,8 @@ find_pag <- function(pagdf,
 #'
 #' @export
 pag_indices_inner <- function(pagdf,
-                              rlpp, lpp = NA_integer_, context_lpp = NA_integer_, # Context number of lines
+                              rlpp,
+                              lpp_or_cpp = NA_integer_, context_lpp_or_cpp = NA_integer_, # Context number of lines
                               min_siblings,
                               nosplitin = character(),
                               verbose = FALSE,
@@ -471,6 +495,7 @@ pag_indices_inner <- function(pagdf,
                               have_col_fnotes = FALSE,
                               div_height = 1L) {
   start <- 1
+  current_page <- 1
   nr <- nrow(pagdf)
   ret <- list()
   while (start <= nr) {
@@ -483,8 +508,9 @@ pag_indices_inner <- function(pagdf,
       }
     }
     guess <- min(nr, start + adjrlpp - 1)
-    end <- find_pag(pagdf, start, guess,
-      rlpp = adjrlpp, lpp = lpp, context_lpp = context_lpp,
+    end <- find_pag(pagdf,
+      current_page, start, guess,
+      rlpp = adjrlpp, lpp_or_cpp = lpp_or_cpp, context_lpp_or_cpp = context_lpp_or_cpp,
       min_siblings = min_siblings,
       nosplitin = nosplitin,
       verbose = verbose,
@@ -497,6 +523,7 @@ pag_indices_inner <- function(pagdf,
       start:end
     )))
     start <- end + 1
+    current_page <- current_page + 1
   }
   ret
 }
@@ -541,7 +568,7 @@ vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, r
     )
   }
   res <- pag_indices_inner(mf_cinfo(mf),
-    rlpp = rcpp,
+    rlpp = rcpp, lpp_or_cpp = cpp, context_lpp_or_cpp = cpp - rcpp,
     # cpp - sum(clwds[seq_len(rep_cols)]),
     verbose = verbose,
     min_siblings = 1,
@@ -969,7 +996,6 @@ paginate_indices <- function(obj,
   # rlistings note: if there is a wrapping in a keycol, it is not calculated correctly
   #                 in the above call, so we need to keep this information in mf_rinfo
   #                 and use it here.
-  browser()
   mfri <- mf_rinfo(mpf)
   if (NROW(mfri) > 0 && .is_listing(mpf)) {
     # Lets determine the groupings created by keycols
@@ -990,13 +1016,16 @@ paginate_indices <- function(obj,
   if (is.null(pg_size_spec$lpp)) {
     pag_row_indices <- list(seq_len(mf_nrow(mpf)))
   } else {
+    rlpp <- calc_rlpp(
+      pg_size_spec, mpf,
+      colwidths = colwidths,
+      tf_wrap = tf_wrap, verbose = verbose
+    )
     pag_row_indices <- pag_indices_inner(
       pagdf = mf_rinfo(mpf),
-      rlpp = calc_rlpp(
-        pg_size_spec, mpf,
-        colwidths = colwidths,
-        tf_wrap = tf_wrap, verbose = verbose
-      ),
+      rlpp = rlpp,
+      lpp_or_cpp = pg_size_spec$lpp,
+      context_lpp_or_cpp = pg_size_spec$lpp - rlpp,
       verbose = verbose,
       min_siblings = min_siblings,
       nosplitin = nosplitin
@@ -1044,6 +1073,12 @@ paginate_to_mpfs <- function(obj,
                              col_gap = 2,
                              verbose = FALSE) {
   mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size)
+
+  # Turning off min_siblings for listings
+  if (.is_listing(mpf)) {
+    min_siblings <- 0
+  }
+
   if (is.null(colwidths)) {
     colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf)
   } else {
