@@ -408,6 +408,7 @@ find_pag <- function(pagdf,
     if (isFALSE(do_error) && isFALSE(verbose)) {
       find_pag(
         pagdf = pagdf,
+        current_page = current_page,
         start = start,
         guess = origuess,
         rlpp = rlpp, lpp_or_cpp = lpp_or_cpp, context_lpp_or_cpp = context_lpp_or_cpp,
@@ -508,8 +509,8 @@ pag_indices_inner <- function(pagdf,
       }
     }
     guess <- min(nr, start + adjrlpp - 1)
-    end <- find_pag(pagdf,
-      current_page, start, guess,
+    end <- find_pag(pagdf = pagdf,
+      current_page = current_page, start = start, guess = guess,
       rlpp = adjrlpp, lpp_or_cpp = lpp_or_cpp, context_lpp_or_cpp = context_lpp_or_cpp,
       min_siblings = min_siblings,
       nosplitin = nosplitin,
