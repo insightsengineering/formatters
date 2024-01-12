@@ -1006,7 +1006,12 @@ paginate_indices <- function(obj,
       kcol <- keycols[i]
       kcolvec <- obj[[kcol]]
       kcolvec <- vapply(kcolvec, format_value, "", format = obj_format(kcolvec), na_str = obj_na_str(kcolvec))
-      keycols_grouping_df <- cbind(keycols_grouping_df, as.numeric(factor(kcolvec))) # take the groupings
+      groupings <- as.numeric(factor(kcolvec, levels = unique(kcolvec)))
+      where_they_start <- which(c(1, diff(groupings)) > 0)
+      keycols_grouping_df <- cbind(
+        keycols_grouping_df,
+        where_they_start[groupings]
+      ) # take the groupings
     }
 
     # Creating the real self_extend for mf_rinfo (if the line is chosen for pagination start)
