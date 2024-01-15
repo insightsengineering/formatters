@@ -500,15 +500,12 @@ setMethod("toString", "MatrixPrintForm", function(x,
   # Total number of characters for the table
   ncchar <- sum(widths) + (length(widths) - 1) * col_gap
 
-  ## Text wrapping checks (widths)
-  if (tf_wrap) {
-    if (is.null(max_width)) {
-      max_width <- getOption("width", 80L)
-    } else if (is.character(max_width) && identical(max_width, "auto")) {
-      max_width <- ncchar + inset
-    }
-    assert_number(max_width, lower = 0)
-  }
+  ## max_width for wrapping titles and footers (not related to ncchar if not indirectly)
+  max_width <- .handle_max_width(tf_wrap = tf_wrap,
+                                 max_width = max_width,
+                                 colwidths = widths,
+                                 col_gap = col_gap,
+                                 inset = inset)
 
   # Main wrapper function for table core
   mat <- do_cell_fnotes_wrap(mat, widths, max_width = max_width, tf_wrap = tf_wrap)
@@ -640,6 +637,38 @@ setMethod("toString", "MatrixPrintForm", function(x,
   )
 })
 
+# Switcher for the 3 options for max_width (NULL, numeric, "auto"))
+.handle_max_width <- function(tf_wrap, max_width,
+                              cpp = NULL, # Defaults to getOption("width", 80L)
+                              # Things for auto
+                              inset = NULL, colwidths = NULL, col_gap = NULL) {
+  max_width <- if (!tf_wrap) {
+    if (!is.null(max_width)) {
+      warning("tf_wrap is FALSE - ignoring non-null max_width value.")
+    }
+    NULL
+  } else if (tf_wrap) {
+    if (is.null(max_width)) {
+      if (is.null(cpp)) {
+        getOption("width", 80L)
+      } else {
+        cpp
+      }
+    } else if (is.numeric(max_width)) {
+      max_width
+    } else if (is.character(max_width) && identical(max_width, "auto")) {
+      # This should not happen, but just in case
+      if (any(sapply(list(inset, colwidths, col_gap), is.null))) {
+        stop("inset, colwidths, and col_gap must all be non-null when max_width is \"auto\".")
+      }
+      inset + sum(colwidths) + (length(colwidths) - 1) * col_gap
+    } else {
+      stop("max_width must be NULL, a numeric value, or \"auto\".")
+    }
+  }
+  return(max_width)
+}
+
 .do_inset <- function(x, inset) {
   if (inset == 0 || !any(nzchar(x))) {
     return(x)
@@ -652,7 +681,6 @@ setMethod("toString", "MatrixPrintForm", function(x,
   }
   x
 }
-
 
 .inset_div <- function(txt, div, inset) {
   c(.do_inset(div, inset), "", txt)

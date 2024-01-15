@@ -700,15 +700,9 @@ calc_lcpp <- function(page_type = NULL,
     cpp <- pg_lcpp$cpp
   }
   stopifnot(!is.na(cpp))
-  if (!tf_wrap && !is.null(max_width)) {
-    warning("tf_wrap is FALSE - ignoring non-null max_width value.")
-    max_width <- NULL
-  } else if (tf_wrap && is.null(max_width)) {
-    max_width <- cpp
-  }
-  if (is.character(max_width) && identical(max_width, "auto")) {
-    max_width <- inset + sum(colwidths) + (length(colwidths) - 1) * col_gap
-  }
+
+  max_width <- .handle_max_width(tf_wrap, max_width, cpp, colwidths, col_gap, inset)
+
   page_size_spec(lpp = lpp, cpp = cpp, max_width = max_width)
 }
 
