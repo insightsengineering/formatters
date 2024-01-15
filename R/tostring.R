@@ -501,11 +501,13 @@ setMethod("toString", "MatrixPrintForm", function(x,
   ncchar <- sum(widths) + (length(widths) - 1) * col_gap
 
   ## max_width for wrapping titles and footers (not related to ncchar if not indirectly)
-  max_width <- .handle_max_width(tf_wrap = tf_wrap,
-                                 max_width = max_width,
-                                 colwidths = widths,
-                                 col_gap = col_gap,
-                                 inset = inset)
+  max_width <- .handle_max_width(
+    tf_wrap = tf_wrap,
+    max_width = max_width,
+    colwidths = widths,
+    col_gap = col_gap,
+    inset = inset
+  )
 
   # Main wrapper function for table core
   mat <- do_cell_fnotes_wrap(mat, widths, max_width = max_width, tf_wrap = tf_wrap)

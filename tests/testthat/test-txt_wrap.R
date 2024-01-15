@@ -321,6 +321,8 @@ test_that("max_width is handled correctly as expected", {
   suppressMessages(
     expect_error(.handle_max_width(tf_wrap = TRUE, max_width = "auto"))
   )
-  expect_equal(.handle_max_width(tf_wrap = TRUE, max_width = "auto",
-                                 inset = 1, colwidths = c(10, 20, 30), col_gap = 2), 65)
+  expect_equal(.handle_max_width(
+    tf_wrap = TRUE, max_width = "auto",
+    inset = 1, colwidths = c(10, 20, 30), col_gap = 2
+  ), 65)
 })

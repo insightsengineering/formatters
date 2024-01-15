@@ -509,7 +509,8 @@ pag_indices_inner <- function(pagdf,
       }
     }
     guess <- min(nr, start + adjrlpp - 1)
-    end <- find_pag(pagdf = pagdf,
+    end <- find_pag(
+      pagdf = pagdf,
       current_page = current_page, start = start, guess = guess,
       rlpp = adjrlpp, lpp_or_cpp = lpp_or_cpp, context_lpp_or_cpp = context_lpp_or_cpp,
       min_siblings = min_siblings,
@@ -1188,7 +1189,7 @@ paginate_to_mpfs <- function(obj,
 }
 
 # Shallow copy of get_keycols
-.keycols_from_listing <- function(obj){
+.keycols_from_listing <- function(obj) {
   names(which(sapply(obj, inherits, what = "listing_keycol")))
 }
 

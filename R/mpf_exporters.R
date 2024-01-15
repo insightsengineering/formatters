@@ -87,9 +87,11 @@ export_as_txt <- function(x,
 
   # Needs to be here because of adding cpp if it is not "auto"
   if (!is.character(max_width)) {
-    max_width <- .handle_max_width(tf_wrap = tf_wrap,
-                                   max_width = max_width,
-                                   cpp = cpp)
+    max_width <- .handle_max_width(
+      tf_wrap = tf_wrap,
+      max_width = max_width,
+      cpp = cpp
+    )
   }
 
   ## we dont' set widths here because we already but that info on mpf
@@ -603,9 +605,11 @@ export_as_pdf <- function(x,
 
   # Needs to be here because of adding cpp if it is not "auto"
   if (!is.character(max_width)) {
-    max_width <- .handle_max_width(tf_wrap = tf_wrap,
-                                   max_width = max_width,
-                                   cpp = cpp)
+    max_width <- .handle_max_width(
+      tf_wrap = tf_wrap,
+      max_width = max_width,
+      cpp = cpp
+    )
   }
 
   gtbls <- lapply(tbls, function(txt) {
