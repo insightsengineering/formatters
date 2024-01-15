@@ -651,7 +651,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
     NULL
   } else if (tf_wrap) {
     if (is.null(max_width)) {
-      if (is.null(cpp)) {
+      if (is.null(cpp) || is.na(cpp)) {
         getOption("width", 80L)
       } else {
         cpp
