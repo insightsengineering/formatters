@@ -147,7 +147,7 @@ matrix_form.data.frame <- function(df) {
                     matrix("left", nrow = NROW(df), ncol = fnc))
     ## build up fake pagination df,
     rowdf <- basic_pagdf(row.names(df))
-    matrix_print_form(strings = strings,
+    MatrixPrintForm(strings = strings,
                       aligns = aligns,
                       spans = matrix(1, nrow = fnr, ncol = fnc),
                       formats = NULL,

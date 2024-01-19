@@ -1,6 +1,13 @@
 ## formatters 0.5.5.9004
- * Added "N=xx" format and unit test for it
+ * Added "N=xx" format and unit test for it.
  * Allow tables with content rows in the end be exported.
+ * Removed redundant references to `matrix_print_form` constructor (now only `MatrixPrintForm`).
+ * Moved new line expansion for decorations from `rtables`' `matrix_form` to `formatters`' constructor `MatrixPrintForm` so to cover also `rlistings`.
+ * Fixed pagination unexpected counts for `rlistings`' pagination by removing the manual subsetting workaround and fixing [`insightsengineering/rlistings#155`](https://github.com/insightsengineering/rlistings/issues/155).
+ * Improved relevant information feedback during pagination.
+ * Removed the possibility to set `min_siblings > 0` when dealing with listings. This allows smooth pagination when having only 2 lines.
+ * Added error catch for `\r` recursive special character.
+ * Fixed mismatch between pagination and exports regarding the value assigned to parameter `max_width`. Introduced general handler `.handle_max_width` for pagination, exports, and `toString`.
 
 ## formatters 0.5.5
  * Applied `styler` and resolved package lint. Changed default indentation from 4 spaces to 2.
@@ -54,8 +61,8 @@
  * `MatrixPrintForm` objects infer detailed referential footnote information from their `strings` element for backward compatibility.
  * Fix to test that failed on old Windows CRAN machine due to imperfect UTF support there.
  * If `lpp` and `cpp` in pagination or exporter functions are assigned to `NULL`, no pagination in the vertical or horizontal direction happens, respectively. 
-* The new default of `NA_integer_` for `lpp` and `cpp` now means those values should be inferred from page size.
-* Added `hexSticker` logo.
+ * The new default of `NA_integer_` for `lpp` and `cpp` now means those values should be inferred from page size.
+ * Added `hexSticker` logo.
 
 ## formatters 0.4.0
  * Cell values and row labels are now word-wrapped based on column widths (`widths` in `toString` and `colwidths` in pagination and exporters.

@@ -446,6 +446,12 @@ setMethod("toString", "MatrixPrintForm", function(x,
       "Please contact the maintainer or file an issue."
     ) # nocov
   }
+  if (any(grepl("\r", mf_strings(mat)))) {
+    stop(
+      "Found recursive special characters (\\r) in string matrix produced by matrix_form. ",
+      "This special character is not supported and should be removed."
+    ) # nocov
+  }
 
   # Check that expansion worked for header -> should not happen
   if (!is.null(mf_rinfo(mat)) && # rare case of rtables::rtable()
@@ -494,15 +500,14 @@ setMethod("toString", "MatrixPrintForm", function(x,
   # Total number of characters for the table
   ncchar <- sum(widths) + (length(widths) - 1) * col_gap
 
-  ## Text wrapping checks (widths)
-  if (tf_wrap) {
-    if (is.null(max_width)) {
-      max_width <- getOption("width", 80L)
-    } else if (is.character(max_width) && identical(max_width, "auto")) {
-      max_width <- ncchar + inset
-    }
-    assert_number(max_width, lower = 0)
-  }
+  ## max_width for wrapping titles and footers (not related to ncchar if not indirectly)
+  max_width <- .handle_max_width(
+    tf_wrap = tf_wrap,
+    max_width = max_width,
+    colwidths = widths,
+    col_gap = col_gap,
+    inset = inset
+  )
 
   # Main wrapper function for table core
   mat <- do_cell_fnotes_wrap(mat, widths, max_width = max_width, tf_wrap = tf_wrap)
@@ -548,7 +553,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
     bdy_cont <- tail(content, -nl_header)
     ## unfortunately we count "header rows" wrt line grouping so it
     ## doesn't match the real (i.e. body) rows as is
-    row_grouping <- tail(mf_lgrouping(mat), - nl_header) - mf_nrheader(mat)
+    row_grouping <- tail(mf_lgrouping(mat), -nl_header) - mf_nrheader(mat)
     nrbody <- NROW(bdy_cont)
     stopifnot(length(row_grouping) == nrbody)
     ## all rows with non-NA section divs and the final row (regardless of NA status)
@@ -634,6 +639,38 @@ setMethod("toString", "MatrixPrintForm", function(x,
   )
 })
 
+# Switcher for the 3 options for max_width (NULL, numeric, "auto"))
+.handle_max_width <- function(tf_wrap, max_width,
+                              cpp = NULL, # Defaults to getOption("width", 80L)
+                              # Things for auto
+                              inset = NULL, colwidths = NULL, col_gap = NULL) {
+  max_width <- if (!tf_wrap) {
+    if (!is.null(max_width)) {
+      warning("tf_wrap is FALSE - ignoring non-null max_width value.")
+    }
+    NULL
+  } else if (tf_wrap) {
+    if (is.null(max_width)) {
+      if (is.null(cpp) || is.na(cpp)) {
+        getOption("width", 80L)
+      } else {
+        cpp
+      }
+    } else if (is.numeric(max_width)) {
+      max_width
+    } else if (is.character(max_width) && identical(max_width, "auto")) {
+      # This should not happen, but just in case
+      if (any(sapply(list(inset, colwidths, col_gap), is.null))) {
+        stop("inset, colwidths, and col_gap must all be non-null when max_width is \"auto\".")
+      }
+      inset + sum(colwidths) + (length(colwidths) - 1) * col_gap
+    } else {
+      stop("max_width must be NULL, a numeric value, or \"auto\".")
+    }
+  }
+  return(max_width)
+}
+
 .do_inset <- function(x, inset) {
   if (inset == 0 || !any(nzchar(x))) {
     return(x)
@@ -646,7 +683,6 @@ setMethod("toString", "MatrixPrintForm", function(x,
   }
   x
 }
-
 
 .inset_div <- function(txt, div, inset) {
   c(.do_inset(div, inset), "", txt)
@@ -820,8 +856,8 @@ wrap_string <- function(str, width, collapse = NULL) {
       broken_char_ori <- sum(nchar(ori_wrapped_txt_v) > width) # how many issues there were
       broken_char_cur <- sum(nchar(cur_wrapped_txt_v) > width) # how many issues there are
 
-      if (setequal(ori_wrapped_txt_v, cur_wrapped_txt_v) ||
-          broken_char_cur >= broken_char_ori) { # we did not solve the current issue!
+      # if still broken, we did not solve the current issue!
+      if (setequal(ori_wrapped_txt_v, cur_wrapped_txt_v) || broken_char_cur >= broken_char_ori) {
         # help function: Very rare case where the recursion is stuck in a loop
         ret_tmp <- force_split_words_by(ret[we_interval], width) # here we_interval is only one ind
         ret <- append(ret, ret_tmp, we_interval)[-we_interval]

@@ -7,6 +7,8 @@
 pag_indices_inner(
   pagdf,
   rlpp,
+  lpp_or_cpp = NA_integer_,
+  context_lpp_or_cpp = NA_integer_,
   min_siblings,
   nosplitin = character(),
   verbose = FALSE,
@@ -22,8 +24,17 @@ either \code{make_rows_df} or \code{make_cols_df}.}
 \item{rlpp}{numeric. Maximum number of \emph{row} lines per page (not including header materials), including
 (re)printed header and context rows}
 
+\item{lpp_or_cpp}{numeric. Total maximum number of \emph{row} lines or content (column-wise characters) per page
+(including header materials and context rows). This is only for informative results with \code{verbose = TRUE}.
+It will print \code{NA} if not specified by the pagination machinery.}
+
+\item{context_lpp_or_cpp}{numeric. Total number of context \emph{row} lines or content (column-wise characters)
+per page (including header materials). Uses \code{NA} if not specified by the pagination machinery and is only
+for informative results with \code{verbose = TRUE}.}
+
 \item{min_siblings}{numeric. Minimum sibling rows which must appear on either side of pagination row for a
-mid-subtable split to be valid. Defaults to 2.}
+mid-subtable split to be valid. Defaults to 2 for tables. It is automatically turned off
+(by using only 0) for listings.}
 
 \item{nosplitin}{character. List of names of sub-tables where page-breaks are not allowed, regardless of other
 considerations. Defaults to none.}

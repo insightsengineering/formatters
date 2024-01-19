@@ -56,7 +56,8 @@ be inverted  for landscape?  Defaults to  \code{FALSE}, ignored when
 bottom, left, top, and right sides of the page.}
 
 \item{min_siblings}{numeric. Minimum sibling rows which must appear on either side of pagination row for a
-mid-subtable split to be valid. Defaults to 2.}
+mid-subtable split to be valid. Defaults to 2 for tables. It is automatically turned off
+(by using only 0) for listings.}
 
 \item{font_family}{character(1). Name of a font family. An error
 will be thrown if the family named is not monospaced. Defaults
