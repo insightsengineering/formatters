@@ -1,4 +1,4 @@
-## formatters 0.5.5.9004
+## formatters 0.5.5.9005
  * Added "N=xx" format and unit test for it.
  * Allow tables with content rows in the end be exported.
  * Removed redundant references to `matrix_print_form` constructor (now only `MatrixPrintForm`).
