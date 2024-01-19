@@ -942,39 +942,39 @@ reconstruct_basic_fnote_list <- function(mf) {
   }
 
   tmp_strmat <- mf_strings(mf)[i_mat, j_mat, drop = FALSE]
-  if (is.null(keycols)) {
-    keycols <- ncol(tmp_strmat) # safenet for when using row = FALSE
-  }
-  empty_keycols <- !nzchar(tmp_strmat[-seq_len(nlh), keycols, drop = FALSE][1, ])
 
-  # Fix for missing labels in key columns (only for rlistings)
-  if (nrow(tmp_strmat) > 1 && # safe check for empty listings
-    .is_listing(mf) && # nolint # only for rlistings
-    any(empty_keycols)) { # only if there are missing keycol labels
-    # find the first non-empty label in the key columns
-    keycols_needed <- mf_strings(mf)[, empty_keycols, drop = FALSE]
-    first_nonempty <- apply(keycols_needed, 2, function(x) {
-      section_ind <- i_mat[-seq_len(nlh)][1]
-      sec_ind_no_header <- seq_len(section_ind)[-seq_len(nlh)]
-      tail(x[sec_ind_no_header][nzchar(x[sec_ind_no_header])], 1)
-    })
+  # Only for listings
+  if (nrow(tmp_strmat) > 0 && .is_listing(mf)) { # safe check for empty listings
 
-    # if there are only "" the previous returns character()
-    any_chr_empty <- if (length(first_nonempty) > 1) {
-      vapply(first_nonempty, length, numeric(1))
-    } else {
-      length(first_nonempty)
+    # Fix for missing labels in key columns (only for rlistings)
+    empty_keycols <- !nzchar(tmp_strmat[-seq_len(nlh), keycols, drop = FALSE][1, ])
+
+    if (any(empty_keycols)) { # only if there are missing keycol labels
+      # find the first non-empty label in the key columns
+      keycols_needed <- mf_strings(mf)[, empty_keycols, drop = FALSE]
+      first_nonempty <- apply(keycols_needed, 2, function(x) {
+        section_ind <- i_mat[-seq_len(nlh)][1]
+        sec_ind_no_header <- seq_len(section_ind)[-seq_len(nlh)]
+        tail(x[sec_ind_no_header][nzchar(x[sec_ind_no_header])], 1)
+      })
+
+      # if there are only "" the previous returns character()
+      any_chr_empty <- if (length(first_nonempty) > 1) {
+        vapply(first_nonempty, length, numeric(1))
+      } else {
+        length(first_nonempty)
+      }
+      if (any(any_chr_empty == 0L)) {
+        warning(
+          "There are empty key columns in the listing. ",
+          "We keep empty strings for each page."
+        )
+        first_nonempty[any_chr_empty == 0L] <- ""
+      }
+
+      # replace the empty labels with the first non-empty label
+      tmp_strmat[nlh + 1, empty_keycols] <- unlist(first_nonempty)
     }
-    if (any(any_chr_empty == 0L)) {
-      warning(
-        "There are empty key columns in the listing. ",
-        "We keep empty strings for each page."
-      )
-      first_nonempty[any_chr_empty == 0L] <- ""
-    }
-
-    # replace the empty labels with the first non-empty label
-    tmp_strmat[nlh + 1, empty_keycols] <- unlist(first_nonempty)
   }
 
   mf_strings(mf) <- tmp_strmat
@@ -1063,7 +1063,7 @@ mpf_subset_rows <- function(mf, i, keycols = NULL) {
 ## they are currently the only place we're tracking
 ## column information that will need to be touched up
 ## but lets be careful and do a bit more anyway
-mpf_subset_cols <- function(mf, j) {
+mpf_subset_cols <- function(mf, j, keycols = NULL) {
   nc <- mf_ncol(mf)
   if (is.logical(j) || all(j < 0)) {
     j <- seq_len(nc)[j]
@@ -1083,7 +1083,7 @@ mpf_subset_cols <- function(mf, j) {
   ## this has to happen before the remap inher
   refdf <- mf_fnote_df(mf)
 
-  mf <- .mf_subset_core_mats(mf, j, row = FALSE)
+  mf <- .mf_subset_core_mats(mf, j, keycols = keycols, row = FALSE)
 
 
   ## future proofing (pipe dreams)
