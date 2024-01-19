@@ -381,12 +381,10 @@ find_pag <- function(pagdf,
                      have_col_fnotes = FALSE,
                      div_height = 1L,
                      do_error = FALSE) {
-  if (row) {
-    if (verbose) {
+  if (verbose) {
+    if (row) {
       message("--------- ROW-WISE: Checking possible pagination for page ", current_page)
-    }
-  } else {
-    if (verbose) {
+    } else {
       message("========= COLUMN-WISE: Checking possible pagination for page ", current_page)
     }
   }
