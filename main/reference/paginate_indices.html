@@ -38,7 +38,7 @@ no valid paginations could be found."><meta property="og:image" content="https:/
     
     <a class="navbar-brand me-2" href="../index.html">formatters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5.9004</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,28 +55,6 @@ no valid paginations could be found."><meta property="og:image" content="https:/
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.4-rc1">v0.5.4-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3-rc2">v0.5.3-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3-rc1">v0.5.3-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.2-rc1">v0.5.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1-rc1">v0.5.1-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0-rc1">v0.5.0-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.5">v0.5.5</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3">v0.5.3</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.2">v0.5.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1">v0.5.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0">v0.5.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.1">v0.4.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.0">v0.4.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.3.3">v0.3.3</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -261,7 +239,8 @@ size). <code>NULL</code> indicates no horizontal pagination should occur.</p></d
 
 <dt>min_siblings</dt>
 <dd><p>numeric. Minimum sibling rows which must appear on either side of pagination row for a
-mid-subtable split to be valid. Defaults to 2.</p></dd>
+mid-subtable split to be valid. Defaults to 2 for tables. It is automatically turned off
+(by using only 0) for listings.</p></dd>
 
 
 <dt>nosplitin</dt>
@@ -1815,35 +1794,40 @@ as this clashes with those systems' capture of messages.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Determining lines required for header content: 0 title and 2 table header lines</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Determining lines required for footer content: 0 lines</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Lines per page available for tables rows: 16 (original: 18)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 16</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... OK [16 lines]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 32</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... OK [16 lines]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --------- ROW-WISE: Checking possible pagination for page 1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 16 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   OK [16 lines]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --------- ROW-WISE: Checking possible pagination for page 2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 17 and 32 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   OK [16 lines]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Adjusted characters per page: 33 [original: 52, table inset: 0, row labels: 19]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after column 11</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 74 chars (11 cols).</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after column 10</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 67 chars (10 cols).</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after column 9</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 60 chars (9 cols).</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after column 8</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 55 chars (8 cols).</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after column 7</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 50 chars (7 cols).</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after column 6</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 42 chars (6 cols).</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after column 5</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 34 chars (5 cols).</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after column 4</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... OK [27 chars]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after column 11</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 47 chars (7 cols).</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after column 10</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 40 chars (6 cols).</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after column 9</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... OK [33 chars]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after column 11</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... OK [14 chars]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ========= COLUMN-WISE: Checking possible pagination for page 1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 11 column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 74 chars (11 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 10 column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 67 chars (10 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 9 column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 60 chars (9 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 8 column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 55 chars (8 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 7 column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 50 chars (7 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 6 column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 42 chars (6 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 5 column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 34 chars (5 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 4 column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   OK [27 chars]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ========= COLUMN-WISE: Checking possible pagination for page 2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 5 and 11 column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 47 chars (7 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 5 and 10 column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 40 chars (6 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 5 and 9 column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   OK [33 chars]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ========= COLUMN-WISE: Checking possible pagination for page 3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 10 and 11 column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   OK [14 chars]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $lpp_diagnostics</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> character(0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1938,119 +1922,165 @@ as this clashes with those systems' capture of messages.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Determining lines required for header content: 0 title and 2 table header lines</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Determining lines required for footer content: 0 lines</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Lines per page available for tables rows: 16 (original: 18)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 16</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 38 lines [raw: 38 lns (16 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 15</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 34 lines [raw: 34 lns (15 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 14</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 31 lines [raw: 31 lns (14 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 13</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 29 lines [raw: 29 lns (13 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 12</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 27 lines [raw: 27 lns (12 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 11</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 25 lines [raw: 25 lns (11 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 10</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 23 lines [raw: 23 lns (10 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 9</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 21 lines [raw: 21 lns (9 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 8</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 19 lines [raw: 19 lns (8 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 7</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 17 lines [raw: 17 lns (7 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 6</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... OK [15 lines]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 22</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 38 lines [raw: 38 lns (16 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 21</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 35 lines [raw: 35 lns (15 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 20</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 33 lines [raw: 33 lns (14 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 19</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 30 lines [raw: 30 lns (13 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 18</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 28 lines [raw: 28 lns (12 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 17</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 26 lines [raw: 26 lns (11 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 16</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 23 lines [raw: 23 lns (10 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 15</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 19 lines [raw: 19 lns (9 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 14</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... OK [16 lines]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 30</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 41 lines [raw: 41 lns (16 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 29</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 39 lines [raw: 39 lns (15 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 28</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 36 lines [raw: 36 lns (14 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 27</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 34 lines [raw: 34 lns (13 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 26</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 31 lines [raw: 31 lns (12 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 25</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 29 lines [raw: 29 lns (11 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 24</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 26 lines [raw: 26 lns (10 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 23</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 24 lines [raw: 24 lns (9 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 22</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 22 lines [raw: 22 lns (8 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 21</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 19 lines [raw: 19 lns (7 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 20</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 17 lines [raw: 17 lns (6 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 19</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... OK [14 lines]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 32</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 32 lines [raw: 32 lns (13 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 31</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 30 lines [raw: 30 lns (12 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 30</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 27 lines [raw: 27 lns (11 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 29</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 25 lines [raw: 25 lns (10 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 28</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 22 lines [raw: 22 lns (9 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 27</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 20 lines [raw: 20 lns (8 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 26</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 17 lines [raw: 17 lns (7 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 25</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... OK [15 lines]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 32</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 17 lines [raw: 17 lns (7 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0)  sect. divs: 0 lns].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 31</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: last row had only 0 following siblings, needed 2</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 30</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: last row had only 1 following siblings, needed 2</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 29</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... OK [10 lines]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 32</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... OK [7 lines]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --------- ROW-WISE: Checking possible pagination for page 1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 16 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 38 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 38 lns (16 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 15 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 34 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 34 lns (15 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 14 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 31 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 31 lns (14 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 13 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 29 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 29 lns (13 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 12 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 27 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 27 lns (12 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 11 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 25 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 25 lns (11 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 10 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 23 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 23 lns (10 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 9 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 21 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 21 lns (9 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 8 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 19 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 19 lns (8 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 7 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 17 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 17 lns (7 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 6 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   OK [15 lines]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --------- ROW-WISE: Checking possible pagination for page 2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 7 and 22 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 38 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 38 lns (16 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 7 and 21 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 35 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 35 lns (15 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 7 and 20 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 33 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 33 lns (14 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 7 and 19 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 30 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 30 lns (13 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 7 and 18 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 28 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 28 lns (12 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 7 and 17 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 26 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 26 lns (11 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 7 and 16 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 23 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 23 lns (10 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 7 and 15 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 19 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 19 lns (9 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 7 and 14 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   OK [16 lines]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --------- ROW-WISE: Checking possible pagination for page 3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 15 and 30 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 41 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 41 lns (16 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 15 and 29 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 39 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 39 lns (15 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 15 and 28 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 36 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 36 lns (14 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 15 and 27 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 34 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 34 lns (13 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 15 and 26 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 31 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 31 lns (12 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 15 and 25 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 29 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 29 lns (11 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 15 and 24 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 26 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 26 lns (10 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 15 and 23 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 24 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 24 lns (9 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 15 and 22 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 22 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 22 lns (8 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 15 and 21 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 19 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 19 lns (7 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 15 and 20 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 17 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 17 lns (6 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 15 and 19 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   OK [14 lines]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --------- ROW-WISE: Checking possible pagination for page 4</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 20 and 32 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 32 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 32 lns (13 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 20 and 31 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 30 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 30 lns (12 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 20 and 30 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 27 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 27 lns (11 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 20 and 29 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 25 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 25 lns (10 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 20 and 28 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 22 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 22 lns (9 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 20 and 27 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 20 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 20 lns (8 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 20 and 26 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 17 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 17 lns (7 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 20 and 25 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   OK [15 lines]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --------- ROW-WISE: Checking possible pagination for page 5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 26 and 32 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: rows selected for pagination require 17 lines while only 16 are available from lpp = 18 and 2 header/footers lines.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 17 lns (7 rws), rep. context: 0 lns (0 rws), refs: 0 lns (0) sect. divs: 0 lns].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 26 and 31 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: last row had only 0 following siblings, needed 2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 26 and 30 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: last row had only 1 following siblings, needed 2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 26 and 29 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   OK [10 lines]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --------- ROW-WISE: Checking possible pagination for page 6</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 30 and 32 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   OK [7 lines]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Adjusted characters per page: 46 [original: 52, table inset: 0, row labels: 6]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after column 11</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 74 chars (11 cols).</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after column 10</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 67 chars (10 cols).</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after column 9</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 60 chars (9 cols).</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after column 8</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 55 chars (8 cols).</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after column 7</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... FAIL: requires 50 chars (7 cols).</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after column 6</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... OK [42 chars]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after column 11</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... OK [32 chars]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ========= COLUMN-WISE: Checking possible pagination for page 1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 11 column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 74 chars (11 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 10 column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 67 chars (10 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 9 column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 60 chars (9 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 8 column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 55 chars (8 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 7 column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 50 chars (7 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 6 column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   OK [42 chars]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ========= COLUMN-WISE: Checking possible pagination for page 2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 7 and 11 column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   OK [32 chars]</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">diagnose_pagination</span><span class="op">(</span><span class="va">mpf</span>, pg_width <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="co"># fails</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Determining lines required for header content: 0 title and 2 table header lines</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Determining lines required for footer content: 0 lines</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Lines per page available for tables rows: 88 (original: 90)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking pagination after row 32</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	....................... OK [32 lines]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --------- ROW-WISE: Checking possible pagination for page 1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 32 row</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   OK [32 lines]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Adjusted characters per page: -27 [original: -8, table inset: 0, row labels: 19]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in pag_indices_inner(mf_cinfo(mf), rlpp = rcpp, verbose = verbose,  : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in pag_indices_inner(mf_cinfo(mf), rlpp = rcpp, lpp_or_cpp = cpp,  : </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Width of row labels equal to or larger than specified characters per page.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in diagnose_pagination(mpf, pg_width = 1) : </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Width of row labels equal to or larger than specified characters per page.</span>
