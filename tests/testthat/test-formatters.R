@@ -325,6 +325,11 @@ test_that("formats work", {
     "-"
   )
 
+  expect_identical(
+    format_value(c(1, NA), "xx"),
+    c("1", "NA")
+  )
+
   ## trailing 0s are correct
   expect_identical(format_value(0, "xx."), "0")
   expect_identical(format_value(0, "xx.x"), "0.0")
