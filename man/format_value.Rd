@@ -13,8 +13,8 @@ format_value(x, format = NULL, output = c("ascii", "html"), na_str = "NA")
 
 \item{output}{character(1). output type}
 
-\item{na_str}{character(1). String that should be displayed when the value of \code{x} is missing.
-Defaults to \code{"NA"}.}
+\item{na_str}{character. String that should be displayed when the value of \code{x} is missing. Defaults to \code{"NA"}.
+If \code{x} is a vector, \code{na_str} can also be a vector with each element corresponding to one missing value of \code{x}.}
 }
 \value{
 formatted text representing the cell \code{x}.

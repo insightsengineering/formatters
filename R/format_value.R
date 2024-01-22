@@ -242,8 +242,8 @@ sep_2d_helper <- function(x, dig1, dig2, sep, na_str, wrap = NULL) {
 #'
 #' @param x ANY. The value to be formatted
 #' @param format character(1) or function. The format label (string) or `formatter` function to apply to \code{x}.
-#' @param na_str character(1). String that should be displayed when the value of \code{x} is missing.
-#'   Defaults to \code{"NA"}.
+#' @param na_str character. String that should be displayed when the value of `x` is missing. Defaults to `"NA"`.
+#'   If `x` is a vector, `na_str` can also be a vector with each element corresponding to one missing value of `x`.
 #' @param output character(1). output type
 #'
 #' @return formatted text representing the cell \code{x}.
@@ -272,10 +272,17 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
   if (any(is.na(na_str))) {
     na_str[is.na(na_str)] <- "NA"
   }
+
+  if (length(na_str) != 1 && length(na_str) != sum(is.na(x))) {
+    stop(
+      "`na_str` must be either a single value (to replace all missing values)",
+      "or a vector with each element corresponding to one missing value."
+    )
+  }
   ## format <- if (!missing(format)) format else obj_format(x)
 
 
-  txt <- if (all(is.na(x)) && length(na_str) == 1L) {
+  txt <- if (all(is.na(x)) && (length(na_str) == 1L || length(na_str) == length(x))) {
     na_str
   } else if (is.null(format)) {
     toString(x)
