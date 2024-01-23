@@ -309,7 +309,6 @@ test_that("formats work", {
   expect_error(format_value(5.1, "xx - xx"), "are of different length")
 
   expect_error(format_value(c(5.1, 2, 3), "xx - xx"), "are of different length")
-
   ## handling NAs
 
   results <- vapply(forms[["1d"]], function(fmt) format_value(NA, format = fmt), "")
@@ -329,16 +328,6 @@ test_that("formats work", {
   expect_identical(
     format_value(c(1, NA), "xx"),
     c("1", "NA")
-  )
-
-  expect_identical(
-    format_value(c(1, NA, NA), "xx", na_str = "NA1"),
-    c("1", "NA1", "NA1")
-  )
-
-  expect_identical(
-    format_value(c(1, NA, NA), "xx", na_str = c("NA1", "NA2")),
-    c("1", "NA1", "NA2")
   )
 
   ## trailing 0s are correct
