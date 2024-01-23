@@ -8,6 +8,7 @@
  * Removed the possibility to set `min_siblings > 0` when dealing with listings. This allows smooth pagination when having only 2 lines.
  * Added error catch for `\r` recursive special character.
  * Fixed mismatch between pagination and exports regarding the value assigned to parameter `max_width`. Introduced general handler `.handle_max_width` for pagination, exports, and `toString`.
+ * Fixed bug in `format_value` causing a warning for vectors containing both NA and non-NA values.
 
 ## formatters 0.5.5
  * Applied `styler` and resolved package lint. Changed default indentation from 4 spaces to 2.

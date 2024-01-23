@@ -300,8 +300,8 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
         format, " are of different length"
       )
     }
-    if (length(na_str) < length(x)) {
-      na_str <- rep(na_str, length.out = length(x))
+    if (length(na_str) < sum(is.na(x))) {
+      na_str <- rep(na_str, length.out = sum(is.na(x)))
     }
     switch(format,
       "xx" = as.character(x),
