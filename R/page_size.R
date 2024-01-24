@@ -90,10 +90,10 @@ page_dim <- function(page_type) {
 #' @keywords internal
 #'
 #' @examples
+#' font_lcpi <- getFromNamespace("font_lcpi", "formatters")
+#'
 #' font_lcpi()
-#'
 #' font_lcpi(font_size = 8)
-#'
 #' font_lcpi(font_size = 8, lineheight = 1.1)
 font_lcpi <- function(font_family = "Courier", font_size = 8, lineheight = 1) {
   tmppdf <- tempfile(fileext = ".pdf")
