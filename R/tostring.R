@@ -1000,7 +1000,6 @@ expand_mat_rows <- function(mat, row_nlines = apply(mat, 1, nlines), expfun = pa
 #' Currently no  checking or  enforcement is done  that the  vector of
 #' spans is valid in the sense described in the Details section above.
 #' @examples
-#'
 #' spans_to_viscell(c(2, 2, 2, 2, 1, 3, 3, 3))
 #' @return a logical vector the same length as `spans` indicating
 #' whether the contents of a string vector with those spans
@@ -1120,20 +1119,19 @@ propose_column_widths <- function(x, indent_size = 2) {
 #'     use. Defaults to `center`. Must be `center`, `right`, `left`,
 #'     `dec_right`, `dec_left` or `decimal`.
 #'
+#' @return `x`, padded to be a string of `n` characters
+#'
 #' @export
 #' @examples
-#'
 #' padstr("abc", 3)
 #' padstr("abc", 4)
 #' padstr("abc", 5)
 #' padstr("abc", 5, "left")
 #' padstr("abc", 5, "right")
 #'
-#' if (interactive()) {
+#' \dontrun{
 #'   padstr("abc", 1)
 #' }
-#' @return `x`, padded to be a string of `n` characters
-#'
 padstr <- function(x, n, just = list_valid_aligns()) {
   just <- match.arg(just)
 
