@@ -16,7 +16,8 @@ Description: We provide a framework for rendering complex tables to ASCII,
     and a set of formatters for transforming values or sets of values into
     ASCII-ready display strings.
 License: Apache License 2.0
-URL: https://github.com/insightsengineering/formatters
+URL: https://insightsengineering.github.io/formatters/,
+    https://github.com/insightsengineering/formatters/
 BugReports: https://github.com/insightsengineering/formatters/issues
 Depends:
     methods,
