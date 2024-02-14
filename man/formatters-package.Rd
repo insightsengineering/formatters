@@ -11,7 +11,8 @@ Package to format tables and listings in a flexible way.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/insightsengineering/formatters}
+  \item \url{https://insightsengineering.github.io/formatters/}
+  \item \url{https://github.com/insightsengineering/formatters/}
   \item Report bugs at \url{https://github.com/insightsengineering/formatters/issues}
 }
 
