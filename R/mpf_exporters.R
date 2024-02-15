@@ -88,6 +88,16 @@ export_as_txt <- function(x,
     mf_col_widths(mf) <- colwidths %||% propose_column_widths(mf)
     pages <- list(mf)
   }
+
+  # Needs to be here because of adding cpp if it is not "auto"
+  if (!is.character(max_width)) {
+    max_width <- .handle_max_width(
+      tf_wrap = tf_wrap,
+      max_width = max_width,
+      cpp = cpp
+    )
+  }
+
   ## we dont' set widths here because we already but that info on mpf
   ## so its on each of the pages.
   strings <- vapply(
@@ -609,6 +619,15 @@ export_as_pdf <- function(x,
     mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size)
     mf_col_widths(mf) <- colwidths %||% propose_column_widths(mf)
     tbls <- list(mf)
+  }
+
+  # Needs to be here because of adding cpp if it is not "auto"
+  if (!is.character(max_width)) {
+    max_width <- .handle_max_width(
+      tf_wrap = tf_wrap,
+      max_width = max_width,
+      cpp = cpp
+    )
   }
 
   gtbls <- lapply(tbls, function(txt) {

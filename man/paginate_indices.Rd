@@ -119,7 +119,8 @@ this is calculated automatically based on the specified page
 size). \code{NULL} indicates no horizontal pagination should occur.}
 
 \item{min_siblings}{numeric. Minimum sibling rows which must appear on either side of pagination row for a
-mid-subtable split to be valid. Defaults to 2.}
+mid-subtable split to be valid. Defaults to 2 for tables. It is automatically turned off
+(by using only 0) for listings.}
 
 \item{nosplitin}{character. List of names of sub-tables where page-breaks are not allowed, regardless of other
 considerations. Defaults to none.}

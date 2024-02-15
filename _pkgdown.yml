@@ -48,7 +48,7 @@ reference:
   - title: MatrixPrintForm
     desc: MatrixPrintForm class and constructor
     contents:
-      - matrix_print_form
+      - MatrixPrintForm
       - MatrixPrintForm-class
   - title: ASCII Rendering of MatrixPrintForm objects
     desc: ASCII rendering-related functions which operate on MatrixPrintForm objects

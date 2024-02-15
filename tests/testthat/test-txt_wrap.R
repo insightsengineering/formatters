@@ -51,14 +51,13 @@ test_that("tf_wordwrap and table inset work (including together)", {
   )
 })
 
-test_that("toString() throws a warning when newline is in string", {
+test_that("toString() is silent when newline is in decorations (footnotes, titles) as matrix_form constructor expands all newlines", {
   bmf <- basic_matrix_form(iris)
   main_title(bmf) <- "some\nvery\nspacious\ntitle"
   prov_footer(bmf) <- "some\nvery\nspacious\nfooter"
   bmf$ref_footnotes <- "some\nvery\nspacious\nreference"
   expect_silent(toString(bmf, tf_wrap = FALSE))
-  expect_warning(expect_error(toString(bmf, tf_wrap = TRUE), "in a string that was meant to be wrapped"))
-  # xxx the warning will go away as it is not necessary once \\n will be added
+  expect_silent(toString(bmf, tf_wrap = TRUE))
 })
 
 test_that("works with words that are too big (no warning)", {
@@ -301,4 +300,29 @@ test_that("toString and wrapping cooperates well with separator divisors", {
   sec_seps_df <- mf_rinfo(bmf)[, c("abs_rownumber", "trailing_sep"), drop = FALSE]
   mf_rinfo(bmf)$trailing_sep[c(1, 3, 4)] <- " "
   expect_silent(toString(bmf, widths = c(4, 4, 4)))
+})
+
+test_that("max_width is handled correctly as expected", {
+  tmp_width <- getOption("width")
+  options("width" = 150)
+  expect_equal(.handle_max_width(tf_wrap = TRUE, max_width = NULL), 150)
+  options("width" = tmp_width)
+  expect_null(.handle_max_width(FALSE, NULL))
+  suppressMessages(
+    expect_warning(
+      expect_null(.handle_max_width(FALSE, "asd"))
+    )
+  )
+  expect_equal(.handle_max_width(tf_wrap = TRUE, max_width = 100), 100)
+  expect_equal(.handle_max_width(tf_wrap = TRUE, max_width = 100, cpp = 150), 100)
+  suppressMessages(
+    expect_error(.handle_max_width(tf_wrap = TRUE, max_width = "no"))
+  )
+  suppressMessages(
+    expect_error(.handle_max_width(tf_wrap = TRUE, max_width = "auto"))
+  )
+  expect_equal(.handle_max_width(
+    tf_wrap = TRUE, max_width = "auto",
+    inset = 1, colwidths = c(10, 20, 30), col_gap = 2
+  ), 65)
 })

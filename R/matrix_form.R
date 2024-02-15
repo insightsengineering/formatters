@@ -21,7 +21,7 @@ mform_handle_newlines <- function(matform) {
   nl_inds_header <- seq(1, mf_nlheader(matform))
   hdr_inds <- 1:nr_header
 
-  # hack that is necessary only if bottom aligned
+  # hack that is necessary only if top-left is bottom aligned (default)
   topleft_has_nl_char <- FALSE
   if (has_topleft) {
     tl <- strmat[nl_inds_header, 1, drop = TRUE]
@@ -43,6 +43,7 @@ mform_handle_newlines <- function(matform) {
   # nlines detects if there is a newline character
   row_nlines <- apply(strmat, 1, function(x) max(vapply(x, nlines, 1L), 1L))
 
+  # Correction for the case where there are more lines for topleft material than for cols
   if (has_topleft && (sum(row_nlines[nl_inds_header]) < how_many_nl)) {
     row_nlines[1] <- row_nlines[1] + how_many_nl - sum(row_nlines[nl_inds_header])
   }
@@ -92,7 +93,32 @@ mform_handle_newlines <- function(matform) {
     mf_lgrouping(matform) <- rep(line_grouping, times = row_nlines)
   }
 
+  # Solve \n in titles
+  if (any(grepl("\n", all_titles(matform)))) {
+    if (any(grepl("\n", main_title(matform)))) {
+      tmp_title_vec <- .quick_handle_nl(main_title(matform))
+      main_title(matform) <- tmp_title_vec[1]
+      subtitles(matform) <- c(tmp_title_vec[-1], .quick_handle_nl(subtitles(matform)))
+    } else {
+      subtitles(matform) <- .quick_handle_nl(subtitles(matform))
+    }
+  }
+
+  # Solve \n in footers
+  main_footer(matform) <- .quick_handle_nl(main_footer(matform))
+  prov_footer(matform) <- .quick_handle_nl(prov_footer(matform))
+
+  # xxx \n in page titles are not working atm (I think)
+
   matform
+}
+
+.quick_handle_nl <- function(str_v) {
+  if (any(grepl("\n", str_v))) {
+    return(unlist(strsplit(str_v, "\n", fixed = TRUE)))
+  } else {
+    return(str_v)
+  }
 }
 
 # Helper function to recompact the lines following line groupings to then have them expanded again
@@ -208,7 +234,6 @@ disp_from_spans <- function(spans) {
 #'     if non-NULL, must have length equal to `ncol(strings)`
 #' @param indent_size numeric(1). Number of spaces to be used per level of indent (if supported by
 #' the relevant method). Defaults to 2.
-#' @export
 #' @return An object of class `MatrixPrintForm`. Currently this is
 #' implemented as an S3 class inheriting from list with the following
 #' elements:
@@ -241,6 +266,11 @@ disp_from_spans <- function(spans) {
 #' \item{\code{ncols}}{number of columns \emph{of the table}, not including
 #' any row names/row labels}
 #' }
+#'
+#' @examples
+#' basic_matrix_form(iris) # calls matrix_form that calls this constructor
+#'
+#' @export
 MatrixPrintForm <- function(strings = NULL,
                             spans,
                             aligns,
@@ -437,13 +467,6 @@ mform_build_refdf <- function(mform) {
 
 
 
-
-
-
-## constructor with snake_case naming convention
-#' @rdname MatrixPrintForm
-#' @export
-matrix_print_form <- MatrixPrintForm
 
 
 ## hide the implementation behind abstraction in case we decide we want a real class someday
@@ -871,7 +894,7 @@ basic_matrix_form <- function(df, parent_path = "root") {
     )
   )
 
-  ret <- matrix_print_form(
+  ret <- MatrixPrintForm(
     strings = strings,
     aligns = aligns,
     spans = matrix(1, nrow = fnr, ncol = fnc),
@@ -901,14 +924,14 @@ reconstruct_basic_fnote_list <- function(mf) {
   paste0("{", refdf$symbol, "} - ", refdf$msg)
 }
 
-.mf_subset_core_mats <- function(mf, i, row = TRUE) {
+.mf_subset_core_mats <- function(mf, i, keycols = NULL, row = TRUE) {
   fillnum <- if (row) nrow(mf_strings(mf)) - mf_nlheader(mf) else mf_ncol(mf)
   if (is.logical(i) || all(i < 0)) {
     i <- seq_len(fillnum)[i]
   }
+  nlh <- mf_nlheader(mf)
 
   if (row) {
-    nlh <- mf_nlheader(mf)
     ncolrows <- mf_nrheader(mf)
     i_mat <- c(seq_len(nlh), which(mf_lgrouping(mf) %in% (i + ncolrows)))
     j_mat <- seq_len(ncol(mf_strings(mf)))
@@ -918,9 +941,46 @@ reconstruct_basic_fnote_list <- function(mf) {
     j_mat <- c(seq_len(nlabcol), i + nlabcol)
   }
 
+  tmp_strmat <- mf_strings(mf)[i_mat, j_mat, drop = FALSE]
 
-  mf_strings(mf) <- mf_strings(mf)[i_mat, j_mat, drop = FALSE]
+  # Only for listings
+  if (nrow(tmp_strmat) > 0 && .is_listing(mf)) { # safe check for empty listings
+
+    # Fix for missing labels in key columns (only for rlistings)
+    empty_keycols <- !nzchar(tmp_strmat[-seq_len(nlh), keycols, drop = FALSE][1, ])
+
+    if (any(empty_keycols)) { # only if there are missing keycol labels
+      # find the first non-empty label in the key columns
+      keycols_needed <- mf_strings(mf)[, empty_keycols, drop = FALSE]
+      first_nonempty <- apply(keycols_needed, 2, function(x) {
+        section_ind <- i_mat[-seq_len(nlh)][1]
+        sec_ind_no_header <- seq_len(section_ind)[-seq_len(nlh)]
+        tail(x[sec_ind_no_header][nzchar(x[sec_ind_no_header])], 1)
+      })
+
+      # if there are only "" the previous returns character()
+      any_chr_empty <- if (length(first_nonempty) > 1) {
+        vapply(first_nonempty, length, numeric(1))
+      } else {
+        length(first_nonempty)
+      }
+      if (any(any_chr_empty == 0L)) {
+        warning(
+          "There are empty key columns in the listing. ",
+          "We keep empty strings for each page."
+        )
+        first_nonempty[any_chr_empty == 0L] <- ""
+      }
+
+      # replace the empty labels with the first non-empty label
+      tmp_strmat[nlh + 1, empty_keycols] <- unlist(first_nonempty)
+    }
+  }
+
+  mf_strings(mf) <- tmp_strmat
+
   mf_lgrouping(mf) <- as.integer(as.factor(mf_lgrouping(mf)[i_mat]))
+
   if (!row) {
     newspans <- truncate_spans(mf_spans(mf), j_mat) # 'i' is the columns here, b/c row is FALSE
   } else {
@@ -962,7 +1022,7 @@ truncate_spans <- function(spans, j) {
 }
 
 
-mpf_subset_rows <- function(mf, i) {
+mpf_subset_rows <- function(mf, i, keycols = NULL) {
   nlh <- mf_nlheader(mf)
   lgrps <- mf_lgrouping(mf)
   row_lgrps <- tail(lgrps, -1 * nlh)
@@ -970,7 +1030,7 @@ mpf_subset_rows <- function(mf, i) {
   ncolrows <- length(unique(lgrps[seq_len(nlh)]))
 
   ncs <- mf_ncol(mf)
-  mf <- .mf_subset_core_mats(mf, i, row = TRUE)
+  mf <- .mf_subset_core_mats(mf, i, keycols = keycols, row = TRUE)
   map <- data.frame(
     old_idx = c(seq_len(ncolrows), i + ncolrows),
     new_idx = c(seq_len(ncolrows), ncolrows + order(i))
@@ -1003,7 +1063,7 @@ mpf_subset_rows <- function(mf, i) {
 ## they are currently the only place we're tracking
 ## column information that will need to be touched up
 ## but lets be careful and do a bit more anyway
-mpf_subset_cols <- function(mf, j) {
+mpf_subset_cols <- function(mf, j, keycols = NULL) {
   nc <- mf_ncol(mf)
   if (is.logical(j) || all(j < 0)) {
     j <- seq_len(nc)[j]
@@ -1023,7 +1083,7 @@ mpf_subset_cols <- function(mf, j) {
   ## this has to happen before the remap inher
   refdf <- mf_fnote_df(mf)
 
-  mf <- .mf_subset_core_mats(mf, j, row = FALSE)
+  mf <- .mf_subset_core_mats(mf, j, keycols = keycols, row = FALSE)
 
 
   ## future proofing (pipe dreams)
