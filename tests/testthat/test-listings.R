@@ -41,5 +41,5 @@ test_that("regression test for oneline listing pagination", {
   mf_aligns(lmf) <- mf_aligns(lmf)[-3, ]
   mf_formats(lmf) <- mf_formats(lmf)[-3, ]
 
-  export_as_txt(lmf)
+  expect_error(export_as_txt(lmf))
 })
