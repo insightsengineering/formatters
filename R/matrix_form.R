@@ -832,19 +832,21 @@ mf_has_rlabels <- function(mf) ncol(mf$strings) > mf_ncol(mf)
 
 #' Create spoof matrix form from a data.frame
 #'
-#' This is  useful primarily  for writing  testing/examples, and as a
-#' starting point for more sophisticated custom `matrix_form` methods
+#' @description Useful functions for writing testing/examples, and as a
+#'   starting point for more sophisticated custom `matrix_form` methods.
 #'
 #' @param df data.frame
 #' @param parent_path character. parent path that all rows should be "children of",
-#' defaults to `"root"`, and generally should not matter to end users.
+#'   defaults to `"root"`, and generally should not matter to end users.
 #'
 #' @return A valid `MatrixPrintForm` object representing `df`,
-#' ready for ASCII rendering
+#'   ready for ASCII rendering
 #'
 #' @examples
 #' mform <- basic_matrix_form(mtcars)
 #' cat(toString(mform))
+#'
+#' @name test_matrix_form
 #' @export
 basic_matrix_form <- function(df, parent_path = "root") {
   fmts <- lapply(df, function(x) if (is.null(obj_format(x))) "xx" else obj_format(x))
@@ -906,6 +908,82 @@ basic_matrix_form <- function(df, parent_path = "root") {
     has_rowlabs = TRUE
   )
   mform_build_refdf(ret)
+}
+
+#' Create spoof matrix form from a data.frame
+#'
+#' @describeIn test_matrix_form Create a `MatrixPrintForm` object from a data.frame `df` that
+#'   respects the default formats for a listing object.
+#'
+#' @param keycols character. Vector of `df` column names that are printed first and
+#'   repeated values are assigned to `""`. This format is characteristic of a listing matrix form.
+#'
+#' @return A valid `MatrixPrintForm` object representing `df` as a listing,
+#'   ready for ASCII rendering.
+#'
+#' @examples
+#' mform <- basic_listing_mf(mtcars)
+#' cat(toString(mform))
+#'
+#' @export
+basic_listing_mf <- function(df = mtcars, keycols = c("vs", "gear")) {
+  checkmate::assert_subset(keycols, colnames(df))
+
+  dfmf <- basic_matrix_form(df)
+
+  # Modifications needed for making it a listings
+  mf_strings(dfmf)[1, ] <- colnames(mf_strings(dfmf)) # set colnames
+  str_dfmf <- mf_strings(dfmf)[-1, ]
+  # Ordering
+  ord <- do.call(
+    order,
+    as.list(
+      data.frame(
+        str_dfmf[, keycols]
+      )
+    )
+  )
+  str_dfmf <- str_dfmf[ord, ]
+  # Making keycols with empties
+  curkey <- ""
+  for (i in seq_along(keycols)) {
+    kcol <- keycols[i]
+    kcolvec <- str_dfmf[, kcol] # -1 is col label row
+    str_dfmf[, kcol] <- ""
+    kcolvec <- vapply(kcolvec, format_value, "", format = NULL, na_str = "NA")
+    curkey <- paste0(curkey, kcolvec)
+    disp <- c(TRUE, tail(curkey, -1) != head(curkey, -1))
+    str_dfmf[disp, kcol] <- kcolvec[disp]
+  }
+  mf_strings(dfmf)[-1, ] <- str_dfmf
+  # keycols as first
+  mf_strings(dfmf) <- cbind(
+    mf_strings(dfmf)[, keycols],
+    mf_strings(dfmf)[, !colnames(mf_strings(dfmf)) %in% keycols]
+  )
+
+  dfmf$aligns[seq(2, nrow(dfmf$aligns)), ] <- "center" # the default for listings
+
+  dfmf$formats[] <- 1 # the default for listings is numeric??
+
+  # row info
+  ri <- dfmf$row_info
+  rownames(ri) <- ri$abs_rownumber
+  ri$label <- ri$name <- ""
+  ri$path <- as.list(NA_character_) # same format of listings
+  ri$node_class <- "listing_df"
+  # l_ri$pos_in_siblings # why is it like this in rlistings?? also n_siblings
+  dfmf$row_info <- ri
+
+  # colwidths need to be sorted too!!
+  dfmf$col_widths <- dfmf$col_widths[colnames(mf_strings(dfmf))]
+
+  main_title(dfmf) <- "main title"
+  main_footer(dfmf) <- c("main", "  footer")
+  prov_footer(dfmf) <- "prov footer"
+  subtitles(dfmf) <- c("sub", "titles")
+
+  dfmf
 }
 
 

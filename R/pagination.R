@@ -620,7 +620,7 @@ mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf)) {
 #' Basic/spoof pagination info dataframe
 #'
 #' Returns a minimal pagination info data.frame (with no sibling/footnote/etc info).
-#' @inheritParams basic_matrix_form
+#' @inheritParams test_matrix_form
 #' @param rnames character. Vector of row names
 #' @param labs character. Vector of row labels (defaults to names)
 #' @param rnums integer. Vector of row numbers. Defaults to `seq_along(rnames)`.
