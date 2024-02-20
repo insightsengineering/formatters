@@ -6,9 +6,19 @@
 \alias{basic_listing_mf}
 \title{Create spoof matrix form from a data.frame}
 \usage{
-basic_matrix_form(df, parent_path = "root")
+basic_matrix_form(
+  df,
+  parent_path = "root",
+  ignore_rownames = FALSE,
+  add_decoration = FALSE
+)
 
-basic_listing_mf(df = mtcars, keycols = c("vs", "gear"))
+basic_listing_mf(
+  df = mtcars,
+  keycols = c("vs", "gear"),
+  ignore_rownames = FALSE,
+  add_decoration = TRUE
+)
 }
 \arguments{
 \item{df}{data.frame}
@@ -16,8 +26,14 @@ basic_listing_mf(df = mtcars, keycols = c("vs", "gear"))
 \item{parent_path}{character. parent path that all rows should be "children of",
 defaults to \code{"root"}, and generally should not matter to end users.}
 
+\item{ignore_rownames}{logical. If \code{TRUE}, rownames are ignored.}
+
+\item{add_decoration}{logical. If \code{TRUE}, adds title and footers decorations to the
+matrix form.}
+
 \item{keycols}{character. Vector of \code{df} column names that are printed first and
-repeated values are assigned to \code{""}. This format is characteristic of a listing matrix form.}
+repeated values are assigned to \code{""}. This format is characteristic of a listing matrix form.
+When \code{NULL}, no key columns are used.}
 }
 \value{
 A valid \code{MatrixPrintForm} object representing \code{df},

@@ -991,7 +991,7 @@ paginate_indices <- function(obj,
   #                 in the above call, so we need to keep this information in mf_rinfo
   #                 and use it here.
   mfri <- mf_rinfo(mpf)
-  if (NROW(mfri) > 0 && .is_listing(mpf)) {
+  if (NROW(mfri) > 1 && .is_listing(mpf) && length(.keycols_from_listing(obj)) > 0) {
     # Lets determine the groupings created by keycols
     keycols_grouping_df <- NULL
     keycols <- .keycols_from_listing(obj)

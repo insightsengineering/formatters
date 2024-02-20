@@ -838,6 +838,9 @@ mf_has_rlabels <- function(mf) ncol(mf$strings) > mf_ncol(mf)
 #' @param df data.frame
 #' @param parent_path character. parent path that all rows should be "children of",
 #'   defaults to `"root"`, and generally should not matter to end users.
+#' @param ignore_rownames logical. If `TRUE`, rownames are ignored.
+#' @param add_decoration logical. If `TRUE`, adds title and footers decorations to the
+#'   matrix form.
 #'
 #' @return A valid `MatrixPrintForm` object representing `df`,
 #'   ready for ASCII rendering
@@ -848,24 +851,33 @@ mf_has_rlabels <- function(mf) ncol(mf$strings) > mf_ncol(mf)
 #'
 #' @name test_matrix_form
 #' @export
-basic_matrix_form <- function(df, parent_path = "root") {
+basic_matrix_form <- function(df, parent_path = "root", ignore_rownames = FALSE,
+                              add_decoration = FALSE) {
+  checkmate::assert_data_frame(df)
+  checkmate::assert_character(parent_path)
+  checkmate::assert_flag(ignore_rownames)
+  checkmate::assert_flag(add_decoration)
+
   fmts <- lapply(df, function(x) if (is.null(obj_format(x))) "xx" else obj_format(x))
 
   bodystrs <- mapply(function(x, fmt) {
     sapply(x, format_value, format = fmt)
   }, x = df, fmt = fmts)
 
-  rnms <- row.names(df)
-  if (is.null(rnms)) {
-    rnms <- as.character(seq_len(NROW(df)))
+  if (!ignore_rownames) {
+    rnms <- row.names(df)
+    if (is.null(rnms)) {
+      rnms <- as.character(seq_len(NROW(df)))
+    }
   }
 
   cnms <- names(df)
 
-  strings <- rbind(
-    c("", cnms),
-    cbind(rnms, bodystrs)
-  )
+  strings <- rbind(cnms, bodystrs)
+  rownames(strings) <- NULL
+  if (!ignore_rownames) {
+    strings <- cbind(c("", rnms), strings)
+  }
 
   fnr <- nrow(strings)
   fnc <- ncol(strings)
@@ -888,13 +900,11 @@ basic_matrix_form <- function(df, parent_path = "root") {
     extents = exts,
     parent_path = parent_path
   )
-  formats <- cbind(
-    "",
-    rbind(
-      "",
-      matrix("xx", nrow = nrow(df), ncol = ncol(df))
-    )
-  )
+
+  formats <- rbind("", matrix("xx", nrow = nrow(df), ncol = ncol(df)))
+  if (!ignore_rownames) {
+    formats <- cbind("", formats)
+  }
 
   ret <- MatrixPrintForm(
     strings = strings,
@@ -907,7 +917,16 @@ basic_matrix_form <- function(df, parent_path = "root") {
     nrow_header = 1,
     has_rowlabs = TRUE
   )
-  mform_build_refdf(ret)
+  ret <- mform_build_refdf(ret)
+
+  if (add_decoration) {
+    main_title(ret) <- "main title"
+    main_footer(ret) <- c("main", "  footer")
+    prov_footer(ret) <- "prov footer"
+    subtitles(ret) <- c("sub", "titles")
+  }
+
+  ret
 }
 
 #' Create spoof matrix form from a data.frame
@@ -917,6 +936,7 @@ basic_matrix_form <- function(df, parent_path = "root") {
 #'
 #' @param keycols character. Vector of `df` column names that are printed first and
 #'   repeated values are assigned to `""`. This format is characteristic of a listing matrix form.
+#'   When `NULL`, no key columns are used.
 #'
 #' @return A valid `MatrixPrintForm` object representing `df` as a listing,
 #'   ready for ASCII rendering.
@@ -926,41 +946,52 @@ basic_matrix_form <- function(df, parent_path = "root") {
 #' cat(toString(mform))
 #'
 #' @export
-basic_listing_mf <- function(df = mtcars, keycols = c("vs", "gear")) {
+basic_listing_mf <- function(df = mtcars,
+                             keycols = c("vs", "gear"),
+                             ignore_rownames = FALSE,
+                             add_decoration = TRUE) {
+  checkmate::assert_data_frame(df)
   checkmate::assert_subset(keycols, colnames(df))
 
-  dfmf <- basic_matrix_form(df)
+  dfmf <- basic_matrix_form(
+    df = df,
+    ignore_rownames = ignore_rownames,
+    add_decoration = add_decoration
+  )
 
   # Modifications needed for making it a listings
   mf_strings(dfmf)[1, ] <- colnames(mf_strings(dfmf)) # set colnames
-  str_dfmf <- mf_strings(dfmf)[-1, ]
-  # Ordering
-  ord <- do.call(
-    order,
-    as.list(
-      data.frame(
-        str_dfmf[, keycols]
+
+  if (!is.null(keycols)) {
+    str_dfmf <- mf_strings(dfmf)[-1, ]
+    # Ordering
+    ord <- do.call(
+      order,
+      as.list(
+        data.frame(
+          str_dfmf[, keycols]
+        )
       )
     )
-  )
-  str_dfmf <- str_dfmf[ord, ]
-  # Making keycols with empties
-  curkey <- ""
-  for (i in seq_along(keycols)) {
-    kcol <- keycols[i]
-    kcolvec <- str_dfmf[, kcol] # -1 is col label row
-    str_dfmf[, kcol] <- ""
-    kcolvec <- vapply(kcolvec, format_value, "", format = NULL, na_str = "NA")
-    curkey <- paste0(curkey, kcolvec)
-    disp <- c(TRUE, tail(curkey, -1) != head(curkey, -1))
-    str_dfmf[disp, kcol] <- kcolvec[disp]
+    str_dfmf <- str_dfmf[ord, ]
+    # Making keycols with empties
+    curkey <- ""
+    for (i in seq_along(keycols)) {
+      kcol <- keycols[i]
+      kcolvec <- str_dfmf[, kcol] # -1 is col label row
+      str_dfmf[, kcol] <- ""
+      kcolvec <- vapply(kcolvec, format_value, "", format = NULL, na_str = "NA")
+      curkey <- paste0(curkey, kcolvec)
+      disp <- c(TRUE, tail(curkey, -1) != head(curkey, -1))
+      str_dfmf[disp, kcol] <- kcolvec[disp]
+    }
+    mf_strings(dfmf)[-1, ] <- str_dfmf
+    # keycols as first
+    mf_strings(dfmf) <- cbind(
+      mf_strings(dfmf)[, keycols, drop = FALSE],
+      mf_strings(dfmf)[, !colnames(mf_strings(dfmf)) %in% keycols, drop = FALSE]
+    )
   }
-  mf_strings(dfmf)[-1, ] <- str_dfmf
-  # keycols as first
-  mf_strings(dfmf) <- cbind(
-    mf_strings(dfmf)[, keycols],
-    mf_strings(dfmf)[, !colnames(mf_strings(dfmf)) %in% keycols]
-  )
 
   dfmf$aligns[seq(2, nrow(dfmf$aligns)), ] <- "center" # the default for listings
 
@@ -977,11 +1008,6 @@ basic_listing_mf <- function(df = mtcars, keycols = c("vs", "gear")) {
 
   # colwidths need to be sorted too!!
   dfmf$col_widths <- dfmf$col_widths[colnames(mf_strings(dfmf))]
-
-  main_title(dfmf) <- "main title"
-  main_footer(dfmf) <- c("main", "  footer")
-  prov_footer(dfmf) <- "prov footer"
-  subtitles(dfmf) <- c("sub", "titles")
 
   dfmf
 }
