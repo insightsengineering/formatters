@@ -18,6 +18,7 @@ export_as_pdf(
   font_family = "Courier",
   font_size = 8,
   fontsize = font_size,
+  lineheight = 1.2,
   paginate = TRUE,
   page_num = default_page_number(),
   lpp = NULL,
@@ -26,7 +27,9 @@ export_as_pdf(
   indent_size = 2,
   tf_wrap = TRUE,
   max_width = NULL,
-  colwidths = propose_column_widths(x)
+  fontspec = font_spec(font_family, font_size, lineheight),
+  colwidths = propose_column_widths(x, indent_size = indent_size, fontspec = fontspec),
+  ttype_ok = FALSE
 )
 }
 \arguments{
@@ -69,6 +72,8 @@ to Courier.}
 \item{fontsize}{Deprecated, please use \code{font_size}. The size of
 text (in points)}
 
+\item{lineheight}{numeric(1). Line height, defaults to 1.}
+
 \item{paginate}{logical(1). Whether pagination should be performed,
 defaults to \code{TRUE} if page size is specified (including
 the default).}
@@ -105,6 +110,10 @@ completely if \code{tf_wrap} is \code{FALSE}.}
 
 \item{colwidths}{numeric vector.  Column widths (in characters) for
 use with vertical pagination.}
+
+\item{ttype_ok}{logical(1). Should truetype (non-monospace) fonts be
+allowed via \code{fontspec}. Defaults to \code{FALSE}. This parameter is primarily
+for internal testing and generally should not be set by end users.}
 }
 \description{
 The PDF output is based on the ASCII output created with \code{\link[=toString]{toString()}}

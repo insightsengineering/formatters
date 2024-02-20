@@ -21,7 +21,7 @@ paginate_indices(
   lpp = NA_integer_,
   cpp = NA_integer_,
   min_siblings = 2,
-  nosplitin = character(),
+  nosplitin = list(rows = character(), cols = character()),
   colwidths = NULL,
   tf_wrap = FALSE,
   max_width = NULL,
@@ -29,6 +29,7 @@ paginate_indices(
   pg_size_spec = NULL,
   rep_cols = num_rep_cols(obj),
   col_gap = 3,
+  fontspec = font_spec(font_family, font_size, lineheight),
   verbose = FALSE
 )
 
@@ -53,7 +54,8 @@ paginate_to_mpfs(
   pg_size_spec = NULL,
   page_num = default_page_number(),
   rep_cols = num_rep_cols(obj),
-  col_gap = 2,
+  col_gap = 3,
+  fontspec = font_spec(font_family, font_size, lineheight),
   verbose = FALSE
 )
 
@@ -71,14 +73,15 @@ diagnose_pagination(
   cpp = NA_integer_,
   min_siblings = 2,
   nosplitin = character(),
-  colwidths = propose_column_widths(matrix_form(obj, TRUE)),
+  colwidths = propose_column_widths(matrix_form(obj, TRUE), fontspec = fontpec),
   tf_wrap = FALSE,
   max_width = NULL,
   indent_size = 2,
   pg_size_spec = NULL,
   rep_cols = num_rep_cols(obj),
-  col_gap = 2,
+  col_gap = 3,
   verbose = FALSE,
+  fontspec = font_spec(font_family, font_size, lineheight),
   ...
 )
 }

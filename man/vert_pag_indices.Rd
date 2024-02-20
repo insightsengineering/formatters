@@ -9,7 +9,9 @@ vert_pag_indices(
   cpp = 40,
   colwidths = NULL,
   verbose = FALSE,
-  rep_cols = 0L
+  rep_cols = 0L,
+  fontspec,
+  nosplitin = character()
 )
 }
 \arguments{
@@ -26,6 +28,9 @@ pagination breaks be shown. Defaults to \code{FALSE}.}
 
 \item{rep_cols}{numeric(1). Number of \emph{columns} (not including
 row labels) to be repeated on every page. Defaults to 0}
+
+\item{nosplitin}{character. List of names of sub-tables where page-breaks are not allowed, regardless of other
+considerations. Defaults to none.}
 }
 \value{
 A list partitioning the vector of column indices
@@ -36,6 +41,6 @@ Find Column Indices for Vertical Pagination
 }
 \examples{
 mf <- basic_matrix_form(df = mtcars)
-colpaginds <- vert_pag_indices(mf)
+colpaginds <- vert_pag_indices(mf, fontspec = font_spec())
 lapply(colpaginds, function(j) mtcars[, j, drop = FALSE])
 }

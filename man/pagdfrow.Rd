@@ -12,7 +12,7 @@ pagdfrow(
   pth,
   sibpos = NA_integer_,
   nsibs = NA_integer_,
-  extent = nlines(row, colwidths),
+  extent = nlines(row, colwidths, fontspec = fontspec),
   colwidths = NULL,
   repext = 0L,
   repind = integer(),
@@ -23,7 +23,8 @@ pagdfrow(
   nreflines = 0L,
   force_page = FALSE,
   page_title = NA_character_,
-  trailing_sep = NA_character_
+  trailing_sep = NA_character_,
+  fontspec
 )
 }
 \arguments{

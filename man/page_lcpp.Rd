@@ -12,7 +12,8 @@ page_lcpp(
   lineheight = 1,
   margins = c(top = 0.5, bottom = 0.5, left = 0.75, right = 0.75),
   pg_width = NULL,
-  pg_height = NULL
+  pg_height = NULL,
+  fontspec = font_spec(font_family, font_size, lineheight)
 )
 }
 \arguments{

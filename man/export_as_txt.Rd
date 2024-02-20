@@ -29,7 +29,8 @@ export_as_txt(
   rep_cols = num_rep_cols(x),
   verbose = FALSE,
   page_break = "\\\\s\\\\n",
-  page_num = default_page_number()
+  page_num = default_page_number(),
+  fontspec = font_spec(font_family, font_size, lineheight)
 )
 }
 \arguments{

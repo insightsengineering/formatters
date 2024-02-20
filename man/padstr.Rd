@@ -4,7 +4,7 @@
 \alias{padstr}
 \title{Pad a string and align within string}
 \usage{
-padstr(x, n, just = list_valid_aligns())
+padstr(x, n, just = list_valid_aligns(), fontspec = font_spec())
 }
 \arguments{
 \item{x}{string}

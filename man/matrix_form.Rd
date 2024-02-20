@@ -9,14 +9,18 @@ matrix_form(
   obj,
   indent_rownames = FALSE,
   expand_newlines = TRUE,
-  indent_size = 2
+  indent_size = 2,
+  fontspec = NULL,
+  col_gap = NULL
 )
 
 \S4method{matrix_form}{MatrixPrintForm}(
   obj,
   indent_rownames = FALSE,
   expand_newlines = TRUE,
-  indent_size = 2
+  indent_size = 2,
+  fontspec = NULL,
+  col_gap = NULL
 )
 }
 \arguments{

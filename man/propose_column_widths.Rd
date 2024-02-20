@@ -4,7 +4,7 @@
 \alias{propose_column_widths}
 \title{Propose Column Widths based on an object's \code{MatrixPrintForm} form}
 \usage{
-propose_column_widths(x, indent_size = 2)
+propose_column_widths(x, indent_size = 2, fontspec = font_spec())
 }
 \arguments{
 \item{x}{\code{MatrixPrintForm} object, or an object with a \code{matrix_form}

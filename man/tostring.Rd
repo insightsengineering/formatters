@@ -13,7 +13,9 @@ toString(x, ...)
   tf_wrap = FALSE,
   max_width = NULL,
   col_gap = mf_colgap(x),
-  hsep = NULL
+  hsep = NULL,
+  fontspec = font_spec(),
+  ttype_ok = FALSE
 )
 }
 \arguments{
@@ -42,6 +44,10 @@ completely if \code{tf_wrap} is \code{FALSE}.}
 header/body separator line. If \code{NULL}, the object value will be
 used. If \code{" "}, an empty separator will be printed. Check \code{\link[=default_hsep]{default_hsep()}}
 for more information.}
+
+\item{ttype_ok}{logical(1). Should truetype (non-monospace) fonts be
+allowed via \code{fontspec}. Defaults to \code{FALSE}. This parameter is primarily
+for internal testing and generally should not be set by end users.}
 }
 \value{
 A character string containing the ASCII rendering
@@ -69,5 +75,5 @@ cat(toString(mform))
 
 }
 \seealso{
-\code{\link[=wrap_string]{wrap_string()}}
+\code{\link[=wrap_string]{wrap_string()}}n
 }

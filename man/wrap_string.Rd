@@ -5,9 +5,9 @@
 \alias{wrap_txt}
 \title{Wrap a string to within a precise width}
 \usage{
-wrap_string(str, width, collapse = NULL)
+wrap_string(str, width, collapse = NULL, fontspec = font_spec())
 
-wrap_txt(str, width, collapse = NULL)
+wrap_txt(str, width, collapse = NULL, fontspec = font_spec())
 }
 \arguments{
 \item{str}{character. String to be wrapped. If it is a character vector or

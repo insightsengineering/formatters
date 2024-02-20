@@ -10,7 +10,8 @@ basic_pagdf(
   rnums = seq_along(rnames),
   extents = 1L,
   rclass = "NA",
-  parent_path = "root"
+  parent_path = "root",
+  fontspec = font_spec()
 )
 }
 \arguments{

@@ -17,7 +17,9 @@ make_row_df(
   repr_inds = integer(),
   sibpos = NA_integer_,
   nsibs = NA_integer_,
-  max_width = NULL
+  max_width = NULL,
+  fontspec = font_spec(),
+  col_gap = 3L
 )
 
 \S4method{make_row_df}{MatrixPrintForm}(
@@ -32,7 +34,9 @@ make_row_df(
   repr_inds = integer(),
   sibpos = NA_integer_,
   nsibs = NA_integer_,
-  max_width = NULL
+  max_width = NULL,
+  fontspec = font_spec(),
+  col_gap = mf_colgap(tt) \%||\% 3L
 )
 }
 \arguments{

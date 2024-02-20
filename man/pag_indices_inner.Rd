@@ -14,7 +14,8 @@ pag_indices_inner(
   verbose = FALSE,
   row = TRUE,
   have_col_fnotes = FALSE,
-  div_height = 1L
+  div_height = 1L,
+  col_gap = 3L
 )
 }
 \arguments{

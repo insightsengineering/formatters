@@ -41,7 +41,19 @@ mform_handle_newlines <- function(matform) {
   line_grouping <- unique(line_grouping)
 
   # nlines detects if there is a newline character
-  row_nlines <- apply(strmat, 1, function(x) max(vapply(x, nlines, 1L), 1L))
+  # colwidths = NULL, max_width = NULL, fontspec = NULL
+  # because we don't care about wrapping here we're counting lines
+  # TODO probably better if we had a nlines_nowrap fun to be more explicit
+
+  row_nlines <- apply(strmat,
+                      1,
+                      function(x) max(vapply(x,
+                                             nlines,
+                                             colwidths = NULL,
+                                             max_width = NULL,
+                                             fontspec = NULL, 1L),
+                                      1L))
+
 
   # Correction for the case where there are more lines for topleft material than for cols
   if (has_topleft && (sum(row_nlines[nl_inds_header]) < how_many_nl)) {
@@ -168,6 +180,15 @@ disp_from_spans <- function(spans) {
   display
 }
 
+.fixup_cinfo <- function(col_df) {
+  if(is.null(col_df$par_extent))
+    col_df$par_extent <- 0L
+  if(is.null(col_df$node_class)) {
+    col_df$node_class <- "Column"
+  }
+  col_df
+}
+
 ## constructor
 #' @title Matrix Print Form - Intermediate Representation for ASCII Table Printing
 #'
@@ -193,7 +214,9 @@ disp_from_spans <- function(spans) {
 #'     each  element.   Must  be  repeated to  match  placeholders  in
 #'     \code{strings}.
 #' @param  row_info   data.frame.   Data.frame  with  row-information
-#'     necessary for pagination (XXX document exactly what that is).
+#'     necessary for pagination as returned by make_row_df.
+#' @param  colpaths. listOrNULL. NULL, or a list of paths to each leaf column, for use during horizontal pagination.
+#'     necessary for pagination, as returned by make_col_df.
 #' @param  line_grouping integer. Sequence of  integers indicating how
 #'     print  lines  correspond  to   semantic  rows  in  the  object.
 #'     Typically   this   should   not    be   set   manually   unless
@@ -246,6 +269,7 @@ disp_from_spans <- function(spans) {
 #' when the table is rendered}
 #' \item{\code{formats}}{see argument}
 #' \item{\code{row_info}}{see argument}
+#' \item{\code{col_info}}{see argument}
 #' \item{\code{line_grouping}}{see argument}
 #' \item{\code{ref_footnotes}}{see argument}
 #' \item{\code{main_title}}{see argument}
@@ -276,6 +300,7 @@ MatrixPrintForm <- function(strings = NULL,
                             aligns,
                             formats,
                             row_info,
+                            colpaths = NULL,
                             line_grouping = seq_len(NROW(strings)),
                             ref_fnotes = list(),
                             nlines_header,
@@ -293,7 +318,8 @@ MatrixPrintForm <- function(strings = NULL,
                             col_gap = 3,
                             table_inset = 0L,
                             colwidths = NULL,
-                            indent_size = 2) {
+                            indent_size = 2,
+                            fontspec = font_spec()) {
   display <- disp_from_spans(spans)
 
   ncs <- if (has_rowlabs) ncol(strings) - 1 else ncol(strings)
@@ -318,7 +344,8 @@ MatrixPrintForm <- function(strings = NULL,
       table_inset = as.integer(table_inset),
       has_topleft = has_topleft,
       indent_size = indent_size,
-      col_widths = colwidths
+      col_widths = colwidths,
+      fontspec = fontspec
     ),
     nrow_header = nrow_header,
     ncols = ncs,
@@ -333,13 +360,42 @@ MatrixPrintForm <- function(strings = NULL,
 
   ##  ret <- shove_refdf_into_rowinfo(ret)
   if (is.null(colwidths)) {
-    colwidths <- propose_column_widths(ret)
+    colwidths <- propose_column_widths(ret, fontspec = fontspec)
   }
   mf_col_widths(ret) <- colwidths
   ret <- mform_build_refdf(ret)
+  ret <- mpf_infer_cinfo(ret, colpaths = colpaths, fontspec = fontspec)
+  
   ret
 }
 
+mf_update_cinfo <- function(mf, colwidths = NULL, col_gap = NULL) {
+    
+  need_update <- FALSE
+  if(!is.null(colwidths)) {
+    mf$col_widths <- colwidths
+    need_update <- TRUE  
+  }
+
+  old_cgap <- mf_colgap(mf)
+  if(!is.null(col_gap)) {      
+    mf$col_gap <- col_gap
+    need_update <- TRUE
+  }
+
+  if(need_update && !is.null(mf_cinfo(mf))) {
+    cinfo <- mf_cinfo(mf)
+    r_colwidths <- mf_col_widths(mf)
+    if(mf_has_rlabels(mf))
+      r_colwidths <- r_colwidths[-1] ## row label widths
+    
+    cinfo$self_extent <- r_colwidths + mf_colgap(mf)
+    nrepcols <- num_rep_cols(mf)
+    cinfo$par_extent <- cumsum(c(0, r_colwidths[seq_len(nrepcols)], rep(0, length(r_colwidths) - nrepcols - 1)))
+    mf_cinfo(mf) <- cinfo
+  }
+  mf
+}
 
 #' Create a row for a referential footnote information dataframe
 #'
@@ -396,6 +452,8 @@ infer_ref_info <- function(mform, colspace_only) {
   strs <- mf_strings(mform)[idx, , drop = FALSE]
 
   ## they're nested so \\2 is the inner one, without the brackets
+  ## include space in front of { so we don't catch \{ when
+  ## rtfs want to pass markup through
   refs <- gsub("^[^{]*([{]([^}]+)[}]){0,1}$", "\\2", strs)
   ## handle spanned values
   refs[!mf_display(mform)[idx, ]] <- ""
@@ -536,6 +594,17 @@ mf_nrheader <- function(mf) attr(mf, "nrow_header", exact = TRUE)
 mf_colgap <- function(mf) mf$col_gap
 
 
+#' @export
+#' @rdname mpf_accessors
+mf_fontspec <- function(mf) mf$fontspec
+
+
+#' @export
+#' @rdname mpf_accessors
+`mf_fontspec<-` <- function(mf, value) {
+    mf$fontspec <- value
+    mf
+}
 
 
 ## XXX should this be exported? not sure if there's a point
@@ -559,7 +628,7 @@ mf_col_widths <- function(mf) {
       "number of columns in strings matrix (", NCOL(mf_strings(mf)), ")."
     )
   }
-  mf$col_widths <- value
+  mf <- mf_update_cinfo(mf, colwidths = value, col_gap = NULL)
   mf
 }
 
@@ -653,6 +722,7 @@ update_mf_ref_nlines <- function(mform, max_width) {
     paste0("{", refdf$symbol, "} - ", refdf$msg),
     nlines,
     max_width = max_width,
+    fontspec = mf_fontspec(mform),
     1L
   )
   mf_fnote_df(mform) <- refdf
@@ -789,7 +859,7 @@ update_mf_ref_nlines <- function(mform, max_width) {
 #' @export
 #' @rdname mpf_accessors
 `mf_colgap<-` <- function(mf, value) {
-  mf$col_gap <- value
+  mf <- mf_update_cinfo(mf, colwidths = NULL, col_gap = value)
   mf
 }
 
@@ -852,7 +922,7 @@ mf_has_rlabels <- function(mf) ncol(mf$strings) > mf_ncol(mf)
 #' @name test_matrix_form
 #' @export
 basic_matrix_form <- function(df, parent_path = "root", ignore_rownames = FALSE,
-                              add_decoration = FALSE) {
+                              add_decoration = FALSE, fontspec = font_spec()) {
   checkmate::assert_data_frame(df)
   checkmate::assert_character(parent_path)
   checkmate::assert_flag(ignore_rownames)
@@ -892,7 +962,7 @@ basic_matrix_form <- function(df, parent_path = "root", ignore_rownames = FALSE,
   ## build up fake pagination df
   charcols <- which(sapply(df, is.character))
   if (length(charcols) > 0) {
-    exts <- apply(df[, charcols, drop = FALSE], 1, function(x) max(vapply(x, nlines, 1L)))
+    exts <- apply(df[, charcols, drop = FALSE], 1, function(x) max(vapply(x, nlines, fontspec = fontspec, 1L)))
   } else {
     exts <- rep(1L, NROW(df))
   }
@@ -915,7 +985,8 @@ basic_matrix_form <- function(df, parent_path = "root", ignore_rownames = FALSE,
     has_topleft = FALSE,
     nlines_header = 1,
     nrow_header = 1,
-    has_rowlabs = TRUE
+    has_rowlabs = TRUE,
+    fontspec = fontspec
   )
   ret <- mform_build_refdf(ret)
 
@@ -1095,6 +1166,8 @@ reconstruct_basic_fnote_list <- function(mf) {
   mf_aligns(mf) <- mf_aligns(mf)[i_mat, j_mat, drop = FALSE]
   if (!row) {
     mf_ncol(mf) <- length(i)
+    if(!is.null(mf_cinfo(mf))) 
+      mf_cinfo(mf) <- mf_cinfo(mf)[i,]  
     if (!is.null(mf_col_widths(mf))) {
       mf_col_widths(mf) <- mf_col_widths(mf)[j_mat]
     }

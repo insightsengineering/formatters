@@ -7,13 +7,13 @@
 \alias{nlines,character-method}
 \title{Number of lines required to print a value}
 \usage{
-nlines(x, colwidths = NULL, max_width = NULL)
+nlines(x, colwidths = NULL, max_width = NULL, fontspec, col_gap)
 
-\S4method{nlines}{list}(x, colwidths = NULL, max_width = NULL)
+\S4method{nlines}{list}(x, colwidths = NULL, max_width = NULL, fontspec, col_gap = NULL)
 
-\S4method{nlines}{NULL}(x, colwidths = NULL, max_width = NULL)
+\S4method{nlines}{NULL}(x, colwidths = NULL, max_width = NULL, fontspec, col_gap = NULL)
 
-\S4method{nlines}{character}(x, colwidths = NULL, max_width = NULL)
+\S4method{nlines}{character}(x, colwidths = NULL, max_width = NULL, fontspec, col_gap = NULL)
 }
 \arguments{
 \item{x}{ANY. The object to be printed}
@@ -22,6 +22,9 @@ nlines(x, colwidths = NULL, max_width = NULL)
 
 \item{max_width}{numeric(1). Width strings should be wrapped to
 when determining how many lines they require.}
+
+\item{col_gap}{numeric(1). Width of gap between columns in number of spaces.
+Only used by methods which must calculate span widths after wrapping.}
 }
 \value{
 A scalar numeric indicating the number of lines needed

@@ -7,14 +7,17 @@
 export_as_rtf(
   x,
   file = NULL,
-  colwidths = propose_column_widths(matrix_form(x, TRUE)),
+  colwidths = propose_column_widths(matrix_form(x, TRUE, fontspec = fontspec), fontspec =
+    fontspec),
   page_type = "letter",
   pg_width = page_dim(page_type)[if (landscape) 2 else 1],
   pg_height = page_dim(page_type)[if (landscape) 1 else 2],
   landscape = FALSE,
   margins = c(bottom = 0.5, left = 0.75, top = 0.5, right = 0.75),
-  font_size = 8,
   font_family = "Courier",
+  font_size = 8,
+  lineheight = 1,
+  fontspec = font_spec(font_family, font_size, lineheight),
   ...
 )
 }
@@ -45,13 +48,16 @@ be inverted  for landscape?  Defaults to  \code{FALSE}, ignored when
 to \code{.5} inches for both vertical margins and \code{.75} for both
 horizontal margins.}
 
-\item{font_size}{numeric(1). Font size, defaults to 12.}
-
 \item{font_family}{character(1). Name of a font family. An error
 will be thrown if the family named is not monospaced. Defaults
 to Courier.}
 
+\item{font_size}{numeric(1). Font size, defaults to 12.}
+
+\item{lineheight}{numeric(1). Line height, defaults to 1.}
+
 \item{...}{Further parameters to be passed to \code{\link[=paginate_to_mpfs]{paginate_to_mpfs()}}.}
+
 }
 \description{
 Experimental export to the \code{RTF} format.
