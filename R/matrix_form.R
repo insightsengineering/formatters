@@ -876,7 +876,7 @@ basic_matrix_form <- function(df, parent_path = "root", ignore_rownames = FALSE,
   strings <- rbind(cnms, bodystrs)
   rownames(strings) <- NULL
   if (!ignore_rownames) {
-    strings <- cbind(c("", rnms), strings)
+    strings <- cbind("rnms" = c("", rnms), strings)
   }
 
   fnr <- nrow(strings)
