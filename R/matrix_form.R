@@ -936,8 +936,7 @@ basic_matrix_form <- function(df, parent_path = "root", ignore_rownames = FALSE,
 #'
 #' @param keycols character. Vector of `df` column names that are printed first and
 #'   repeated values are assigned to `""`. This format is characteristic of a listing matrix form.
-#'   When `NULL`, no key columns are used.
-#'
+#'   When `NULL`, no key columns are used. Defaults to `c("vs", "gear")` for `mtcars` default dataset.
 #' @return A valid `MatrixPrintForm` object representing `df` as a listing,
 #'   ready for ASCII rendering.
 #'
@@ -946,7 +945,7 @@ basic_matrix_form <- function(df, parent_path = "root", ignore_rownames = FALSE,
 #' cat(toString(mform))
 #'
 #' @export
-basic_listing_mf <- function(df = mtcars,
+basic_listing_mf <- function(df,
                              keycols = c("vs", "gear"),
                              ignore_rownames = FALSE,
                              add_decoration = TRUE) {

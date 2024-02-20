@@ -1,5 +1,5 @@
 test_that("basic_listing_mf respect core modifications from table matrix_form", {
-  expect_silent(lmf <- basic_listing_mf())
+  expect_silent(lmf <- basic_listing_mf(mtcars))
 
   # strings
   cols_test <- mf_strings(lmf)[, c(1, 2)]
