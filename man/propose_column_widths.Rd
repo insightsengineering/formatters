@@ -13,6 +13,11 @@ method.}
 \item{indent_size}{numeric(1). Indent size in characters. Ignored
 when \code{x} is already a \code{MatrixPrintForm} object in favor of information
 there.}
+
+\item{fontspec}{font_spec. A font_spec object
+specifying the font information to use for
+calculating string widths and heights, as
+returned by \code{\link[=font_spec]{font_spec()}}}
 }
 \value{
 a vector of column widths based on the content of \code{x}

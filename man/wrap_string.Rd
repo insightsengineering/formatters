@@ -19,6 +19,11 @@ text should be wrapped at.}
 \item{collapse}{character(1) or \code{NULL}. If the words that have been split should
 be pasted together with the collapse character. This is usually done internally
 with \code{"\\n"} to have the wrapping updated along with other internal values.}
+
+\item{fontspec}{font_spec. A font_spec object
+specifying the font information to use for
+calculating string widths and heights, as
+returned by \code{\link[=font_spec]{font_spec()}}}
 }
 \value{
 A string if \code{str} is one element and if \code{collapse = NULL}. Otherwise, is

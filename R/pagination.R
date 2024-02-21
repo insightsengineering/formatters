@@ -87,6 +87,7 @@
 NULL
 
 #' Create row of pagination data frame
+#' @inheritParams open_font_dev
 #' @param nm character(1). Name
 #' @param lab character(1). Label
 #' @param rnum numeric(1). Absolute row number
@@ -475,6 +476,8 @@ find_pag <- function(pagdf,
 #'   column-associated referential footnotes.
 #' @param div_height numeric(1). The height of the divider line when the
 #'   associated object is rendered. Defaults to `1`.
+#' @param col_gap numeric(1). Width of gap between columns, in same units as extent
+#' in `pagdf` (spaces under a particular font specification).
 #'
 #' @return A list containing the vector of row numbers, broken up by page
 #'
@@ -539,6 +542,7 @@ pag_indices_inner <- function(pagdf,
 #' @param rep_cols numeric(1). Number of \emph{columns} (not including
 #'     row labels) to be repeated on every page. Defaults to 0
 #' @inheritParams pag_indices_inner
+#' @inheritParams open_font_dev
 #'
 #' @return A list partitioning the vector of column indices
 #' into subsets for 1 or more horizontally paginated pages.
@@ -556,6 +560,8 @@ vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, r
   if (is.null(mf_cinfo(mf))) { ## like always, ugh.
     mf <- mpf_infer_cinfo(mf, colwidths = clwds, rep_cols = rep_cols, fontspec = fontspec)
   }
+
+  num_rep_cols(mf) <- rep_cols
 
   has_rlabs <- mf_has_rlabels(mf)
   rlabs_flag <- as.integer(has_rlabs)
@@ -643,6 +649,7 @@ mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf), f
 #'
 #' Returns a minimal pagination info data.frame (with no sibling/footnote/etc info).
 #' @inheritParams test_matrix_form
+#' @inheritParams open_font_dev
 #' @param rnames character. Vector of row names
 #' @param labs character. Vector of row labels (defaults to names)
 #' @param rnums integer. Vector of row numbers. Defaults to `seq_along(rnames)`.
@@ -661,7 +668,7 @@ basic_pagdf <- function(rnames, labs = rnames, rnums = seq_along(rnames),
                         fontspec = font_spec()) {
   rws <- mapply(pagdfrow,
     nm = rnames, lab = labs, extent = extents,
-    rclass = rclass, rnum = rnums, pth = lapply(rnames, function(x) c(parent_path, x),),
+    rclass = rclass, rnum = rnums, pth = lapply(rnames, function(x) c(parent_path, x)),
     MoreArgs = list(fontspec = fontspec),
     SIMPLIFY = FALSE, nsibs = 1, sibpos = 1
   )
@@ -1342,7 +1349,7 @@ diagnose_pagination <- function(obj,
                                 cpp = NA_integer_,
                                 min_siblings = 2,
                                 nosplitin = character(),
-                                colwidths = propose_column_widths(matrix_form(obj, TRUE), fontspec = fontpec),
+                                colwidths = propose_column_widths(matrix_form(obj, TRUE), fontspec = fontspec),
                                 tf_wrap = FALSE,
                                 max_width = NULL,
                                 indent_size = 2,

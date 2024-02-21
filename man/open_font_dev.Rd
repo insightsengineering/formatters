@@ -12,7 +12,8 @@ close_font_dev()
 \arguments{
 \item{fontspec}{font_spec. A font_spec object
 specifying the font information to use for
-calculating string widths and heights}
+calculating string widths and heights, as
+returned by \code{\link[=font_spec]{font_spec()}}}
 }
 \value{
 For \code{open_font_dev} a logical value indicating

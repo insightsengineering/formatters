@@ -29,6 +29,11 @@ pagination breaks be shown. Defaults to \code{FALSE}.}
 \item{rep_cols}{numeric(1). Number of \emph{columns} (not including
 row labels) to be repeated on every page. Defaults to 0}
 
+\item{fontspec}{font_spec. A font_spec object
+specifying the font information to use for
+calculating string widths and heights, as
+returned by \code{\link[=font_spec]{font_spec()}}}
+
 \item{nosplitin}{character. List of names of sub-tables where page-breaks are not allowed, regardless of other
 considerations. Defaults to none.}
 }

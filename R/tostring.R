@@ -19,7 +19,8 @@ cwidth_inches_unsafe <- function(x) {
 #'
 #' @param fontspec font_spec. A font_spec object
 #' specifying the font information to use for
-#' calculating string widths and heights
+#' calculating string widths and heights, as
+#' returned by [font_spec()]
 #'
 #' @details The font device state is an environment with
 #' four variables guaranteed to be set:
@@ -518,6 +519,7 @@ calc_str_adj <- function(str, fontspec) {
 #' `max_width`), or horizontal separator character (e.g. `hsep = "+"`).
 #'
 #' @inheritParams MatrixPrintForm
+#' @inheritParams open_font_dev
 #' @param widths numeric (or  `NULL`). (proposed) widths for the columns
 #'     of \code{x}. The expected length  of this numeric vector can be
 #'     retrieved with  `ncol() + 1`  as the  column of row  names must
@@ -914,6 +916,7 @@ new_line_warning <- function(str_v) {
 #' after `width` characters. If the split leaves trailing groups of empty spaces,
 #' they will be dropped.
 #'
+#' @inheritParams open_font_dev
 #' @param str character. String to be wrapped. If it is a character vector or
 #'   a list, it will be looped as a list and returned with `unlist(use.names = FALSE)`.
 #' @param width numeric(1). Width, in characters, that the
@@ -1046,6 +1049,7 @@ wrap_string <- function(str, width, collapse = NULL, fontspec = font_spec()) {
 ## w comes in in terms of number of spaces, but
 ## we need the more generic "number of characters"
 ## to pass to stringi::stri_wrap
+#' @importFrom stats quantile
 .ttype_adjust_width <- function(str, w, fontspec) {
     ## we are going to be conservative in the truetype
     ## case, but monospace behavior shouldn't change
@@ -1225,6 +1229,7 @@ spans_to_viscell <- function(spans) {
 #'
 #' The row names are also considered a column for the output
 #'
+#' @inheritParams open_font_dev
 #' @param x `MatrixPrintForm` object, or an object with a `matrix_form`
 #' method.
 #' @param indent_size numeric(1). Indent size in characters. Ignored
@@ -1402,6 +1407,7 @@ nchar_ttype <- function(x, fontspec = font_spec(), tol = sqrt(.Machine$double.ep
 
 #' Pad a string and align within string
 #'
+#' @inheritParams open_font_dev
 #' @param x string
 #' @param n number  of  character  of the  output  string,  if `n  <
 #'     nchar(x)` an error is thrown

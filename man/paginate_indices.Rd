@@ -73,7 +73,7 @@ diagnose_pagination(
   cpp = NA_integer_,
   min_siblings = 2,
   nosplitin = character(),
-  colwidths = propose_column_widths(matrix_form(obj, TRUE), fontspec = fontpec),
+  colwidths = propose_column_widths(matrix_form(obj, TRUE), fontspec = fontspec),
   tf_wrap = FALSE,
   max_width = NULL,
   indent_size = 2,
@@ -153,6 +153,11 @@ size specification. Typically this is not set in end user code.}
 row labels) to be repeated on every page. Defaults to 0}
 
 \item{col_gap}{numeric(1). Currently unused.}
+
+\item{fontspec}{font_spec. A font_spec object
+specifying the font information to use for
+calculating string widths and heights, as
+returned by \code{\link[=font_spec]{font_spec()}}}
 
 \item{verbose}{logical(1). Should additional informative messages about the search for
 pagination breaks be shown. Defaults to \code{FALSE}.}

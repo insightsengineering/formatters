@@ -159,14 +159,14 @@ test_that("pagination works", {
     c(2L, 2L, 2L, 3L, 2L, 1L)
   )
 
-  vpaginds2 <- vert_pag_indices(df2mf, cpp = 39, verbose = TRUE)
+  vpaginds2 <- vert_pag_indices(df2mf, cpp = 39, verbose = TRUE, fontspec = NULL)
 
   ## expect_identical(
   ##   lengths(vpaginds2),
   ##   c(2L, 2L, 2L, 3L, 2L, 1L)
   ## )
 
-  vpaginds3 <- vert_pag_indices(df2mf, cpp = 44, verbose = TRUE, rep_cols = 1L)
+  vpaginds3 <- vert_pag_indices(df2mf, cpp = 44, verbose = TRUE, rep_cols = 1L, fontspec = NULL)
 
   ## make sure it was repeated as requested
   expect_identical(
@@ -335,16 +335,13 @@ test_that("page to lcpp stuff works", {
   )
 
   expect_identical(
-    calc_lcpp(),
-    calc_lcpp(page_type = "letter")
+    calc_lcpp(fontspec = NULL),
+    calc_lcpp(page_type = "letter", fontspec = NULL)
   )
 })
 
 
-test_that("non-monospaced fonts are caught", {
-  ## non-monospaced fonts
-  expect_error(page_lcpp(font_family = "Times"), "does not appear to be monospaced")
-
+test_that("Page type dictates page dims", {
   expect_identical(
     page_lcpp("a4"),
     page_lcpp(

@@ -165,6 +165,7 @@ marg_order <- c("bottom", "left", "top", "right")
 
 #' Determine lines per page (`LPP`) and characters per page (`CPP`) based on font and page type
 #'
+#' @inheritParams open_font_dev
 #' @param  page_type  character(1).   Name   of  a  page  type.   See
 #'     `page_types`.   Ignored when  `pg_width` and  `pg_height`
 #'     are set directly.

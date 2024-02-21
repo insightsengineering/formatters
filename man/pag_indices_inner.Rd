@@ -51,6 +51,9 @@ column-associated referential footnotes.}
 
 \item{div_height}{numeric(1). The height of the divider line when the
 associated object is rendered. Defaults to \code{1}.}
+
+\item{col_gap}{numeric(1). Width of gap between columns, in same units as extent
+in \code{pagdf} (spaces under a particular font specification).}
 }
 \value{
 A list containing the vector of row numbers, broken up by page

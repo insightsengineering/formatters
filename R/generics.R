@@ -16,6 +16,7 @@
 #'
 #' @name make_row_df
 #'
+#' @inheritParams open_font_dev
 #' @param tt ANY. Object representing the table-like object to be summarized.
 #' @param visible_only logical(1). Should only visible aspects of the table structure be reflected in this summary.
 #'   Defaults to \code{TRUE}. May not be supported by all methods.
@@ -32,6 +33,8 @@
 #'     \code{tt}. Defaults to \code{character()}
 #' @param max_width numeric(1) or NULL. Maximum width for title/footer
 #' materials.
+#' @param col_gap numeric(1). The gap to be assumed between columns,
+#' in number of spaces with font specified by `fontspec`
 #'
 #' @details When  \code{visible_only} is  \code{TRUE} (the  default),
 #'     methods should  return a  data.frame with  exactly one  row per
@@ -99,6 +102,7 @@ setMethod("make_row_df", "MatrixPrintForm", function(tt, colwidths = NULL, visib
 #' Although `rtables` are represented as a tree data structure when outputting the table to ASCII or HTML it is
 #' useful to map the `rtable` to an in between state with the formatted cells in a matrix form.
 #'
+#' @inheritParams make_row_df
 #' @param obj ANY. Object to be transformed into a ready-to-render form (a `MatrixPrintForm` object)
 #' @param indent_rownames logical(1), if TRUE the column with the row names in the `strings` matrix of has indented row
 #' names (strings pre-fixed)
@@ -182,6 +186,7 @@ setMethod(
 )
 
 #' Number of lines required to print a value
+#' @inheritParams open_font_dev
 #' @param x ANY. The object to be printed
 #' @param colwidths numeric. Column widths (if necessary).
 #' @param max_width numeric(1). Width strings should be wrapped to
@@ -658,6 +663,28 @@ setGeneric("num_rep_cols", function(obj) standardGeneric("num_rep_cols"))
 #' @export
 #' @rdname num_rep_cols
 setMethod("num_rep_cols", "ANY", function(obj) 0L)
+
+#' @export
+#' @rdname num_rep_cols
+setMethod("num_rep_cols", "MatrixPrintForm", function(obj) obj$num_rep_cols)
+
+
+#' @export
+#' @param value numeric(1). The new number of columns to repeat.
+#' @rdname num_rep_cols
+setGeneric("num_rep_cols<-", function(obj, value) standardGeneric("num_rep_cols<-"))
+#' @export
+#' @rdname num_rep_cols
+setMethod("num_rep_cols<-", "ANY", function(obj, value) stop("No num_rep_cols<- method for class ", class(obj)))
+
+#' @export
+#' @rdname num_rep_cols
+setMethod("num_rep_cols<-", "MatrixPrintForm", function(obj, value) {
+    obj <- mf_update_cinfo(obj, colwidths = NULL, col_gap = NULL, rep_cols = value)
+    obj
+})
+
+
 
 # header_section_div -----------------------------------------------------------
 #' @keywords internal

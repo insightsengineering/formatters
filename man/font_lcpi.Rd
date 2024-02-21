@@ -19,6 +19,11 @@ to Courier.}
 \item{font_size}{numeric(1). Font size, defaults to 12.}
 
 \item{lineheight}{numeric(1). Line height, defaults to 1.}
+
+\item{fontspec}{font_spec. A font_spec object
+specifying the font information to use for
+calculating string widths and heights, as
+returned by \code{\link[=font_spec]{font_spec()}}}
 }
 \value{
 named list with \code{cpi} and \code{lpi}, the characters and lines per

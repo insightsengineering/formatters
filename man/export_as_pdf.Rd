@@ -108,6 +108,11 @@ of the  session (\code{getOption("width")}). If set to \code{"auto"},
 the width of the table (plus any table inset) is used. Ignored
 completely if \code{tf_wrap} is \code{FALSE}.}
 
+\item{fontspec}{font_spec. A font_spec object
+specifying the font information to use for
+calculating string widths and heights, as
+returned by \code{\link[=font_spec]{font_spec()}}}
+
 \item{colwidths}{numeric vector.  Column widths (in characters) for
 use with vertical pagination.}
 

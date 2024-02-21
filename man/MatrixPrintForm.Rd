@@ -29,7 +29,8 @@ MatrixPrintForm(
   table_inset = 0L,
   colwidths = NULL,
   indent_size = 2,
-  fontspec = font_spec()
+  fontspec = font_spec(),
+  rep_cols = 0L
 )
 }
 \arguments{
@@ -57,6 +58,9 @@ each  element.   Must  be  repeated to  match  placeholders  in
 
 \item{row_info}{data.frame.   Data.frame  with  row-information
 necessary for pagination as returned by make_row_df.}
+
+\item{colpaths}{listOrNULL. NULL, or a list of paths to each leaf column,
+for use during horizontal pagination.}
 
 \item{line_grouping}{integer. Sequence of  integers indicating how
 print  lines  correspond  to   semantic  rows  in  the  object.
@@ -116,8 +120,12 @@ if non-NULL, must have length equal to \code{ncol(strings)}}
 \item{indent_size}{numeric(1). Number of spaces to be used per level of indent (if supported by
 the relevant method). Defaults to 2.}
 
-\item{colpaths.}{listOrNULL. NULL, or a list of paths to each leaf column, for use during horizontal pagination.
-necessary for pagination, as returned by make_col_df.}
+\item{fontspec}{font_spec. A font_spec object
+specifying the font information to use for
+calculating string widths and heights, as
+returned by \code{\link[=font_spec]{font_spec()}}}
+
+\item{rep_cols}{numeric(1). Number of columns to be repeated as context during horizontal pagination.}
 }
 \value{
 An object of class \code{MatrixPrintForm}. Currently this is

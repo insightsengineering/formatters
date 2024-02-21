@@ -119,6 +119,10 @@ outputting \code{"\\n\\s"}).}
 
 \item{page_num}{character(1). Placeholder string for page numbers. Check
 \link{default_page_number} for more information. Defaults to \code{NULL}.}
+\item{fontspec}{font_spec. A font_spec object
+specifying the font information to use for
+calculating string widths and heights, as
+returned by \code{\link[=font_spec]{font_spec()}}}
 }
 \value{
 if \code{file} is NULL, the total paginated and then concatenated

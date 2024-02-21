@@ -11,6 +11,11 @@ basic_matrix_form(df, parent_path = "root", fontspec = font_spec())
 
 \item{parent_path}{character. parent path that all rows should be "children of",
 defaults to \code{"root"}, and generally should not matter to end users.}
+
+\item{fontspec}{font_spec. A font_spec object
+specifying the font information to use for
+calculating string widths and heights, as
+returned by \code{\link[=font_spec]{font_spec()}}}
 }
 \value{
 A valid \code{MatrixPrintForm} object representing \code{df},

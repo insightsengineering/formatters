@@ -195,6 +195,7 @@ disp_from_spans <- function(spans) {
 #' @note The bare constructor for the `MatrixPrintForm` should generally
 #' only be called by `matrix_form` custom methods, and almost never from other code.
 #'
+#' @inheritParams open_font_dev
 #' @param  strings character  matrix.  Matrix  of formatted,  ready to
 #'     display  strings  organized as  they  will  be positioned  when
 #'     rendered.   Elements that  span more  than one  column must  be
@@ -215,8 +216,8 @@ disp_from_spans <- function(spans) {
 #'     \code{strings}.
 #' @param  row_info   data.frame.   Data.frame  with  row-information
 #'     necessary for pagination as returned by make_row_df.
-#' @param  colpaths. listOrNULL. NULL, or a list of paths to each leaf column, for use during horizontal pagination.
-#'     necessary for pagination, as returned by make_col_df.
+#' @param  colpaths listOrNULL. NULL, or a list of paths to each leaf column,
+#'     for use during horizontal pagination.
 #' @param  line_grouping integer. Sequence of  integers indicating how
 #'     print  lines  correspond  to   semantic  rows  in  the  object.
 #'     Typically   this   should   not    be   set   manually   unless
@@ -257,6 +258,7 @@ disp_from_spans <- function(spans) {
 #'     if non-NULL, must have length equal to `ncol(strings)`
 #' @param indent_size numeric(1). Number of spaces to be used per level of indent (if supported by
 #' the relevant method). Defaults to 2.
+#' @param rep_cols numeric(1). Number of columns to be repeated as context during horizontal pagination.
 #' @return An object of class `MatrixPrintForm`. Currently this is
 #' implemented as an S3 class inheriting from list with the following
 #' elements:
@@ -319,7 +321,8 @@ MatrixPrintForm <- function(strings = NULL,
                             table_inset = 0L,
                             colwidths = NULL,
                             indent_size = 2,
-                            fontspec = font_spec()) {
+                            fontspec = font_spec(),
+                            rep_cols = 0L) {
   display <- disp_from_spans(spans)
 
   ncs <- if (has_rowlabs) ncol(strings) - 1 else ncol(strings)
@@ -345,7 +348,8 @@ MatrixPrintForm <- function(strings = NULL,
       has_topleft = has_topleft,
       indent_size = indent_size,
       col_widths = colwidths,
-      fontspec = fontspec
+      fontspec = fontspec,
+      num_rep_cols = rep_cols
     ),
     nrow_header = nrow_header,
     ncols = ncs,
@@ -369,7 +373,7 @@ MatrixPrintForm <- function(strings = NULL,
   ret
 }
 
-mf_update_cinfo <- function(mf, colwidths = NULL, col_gap = NULL) {
+mf_update_cinfo <- function(mf, colwidths = NULL, col_gap = NULL, rep_cols = NULL) {
     
   need_update <- FALSE
   if(!is.null(colwidths)) {
@@ -383,6 +387,11 @@ mf_update_cinfo <- function(mf, colwidths = NULL, col_gap = NULL) {
     need_update <- TRUE
   }
 
+  if(!is.null(rep_cols) && num_rep_cols(mf) != rep_cols) {
+    mf$num_rep_cols <- rep_cols
+    need_update <- TRUE
+  }
+
   if(need_update && !is.null(mf_cinfo(mf))) {
     cinfo <- mf_cinfo(mf)
     r_colwidths <- mf_col_widths(mf)
@@ -391,7 +400,9 @@ mf_update_cinfo <- function(mf, colwidths = NULL, col_gap = NULL) {
     
     cinfo$self_extent <- r_colwidths + mf_colgap(mf)
     nrepcols <- num_rep_cols(mf)
-    cinfo$par_extent <- cumsum(c(0, r_colwidths[seq_len(nrepcols)], rep(0, length(r_colwidths) - nrepcols - 1)))
+    rep_seq <- seq_len(nrepcols)
+    cinfo$par_extent <- cumsum(c(0, cinfo$self_extent[seq_len(nrepcols)], rep(0, length(r_colwidths) - nrepcols - 1)))
+    cinfo$reprint_inds <- I(lapply(seq_len(NROW(cinfo)), function(i) rep_seq[rep_seq < i]))
     mf_cinfo(mf) <- cinfo
   }
   mf
@@ -900,11 +911,13 @@ mpf_has_rlabels <- function(mf) {
 #' @rdname mpf_accessors
 mf_has_rlabels <- function(mf) ncol(mf$strings) > mf_ncol(mf)
 
+
 #' Create spoof matrix form from a data.frame
 #'
 #' @description Useful functions for writing testing/examples, and as a
 #'   starting point for more sophisticated custom `matrix_form` methods.
 #'
+#' @inheritParams open_font_dev
 #' @param df data.frame
 #' @param parent_path character. parent path that all rows should be "children of",
 #'   defaults to `"root"`, and generally should not matter to end users.

@@ -56,6 +56,11 @@ to Courier.}
 
 \item{lineheight}{numeric(1). Line height, defaults to 1.}
 
+\item{fontspec}{font_spec. A font_spec object
+specifying the font information to use for
+calculating string widths and heights, as
+returned by \code{\link[=font_spec]{font_spec()}}}
+
 \item{...}{Further parameters to be passed to \code{\link[=paginate_to_mpfs]{paginate_to_mpfs()}}.}
 
 }
