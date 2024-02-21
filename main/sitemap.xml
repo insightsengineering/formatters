@@ -37,9 +37,6 @@
     <loc>https://insightsengineering.github.io/formatters/reference/basemethods.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/formatters/reference/basic_matrix_form.html</loc>
-  </url>
-  <url>
     <loc>https://insightsengineering.github.io/formatters/reference/basic_pagdf.html</loc>
   </url>
   <url>
@@ -155,6 +152,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/formatters/reference/table_inset.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/formatters/reference/test_matrix_form.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/formatters/reference/title_footer.html</loc>
