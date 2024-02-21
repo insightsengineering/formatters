@@ -373,7 +373,7 @@ MatrixPrintForm <- function(strings = NULL,
   ret
 }
 
-mf_update_cinfo <- function(mf, colwidths = NULL, col_gap = NULL, rep_cols = NULL) {
+mf_update_cinfo <- function(mf, colwidths = NULL, rep_cols = NULL) {
     
   need_update <- FALSE
   if(!is.null(colwidths)) {
@@ -381,13 +381,7 @@ mf_update_cinfo <- function(mf, colwidths = NULL, col_gap = NULL, rep_cols = NUL
     need_update <- TRUE  
   }
 
-  old_cgap <- mf_colgap(mf)
-  if(!is.null(col_gap)) {      
-    mf$col_gap <- col_gap
-    need_update <- TRUE
-  }
-
-  if(!is.null(rep_cols) && num_rep_cols(mf) != rep_cols) {
+  if(!is.null(rep_cols)) {
     mf$num_rep_cols <- rep_cols
     need_update <- TRUE
   }
@@ -395,10 +389,11 @@ mf_update_cinfo <- function(mf, colwidths = NULL, col_gap = NULL, rep_cols = NUL
   if(need_update && !is.null(mf_cinfo(mf))) {
     cinfo <- mf_cinfo(mf)
     r_colwidths <- mf_col_widths(mf)
-    if(mf_has_rlabels(mf))
+    has_rlabs <- mf_has_rlabels(mf)
+    if(has_rlabs) {
       r_colwidths <- r_colwidths[-1] ## row label widths
-    
-    cinfo$self_extent <- r_colwidths + mf_colgap(mf)
+    }
+    cinfo$self_extent <- r_colwidths
     nrepcols <- num_rep_cols(mf)
     rep_seq <- seq_len(nrepcols)
     cinfo$par_extent <- cumsum(c(0, cinfo$self_extent[seq_len(nrepcols)], rep(0, length(r_colwidths) - nrepcols - 1)))
@@ -639,7 +634,7 @@ mf_col_widths <- function(mf) {
       "number of columns in strings matrix (", NCOL(mf_strings(mf)), ")."
     )
   }
-  mf <- mf_update_cinfo(mf, colwidths = value, col_gap = NULL)
+  mf <- mf_update_cinfo(mf, colwidths = value, rep_cols = NULL)
   mf
 }
 
@@ -870,7 +865,7 @@ update_mf_ref_nlines <- function(mform, max_width) {
 #' @export
 #' @rdname mpf_accessors
 `mf_colgap<-` <- function(mf, value) {
-  mf <- mf_update_cinfo(mf, colwidths = NULL, col_gap = value)
+  mf$col_gap <- value
   mf
 }
 
@@ -957,6 +952,7 @@ basic_matrix_form <- function(df, parent_path = "root", ignore_rownames = FALSE,
   cnms <- names(df)
 
   strings <- rbind(cnms, bodystrs)
+
   rownames(strings) <- NULL
   if (!ignore_rownames) {
     strings <- cbind("rnms" = c("", rnms), strings)
@@ -998,8 +994,9 @@ basic_matrix_form <- function(df, parent_path = "root", ignore_rownames = FALSE,
     has_topleft = FALSE,
     nlines_header = 1,
     nrow_header = 1,
-    has_rowlabs = TRUE,
-    fontspec = fontspec
+    has_rowlabs = rowlabels,
+    fontspec = fontspec,
+    col_gap = 3
   )
   ret <- mform_build_refdf(ret)
 
@@ -1203,7 +1200,7 @@ truncate_one_span <- function(spanrow, j) {
 }
 
 truncate_spans <- function(spans, j) {
-  if (length(spans[1, ]) == 1) {
+  if (length(spans[1, ]) == 1 || length(j) == 1) {
     as.matrix(apply(spans, 1, truncate_one_span, j = j))
   } else {
     t(apply(spans, 1, truncate_one_span, j = j))

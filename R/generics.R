@@ -680,7 +680,7 @@ setMethod("num_rep_cols<-", "ANY", function(obj, value) stop("No num_rep_cols<- 
 #' @export
 #' @rdname num_rep_cols
 setMethod("num_rep_cols<-", "MatrixPrintForm", function(obj, value) {
-    obj <- mf_update_cinfo(obj, colwidths = NULL, col_gap = NULL, rep_cols = value)
+    obj <- mf_update_cinfo(obj, colwidths = NULL, rep_cols = value)
     obj
 })
 

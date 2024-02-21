@@ -363,6 +363,7 @@ test_that("spans and string matrix match after pagination when table has single 
 })
 
 
+
 test_that("pag_num works in paginate_to_mpfs and export_as_txt", {
   tst <- basic_matrix_form(mtcars, add_decoration = TRUE)
   pg_tst <- paginate_to_mpfs(tst, page_num = TRUE)
@@ -409,4 +410,16 @@ test_that("pag_num works in paginate_to_mpfs and export_as_txt", {
   )
   pages_tst_exp <- lapply(strsplit(pg_tst_exp, "OoOoO")[[1]], function(x) strsplit(x, "\n")[[1]])
   expect_equal(pages_tst_exp, print_pg_tst)
+})
+
+test_that("colgap is applied correctly during pagination with and without row labels ", {
+  df <- mtcars
+
+  test <- basic_matrix_form(df, ignore_rowlabels = TRUE)
+  res <- paginate_to_mpfs(test, cpp = 10, col_gap = 50, verbose = TRUE)
+  expect_equal(length(res),
+               ncol(test))
+  test2 <- basic_matrix_form(df, rowlabels = TRUE)
+  expect_error(paginate_to_mpfs(test2, cpp = 50, col_gap = 50, verbose = TRUE),
+               ".*Unable to find any valid pagination split for page 1.*")
 })

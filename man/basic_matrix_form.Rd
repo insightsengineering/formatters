@@ -4,7 +4,12 @@
 \alias{basic_matrix_form}
 \title{Create spoof matrix form from a data.frame}
 \usage{
-basic_matrix_form(df, parent_path = "root", fontspec = font_spec())
+basic_matrix_form(
+  df,
+  parent_path = "root",
+  fontspec = font_spec(),
+  rowlabels = TRUE
+)
 }
 \arguments{
 \item{df}{data.frame}
@@ -16,6 +21,9 @@ defaults to \code{"root"}, and generally should not matter to end users.}
 specifying the font information to use for
 calculating string widths and heights, as
 returned by \code{\link[=font_spec]{font_spec()}}}
+
+\item{rowlabels}{logical(1). Should the row labels of \code{df} be used as a
+row-label pseudo column? Defaults to \code{TRUE}}
 }
 \value{
 A valid \code{MatrixPrintForm} object representing \code{df},

@@ -236,7 +236,9 @@ valid_pag <- function(pagdf,
                       div_height = 1L,
                       verbose = FALSE,
                       row = TRUE,
-                      have_col_fnotes = FALSE) {
+                      have_col_fnotes = FALSE,
+                      col_gap,
+                      has_rowlabels) {
   # FALSE output from this function means that another guess is taken till success or failure
   rw <- pagdf[guess, ]
 
@@ -260,12 +262,19 @@ valid_pag <- function(pagdf,
     reflines <- reflines + div_height + 1L
   }
 
-  ##  reflines <- sum(pagdf[start:guess, "nreflines"])
+
   rowlines <- raw_rowlines + reflines ## sum(pagdf[start:guess, "self_extent"]) - reflines
   ## self extent includes reflines
-  ## self extent does ***not*** currently include trailing sep
-  ## we don't include the trailing_sep for guess because if we paginate here it won't be printed
-  sectlines <- if (start == guess) 0L else sum(!is.na(pagdf[start:(guess - 1), "trailing_sep"]))
+  ## self extent does ***not*** currently include trailing sep for rows
+  ## self extent does ***not*** currently include col_gap for columns  
+    ## we don't include the trailing_sep for guess because if we paginate here it won't be printed
+  ncols <- 0L  
+  if(row) {
+    sectlines <- if (start == guess) 0L else sum(!is.na(pagdf[start:(guess - 1), "trailing_sep"]))
+  } else { ## columns
+    ncols <- guess - start + 1 + length(pagdf$reprint_inds[[start]]) ## +1 because its incluive, 5-6 is 2 columns
+    sectlines <- col_gap * (ncols - as.integer(!has_rowlabels)) ## -1 if no row labels
+  }
   lines <- rowlines + sectlines # guess - start + 1 because inclusive of start
   rep_ext <- pagdf$par_extent[start]
   if (lines > rlpp) {
@@ -382,7 +391,9 @@ find_pag <- function(pagdf,
                      row = TRUE,
                      have_col_fnotes = FALSE,
                      div_height = 1L,
-                     do_error = FALSE) {
+                     do_error = FALSE,
+                     col_gap,
+                     has_rowlabels) {
   if (verbose) {
     if (row) {
       message("--------- ROW-WISE: Checking possible pagination for page ", current_page)
@@ -399,7 +410,9 @@ find_pag <- function(pagdf,
     min_sibs = min_siblings,
     nosplit = nosplitin, verbose, row = row,
     have_col_fnotes = have_col_fnotes,
-    div_height = div_height
+    div_height = div_height,
+    col_gap = col_gap,
+    has_rowlabels = has_rowlabels
   )) {
     guess <- guess - 1
   }
@@ -418,7 +431,9 @@ find_pag <- function(pagdf,
         row = row,
         have_col_fnotes = have_col_fnotes,
         div_height = div_height,
-        do_error = TRUE # only used to avoid loop
+        do_error = TRUE, # only used to avoid loop
+        col_gap = col_gap,
+        has_rowlabels = has_rowlabels
       )
     }
     stop(
@@ -478,6 +493,7 @@ find_pag <- function(pagdf,
 #'   associated object is rendered. Defaults to `1`.
 #' @param col_gap numeric(1). Width of gap between columns, in same units as extent
 #' in `pagdf` (spaces under a particular font specification).
+#' @param has_rowlabels logical(1). Does the object being paginated have row-labels?
 #'
 #' @return A list containing the vector of row numbers, broken up by page
 #'
@@ -497,7 +513,8 @@ pag_indices_inner <- function(pagdf,
                               row = TRUE,
                               have_col_fnotes = FALSE,
                               div_height = 1L,
-                              col_gap = 3L) {
+                              col_gap = 3L,
+                              has_rowlabels) {
   start <- 1
   current_page <- 1
   nr <- nrow(pagdf)
@@ -521,7 +538,9 @@ pag_indices_inner <- function(pagdf,
       verbose = verbose,
       row = row,
       have_col_fnotes = have_col_fnotes,
-      div_height = div_height
+      div_height = div_height,
+      col_gap = col_gap,
+      has_rowlabels = has_rowlabels
     )
     ret <- c(ret, list(c(
       pagdf$reprint_inds[[start]],
@@ -584,14 +603,15 @@ vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, r
     min_siblings = 1,
     nosplitin = nosplitin,
     row = FALSE,
-    col_gap = mf_colgap(mf)
+    col_gap = mf_colgap(mf),
+    has_rowlabels = mf_has_rlabels(mf)
   )
   res
 }
 
 mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf), fontspec, colpaths = NULL) {
   if(!is.null(mf_cinfo(mf))) {
-    return(mf_update_cinfo(mf, colwidths = colwidths, col_gap = mf_colgap(mf)))
+    return(mf_update_cinfo(mf, colwidths = colwidths))
   }
   new_dev <- open_font_dev(fontspec)
   if(new_dev)
@@ -605,19 +625,21 @@ mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf), f
   rlab_extent <- if (has_rlabs) clwds[1] else 0L
   sqstart <- rlabs_flag + 1L # rep_cols + 1L
 
+
   pdfrows <- lapply(
     (sqstart):ncol(mf$strings),
     function(i) {
       rownum <- i - rlabs_flag
       rep_inds <- seq_len(rep_cols)[seq_len(rep_cols) < rownum]
-      rep_extent_i <- sum(0L, clwds[rlabs_flag + rep_inds]) + mf$col_gap * length(rep_inds)
+      rep_extent_i <- sum(0L,
+                          clwds[rlabs_flag + rep_inds]) ## colwidths
       pagdfrow(
         row = NA,
         nm = rownum,
         lab = rownum,
         rnum = rownum,
         pth = NA,
-        extent = clwds[i] + mf$col_gap,
+        extent = clwds[i],
         repext = rep_extent_i, # sum(clwds[rep_cols]) + mf$col_gap * max(0, (length(rep_cols) - 1)),
         repind = rep_inds, # rep_cols,
         rclass = "stuff",
@@ -1071,7 +1093,9 @@ paginate_indices <- function(obj,
       context_lpp_or_cpp = pg_size_spec$lpp - rlpp,
       verbose = verbose,
       min_siblings = min_siblings,
-      nosplitin = nosplitin[["rows"]]
+      nosplitin = nosplitin[["rows"]],
+      col_gap = col_gap,
+      has_rowlabels = mf_has_rlabels(mpf)
     )
   }
 
