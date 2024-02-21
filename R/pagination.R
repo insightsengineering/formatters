@@ -620,7 +620,7 @@ mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf)) {
 #' Basic/spoof pagination info dataframe
 #'
 #' Returns a minimal pagination info data.frame (with no sibling/footnote/etc info).
-#' @inheritParams basic_matrix_form
+#' @inheritParams test_matrix_form
 #' @param rnames character. Vector of row names
 #' @param labs character. Vector of row labels (defaults to names)
 #' @param rnums integer. Vector of row numbers. Defaults to `seq_along(rnames)`.
@@ -990,7 +990,7 @@ paginate_indices <- function(obj,
   #                 in the above call, so we need to keep this information in mf_rinfo
   #                 and use it here.
   mfri <- mf_rinfo(mpf)
-  if (NROW(mfri) > 0 && .is_listing(mpf)) {
+  if (NROW(mfri) > 1 && .is_listing(mpf) && length(.keycols_from_listing(obj)) > 0) {
     # Lets determine the groupings created by keycols
     keycols_grouping_df <- NULL
     keycols <- .keycols_from_listing(obj)
