@@ -396,11 +396,20 @@ test_that("pag_num works in paginate_to_mpfs and export_as_txt", {
 
   # lets go to the minimum cpp and break it -> propose_column_widths(tst)
   expect_error(
-    pg_tst <- paginate_to_mpfs(tst,
+    pg_tst_off <- paginate_to_mpfs(tst,
       cpp = 19 + 5 + 3, # rownames + max colwidths + 3 (extra colgap)
       lpp = 20,
       page_num = "This is too long, it is breaking"
     ),
     "Page numbering string (page_num) is too wide to fit the desired page (inserted cpp)."
   )
+
+  # Very stringent test with export_as_txt
+  pg_tst_exp <- export_as_txt(tst,
+    cpp = 50, lpp = 20,
+    page_num = "Non fixed Paging {i} of {n}",
+    page_break = "OoOoO"
+  )
+  pages_tst_exp <- lapply(strsplit(pg_tst_exp, "OoOoO")[[1]], function(x) strsplit(x, "\n")[[1]])
+  expect_equal(pages_tst_exp, print_pg_tst)
 })

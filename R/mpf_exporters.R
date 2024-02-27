@@ -73,7 +73,7 @@ export_as_txt <- function(x,
       pg_width = pg_width,
       pg_height = pg_height,
       margins = margins,
-      lpp = lpp - 1, # additional line for page number
+      lpp = lpp,
       cpp = cpp,
       min_siblings = min_siblings,
       nosplitin = nosplitin,
@@ -107,6 +107,8 @@ export_as_txt <- function(x,
     widths = NULL,
     hsep = hsep, tf_wrap = tf_wrap, max_width = max_width
   )
+
+  res <- paste(strings, collapse = page_break)
 
   if (is.null(file)) {
     res
