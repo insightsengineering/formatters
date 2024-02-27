@@ -401,7 +401,7 @@ test_that("pag_num works in paginate_to_mpfs and export_as_txt", {
       lpp = 20,
       page_num = "This is too long, it is breaking"
     ),
-    "Page numbering string (page_num) is too wide to fit the desired page (inserted cpp)."
+    "Page numbering string \\(page_num\\) is too wide to fit the desired page \\(inserted cpp\\)."
   )
 
   # Very stringent test with export_as_txt
