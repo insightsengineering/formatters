@@ -83,59 +83,62 @@ test_that("exporters work", {
     fil4 <- tempfile(fileext = ".rtf")
     export_as_rtf(dfmf, file = fil4)
     expect_true(file.exists(fil4))
+    if (file.exists("Rplots.pdf")) {
+      file.remove("Rplots.pdf") # coming probably from rtf::
+    }
   }
 
 
-
-  ## https://github.com/insightsengineering/rtables/issues/634
-
-  test_that("mpf_subset_rows works when there are newlines/wrapping in column labels", {
-    strs <- matrix(c(
-      "hi", "lo",
-      "", "there",
-      "(N=50)", "(N=whoknows)",
-      "value", "value",
-      "value2", "value2"
-    ), nrow = 5, byrow = TRUE)
-
-    rinfo <- rbind(
-      pagdfrow(
-        nm = "what", lab = "what", rnum = 1, pth = list(), extent = 1L, nsibs = 1, sibpos = 1, rclass = "what"
-      ),
-      pagdfrow(
-        nm = "what2", lab = "what2", rnum = 2, pth = list(), extent = 1L, nsibs = 1, sibpos = 1, rclass = "what"
-      )
-    )
-    mymf <- MatrixPrintForm(
-      strings = strs, aligns = matrix("center", ncol = 2, nrow = 5),
-      formats = matrix("xx", ncol = 2, nrow = 5),
-      spans = matrix(1L, ncol = 2, nrow = 5),
-      has_topleft = FALSE,
-      line_grouping = c(1, 1, 2, 3, 4),
-      nrow_header = 2,
-      row_info = rinfo
-    )
-
-    mymf_out <- toString(mymf, hsep = "-")
-    expct_lns <- c(
-      "              lo     ",
-      "  hi        there    ",
-      "(N=50)   (N=whoknows)",
-      "---------------------",
-      "value       value    ",
-      "value2      value2   \n"
-    )
-    expect_identical(
-      mymf_out,
-      paste(expct_lns, collapse = "\n")
-    )
-    newmf <- mpf_subset_rows(mymf, 1)
-    expect_identical(
-      toString(newmf, hsep = "-"),
-      paste(c(expct_lns[1:5], ""), collapse = "\n")
-    )
-  })
 })
+
+test_that("mpf_subset_rows works when there are newlines/wrapping in column labels", {
+  ## https://github.com/insightsengineering/rtables/issues/634
+  strs <- matrix(c(
+    "hi", "lo",
+    "", "there",
+    "(N=50)", "(N=whoknows)",
+    "value", "value",
+    "value2", "value2"
+  ), nrow = 5, byrow = TRUE)
+
+  rinfo <- rbind(
+    pagdfrow(
+      nm = "what", lab = "what", rnum = 1, pth = list(), extent = 1L, nsibs = 1, sibpos = 1, rclass = "what"
+    ),
+    pagdfrow(
+      nm = "what2", lab = "what2", rnum = 2, pth = list(), extent = 1L, nsibs = 1, sibpos = 1, rclass = "what"
+    )
+  )
+  mymf <- MatrixPrintForm(
+    strings = strs, aligns = matrix("center", ncol = 2, nrow = 5),
+    formats = matrix("xx", ncol = 2, nrow = 5),
+    spans = matrix(1L, ncol = 2, nrow = 5),
+    has_topleft = FALSE,
+    line_grouping = c(1, 1, 2, 3, 4),
+    nrow_header = 2,
+    row_info = rinfo
+  )
+
+  mymf_out <- toString(mymf, hsep = "-")
+  expct_lns <- c(
+    "              lo     ",
+    "  hi        there    ",
+    "(N=50)   (N=whoknows)",
+    "---------------------",
+    "value       value    ",
+    "value2      value2   \n"
+  )
+  expect_identical(
+    mymf_out,
+    paste(expct_lns, collapse = "\n")
+  )
+  newmf <- mpf_subset_rows(mymf, 1)
+  expect_identical(
+    toString(newmf, hsep = "-"),
+    paste(c(expct_lns[1:5], ""), collapse = "\n")
+  )
+})
+
 
 test_that("export_as_txt maintains repeated columns when paginate is TRUE", {
   dfmf <- basic_matrix_form(mtcars)
@@ -156,3 +159,26 @@ test_that("export_as_txt maintains horizontal separator from table", {
   out <- strsplit(export_as_txt(dfmf), "\n")[[1]][2]
   expect_equal(out, paste0(rep("=", nchar(out)), collapse = ""))
 })
+
+
+test_that("export_as_pdf works", {
+  # Enhancing coverage -> modified copy from rtables
+  bmf <- basic_matrix_form(mtcars)
+  tmpf <- tempfile(fileext = ".pdf")
+
+  expect_warning(
+    export_as_pdf(bmf, file = tmpf, landscape = TRUE, width = 3, paginate = FALSE),
+    "width of page 1 exceeds the available space"
+  )
+  expect_true(file.exists(tmpf))
+  file.remove(tmpf)
+  expect_warning(
+    export_as_pdf(bmf, file = tmpf, height = 3, paginate = FALSE),
+    "height of page 1 exceeds the available space"
+  )
+
+  res <- export_as_pdf(bmf, file = tmpf, paginate = TRUE, cpp = 90)
+
+  expect_equal(res$npages, 2)
+})
+
