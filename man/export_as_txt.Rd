@@ -28,8 +28,7 @@ export_as_txt(
   nosplitin = character(),
   rep_cols = num_rep_cols(x),
   verbose = FALSE,
-  page_break = "\\\\s\\\\n",
-  page_num = "page {i}/{n}"
+  page_break = "\\\\s\\\\n"
 )
 }
 \arguments{
@@ -76,7 +75,7 @@ size). \code{NULL} indicates no horizontal pagination should occur.}
 this is calculated automatically based on the specified page
 size). \code{NULL} indicates no vertical pagination should occur.}
 
-\item{...}{Passed to individual methods.}
+\item{...}{Further parameters to be passed to \code{\link[=paginate_to_mpfs]{paginate_to_mpfs()}}.}
 
 \item{hsep}{character(1). Characters to repeat to create
 header/body separator line. If \code{NULL}, the object value will be
@@ -115,10 +114,6 @@ pagination breaks be shown. Defaults to \code{FALSE}.}
 
 \item{page_break}{character(1).  Page break  symbol (defaults  to
 outputting \code{"\\n\\s"}).}
-
-\item{page_num}{character(1). The placeholder for page numbers. {i}
-will be replaced with current page number, {n} will be replaced with
-total page number.}
 }
 \value{
 if \code{file} is NULL, the total paginated and then concatenated
@@ -140,4 +135,5 @@ during the pagination process.
 }
 \examples{
 export_as_txt(basic_matrix_form(mtcars), pg_height = 5, pg_width = 4)
+
 }

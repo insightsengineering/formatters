@@ -181,4 +181,3 @@ test_that("export_as_pdf works", {
 
   expect_equal(res$npages, 2)
 })
-

@@ -51,6 +51,7 @@ paginate_to_mpfs(
   max_width = NULL,
   indent_size = 2,
   pg_size_spec = NULL,
+  page_num = NULL,
   rep_cols = num_rep_cols(obj),
   col_gap = 2,
   verbose = FALSE
@@ -153,6 +154,11 @@ row labels) to be repeated on every page. Defaults to 0}
 \item{verbose}{logical(1). Should additional informative messages about the search for
 pagination breaks be shown. Defaults to \code{FALSE}.}
 
+\item{page_num}{character(1). Placeholder string for page numbers. It should be like
+the following format: \code{"page {i}/{n}"}. \code{{i}} will be replaced with current
+page number, \code{{n}} will be replaced with total page number. It uses current \code{cpp}
+to position the string on the bottom right corner. Defaults to \code{NULL}.}
+
 \item{...}{Passed to individual methods.}
 }
 \value{
@@ -254,6 +260,7 @@ mpf <- basic_matrix_form(mtcars)
 paginate_indices(mpf, pg_width = 5, pg_height = 3)
 
 paginate_to_mpfs(mpf, pg_width = 5, pg_height = 3)
+
 
 diagnose_pagination(mpf, pg_width = 5, pg_height = 3)
 clws <- propose_column_widths(mpf)

@@ -51,7 +51,7 @@ horizontal margins.}
 will be thrown if the family named is not monospaced. Defaults
 to Courier.}
 
-\item{...}{Passed to individual methods.}
+\item{...}{Further parameters to be passed to \code{\link[=paginate_to_mpfs]{paginate_to_mpfs()}}.}
 }
 \description{
 Experimental export to the \code{RTF} format.

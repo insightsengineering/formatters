@@ -364,3 +364,43 @@ test_that("spans and string matrix match after pagination when table has single 
     dim(pag_test[[1]]$strings)
   )
 })
+
+
+test_that("pag_num works in paginate_to_mpfs and export_as_txt", {
+  tst <- basic_matrix_form(mtcars, add_decoration = TRUE)
+  pg_tst <- paginate_to_mpfs(tst, page_num = TRUE)
+
+  print_pg_tst <- lapply(pg_tst, function(x) strsplit(toString(x), "\n")[[1]])
+
+  expect_equal(nchar(print_pg_tst[[1]][46]), 105) # 105 seems the default
+
+  pg_tst <- paginate_to_mpfs(tst, cpp = 50, lpp = 20, page_num = "Non fixed Paging {i} of {n}")
+
+  print_pg_tst <- lapply(pg_tst, function(x) strsplit(toString(x), "\n")[[1]])
+
+  # lpp is respected
+  expect_true(all(sapply(lengths(print_pg_tst), function(x) x <= 20)))
+
+  # cpp is respected exactly for last line (pages)
+  expect_true(all(sapply(print_pg_tst, function(x) nchar(tail(x, 1)) == 50)))
+
+  # page_num is respected
+  expect_identical(
+    print_pg_tst[[1]][20],
+    "                          Non fixed Paging 1 of 18"
+  )
+  expect_identical(
+    print_pg_tst[[4]][20],
+    "                          Non fixed Paging 4 of 18"
+  )
+
+  # lets go to the minimum cpp and break it -> propose_column_widths(tst)
+  expect_error(
+    pg_tst <- paginate_to_mpfs(tst,
+      cpp = 19 + 5 + 3, # rownames + max colwidths + 3 (extra colgap)
+      lpp = 20,
+      page_num = "This is too long, it is breaking"
+    ),
+    "Page numbering string (page_num) is too wide to fit the desired page (inserted cpp)."
+  )
+})

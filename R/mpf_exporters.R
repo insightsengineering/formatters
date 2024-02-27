@@ -21,9 +21,8 @@
 #' @param paginate logical(1). Whether pagination should be performed,
 #'     defaults to \code{TRUE} if page size is specified (including
 #'     the default).
-#' @param page_num  character(1). The placeholder for page numbers. {i}
-#' will be replaced with current page number, {n} will be replaced with
-#' total page number.
+#' @param ...  Further parameters to be passed to [paginate_to_mpfs()].
+#'
 #' @details if  \code{x} has an \code{num_rep_cols}  method, the value
 #'     returned by it will be  used for \code{rep_cols} by default, if
 #'     not, 0 will be used.
@@ -33,9 +32,11 @@
 #'
 #' @return if \code{file} is NULL, the total paginated and then concatenated
 #' string value, otherwise the file that was written.
-#' @export
+#'
 #' @examples
 #' export_as_txt(basic_matrix_form(mtcars), pg_height = 5, pg_width = 4)
+#'
+#' @export
 export_as_txt <- function(x,
                           file = NULL,
                           page_type = NULL,
@@ -59,8 +60,8 @@ export_as_txt <- function(x,
                           nosplitin = character(),
                           rep_cols = num_rep_cols(x),
                           verbose = FALSE,
-                          page_break = "\\s\\n",
-                          page_num = "page {i}/{n}") {
+                          page_break = "\\s\\n") {
+
   if (paginate) {
     pages <- paginate_to_mpfs(
       x,
@@ -81,7 +82,8 @@ export_as_txt <- function(x,
       max_width = max_width,
       indent_size = indent_size,
       verbose = verbose,
-      rep_cols = rep_cols
+      rep_cols = rep_cols,
+      ...
     )
   } else {
     mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size)
@@ -105,22 +107,7 @@ export_as_txt <- function(x,
     widths = NULL,
     hsep = hsep, tf_wrap = tf_wrap, max_width = max_width
   )
-  checkmate::assert_string(page_num)
-  total_pages <- length(strings)
-  page_num <- gsub("\\{n\\}", total_pages, page_num)
-  page_nums <- vapply(
-    seq_len(total_pages),
-    function(x) {
-      gsub("\\{i\\}", x, page_num)
-    },
-    FUN.VALUE = ""
-  )
-  page_footer <- sprintf(paste0("%", cpp, "s\n"), page_nums)
-  if (any(nchar(page_footer) > cpp)) {
-    stop("Page footer is too large to fit the page.")
-  }
-  strings <- paste0(strings, page_footer)
-  res <- paste(strings, collapse = page_break)
+
   if (is.null(file)) {
     res
   } else {
