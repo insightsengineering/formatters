@@ -99,10 +99,10 @@ var_labels <- function(x, fill = FALSE) {
   theseq <- if (!is.null(names(value))) names(value) else seq_along(x)
   # across columns of x
   for (j in theseq) {
-    attr(x[[j]], "label") <- if (!is.na(value[j])) {
-      value[j]
+    if (!is.na(value[j])) {
+      attr(x[[j]], "label") <- unname(value[j])
     } else {
-      NULL
+      attr(x[[j]], "label") <- NULL
     }
   }
 
