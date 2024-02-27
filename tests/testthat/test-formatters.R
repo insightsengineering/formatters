@@ -424,7 +424,8 @@ test_that("labels and miscellany", {
 
   expect_true(all(is.na(var_labels(var_labels_remove(mydf)))))
 })
-test_that("labels and miscellany", {
+test_that("var_labels works in self-assignment with named values", {
+  # regression test #262
   labels <- letters[1:5]
   var_labels(iris) <- labels
 
