@@ -260,8 +260,6 @@ mpf <- basic_matrix_form(mtcars)
 paginate_indices(mpf, pg_width = 5, pg_height = 3)
 
 paginate_to_mpfs(mpf, pg_width = 5, pg_height = 3)
-
-
 diagnose_pagination(mpf, pg_width = 5, pg_height = 3)
 clws <- propose_column_widths(mpf)
 clws[1] <- floor(clws[1] / 3)

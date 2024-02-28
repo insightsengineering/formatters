@@ -630,7 +630,6 @@ mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf)) {
 #' @return A data.frame suitable for use in both the `MatrixPrintForm` constructor and the pagination machinery
 #'
 #' @examples
-#'
 #' basic_pagdf(c("hi", "there"))
 #' @export
 basic_pagdf <- function(rnames, labs = rnames, rnums = seq_along(rnames),
@@ -1281,7 +1280,6 @@ paginate_to_mpfs <- function(obj,
 #'
 #' @rdname paginate_indices
 #' @examples
-#'
 #' diagnose_pagination(mpf, pg_width = 5, pg_height = 3)
 #' clws <- propose_column_widths(mpf)
 #' clws[1] <- floor(clws[1] / 3)
