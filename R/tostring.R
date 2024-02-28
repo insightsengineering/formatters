@@ -1130,6 +1130,7 @@ propose_column_widths <- function(x, indent_size = 2) {
 #' padstr("abc", 5, "right")
 #'
 #' \dontrun{
+#'   # Expect error: "abc" has more than 1 characters
 #'   padstr("abc", 1)
 #' }
 padstr <- function(x, n, just = list_valid_aligns()) {
