@@ -80,5 +80,5 @@ cat(toString(mform))
 
 }
 \seealso{
-\code{\link[=wrap_string]{wrap_string()}}n
+\code{\link[=wrap_string]{wrap_string()}}
 }

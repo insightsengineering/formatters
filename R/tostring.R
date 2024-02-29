@@ -8,6 +8,7 @@ font_dev_state$open <- FALSE
 font_dev_state$fontspec <- list()
 font_dev_state$spacewidth <- NA_real_
 font_dev_state$ismonospace <- NA
+font_dev_state$max_ratio <- NA_real_
 
 
 cwidth_inches_unsafe <- function(x) {
@@ -81,10 +82,16 @@ open_font_dev <- function(fontspec) {
     gp <- gpar_from_fspec(fontspec)
     pushViewport(plotViewport(gp = gp))
     spcwidth <- cwidth_inches_unsafe(" ")
+    ## XXX this assumes M or W is the widest "reasonable char"
+    ## should be true for any reasonable font but not guaranteed!!!
+    mwidth <- cwidth_inches_unsafe("M")
+    wwidth <- cwidth_inches_unsafe("W")
     assign("open", TRUE, envir = font_dev_state)
     assign("fontspec", fontspec, envir = font_dev_state)
     assign("spacewidth", spcwidth, envir = font_dev_state)
     assign("ismonospace", spcwidth == cwidth_inches_unsafe("W"),
+           envir = font_dev_state)
+    assign("maxratio", max(mwidth, wwidth)/spcwidth,
            envir = font_dev_state)
     invisible(TRUE)
 }
@@ -98,6 +105,7 @@ close_font_dev <- function() {
         assign("fontspec", list(), envir = font_dev_state)
         assign("spacewidth", NA_real_, envir = font_dev_state)
         assign("ismonospace", NA, envir = font_dev_state)
+        assign("maxratio", NA_real_, envir = font_dev_state)
     }
     invisible(NULL)
 }
@@ -105,8 +113,46 @@ close_font_dev <- function() {
 ## can only be called when font_dev_state$open is TRUE
 get_space_width <- function() {
   if(!font_dev_state$open)
-      stop("get_space_width called when font dev state is not open. This shouldn't happen, please contact the maintainers.")
+    stop("get_space_width called when font dev state is not open. This shouldn't happen, please contact the maintainers.")
   font_dev_state$spacewidth
+}
+
+
+
+
+.open_fdev_is_monospace <- function() {
+  if(!font_dev_state$open)
+    stop(".open_fdev_is_monospace called when font dev state is not open. This shouldn't happen, please contact the maintainers.")
+  font_dev_state$ismonospace
+}
+
+
+
+
+## safe wrapper around .open_fdev_is_monospace
+is_monospace <- function(fontspec = font_spec(font_family,
+                                              font_size,
+                                              lineheight),
+                         font_family = "Courier",
+                         font_size = 8,
+                         lineheight = 1
+                         ) {
+    if(is.null(fontspec))
+      return(TRUE)
+    new_dev <- open_font_dev(fontspec)
+    if(new_dev)
+      on.exit(close_font_dev())
+    .open_fdev_is_monospace()
+}
+
+
+get_max_wratio <- function() {
+  if(!font_dev_state$open)
+      stop("get_space_width called when font dev state is not open. This shouldn't happen, please contact the maintainers.")
+  if(.open_fdev_is_monospace())
+    1
+  else
+    font_dev_state$maxratio
 }
 
 gpar_from_fspec <- function(fontspec){
@@ -548,7 +594,7 @@ calc_str_adj <- function(str, fontspec) {
 #' case each string is word-wrapped separately with the behavior
 #' described above.
 #'
-#' @seealso [wrap_string()]n
+#' @seealso [wrap_string()]
 #'
 #' @examples
 #' mform <- basic_matrix_form(mtcars)
@@ -655,10 +701,6 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
   # Main wrapper function for table core
   mat <- do_cell_fnotes_wrap(mat, widths, max_width = max_width, tf_wrap = tf_wrap, fontspec = fontspec)
-
-  ## if(!is_monospace(font_family = font_family)) {
-  ##     mat <- truetype_correct_wrap(mat, widths, max_width = max_Width, tf_wrap = tf_wrap)
-  ## }
 
   body <- mf_strings(mat)
   aligns <- mf_aligns(mat)
@@ -919,7 +961,7 @@ new_line_warning <- function(str_v) {
 #' @inheritParams open_font_dev
 #' @param str character. String to be wrapped. If it is a character vector or
 #'   a list, it will be looped as a list and returned with `unlist(use.names = FALSE)`.
-#' @param width numeric(1). Width, in characters, that the
+#' @param width numeric(1). Width, in number of spaces, that the
 #'   text should be wrapped at.
 #' @param collapse character(1) or `NULL`. If the words that have been split should
 #'   be pasted together with the collapse character. This is usually done internally
@@ -967,13 +1009,11 @@ wrap_string <- function(str, width, collapse = NULL, fontspec = font_spec()) {
     )
   }
 
-  ## width comes in as number of spaces (thats what the
-  ## column widths mean under truetype support, remember
-  ## that collapses to number of characters cleanly
-  ## in the monospace case)
-  width_nchar <- .ttype_adjust_width(str, width, fontspec)
+  if(!is_monospace(fontspec)) 
+      return(wrap_string_ttype(str, width, fontspec, collapse = collapse))
+
   # str can be also a vector or list. In this case simplify manages the output
-  ret <- .go_stri_wrap(str, width_nchar)
+  ret <- .go_stri_wrap(str, width)
 
   # Check if it went fine
   if (any(nchar_ttype(ret, fontspec) > width)) {
@@ -1046,11 +1086,70 @@ wrap_string <- function(str, width, collapse = NULL, fontspec = font_spec()) {
   )
 }
 
+
+split_word_ttype <- function(string, width_spc, fontspec, min_ok_chars) {
+  chrs <- strsplit(string, "")[[1]]
+  nctt_chars <- nchar_ttype(chrs, fontspec, raw = TRUE)
+  ok <- which(cumsum(nctt_chars) <= width_spc)
+  if(length(ok) < min_ok_chars || length(chrs) - length(ok) < min_ok_chars)
+    list(ok = character(),
+         remainder = string)
+  else
+    list(ok = substr(string, 1, length(ok)),
+         remainder = substr(string, length(ok) + 1, nchar(string)))
+}
+
+## need a separate path here because **the number of characters**
+## in each part is no longer going to be constant the way it
+## was for monospace
+## this is much slower but still shouldn't be a bottleneck, if it is we'll
+## have to do something else
+wrap_string_ttype <- function(string, width_spc, fontspec, collapse = NULL, min_ok_chars = min(floor(length(string)/2), 4)) {
+  newdev <- open_font_dev(fontspec)
+  if(newdev)
+    on.exit(close_font_dev())
+  
+  rawspls <- strsplit(string, "[[:space:]](?=[^[:space:]])", perl = TRUE)[[1]] #preserve all but one space
+  nctt <- nchar_ttype(rawspls, fontspec, raw = TRUE)
+  pts <- which(cumsum(nctt) <= width_spc)
+  if(length(pts) == length(rawspls))
+      return(string) ## no splitting needed
+  else if(length(pts) == 0) { ## no spaces, all one word, split it and keep going
+      inner_res <- split_word_ttype(rawspls[1], width_spc, fontspec, min_ok_chars)
+      done <- inner_res$ok
+      remainder <- paste(c(inner_res$remainder, rawspls[-1]), collapse = " ")
+  } else { ## some words fit, and some words don't
+ 
+      done_tmp <- paste(rawspls[pts], collapse = " ")
+      inner_res <- split_word_ttype(rawspls[length(pts) + 1], width_spc - sum(nctt[pts]), fontspec, min_ok_chars)
+      done <- paste(c(rawspls[pts], inner_res$ok),
+                    collapse = " ")
+      remainder = paste(c(inner_res$remainder,
+                          if(length(rawspls) > length(pts) + 1) tail(rawspls, -(length(pts)+1))),
+                        collapse = " ")
+  }
+  ret <- c(done,
+           wrap_string_ttype(remainder, width_spc, fontspec))
+  if(!is.null(collapse))
+    ret <- paste(ret, collapse = collapse)
+  ret
+}
+
+
+
+
+
+
+
+
+
+
+
 ## w comes in in terms of number of spaces, but
 ## we need the more generic "number of characters"
 ## to pass to stringi::stri_wrap
 #' @importFrom stats quantile
-.ttype_adjust_width <- function(str, w, fontspec) {
+.ttype_adjust_width <- function(str, w, fontspec, adj_qntl) {
     ## we are going to be conservative in the truetype
     ## case, but monospace behavior shouldn't change
     ## so just immediately return w.
@@ -1062,7 +1161,7 @@ wrap_string <- function(str, width, collapse = NULL, fontspec = font_spec()) {
         return(w)
     nchars <- nchar(str)
     ind_chars <- strsplit(str, "")[[1]]
-    nspaces <- nchar_ttype(ind_chars, fontspec)
+    nspaces <- nchar_ttype(ind_chars, fontspec, raw = TRUE)
     if(length(nspaces) == 1) {
         spc_per_char <- nspaces
     } else {
@@ -1072,14 +1171,14 @@ wrap_string <- function(str, width, collapse = NULL, fontspec = font_spec()) {
         ## or narrower, having enough of them
         ## in a row to make wrapping do the wrong
         ## thing  seems very unlikely
-        spc_per_char <- quantile(nspaces, .75)
+        spc_per_char <- quantile(nspaces, adj_qntl)
     }
 
     ## convert from w spaces to adj_w characters
     ## where a "character" takes up the average
     ## width of characters in str
     ## then be a bit conservative with floor
-    adj_w <- floor(w * spc_per_char)
+    adj_w <- max(1L, floor(w / spc_per_char))
     adj_w
 }
 

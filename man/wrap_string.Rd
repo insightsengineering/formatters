@@ -13,7 +13,7 @@ wrap_txt(str, width, collapse = NULL, fontspec = font_spec())
 \item{str}{character. String to be wrapped. If it is a character vector or
 a list, it will be looped as a list and returned with \code{unlist(use.names = FALSE)}.}
 
-\item{width}{numeric(1). Width, in characters, that the
+\item{width}{numeric(1). Width, in number of spaces, that the
 text should be wrapped at.}
 
 \item{collapse}{character(1) or \code{NULL}. If the words that have been split should
