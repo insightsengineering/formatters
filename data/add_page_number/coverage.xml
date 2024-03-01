@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.917525773195876" branch-rate="0" lines-covered="2225" lines-valid="2425" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-02-28 08:30:06.90132">
+<coverage line-rate="0.917181705809642" branch-rate="0" lines-covered="2226" lines-valid="2427" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-03-01 03:17:40.37925">
   <sources>
     <source>/__w/formatters/formatters/formatters</source>
   </sources>
   <packages>
-    <package name="formatters" line-rate="0.917525773195876" branch-rate="0" complexity="0">
+    <package name="formatters" line-rate="0.917181705809642" branch-rate="0" complexity="0">
       <classes>
         <class name="format_value.R" filename="R/format_value.R" line-rate="0.938144329896907" branch-rate="0" complexity="0">
           <methods>
@@ -6048,6 +6048,24 @@
             <line number="20" hits="360" branch="false"/>
             <line number="21" hits="52" branch="false"/>
             <line number="23" hits="308" branch="false"/>
+          </lines>
+        </class>
+        <class name="zzz.R" filename="R/zzz.R" line-rate="0.5" branch-rate="0" complexity="0">
+          <methods>
+            <method name="default_page_number" signature="" line-rate="1" branch-rate="0" complexity="0">
+              <lines>
+                <line number="4" hits="26" branch="false"/>
+              </lines>
+            </method>
+            <method name="set_default_page_number" signature="" line-rate="0" branch-rate="0" complexity="0">
+              <lines>
+                <line number="10" hits="0" branch="false"/>
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="4" hits="26" branch="false"/>
+            <line number="10" hits="0" branch="false"/>
           </lines>
         </class>
       </classes>
