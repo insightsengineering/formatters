@@ -28,7 +28,8 @@ export_as_txt(
   nosplitin = character(),
   rep_cols = num_rep_cols(x),
   verbose = FALSE,
-  page_break = "\\\\s\\\\n"
+  page_break = "\\\\s\\\\n",
+  page_num = default_page_number()
 )
 }
 \arguments{
@@ -114,6 +115,9 @@ pagination breaks be shown. Defaults to \code{FALSE}.}
 
 \item{page_break}{character(1).  Page break  symbol (defaults  to
 outputting \code{"\\n\\s"}).}
+
+\item{page_num}{character(1). Placeholder string for page numbers. Check
+\link{default_page_number} for more information. Defaults to \code{NULL}.}
 }
 \value{
 if \code{file} is NULL, the total paginated and then concatenated

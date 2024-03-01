@@ -60,7 +60,8 @@ export_as_txt <- function(x,
                           nosplitin = character(),
                           rep_cols = num_rep_cols(x),
                           verbose = FALSE,
-                          page_break = "\\s\\n") {
+                          page_break = "\\s\\n",
+                          page_num = default_page_number()) {
 
   if (paginate) {
     pages <- paginate_to_mpfs(
@@ -83,7 +84,7 @@ export_as_txt <- function(x,
       indent_size = indent_size,
       verbose = verbose,
       rep_cols = rep_cols,
-      ...
+      page_num = page_num
     )
   } else {
     mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size)
@@ -537,6 +538,7 @@ export_as_pdf <- function(x,
                           font_size = 8,
                           fontsize = font_size,
                           paginate = TRUE,
+                          page_num = default_page_number(),
                           lpp = NULL,
                           cpp = NULL,
                           hsep = "-",
@@ -602,7 +604,8 @@ export_as_pdf <- function(x,
       max_width = max_width,
       indent_size = indent_size,
       verbose = FALSE,
-      rep_cols = num_rep_cols(x)
+      rep_cols = num_rep_cols(x),
+      page_num = page_num
     )
   } else {
     mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size)
