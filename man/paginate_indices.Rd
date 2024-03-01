@@ -51,6 +51,7 @@ paginate_to_mpfs(
   max_width = NULL,
   indent_size = 2,
   pg_size_spec = NULL,
+  page_num = default_page_number(),
   rep_cols = num_rep_cols(obj),
   col_gap = 2,
   verbose = FALSE
@@ -153,6 +154,9 @@ row labels) to be repeated on every page. Defaults to 0}
 \item{verbose}{logical(1). Should additional informative messages about the search for
 pagination breaks be shown. Defaults to \code{FALSE}.}
 
+\item{page_num}{character(1). Placeholder string for page numbers. Check
+\link{default_page_number} for more information. Defaults to \code{NULL}.}
+
 \item{...}{Passed to individual methods.}
 }
 \value{
@@ -254,6 +258,7 @@ mpf <- basic_matrix_form(mtcars)
 paginate_indices(mpf, pg_width = 5, pg_height = 3)
 
 paginate_to_mpfs(mpf, pg_width = 5, pg_height = 3)
+
 diagnose_pagination(mpf, pg_width = 5, pg_height = 3)
 clws <- propose_column_widths(mpf)
 clws[1] <- floor(clws[1] / 3)

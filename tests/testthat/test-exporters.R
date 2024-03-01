@@ -177,8 +177,9 @@ test_that("export_as_pdf works", {
     "height of page 1 exceeds the available space"
   )
 
-  res <- export_as_pdf(bmf, file = tmpf, paginate = TRUE, cpp = 90)
+  set_default_page_number("page {i} of {n}")
+  expect_silent(res <- export_as_pdf(bmf, file = tmpf, paginate = TRUE, cpp = 90))
+  set_default_page_number(NULL)
 
   expect_equal(res$npages, 2)
 })
-

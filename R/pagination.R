@@ -860,23 +860,28 @@ splice_idx_lists <- function(lsts) {
 #' @param cpp numeric(1) or NULL. Width in characters per page. if NA (the default,
 #'     this is calculated automatically based on the specified page
 #'     size). `NULL` indicates no horizontal pagination should occur.
-
 #' @param pg_size_spec page_size_spec. A pre-calculated page
 #'     size specification. Typically this is not set in end user code.
 #' @param col_gap numeric(1). Currently unused.
+#' @param page_num character(1). Placeholder string for page numbers. Check
+#'     [default_page_number] for more information. Defaults to `NULL`.
+#'
 #' @return for `paginate_indices` a list with two elements of the same
 #'     length:   `pag_row_indices`,    and   `pag_col_indices`.    For
 #'     `paginate_to_mpfs`,   a  list   of  `MatrixPrintForm` objects
 #'     representing each individual page after pagination (including
 #'     forced pagination if necessary).
-#' @export
+#'
 #' @aliases paginate pagination
+#'
 #' @examples
 #' mpf <- basic_matrix_form(mtcars)
 #'
 #' paginate_indices(mpf, pg_width = 5, pg_height = 3)
 #'
 #' paginate_to_mpfs(mpf, pg_width = 5, pg_height = 3)
+#'
+#' @export
 paginate_indices <- function(obj,
                              page_type = "letter",
                              font_family = "Courier",
@@ -1067,6 +1072,7 @@ paginate_to_mpfs <- function(obj,
                              max_width = NULL,
                              indent_size = 2,
                              pg_size_spec = NULL,
+                             page_num = default_page_number(),
                              rep_cols = num_rep_cols(obj),
                              col_gap = 2,
                              verbose = FALSE) {
@@ -1086,6 +1092,17 @@ paginate_to_mpfs <- function(obj,
     mpf <- mpf_infer_cinfo(mpf, colwidths, rep_cols)
   }
 
+  # Page numbers
+  if (isTRUE(page_num)) {
+    page_num <- "page {i}/{n}"
+  }
+  checkmate::assert_string(page_num, null.ok = TRUE)
+
+  if (!is.null(page_num)) {
+    # Only adding a line for pagination -> lpp - 1 would have worked too
+    prov_footer(obj) <- c(prov_footer(obj), page_num)
+    prov_footer(mpf) <- c(prov_footer(mpf), page_num)
+  }
 
   if (is.null(pg_size_spec)) {
     pg_size_spec <- calc_lcpp(
@@ -1178,7 +1195,31 @@ paginate_to_mpfs <- function(obj,
     })
   })
 
-  unlist(res, recursive = FALSE)
+  res <- unlist(res, recursive = FALSE)
+
+  # Adding page numbers if needed
+  if (!is.null(page_num)) {
+    total_pages <- length(res)
+    page_str <- gsub("\\{n\\}", total_pages, page_num)
+    page_nums <- vapply(
+      seq_len(total_pages),
+      function(x) {
+        gsub("\\{i\\}", x, page_str)
+      },
+      FUN.VALUE = character(1)
+    )
+    page_footer <- sprintf(paste0("%", pg_size_spec$cpp, "s"), page_nums)
+    if (any(nchar(page_footer) > pg_size_spec$cpp)) {
+      stop("Page numbering string (page_num) is too wide to fit the desired page (inserted cpp).")
+    }
+
+    res <- lapply(seq_along(res), function(pg_i) {
+      prov_footer(res[[pg_i]]) <- c(head(prov_footer(res[[pg_i]]), -1), page_footer[pg_i])
+      res[[pg_i]]
+    })
+  }
+
+  res
 }
 
 .is_listing <- function(mpf) {

@@ -19,6 +19,7 @@ export_as_pdf(
   font_size = 8,
   fontsize = font_size,
   paginate = TRUE,
+  page_num = default_page_number(),
   lpp = NULL,
   cpp = NULL,
   hsep = "-",
@@ -71,6 +72,9 @@ text (in points)}
 \item{paginate}{logical(1). Whether pagination should be performed,
 defaults to \code{TRUE} if page size is specified (including
 the default).}
+
+\item{page_num}{character(1). Placeholder string for page numbers. Check
+\link{default_page_number} for more information. Defaults to \code{NULL}.}
 
 \item{lpp}{numeric(1) or NULL. Lines per page. if NA (the default,
 this is calculated automatically based on the specified page
