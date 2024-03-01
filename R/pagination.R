@@ -1074,7 +1074,7 @@ paginate_to_mpfs <- function(obj,
                              max_width = NULL,
                              indent_size = 2,
                              pg_size_spec = NULL,
-                             page_num = NULL,
+                             page_num = default_page_number(),
                              rep_cols = num_rep_cols(obj),
                              col_gap = 2,
                              verbose = FALSE) {
