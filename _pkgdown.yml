@@ -107,3 +107,5 @@ reference:
       - page_lcpp
       - page_types
       - ref_df_row
+      - default_page_number
+      - set_default_page_number

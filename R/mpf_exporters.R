@@ -21,6 +21,8 @@
 #' @param paginate logical(1). Whether pagination should be performed,
 #'     defaults to \code{TRUE} if page size is specified (including
 #'     the default).
+#' @param ...  Further parameters to be passed to [paginate_to_mpfs()].
+#'
 #' @details if  \code{x} has an \code{num_rep_cols}  method, the value
 #'     returned by it will be  used for \code{rep_cols} by default, if
 #'     not, 0 will be used.
@@ -30,9 +32,11 @@
 #'
 #' @return if \code{file} is NULL, the total paginated and then concatenated
 #' string value, otherwise the file that was written.
-#' @export
+#'
 #' @examples
 #' export_as_txt(basic_matrix_form(mtcars), pg_height = 5, pg_width = 4)
+#'
+#' @export
 export_as_txt <- function(x,
                           file = NULL,
                           page_type = NULL,
@@ -56,7 +60,9 @@ export_as_txt <- function(x,
                           nosplitin = character(),
                           rep_cols = num_rep_cols(x),
                           verbose = FALSE,
-                          page_break = "\\s\\n") {
+                          page_break = "\\s\\n",
+                          page_num = default_page_number()) {
+
   if (paginate) {
     pages <- paginate_to_mpfs(
       x,
@@ -77,7 +83,8 @@ export_as_txt <- function(x,
       max_width = max_width,
       indent_size = indent_size,
       verbose = verbose,
-      rep_cols = rep_cols
+      rep_cols = rep_cols,
+      page_num = page_num
     )
   } else {
     mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size)
@@ -101,6 +108,7 @@ export_as_txt <- function(x,
     widths = NULL,
     hsep = hsep, tf_wrap = tf_wrap, max_width = max_width
   )
+
   res <- paste(strings, collapse = page_break)
 
   if (is.null(file)) {
@@ -530,6 +538,7 @@ export_as_pdf <- function(x,
                           font_size = 8,
                           fontsize = font_size,
                           paginate = TRUE,
+                          page_num = default_page_number(),
                           lpp = NULL,
                           cpp = NULL,
                           hsep = "-",
@@ -595,7 +604,8 @@ export_as_pdf <- function(x,
       max_width = max_width,
       indent_size = indent_size,
       verbose = FALSE,
-      rep_cols = num_rep_cols(x)
+      rep_cols = num_rep_cols(x),
+      page_num = page_num
     )
   } else {
     mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size)
