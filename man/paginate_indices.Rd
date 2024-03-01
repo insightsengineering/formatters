@@ -154,10 +154,8 @@ row labels) to be repeated on every page. Defaults to 0}
 \item{verbose}{logical(1). Should additional informative messages about the search for
 pagination breaks be shown. Defaults to \code{FALSE}.}
 
-\item{page_num}{character(1). Placeholder string for page numbers. It should be like
-the following format: \code{"page {i}/{n}"}. \code{{i}} will be replaced with current
-page number, \code{{n}} will be replaced with total page number. It uses current \code{cpp}
-to position the string on the bottom right corner. Defaults to \code{NULL}.}
+\item{page_num}{character(1). Placeholder string for page numbers. Check
+\link{default_page_number} for more information. Defaults to \code{NULL}.}
 
 \item{...}{Passed to individual methods.}
 }

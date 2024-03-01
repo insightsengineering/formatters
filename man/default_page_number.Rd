@@ -2,10 +2,29 @@
 % Please edit documentation in R/zzz.R
 \name{default_page_number}
 \alias{default_page_number}
-\title{Default page number}
+\alias{set_default_page_number}
+\title{Default page number format}
 \usage{
 default_page_number()
+
+set_default_page_number(page_number)
+}
+\arguments{
+\item{page_number}{character(1). Single string value to set the page number format.
+It should be like the following format: \code{"page {i}/{n}"}. \code{{i}} will be replaced with
+current page number, \code{{n}} will be replaced with total page number. It uses current \code{cpp}
+to position the string on the bottom right corner.}
+}
+\value{
+The page number format string. If not set, it returns \code{NULL}.
 }
 \description{
-Default page number
+The default page number string which can be
+displayed in the current \code{charset} for use in rendering table-likes.
+}
+\examples{
+default_page_number()
+set_default_page_number("page {i} of {n}")
+default_page_number()
+
 }

@@ -863,10 +863,8 @@ splice_idx_lists <- function(lsts) {
 #' @param pg_size_spec page_size_spec. A pre-calculated page
 #'     size specification. Typically this is not set in end user code.
 #' @param col_gap numeric(1). Currently unused.
-#' @param page_num character(1). Placeholder string for page numbers. It should be like
-#'     the following format: `"page {i}/{n}"`. `{i}` will be replaced with current
-#'     page number, `{n}` will be replaced with total page number. It uses current `cpp`
-#'     to position the string on the bottom right corner. Defaults to `NULL`.
+#' @param page_num character(1). Placeholder string for page numbers. Check
+#'     [default_page_number] for more information. Defaults to `NULL`.
 #'
 #' @return for `paginate_indices` a list with two elements of the same
 #'     length:   `pag_row_indices`,    and   `pag_col_indices`.    For
