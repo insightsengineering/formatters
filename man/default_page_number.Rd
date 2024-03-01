@@ -19,8 +19,8 @@ to position the string on the bottom right corner.}
 The page number format string. If not set, it returns \code{NULL}.
 }
 \description{
-The default page number string which can be
-displayed in the current \code{charset} for use in rendering table-likes.
+If set the default page number string will appear on the bottom right of
+every paginated table. It uses the current \code{cpp} to position the string.
 }
 \examples{
 default_page_number()

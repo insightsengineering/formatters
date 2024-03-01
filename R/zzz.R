@@ -50,8 +50,8 @@ set_default_hsep <- function(hsep_char) {
 
 #' @title Default page number format
 #'
-#' @description The default page number string which can be
-#' displayed in the current `charset` for use in rendering table-likes.
+#' @description If set the default page number string will appear on the bottom right of
+#'   every paginated table. It uses the current `cpp` to position the string.
 #'
 #' @param page_number character(1). Single string value to set the page number format.
 #'   It should be like the following format: `"page {i}/{n}"`. `{i}` will be replaced with
