@@ -122,7 +122,6 @@ check_aligns <- function(algn) {
 #' @seealso \code{\link[base]{sprintf}}
 #'
 #' @examples
-#'
 #' fmtfun <- sprintf_format("(N=%i")
 #' format_value(100, format = fmtfun)
 #'
@@ -180,7 +179,6 @@ sprintf_format <- function(format) {
 #' @export
 #' @seealso \code{link{format_value}} \code{\link[base:round]{round}} \code{\link[base:sprintf]{sprintf}}
 #' @examples
-#'
 #' round_fmt(0, digits = 3)
 #' round_fmt(.395, digits = 2)
 #' round_fmt(NA, digits = 1)
@@ -251,7 +249,6 @@ sep_2d_helper <- function(x, dig1, dig2, sep, na_str, wrap = NULL) {
 #'
 #' @seealso [round_fmt()]
 #' @examples
-#'
 #' x <- format_value(pi, format = "xx.xx")
 #' x
 #'

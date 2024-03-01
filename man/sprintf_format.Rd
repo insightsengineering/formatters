@@ -17,7 +17,6 @@ string \code{format}.
 Specify text format via a \code{sprintf} format string
 }
 \examples{
-
 fmtfun <- sprintf_format("(N=\%i")
 format_value(100, format = fmtfun)
 

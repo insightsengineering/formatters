@@ -206,9 +206,9 @@ test_that("wrap_strings work", {
   expect_silent(wrap_string("6.5 and something else. 4.3", 1))
 
   # Second case of loop (different length - check breaks)
-  expect_identical(formatters::wrap_string("10. 1 6.5", 2), c("10", " .", "1", "6.", "5"))
+  expect_identical(wrap_string("10. 1 6.5", 2), c("10", " .", "1", "6.", "5"))
   expect_identical(
-    formatters::wrap_string("10  . 1 6.5 5 . 4", 2),
+    wrap_string("10  . 1 6.5 5 . 4", 2),
     c("10", " .", "1", "6.", "5", "5 ", " .", "4")
   )
 })
