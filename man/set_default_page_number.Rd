@@ -6,6 +6,9 @@
 \usage{
 set_default_page_number(page_number)
 }
+\arguments{
+\item{page_number}{(\code{string})\cr Single string value to set the page number pattern}
+}
 \description{
 Set default page number
 }
