@@ -178,7 +178,7 @@ test_that("export_as_pdf works", {
   )
 
   set_default_page_number("page {i} of {n}")
-  res <- export_as_pdf(bmf, file = tmpf, paginate = TRUE, cpp = 90)
+  expect_silent(res <- export_as_pdf(bmf, file = tmpf, paginate = TRUE, cpp = 90))
   set_default_page_number(NULL)
 
   expect_equal(res$npages, 2)
