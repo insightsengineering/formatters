@@ -243,9 +243,9 @@ set_default_hsep <- function(hsep_char) {
 
 
 # Main function that does the wrapping
-do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap, fontspec) {
+do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap, fontspec, expand_newlines = TRUE) {
   col_gap <- mf_colgap(mat)
-  ncchar <- sum(widths) + (length(widths) - 1) * col_gap
+  ncchar <- sum(widths) + (length(widths) - as.integer(mf_has_rlabels(mat))) * col_gap
   inset <- table_inset(mat)
 
   ## Text wrapping checks
@@ -281,18 +281,19 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap, fontspec) {
     ncol = ncol(mfs)
   )
 
-  ## XXXXX this is wrong and will break for listings cause we don't know when
-  ## we need has_topleft to be FALSE!!!!!!!!!!
-  mat <- mform_handle_newlines(mat)
+  if(expand_newlines) {
+    ## XXXXX this is wrong and will break for listings cause we don't know when
+    ## we need has_topleft to be FALSE!!!!!!!!!!
+    mat <- mform_handle_newlines(mat)
 
-  ## this updates extents in rinfo AND nlines in ref_fnotes_df
-  ## mat already has fontspec on it so no need to pass that down
-  mat <- update_mf_nlines(mat, max_width = max_width)
+    ## this updates extents in rinfo AND nlines in ref_fnotes_df
+    ## mat already has fontspec on it so no need to pass that down
+    mat <- update_mf_nlines(mat, max_width = max_width)
 
-  # Re-indenting
-  mf_strings(mat) <- .modify_indentation(mat, cell_widths_mat, do_what = "add")[["mfs"]]
-  .check_indentation(mat) # all went well
-
+    # Re-indenting
+    mf_strings(mat) <- .modify_indentation(mat, cell_widths_mat, do_what = "add")[["mfs"]]
+    .check_indentation(mat) # all went well
+  }
   mat
 }
 
@@ -1104,7 +1105,7 @@ split_word_ttype <- function(string, width_spc, fontspec, min_ok_chars) {
 ## was for monospace
 ## this is much slower but still shouldn't be a bottleneck, if it is we'll
 ## have to do something else
-wrap_string_ttype <- function(string, width_spc, fontspec, collapse = NULL, min_ok_chars = min(floor(length(string)/2), 4)) {
+wrap_string_ttype <- function(string, width_spc, fontspec, collapse = NULL, min_ok_chars = min(floor(nchar(string)/2), 4, floor(width_spc/2))) {
   newdev <- open_font_dev(fontspec)
   if(newdev)
     on.exit(close_font_dev())
@@ -1115,13 +1116,21 @@ wrap_string_ttype <- function(string, width_spc, fontspec, collapse = NULL, min_
   if(length(pts) == length(rawspls))
       return(string) ## no splitting needed
   else if(length(pts) == 0) { ## no spaces, all one word, split it and keep going
-      inner_res <- split_word_ttype(rawspls[1], width_spc, fontspec, min_ok_chars)
+      inner_res <- list()
+      min_ok_inner <- min_ok_chars
+      while(length(inner_res$ok) == 0) {
+          inner_res <- split_word_ttype(rawspls[1], width_spc, fontspec, min_ok_inner) #min_ok_chars)
+          min_ok_inner <- floor(min_ok_inner/2)
+      }
       done <- inner_res$ok
       remainder <- paste(c(inner_res$remainder, rawspls[-1]), collapse = " ")
   } else { ## some words fit, and some words don't
  
       done_tmp <- paste(rawspls[pts], collapse = " ")
-      inner_res <- split_word_ttype(rawspls[length(pts) + 1], width_spc - sum(nctt[pts]), fontspec, min_ok_chars)
+      tospl_tmp <- rawspls[length(pts) + 1]
+      width_tmp <- width_spc - sum(nctt[pts])
+      inner_res <- split_word_ttype(tospl_tmp, width_tmp, fontspec,
+                                    min_ok_chars = min_ok_chars)
       done <- paste(c(rawspls[pts], inner_res$ok),
                     collapse = " ")
       remainder = paste(c(inner_res$remainder,
