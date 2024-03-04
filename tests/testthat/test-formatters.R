@@ -436,6 +436,15 @@ test_that("labels and miscellany", {
 
   expect_true(all(is.na(var_labels(var_labels_remove(mydf)))))
 })
+test_that("var_labels works in self-assignment with named values", {
+  # regression test #262
+  labels <- letters[1:5]
+  var_labels(iris) <- labels
+
+  old_iris <- iris
+  var_labels(iris) <- var_labels(iris)
+  testthat::expect_identical(old_iris, iris)
+})
 
 test_that("all valid format labels can be applied without error", {
   ## additional full smoke test of labels without output checking
