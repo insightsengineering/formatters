@@ -86,7 +86,6 @@ We can build a baby example method for `data.frames` to illustrate this
 process:
 
 ```{r}
-
 ## pagdfrow supports a large number of pieces of information regarding
 ## siblings and what information should be repeated after a pagination.
 ## we ignore all that here and just give the absolutely crucial info:
@@ -131,11 +130,11 @@ matrix_form.data.frame <- function(df) {
 
   ## build up fake pagination df,
   rowdf <- basic_pagdf(row.names(df))
-  matrix_print_form(
+  MatrixPrintForm(
     strings = strings,
     aligns = aligns,
     spans = matrix(1, nrow = fnr, ncol = fnc),
-    formats = NULL,
+    formats = matrix("", nrow = fnr, ncol = fnc),
     row_info = rowdf,
     has_topleft = FALSE,
     nlines_header = 1,

@@ -1,9 +1,6 @@
-
-#' @importFrom htmltools tags tagList
-
 formats_1d <- c(
   "xx", "xx.", "xx.x", "xx.xx", "xx.xxx", "xx.xxxx",
-  "xx%", "xx.%", "xx.x%", "xx.xx%", "xx.xxx%", "(N=xx)", ">999.9", ">999.99",
+  "xx%", "xx.%", "xx.x%", "xx.xx%", "xx.xxx%", "(N=xx)", "N=xx", ">999.9", ">999.99",
   "x.xxxx | (<0.0001)"
 )
 
@@ -85,10 +82,7 @@ list_valid_aligns <- function() {
 #' @name check_formats
 #' @export
 is_valid_format <- function(x, stop_otherwise = FALSE) {
-  is_valid <- is.null(x) ||
-    (length(x) == 1 &&
-      (is.function(x) ||
-        x %in% unlist(list_valid_format_labels())))
+  is_valid <- is.null(x) || (length(x) == 1 && (is.function(x) || x %in% unlist(list_valid_format_labels())))
 
   if (stop_otherwise && !is_valid) {
     stop("format needs to be a format label, sprintf_format object, a function, or NULL")
@@ -107,12 +101,12 @@ is_valid_format <- function(x, stop_otherwise = FALSE) {
 #' @name check_formats
 #' @export
 check_aligns <- function(algn) {
-    if(anyNA(algn))
-        stop("Got missing-value for text alignment.")
-    invalid <- setdiff(algn, list_valid_aligns())
-    if(length(invalid) > 0) {
-        stop("Unsupported text-alignment(s): ",
-             paste(invalid, collapse = ", "))
+  if (anyNA(algn)) {
+    stop("Got missing-value for text alignment.")
+  }
+  invalid <- setdiff(algn, list_valid_aligns())
+  if (length(invalid) > 0) {
+    stop("Unsupported text-alignment(s): ", paste(invalid, collapse = ", "))
   }
   invisible(TRUE)
 }
@@ -128,7 +122,6 @@ check_aligns <- function(algn) {
 #' @seealso \code{\link[base]{sprintf}}
 #'
 #' @examples
-#'
 #' fmtfun <- sprintf_format("(N=%i")
 #' format_value(100, format = fmtfun)
 #'
@@ -186,7 +179,6 @@ sprintf_format <- function(format) {
 #' @export
 #' @seealso \code{link{format_value}} \code{\link[base:round]{round}} \code{\link[base:sprintf]{sprintf}}
 #' @examples
-#'
 #' round_fmt(0, digits = 3)
 #' round_fmt(.395, digits = 2)
 #' round_fmt(NA, digits = 1)
@@ -257,7 +249,6 @@ sep_2d_helper <- function(x, dig1, dig2, sep, na_str, wrap = NULL) {
 #'
 #' @seealso [round_fmt()]
 #' @examples
-#'
 #' x <- format_value(pi, format = "xx.xx")
 #' x
 #'
@@ -306,8 +297,8 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
         format, " are of different length"
       )
     }
-    if (length(na_str) < length(x)) {
-      na_str <- rep(na_str, length.out = length(x))
+    if (length(na_str) < sum(is.na(x))) {
+      na_str <- rep(na_str, length.out = sum(is.na(x)))
     }
     switch(format,
       "xx" = as.character(x),
@@ -322,6 +313,7 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
       "xx.xx%" = paste0(round_fmt(x * 100, digits = 2, na_str = na_str), "%"),
       "xx.xxx%" = paste0(round_fmt(x * 100, digits = 3, na_str = na_str), "%"),
       "(N=xx)" = paste0("(N=", round_fmt(x, digits = NA, na_str = na_str), ")"),
+      "N=xx" = paste0("N=", round_fmt(x, digits = NA, na_str = na_str)),
       ">999.9" = ifelse(x > 999.9, ">999.9", round_fmt(x, digits = 1, na_str = na_str)),
       ">999.99" = ifelse(x > 999.99, ">999.99", round_fmt(x, digits = 2, na_str = na_str)),
       "x.xxxx | (<0.0001)" = ifelse(x < 0.0001, "<0.0001", round_fmt(x, digits = 4, na_str = na_str)),
@@ -432,9 +424,12 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
 setClassUnion("FormatSpec", c("NULL", "character", "function", "list"))
 setClassUnion("characterOrNULL", c("NULL", "character"))
 setClass("fmt_config",
-         slots = c(format = "FormatSpec",
-                   format_na_str = "characterOrNULL",
-                   align = "characterOrNULL"))
+  slots = c(
+    format = "FormatSpec",
+    format_na_str = "characterOrNULL",
+    align = "characterOrNULL"
+  )
+)
 
 #' Format Configuration
 #'

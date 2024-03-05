@@ -1,7 +1,7 @@
 Package: formatters
 Title: ASCII Formatting for Values and Tables
-Version: 0.5.3.9002
-Date: 2023-10-11
+Version: 0.5.5.9013
+Date: 2024-03-04
 Authors@R: c(
     person("Gabriel", "Becker", , "gabembecker@gmail.com", role = "aut",
            comment = "original creator of the package"),
@@ -16,7 +16,8 @@ Description: We provide a framework for rendering complex tables to ASCII,
     and a set of formatters for transforming values or sets of values into
     ASCII-ready display strings.
 License: Apache License 2.0
-URL: https://github.com/insightsengineering/formatters
+URL: https://insightsengineering.github.io/formatters/,
+    https://github.com/insightsengineering/formatters/
 BugReports: https://github.com/insightsengineering/formatters/issues
 Depends:
     methods,
@@ -32,18 +33,19 @@ Suggests:
     knitr (>= 1.42),
     r2rtf (>= 0.3.2),
     stringi (>= 1.6),
-    testthat (>= 3.0.4)
+    testthat (>= 3.0.4),
+    withr (>= 2.0.0)
 VignetteBuilder:
     knitr
 Config/Needs/verdepcheck: mllg/checkmate, rstudio/htmltools,
     tidyverse/dplyr, rstudio/gt, hughjonesd/huxtable, yihui/knitr,
-    Merck/r2rtf, r-lib/testthat
+    Merck/r2rtf, gagolews/stringi, r-lib/testthat, r-lib/withr
 Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Collate:
     'data.R'
     'format_value.R'
@@ -51,7 +53,9 @@ Collate:
     'generics.R'
     'labels.R'
     'mpf_exporters.R'
+    'package.R'
     'page_size.R'
     'pagination.R'
     'tostring.R'
     'utils.R'
+    'zzz.R'

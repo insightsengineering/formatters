@@ -51,6 +51,7 @@ paginate_to_mpfs(
   max_width = NULL,
   indent_size = 2,
   pg_size_spec = NULL,
+  page_num = default_page_number(),
   rep_cols = num_rep_cols(obj),
   col_gap = 2,
   verbose = FALSE
@@ -119,7 +120,8 @@ this is calculated automatically based on the specified page
 size). \code{NULL} indicates no horizontal pagination should occur.}
 
 \item{min_siblings}{numeric. Minimum sibling rows which must appear on either side of pagination row for a
-mid-subtable split to be valid. Defaults to 2.}
+mid-subtable split to be valid. Defaults to 2 for tables. It is automatically turned off
+(by using only 0) for listings.}
 
 \item{nosplitin}{character. List of names of sub-tables where page-breaks are not allowed, regardless of other
 considerations. Defaults to none.}
@@ -130,9 +132,9 @@ use with vertical pagination.}
 \item{tf_wrap}{logical(1). Should  the texts for  title, subtitle,
 and footnotes be wrapped?}
 
-\item{max_width}{integer(1), character(1) or NULL. Width that title
+\item{max_width}{integer(1), character(1) or \code{NULL}. Width that title
 and   footer   (including   footnotes)  materials   should   be
-word-wrapped to. If NULL, it is  set to the current print width
+word-wrapped to. If \code{NULL}, it is  set to the current print width
 of the  session (\code{getOption("width")}). If set to \code{"auto"},
 the width of the table (plus any table inset) is used. Ignored
 completely if \code{tf_wrap} is \code{FALSE}.}
@@ -152,6 +154,9 @@ row labels) to be repeated on every page. Defaults to 0}
 \item{verbose}{logical(1). Should additional informative messages about the search for
 pagination breaks be shown. Defaults to \code{FALSE}.}
 
+\item{page_num}{character(1). Placeholder string for page numbers. Check
+\link{default_page_number} for more information. Defaults to \code{NULL}.}
+
 \item{...}{Passed to individual methods.}
 }
 \value{
@@ -165,8 +170,10 @@ For \code{diagnose_pagination} a list containing:
 
 \describe{
 \item{\code{lpp_diagnostics}}{diagnostic information regarding lines per page}
-\item{\code{row_diagnostics}}{basic information about rows, whether pagination was attempted after each row, and the final result of such an attempt, if made}
-\item{\verb{cpp_diagnostics\}\{diagnostic information regarding columns per page\} \\item\{}col_diagnostics`}{(very) basic information about leaf columns, whether pagination was attempted after each leaf column, ad the final result of such attempts, if made}
+\item{\code{row_diagnostics}}{basic information about rows, whether pagination was attempted
+after each row, and the final result of such an attempt, if made}
+\item{\verb{cpp_diagnostics\}\{diagnostic information regarding columns per page\} \\item\{}col_diagnostics`}{(very) basic information about leaf columns, whether pagination
+was attempted after each leaf column, ad the final result of such attempts, if made}
 }
 }
 \description{
@@ -254,8 +261,8 @@ paginate_to_mpfs(mpf, pg_width = 5, pg_height = 3)
 
 diagnose_pagination(mpf, pg_width = 5, pg_height = 3)
 clws <- propose_column_widths(mpf)
-clws[1] <- floor(clws[1]/3)
+clws[1] <- floor(clws[1] / 3)
 dgnost <- diagnose_pagination(mpf, pg_width = 5, pg_height = 3, colwidths = clws)
-try(diagnose_pagination(mpf, pg_width = 1)) #fails
+try(diagnose_pagination(mpf, pg_width = 1)) # fails
 
 }

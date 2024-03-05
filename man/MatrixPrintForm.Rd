@@ -2,7 +2,6 @@
 % Please edit documentation in R/matrix_form.R
 \name{MatrixPrintForm}
 \alias{MatrixPrintForm}
-\alias{matrix_print_form}
 \title{Matrix Print Form - Intermediate Representation for ASCII Table Printing}
 \usage{
 MatrixPrintForm(
@@ -23,30 +22,8 @@ MatrixPrintForm(
   page_titles = character(),
   main_footer = "",
   prov_footer = character(),
-  col_gap = 3,
-  table_inset = 0L,
-  colwidths = NULL,
-  indent_size = 2
-)
-
-matrix_print_form(
-  strings = NULL,
-  spans,
-  aligns,
-  formats,
-  row_info,
-  line_grouping = seq_len(NROW(strings)),
-  ref_fnotes = list(),
-  nlines_header,
-  nrow_header,
-  has_topleft = TRUE,
-  has_rowlabs = has_topleft,
-  expand_newlines = TRUE,
-  main_title = "",
-  subtitles = character(),
-  page_titles = character(),
-  main_footer = "",
-  prov_footer = character(),
+  header_section_div = NA_character_,
+  horizontal_sep = default_hsep(),
   col_gap = 3,
   table_inset = 0L,
   colwidths = NULL,
@@ -117,8 +94,14 @@ vector.}
 
 \item{main_footer}{character(1). Main footer as a string.}
 
-\item{prov_footer}{character.  Provenance footer  information as a
+\item{prov_footer}{character. Provenance footer information as a
 character vector.}
+
+\item{header_section_div}{character(1). Divider to be used between header
+and body sections.}
+
+\item{horizontal_sep}{character(1). Horizontal separator to be used for printing
+divisors between header and table body and between different footers.}
 
 \item{col_gap}{numeric(1). Space (in characters) between columns}
 
@@ -151,6 +134,8 @@ when the table is rendered}
 \item{\code{page_titles}}{see argument}
 \item{\code{main_footer}}{see argument}
 \item{\code{prov_footer}}{see argument}
+\item{\code{header_section_div}}{see argument}
+\item{\code{horizontal_sep}}{see argument}
 \item{\code{col_gap}}{see argument}
 \item{\code{table_inset}}{see argument}
 }
@@ -169,4 +154,8 @@ Matrix Print Form - Intermediate Representation for ASCII Table Printing
 \note{
 The bare constructor for the \code{MatrixPrintForm} should generally
 only be called by \code{matrix_form} custom methods, and almost never from other code.
+}
+\examples{
+basic_matrix_form(iris) # calls matrix_form that calls this constructor
+
 }

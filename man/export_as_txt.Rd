@@ -19,7 +19,7 @@ export_as_txt(
   cpp = NA_integer_,
   lpp = NA_integer_,
   ...,
-  hsep = default_hsep(),
+  hsep = NULL,
   indent_size = 2,
   tf_wrap = paginate,
   max_width = NULL,
@@ -28,7 +28,8 @@ export_as_txt(
   nosplitin = character(),
   rep_cols = num_rep_cols(x),
   verbose = FALSE,
-  page_break = "\\\\s\\\\n"
+  page_break = "\\\\s\\\\n",
+  page_num = default_page_number()
 )
 }
 \arguments{
@@ -75,10 +76,12 @@ size). \code{NULL} indicates no horizontal pagination should occur.}
 this is calculated automatically based on the specified page
 size). \code{NULL} indicates no vertical pagination should occur.}
 
-\item{...}{Passed to individual methods.}
+\item{...}{Further parameters to be passed to \code{\link[=paginate_to_mpfs]{paginate_to_mpfs()}}.}
 
 \item{hsep}{character(1). Characters to repeat to create
-header/body separator line.}
+header/body separator line. If \code{NULL}, the object value will be
+used. If \code{" "}, an empty separator will be printed. Check \code{\link[=default_hsep]{default_hsep()}}
+for more information.}
 
 \item{indent_size}{numeric(1). Indent size in characters. Ignored
 when \code{x} is already a \code{MatrixPrintForm} object in favor of information
@@ -87,9 +90,9 @@ there.}
 \item{tf_wrap}{logical(1). Should  the texts for  title, subtitle,
 and footnotes be wrapped?}
 
-\item{max_width}{integer(1), character(1) or NULL. Width that title
+\item{max_width}{integer(1), character(1) or \code{NULL}. Width that title
 and   footer   (including   footnotes)  materials   should   be
-word-wrapped to. If NULL, it is  set to the current print width
+word-wrapped to. If \code{NULL}, it is  set to the current print width
 of the  session (\code{getOption("width")}). If set to \code{"auto"},
 the width of the table (plus any table inset) is used. Ignored
 completely if \code{tf_wrap} is \code{FALSE}.}
@@ -98,7 +101,8 @@ completely if \code{tf_wrap} is \code{FALSE}.}
 use with vertical pagination.}
 
 \item{min_siblings}{numeric. Minimum sibling rows which must appear on either side of pagination row for a
-mid-subtable split to be valid. Defaults to 2.}
+mid-subtable split to be valid. Defaults to 2 for tables. It is automatically turned off
+(by using only 0) for listings.}
 
 \item{nosplitin}{character. List of names of sub-tables where page-breaks are not allowed, regardless of other
 considerations. Defaults to none.}
@@ -111,6 +115,9 @@ pagination breaks be shown. Defaults to \code{FALSE}.}
 
 \item{page_break}{character(1).  Page break  symbol (defaults  to
 outputting \code{"\\n\\s"}).}
+
+\item{page_num}{character(1). Placeholder string for page numbers. Check
+\link{default_page_number} for more information. Defaults to \code{NULL}.}
 }
 \value{
 if \code{file} is NULL, the total paginated and then concatenated
@@ -132,4 +139,5 @@ during the pagination process.
 }
 \examples{
 export_as_txt(basic_matrix_form(mtcars), pg_height = 5, pg_width = 4)
+
 }

@@ -48,8 +48,8 @@ With an additional \code{nrow_header} attribute indicating the number of pseudo 
 column structure defines.
 }
 \description{
-Although \code{rtables} are represented as a tree data structure when outputting the table to ASCII or HTML it is useful to
-map the \code{rtable} to an in between state with the formatted cells in a matrix form.
+Although \code{rtables} are represented as a tree data structure when outputting the table to ASCII or HTML it is
+useful to map the \code{rtable} to an in between state with the formatted cells in a matrix form.
 }
 \details{
 The strings in the return object are defined as follows: row labels are those determined by \code{summarize_rows} and

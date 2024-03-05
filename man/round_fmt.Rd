@@ -53,7 +53,6 @@ on many popular operating systems due to \code{round}'s stricter adherence to th
 documentation).
 }
 \examples{
-
 round_fmt(0, digits = 3)
 round_fmt(.395, digits = 2)
 round_fmt(NA, digits = 1)

@@ -28,12 +28,11 @@ basic_pagdf(
 defaults to \code{"root"}, and generally should not matter to end users.}
 }
 \value{
-A data.frame suitable for use in both the \code{matrix_print_form} constructor and the pagination machinery
+A data.frame suitable for use in both the \code{MatrixPrintForm} constructor and the pagination machinery
 }
 \description{
 Returns a minimal pagination info data.frame (with no sibling/footnote/etc info).
 }
 \examples{
-
 basic_pagdf(c("hi", "there"))
 }

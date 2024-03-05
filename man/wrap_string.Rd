@@ -5,7 +5,7 @@
 \alias{wrap_txt}
 \title{Wrap a string to within a precise width}
 \usage{
-wrap_string(str, width, collapse = NULL, smart = TRUE)
+wrap_string(str, width, collapse = NULL)
 
 wrap_txt(str, width, collapse = NULL)
 }
@@ -19,12 +19,6 @@ text should be wrapped at.}
 \item{collapse}{character(1) or \code{NULL}. If the words that have been split should
 be pasted together with the collapse character. This is usually done internally
 with \code{"\\n"} to have the wrapping updated along with other internal values.}
-
-\item{smart}{logical(1). Defaults to \code{TRUE}. It attempts to calculate the optimal
-word split if there are some words that exceed inserted \code{width}. It does so by
-considering the preceding word (if present) and adding a piece of the word to split
-if there is space for it. This option uses a recurrent for loop, hence it may be
-expansive for large texts with a relatively small width.}
 }
 \value{
 A string if \code{str} is one element and if \code{collapse = NULL}. Otherwise, is
@@ -51,8 +45,10 @@ word wrapping.
 
 }}
 \examples{
-str <- list("  , something really  \\\\tnot  very good", # \t needs to be escaped
-            "  but I keep it12   ")
+str <- list(
+  "  , something really  \\\\tnot  very good", # \t needs to be escaped
+  "  but I keep it12   "
+)
 wrap_string(str, 5, collapse = "\n")
 
 wrap_txt(str, 5, collapse = NULL)

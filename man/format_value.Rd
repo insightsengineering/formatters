@@ -27,7 +27,6 @@ A length-zero value for \code{na_str} will be interpreted as \code{"NA"}, as wil
 missing values within a non-length-zero \code{na_str} vector.
 }
 \examples{
-
 x <- format_value(pi, format = "xx.xx")
 x
 

@@ -45,21 +45,19 @@ test_that("tf_wordwrap and table inset work (including together)", {
   expect_identical(printform3, expected3)
 
   ## coverage for allfooter
-  expect_identical(all_footers(matform),
-                   c(main_footer(matform),
-                     prov_footer(matform)))
-
+  expect_identical(
+    all_footers(matform),
+    c(main_footer(matform), prov_footer(matform))
+  )
 })
 
-test_that("toString() throws a warning when newline is in string", {
+test_that("toString() is silent when newline is in decorations (footnotes, titles) as matrix_form constructor expands all newlines", {
   bmf <- basic_matrix_form(iris)
   main_title(bmf) <- "some\nvery\nspacious\ntitle"
   prov_footer(bmf) <- "some\nvery\nspacious\nfooter"
   bmf$ref_footnotes <- "some\nvery\nspacious\nreference"
   expect_silent(toString(bmf, tf_wrap = FALSE))
-  expect_warning(expect_error(toString(bmf, tf_wrap = TRUE),
-                                "in a string that was meant to be wrapped"))
-  # xxx the warning will go away as it is not necessary once \\n will be added
+  expect_silent(toString(bmf, tf_wrap = TRUE))
 })
 
 test_that("works with words that are too big (no warning)", {
@@ -175,8 +173,7 @@ test_that("row label wrapping has identical indentation", {
 
 test_that("wrap_strings work", {
   # \t needs to be escaped -> it should be an error xxx
-  str <- list("  , something really  \\tnot  very good",
-           "  but I keep it12   ")
+  str <- list("  , something really  \\tnot  very good", "  but I keep it12   ")
 
   # size is smaller than bigger word -> dealing with empty spaces
   expect_identical(
@@ -200,12 +197,19 @@ test_that("wrap_strings work", {
   # Now a string that needs smarter wrapping # Where to start word split?
   str <- "A very long content to_be_wrapped_and_splitted and then something"
   expect_identical(
-    length(wrap_string(str, 18, smart = TRUE)), # more compact
-    length(wrap_string(str, 18, smart = FALSE)) - 1L
+    length(wrap_string(str, 18)), # more compact
+    4L
   )
+
+  # Check for avoidance of infinite loops - C stack exceeding
+  expect_identical(wrap_string("6.5", 1), c("6", ".", "5"))
+  expect_silent(wrap_string("6.5 and something else. 4.3", 1))
+
+  # Second case of loop (different length - check breaks)
+  expect_identical(wrap_string("10. 1 6.5", 2), c("10", " .", "1", "6.", "5"))
   expect_identical(
-    wrap_string(str, 4, smart = TRUE),
-    wrap_string(str, 4, smart = FALSE)
+    wrap_string("10  . 1 6.5 5 . 4", 2),
+    c("10", " .", "1", "6.", "5", "5 ", " .", "4")
   )
 })
 
@@ -281,4 +285,44 @@ test_that("toString wrapping avoid trimming whitespaces", {
     ),
     res
   )
+})
+
+test_that("toString and wrapping cooperates well with separator divisors", {
+  # Fixes #221
+  testdf <- iris[seq_len(5), seq_len(2)]
+  rownames(testdf) <- paste("State ", LETTERS[seq_len(nrow(testdf))])
+  bmf <- basic_matrix_form(testdf)
+
+  # Adding topleft to wrap
+  bmf$has_topleft <- TRUE # no setter atm
+  mf_strings(bmf)[1, 1] <- "LETTERS"
+
+  sec_seps_df <- mf_rinfo(bmf)[, c("abs_rownumber", "trailing_sep"), drop = FALSE]
+  mf_rinfo(bmf)$trailing_sep[c(1, 3, 4)] <- " "
+  expect_silent(toString(bmf, widths = c(4, 4, 4)))
+})
+
+test_that("max_width is handled correctly as expected", {
+  tmp_width <- getOption("width")
+  options("width" = 150)
+  expect_equal(.handle_max_width(tf_wrap = TRUE, max_width = NULL), 150)
+  options("width" = tmp_width)
+  expect_null(.handle_max_width(FALSE, NULL))
+  suppressMessages(
+    expect_warning(
+      expect_null(.handle_max_width(FALSE, "asd"))
+    )
+  )
+  expect_equal(.handle_max_width(tf_wrap = TRUE, max_width = 100), 100)
+  expect_equal(.handle_max_width(tf_wrap = TRUE, max_width = 100, cpp = 150), 100)
+  suppressMessages(
+    expect_error(.handle_max_width(tf_wrap = TRUE, max_width = "no"))
+  )
+  suppressMessages(
+    expect_error(.handle_max_width(tf_wrap = TRUE, max_width = "auto"))
+  )
+  expect_equal(.handle_max_width(
+    tf_wrap = TRUE, max_width = "auto",
+    inset = 1, colwidths = c(10, 20, 30), col_gap = 2
+  ), 65)
 })

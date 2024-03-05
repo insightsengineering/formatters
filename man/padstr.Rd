@@ -22,14 +22,14 @@ use. Defaults to \code{center}. Must be \code{center}, \code{right}, \code{left}
 Pad a string and align within string
 }
 \examples{
-
 padstr("abc", 3)
 padstr("abc", 4)
 padstr("abc", 5)
 padstr("abc", 5, "left")
 padstr("abc", 5, "right")
 
-if (interactive()) {
+\dontrun{
+  # Expect error: "abc" has more than 1 characters
   padstr("abc", 1)
 }
 }

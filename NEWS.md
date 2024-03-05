@@ -1,6 +1,33 @@
-## formatters 0.5.3.9002
- * Fixed a bug in `paginate_to_mpfs()` so that formatting in listings key columns is retained with pagination [`insightsengineering/rlistings#155`](https://github.com/insightsengineering/rlistings/issues/155).
+## formatters 0.5.5.9013
+ * Added "N=xx" format and unit test for it.
+ * Allow tables with content rows in the end be exported.
+ * Removed redundant references to `matrix_print_form` constructor (now only `MatrixPrintForm`).
+ * Moved new line expansion for decorations from `rtables`' `matrix_form` to `formatters`' constructor `MatrixPrintForm` so to cover also `rlistings`.
+ * Fixed pagination unexpected counts for `rlistings`' pagination by removing the manual subsetting workaround and fixing [`insightsengineering/rlistings#155`](https://github.com/insightsengineering/rlistings/issues/155).
+ * Improved relevant information feedback during pagination.
+ * Removed the possibility to set `min_siblings > 0` when dealing with listings. This allows smooth pagination when having only 2 lines.
+ * Added error catch for `\r` recursive special character.
+ * Fixed mismatch between pagination and exports regarding the value assigned to parameter `max_width`. Introduced general handler `.handle_max_width` for pagination, exports, and `toString`.
+ * Fixed bug in `format_value` causing a warning for vectors containing both NA and non-NA values.
+ * Fixed issue with `var_label` assignment that needed to be of non-named strings.
  * Updated `export_as_txt` to allow lists of listings as input. This enables listing pagination with pages by parameter.
+
+## formatters 0.5.5
+ * Applied `styler` and resolved package lint. Changed default indentation from 4 spaces to 2.
+ * Added the possibility of setting a general default using `set_default_hsep()` that sets up the option `getOption("formatters_default_hsep")`.
+ * Allowed section divider between header and table body.
+ * Added support for combining duplicate referential footnotes.
+ * Migrated `export_as_pdf` from `rtables`. Now using `paginate_to_mpfs` function. Made `font_lcpi` function internal.
+ * Fixed wrapping and section dividers error.
+ * Fixed infinite loop in `wrap_string` that was caused by a bug in `stringi::stri_wrap` not wrapping small
+   strings with dots and spaces correctly.
+
+## formatters 0.5.4
+ * Fixed a bug in `paginate_to_mpfs()` so that formatting in listings key columns is retained with pagination [`insightsengineering/rlistings#155`](https://github.com/insightsengineering/rlistings/issues/155).
+ * Improved error message for pagination when `cpp` or `lpp` is too small in comparison to the column or row widths.
+ * Added full support of newline characters in any part of `rtables` objects.
+ * Modified default vertical alignment for top left information to bottom.
+ * Rework of `wrap_string` so to allow space characters to be used and wrapped.
 
 ## formatters 0.5.3
  * Decimal alignment now throws informative error if scientific notation is used.
@@ -37,8 +64,8 @@
  * `MatrixPrintForm` objects infer detailed referential footnote information from their `strings` element for backward compatibility.
  * Fix to test that failed on old Windows CRAN machine due to imperfect UTF support there.
  * If `lpp` and `cpp` in pagination or exporter functions are assigned to `NULL`, no pagination in the vertical or horizontal direction happens, respectively. 
-* The new default of `NA_integer_` for `lpp` and `cpp` now means those values should be inferred from page size.
-* Added `hexSticker` logo.
+ * The new default of `NA_integer_` for `lpp` and `cpp` now means those values should be inferred from page size.
+ * Added `hexSticker` logo.
 
 ## formatters 0.4.0
  * Cell values and row labels are now word-wrapped based on column widths (`widths` in `toString` and `colwidths` in pagination and exporters.

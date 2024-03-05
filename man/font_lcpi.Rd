@@ -32,9 +32,10 @@ An error is thrown if the font is not monospaced (determined by comparing
 the effective widths of the \code{M} and \code{.} glyphs).
 }
 \examples{
+font_lcpi <- getFromNamespace("font_lcpi", "formatters")
+
 font_lcpi()
-
 font_lcpi(font_size = 8)
-
 font_lcpi(font_size = 8, lineheight = 1.1)
 }
+\keyword{internal}

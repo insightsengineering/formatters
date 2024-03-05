@@ -1,4 +1,4 @@
-# formatters <a href='https://github.com/insightsengineering/formatters'><img src="man/figures/formatters_hexSticker.png" align="right" alt="" width="180"></a>
+# formatters <a href='https://github.com/insightsengineering/formatters'><img src="man/figures/logo.png" align="right" alt="" width="180"></a>
 
 <!-- start badges -->
 [![Check 🛠](https://github.com/insightsengineering/formatters/actions/workflows/check.yaml/badge.svg)](https://insightsengineering.github.io/formatters/main/unit-test-report/)
@@ -147,7 +147,7 @@ matrix_form.data.frame <- function(df) {
                     matrix("left", nrow = NROW(df), ncol = fnc))
     ## build up fake pagination df,
     rowdf <- basic_pagdf(row.names(df))
-    matrix_print_form(strings = strings,
+    MatrixPrintForm(strings = strings,
                       aligns = aligns,
                       spans = matrix(1, nrow = fnr, ncol = fnc),
                       formats = NULL,
