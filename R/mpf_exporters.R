@@ -62,96 +62,93 @@ export_as_txt <- function(x,
                           verbose = FALSE,
                           page_break = "\\s\\n",
                           page_num = default_page_number()) {
-                          page_break = "\\s\\n") {
-    x_to_txt <- function(x) {
-      if(paginate) {
-          pages <- paginate_to_mpfs(x,
-                                    page_type = page_type,
-                                    font_family = font_family,
-                                    font_size = font_size,
-                                    lineheight = lineheight,
-                                    landscape = landscape,
-                                    pg_width = pg_width,
-                                    pg_height = pg_height,
-                                    margins = margins,
-                                    lpp = lpp,
-                                    cpp = cpp,
-                                    min_siblings = min_siblings,
-                                    nosplitin = nosplitin,
-                                    colwidths = colwidths,
-                                    tf_wrap = tf_wrap,
-                                    max_width = max_width,
-                                    indent_size = indent_size,
-                                    verbose = verbose,
-                                    rep_cols = rep_cols)
-      } else {
-          mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size)
-          mf_col_widths(mf) <- colwidths %||% propose_column_widths(mf)
-          pages <- list(mf)
+  if (is(x[[1]], "listing_df") || is(x[[1]], "rtable")) {
+    # process lists of listings
+    checkmate::assert_true(all(unlist(lapply(x, function(x) is(x, "listing_df") || is(x, "rtable")))))
+    if (!"rep_cols" %in% as.list(match.call())) {
+      all_rep_cols <- lapply(x, num_rep_cols)
+      max_rc <- which.max(lapply(all_rep_cols, sum))
+      rep_cols <- all_rep_cols[[max_rc]]
+    }
+    txt_list <- lapply(
+      x, export_as_txt, file = NULL, page_type = page_type, landscape = landscape, pg_width = pg_width,
+      pg_height = pg_height, font_family = font_family, font_size = font_size, lineheight = lineheight,
+      margins = margins, paginate = paginate, cpp = cpp, lpp = lpp, hsep = hsep, indent_size = indent_size,
+      tf_wrap = tf_wrap, max_width = max_width, colwidths = colwidths, min_siblings, nosplitin = nosplitin,
+      rep_cols = rep_cols, verbose = verbose, page_break = page_break, page_num = page_num, ...
+    )
+    res <- paste(txt_list, collapse = page_break)
+
+    # recalculate page numbers
+    if (!is.null(page_num)) {
+      tot_pag <- sum(gregexpr(page_break, res, fixed = TRUE)[[1]] > 0) + 1
+      new_pag_num <- gsub("\\{n\\}", tot_pag, page_num)
+      pag_num_pat <- gsub("\\{[i|n]\\}", "[0-9]*", page_num)
+      for (i in seq_len(tot_pag)) {
+        res <- sub(paste0(pag_num_pat, "\n"), paste0(gsub("\\{[i]\\}", i, new_pag_num), "_repl\n"), res)
       }
-      ## we dont' set widths here because we already but that info on mpf
-      ## so its on each of the pages.
-      strings <- vapply(pages, toString, "", widths = NULL,
-                        hsep = hsep, tf_wrap = tf_wrap, max_width = max_width)
-      res <- paste(strings, collapse = page_break)
-      res
+      res <- gsub("_repl\n", "\n", res)
     }
 
-    if(paginate) {
-        pages <- paginate_to_mpfs(x,
-                                  page_type = page_type,
-                                  font_family = font_family,
-                                  font_size = font_size,
-                                  lineheight = lineheight,
-                                  landscape = landscape,
-                                  pg_width = pg_width,
-                                  pg_height = pg_height,
-                                  margins = margins,
-                                  lpp = lpp,
-                                  cpp = cpp,
-                                  min_siblings = min_siblings,
-                                  nosplitin = nosplitin,
-                                  colwidths = colwidths,
-                                  tf_wrap = tf_wrap,
-                                  max_width = max_width,
-                                  indent_size = indent_size,
-                                  verbose = verbose,
-                                  rep_cols = rep_cols,
-                                  page_num = page_num)
+    if (is.null(file)) {
+      res
     } else {
-        mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size)
-        mf_col_widths(mf) <- colwidths %||% propose_column_widths(mf)
-        pages <- list(mf)
+      cat(res, file = file)
     }
-    ## we dont' set widths here because we already but that info on mpf
+  } else {
+    if (paginate) {
+      pages <- paginate_to_mpfs(
+        x,
+        page_type = page_type,
+        font_family = font_family,
+        font_size = font_size,
+        lineheight = lineheight,
+        landscape = landscape,
+        pg_width = pg_width,
+        pg_height = pg_height,
+        margins = margins,
+        lpp = lpp,
+        cpp = cpp,
+        min_siblings = min_siblings,
+        nosplitin = nosplitin,
+        colwidths = colwidths,
+        tf_wrap = tf_wrap,
+        max_width = max_width,
+        indent_size = indent_size,
+        verbose = verbose,
+        rep_cols = rep_cols,
+        page_num = page_num
+      )
+    } else {
+      mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size)
+      mf_col_widths(mf) <- colwidths %||% propose_column_widths(mf)
+      pages <- list(mf)
+    }
+
+    # Needs to be here because of adding cpp if it is not "auto"
+    if (!is.character(max_width)) {
+      max_width <- .handle_max_width(
+        tf_wrap = tf_wrap,
+        max_width = max_width,
+        cpp = cpp
+      )
+    }
+
+    ## we don't set widths here because we already put that info in mpf
     ## so its on each of the pages.
-    strings <- vapply(pages, toString, "", widths = NULL,
-                      hsep = hsep, tf_wrap = tf_wrap, max_width = max_width)
+    strings <- vapply(
+      pages, toString, "",
+      widths = NULL,
+      hsep = hsep, tf_wrap = tf_wrap, max_width = max_width
+    )
+
     res <- paste(strings, collapse = page_break)
 
-  # Needs to be here because of adding cpp if it is not "auto"
-  if (!is.character(max_width)) {
-    max_width <- .handle_max_width(
-      tf_wrap = tf_wrap,
-      max_width = max_width,
-      cpp = cpp
-    )
-  }
-
-  ## we dont' set widths here because we already but that info on mpf
-  ## so its on each of the pages.
-  strings <- vapply(
-    pages, toString, "",
-    widths = NULL,
-    hsep = hsep, tf_wrap = tf_wrap, max_width = max_width
-  )
-
-  res <- paste(strings, collapse = page_break)
-
-  if (is.null(file)) {
-    res
-  } else {
-    cat(res, file = file)
+    if (is.null(file)) {
+      res
+    } else {
+      cat(res, file = file)
+    }
   }
 }
 
