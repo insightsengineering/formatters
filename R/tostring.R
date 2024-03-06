@@ -1087,7 +1087,8 @@ wrap_string <- function(str, width, collapse = NULL, fontspec = font_spec()) {
   )
 }
 
-
+#' @rdname wrap_string_ttype
+#' @export
 split_word_ttype <- function(string, width_spc, fontspec, min_ok_chars) {
   chrs <- strsplit(string, "")[[1]]
   nctt_chars <- nchar_ttype(chrs, fontspec, raw = TRUE)
@@ -1105,6 +1106,13 @@ split_word_ttype <- function(string, width_spc, fontspec, min_ok_chars) {
 ## was for monospace
 ## this is much slower but still shouldn't be a bottleneck, if it is we'll
 ## have to do something else
+#' wrap string given a Truetype font
+#'
+#' @inheritParams wrap_string
+#' @param min_ok_chars numeric(1). Number of minimum characters which much remain
+#' on either side when a word is split
+#' @return `string`, broken up into a word-wrapped vector
+#' @export
 wrap_string_ttype <- function(string, width_spc, fontspec, collapse = NULL, min_ok_chars = min(floor(nchar(string)/2), 4, floor(width_spc/2))) {
   newdev <- open_font_dev(fontspec)
   if(newdev)
@@ -1129,8 +1137,12 @@ wrap_string_ttype <- function(string, width_spc, fontspec, collapse = NULL, min_
       done_tmp <- paste(rawspls[pts], collapse = " ")
       tospl_tmp <- rawspls[length(pts) + 1]
       width_tmp <- width_spc - sum(nctt[pts])
-      inner_res <- split_word_ttype(tospl_tmp, width_tmp, fontspec,
+      if(width_tmp/width_spc > .33) {
+          inner_res <- split_word_ttype(tospl_tmp, width_tmp, fontspec,
                                     min_ok_chars = min_ok_chars)
+      } else {
+          inner_res <- list(done = "", remainder = tospl_tmp)
+      }
       done <- paste(c(rawspls[pts], inner_res$ok),
                     collapse = " ")
       remainder = paste(c(inner_res$remainder,
