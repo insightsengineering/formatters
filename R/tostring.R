@@ -1113,7 +1113,7 @@ split_word_ttype <- function(string, width_spc, fontspec, min_ok_chars) {
 #' on either side when a word is split
 #' @return `string`, broken up into a word-wrapped vector
 #' @export
-wrap_string_ttype <- function(string, width_spc, fontspec, collapse = NULL, min_ok_chars = min(floor(nchar(string)/2), 4, floor(width_spc/2))) {
+wrap_string_ttype <- function(string, width_spc, fontspec, collapse = NULL, min_ok_chars = min(floor(nchar(string)/2), 4, floor(width_spc/2)), wordbreak_ok = TRUE) {
   newdev <- open_font_dev(fontspec)
   if(newdev)
     on.exit(close_font_dev())
@@ -1124,20 +1124,26 @@ wrap_string_ttype <- function(string, width_spc, fontspec, collapse = NULL, min_
   if(length(pts) == length(rawspls))
       return(string) ## no splitting needed
   else if(length(pts) == 0) { ## no spaces, all one word, split it and keep going
-      inner_res <- list()
-      min_ok_inner <- min_ok_chars
-      while(length(inner_res$ok) == 0) {
-          inner_res <- split_word_ttype(rawspls[1], width_spc, fontspec, min_ok_inner) #min_ok_chars)
-          min_ok_inner <- floor(min_ok_inner/2)
-      }
-      done <- inner_res$ok
-      remainder <- paste(c(inner_res$remainder, rawspls[-1]), collapse = " ")
+      if(wordbreak_ok) {
+          inner_res <- list()
+          min_ok_inner <- min_ok_chars
+          while(length(inner_res$ok) == 0) {
+              inner_res <- split_word_ttype(rawspls[1], width_spc, fontspec, min_ok_inner) #min_ok_chars)
+              min_ok_inner <- floor(min_ok_inner/2)
+          }
+          done <- inner_res$ok
+          remainder <- paste(c(inner_res$remainder, rawspls[-1]), collapse = " ")
+      } else {
+          stop("Unable to find word wrapping solution without breaking word: ",
+               rawspls[[1]], " [requires  ", nchar_ttype(rawspls[[1]], fontspec), " spaces of width, out of ",
+               width_spc, " available].")
+      }        
   } else { ## some words fit, and some words don't
  
       done_tmp <- paste(rawspls[pts], collapse = " ")
       tospl_tmp <- rawspls[length(pts) + 1]
       width_tmp <- width_spc - sum(nctt[pts])
-      if(width_tmp/width_spc > .33) {
+      if(wordbreak_ok && width_tmp/width_spc > .33) {
           inner_res <- split_word_ttype(tospl_tmp, width_tmp, fontspec,
                                     min_ok_chars = min_ok_chars)
       } else {
