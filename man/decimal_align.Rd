@@ -2,29 +2,29 @@
 % Please edit documentation in R/tostring.R
 \name{decimal_align}
 \alias{decimal_align}
-\title{Decimal Alignment}
+\title{Decimal alignment}
 \usage{
 decimal_align(string_mat, align_mat)
 }
 \arguments{
-\item{string_mat}{character matrix. String matrix component of matrix print form object.}
+\item{string_mat}{(\verb{character matrix})\cr "string" matrix component of \code{MatrixPrintForm} object.}
 
-\item{align_mat}{character matrix. Aligns matrix component of matrix print form object.
-Should contain either \code{dec_left}, \code{dec_right} or \code{decimal} for values to be decimal aligned.}
+\item{align_mat}{(\verb{character matrix})\cr "aligns" matrix component of \code{MatrixPrintForm} object.
+Should contain either \code{dec_left}, \code{dec_right}, or \code{decimal} for values to be decimal aligned.}
 }
 \value{
-Processed string matrix of matrix print form with decimal aligned values.
+A processed string matrix of class \code{MatrixPrintForm} with decimal-aligned values.
 }
 \description{
-Aligning decimal values of string matrix. Allowed alignments are: \code{dec_left},
-\code{dec_right} and \code{decimal}.
+Aligning decimal values of string matrix. Allowed alignments are: \code{dec_left}, \code{dec_right},
+and \code{decimal}.
 }
 \details{
-Decimal alignment left and right (\code{dec_left} and \code{dec_right}) are different to
-center decimal alignment \code{decimal} only in the case some padding is present. This may
-happen if column widths are wider by setting parameters \code{widths} in \code{toString} or
-\code{colwidths} in \verb{paginate_*} accordingly. It will be also the case (more common) of
-wider column names. Decimal alignment is not supported along with cell wrapping.
+Left and right decimal alignment (\code{dec_left} and \code{dec_right}) differ from center decimal
+alignment (\code{decimal}) only when there is padding present. This may occur if column widths are
+set wider via parameters \code{widths} in \code{toString} or \code{colwidths} in \verb{paginate_*}. More commonly,
+it also occurs when column names are wider. Cell wrapping is not supported when decimal
+alignment is used.
 }
 \examples{
 dfmf <- basic_matrix_form(mtcars[1:5, ])
@@ -34,5 +34,5 @@ decimal_align(mf_strings(dfmf), aligns)
 
 }
 \seealso{
-\link{toString} and \link{MatrixPrintForm}
+\code{\link[=toString]{toString()}}, \code{\link[=MatrixPrintForm]{MatrixPrintForm()}}
 }

@@ -7,11 +7,11 @@
 sprintf_format(format)
 }
 \arguments{
-\item{format}{character(1). A format string passed to \code{sprintf}.}
+\item{format}{(\code{character(1)})\cr a format string passed to \code{\link[=sprintf]{sprintf()}}.}
 }
 \value{
-A formatting function which wraps and will apply the specified \code{printf} style format
-string \code{format}.
+A formatting function which wraps and will apply the specified \code{sprintf}-style format
+to string \code{format}.
 }
 \description{
 Specify text format via a \code{sprintf} format string
@@ -22,7 +22,8 @@ format_value(100, format = fmtfun)
 
 fmtfun2 <- sprintf_format("\%.4f - \%.2f")
 format_value(list(12.23456, 2.724))
+
 }
 \seealso{
-\code{\link[base]{sprintf}}
+\code{\link[=sprintf]{sprintf()}}
 }

@@ -5,7 +5,7 @@
 \alias{DM}
 \title{\code{DM} data}
 \format{
-\code{rds} (data.frame)
+\code{rds} (\code{data.frame})
 }
 \usage{
 DM

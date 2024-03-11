@@ -1,16 +1,15 @@
-#' @title Default horizontal separator
+#' Default horizontal separator
 #'
-#' @description The default horizontal separator character which can be
-#' displayed in the current `charset` for use in rendering table-likes.
+#' The default horizontal separator character which can be displayed in the current
+#' charset for use in rendering table-like objects.
 #'
-#' @param hsep_char character(1). Character that will be set in the R environment
-#'   options as default for creating the horizontal separator. It needs to be
-#'   single character. Use `getOption("formatters_default_hsep")` to get its current
-#'   value (`NULL` if not set).
+#' @param hsep_char (`character(1)`)\cr character that will be set in the R environment
+#'   options as the default horizontal separator. Must be a single character. Use
+#'   `getOption("formatters_default_hsep")` to get its current value (`NULL` if not set).
 #'
-#' @return `unicode` 2014 (long dash for generating solid horizontal line)
-#' if in a locale that uses a UTF character set, otherwise an ASCII hyphen
-#' with a once-per-session warning.
+#' @return `unicode` 2014 (long dash for generating solid horizontal line) if in a
+#'   locale that uses a UTF character set, otherwise an ASCII hyphen with a
+#'   once-per-session warning.
 #'
 #' @examples
 #' default_hsep()
@@ -48,17 +47,17 @@ set_default_hsep <- function(hsep_char) {
   options("formatters_default_hsep" = hsep_char)
 }
 
-#' @title Default page number format
+#' Default page number format
 #'
-#' @description If set the default page number string will appear on the bottom right of
-#'   every paginated table. It uses the current `cpp` to position the string.
+#' If set, the default page number string will appear on the bottom right of
+#' every page of a paginated table. The current `cpp` is used to position the string.
 #'
-#' @param page_number character(1). Single string value to set the page number format.
-#'   It should be like the following format: `"page {i}/{n}"`. `{i}` will be replaced with
-#'   current page number, `{n}` will be replaced with total page number. It uses current `cpp`
-#'   to position the string on the bottom right corner.
+#' @param page_number (`character(1)`)\cr single string value to set the page number format.
+#'   It should be formatted similarly to the following format: `"page {i}/{n}"`.
+#'   `{i}` will be replaced with the current page number, and `{n}` will be replaced with the
+#'   total page number. Current `cpp` is used to position the string in the bottom right corner.
 #'
-#' @return The page number format string. If not set, it returns `NULL`.
+#' @return The page number format string (`NULL` if not set).
 #'
 #' @examples
 #' default_page_number()
@@ -66,7 +65,7 @@ set_default_hsep <- function(hsep_char) {
 #' default_page_number()
 #'
 #' @name default_page_number
-#'@export
+#' @export
 default_page_number <- function() {
   getOption("formatter_default_page_number", default = NULL)
 }

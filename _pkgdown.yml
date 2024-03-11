@@ -46,7 +46,7 @@ reference:
       - matrix_form
       - basic_matrix_form
   - title: MatrixPrintForm
-    desc: MatrixPrintForm class and constructor
+    desc: Intermediate representation for ASCII table printing
     contents:
       - MatrixPrintForm
       - MatrixPrintForm-class

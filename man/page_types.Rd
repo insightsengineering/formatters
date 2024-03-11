@@ -10,8 +10,8 @@ page_types()
 page_dim(page_type)
 }
 \arguments{
-\item{page_type}{character(1). The name of a page size specification. Call
-\code{page_types} for supported values.}
+\item{page_type}{(\code{character(1)})\cr the name of a page size specification. Call
+\code{\link[=page_types]{page_types()}} for supported values.}
 }
 \value{
 for \code{page_types} a character vector of supported page types,

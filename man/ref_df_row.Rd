@@ -16,25 +16,27 @@ ref_df_row(
 )
 }
 \arguments{
-\item{row_path}{character. row path (\code{NA_character_} for none)}
+\item{row_path}{(\code{character})\cr row path (or \code{NA_character_} for none).}
 
-\item{col_path}{character. column path (\code{NA_character_} for none)}
+\item{col_path}{(\code{character})\cr column path (or \code{NA_character_} for none).}
 
-\item{row}{integer(1). Integer position of the row.}
+\item{row}{(\code{integer(1)})\cr integer position of the row.}
 
-\item{col}{integer(1). Integer position of the column.}
+\item{col}{(\code{integer(1)})\cr integer position of the column.}
 
-\item{symbol}{character(1). Symbol for the reference. \code{NA_character_} to use the \code{ref_index} automatically.}
+\item{symbol}{(\code{character(1)})\cr symbol for the reference. \code{NA_character_} to use the
+\code{ref_index} automatically.}
 
-\item{ref_index}{integer(1). The index of the footnote, used for ordering even when symbol is not NA}
+\item{ref_index}{(\code{integer(1)})\cr index of the footnote, used for ordering even when
+symbol is not \code{NA}.}
 
-\item{msg}{character(1). The string message, not including the symbol portion (\verb{\{symbol\} - })}
+\item{msg}{(\code{character(1)})\cr the string message, not including the symbol portion (\verb{\{symbol\} - })}
 
-\item{max_width}{numeric(1). Width strings should be wrapped to
-when determining how many lines they require.}
+\item{max_width}{(\code{numeric(1)})\cr width that strings should be wrapped to when
+determining how many lines they require.}
 }
 \value{
-a single row data.frame with the appropriate columns.
+A single row data frame with the appropriate columns.
 }
 \description{
 Create a row for a referential footnote information dataframe

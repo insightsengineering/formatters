@@ -2,21 +2,20 @@
 % Please edit documentation in R/tostring.R
 \name{is.wholenumber}
 \alias{is.wholenumber}
-\title{\code{is.wholenumber}}
+\title{Check if a value is a whole number}
 \usage{
 is.wholenumber(x, tol = .Machine$double.eps^0.5)
 }
 \arguments{
-\item{x}{numeric(1). A numeric value}
+\item{x}{(\code{numeric(1)})\cr a numeric value.}
 
-\item{tol}{numeric(1). A precision tolerance.}
+\item{tol}{(\code{numeric(1)})\cr a precision tolerance.}
 }
 \value{
-\code{TRUE} if \code{x} is within \code{tol} of zero,
-\code{FALSE} otherwise.
+\code{TRUE} if \code{x} is within \code{tol} of zero, \code{FALSE} otherwise.
 }
 \description{
-\code{is.wholenumber}
+Check if a value is a whole number
 }
 \examples{
 is.wholenumber(5)

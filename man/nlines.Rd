@@ -16,16 +16,15 @@ nlines(x, colwidths = NULL, max_width = NULL)
 \S4method{nlines}{character}(x, colwidths = NULL, max_width = NULL)
 }
 \arguments{
-\item{x}{ANY. The object to be printed}
+\item{x}{(\code{any})\cr the object to be printed.}
 
-\item{colwidths}{numeric. Column widths (if necessary).}
+\item{colwidths}{(\code{numeric})\cr column widths (if necessary).}
 
-\item{max_width}{numeric(1). Width strings should be wrapped to
-when determining how many lines they require.}
+\item{max_width}{(\code{numeric(1)})\cr width that strings should be wrapped to when
+determining how many lines they require.}
 }
 \value{
-A scalar numeric indicating the number of lines needed
-to render the object \code{x}.
+The number of lines needed to render the object \code{x}.
 }
 \description{
 Number of lines required to print a value

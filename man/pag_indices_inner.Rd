@@ -2,7 +2,7 @@
 % Please edit documentation in R/pagination.R
 \name{pag_indices_inner}
 \alias{pag_indices_inner}
-\title{Find Pagination Indices From Pagination Info Dataframe}
+\title{Find pagination indices from pagination info data frame}
 \usage{
 pag_indices_inner(
   pagdf,
@@ -18,102 +18,99 @@ pag_indices_inner(
 )
 }
 \arguments{
-\item{pagdf}{data.frame. A pagination info data.frame as created by
+\item{pagdf}{(\code{data.frame})\cr a pagination info \code{data.frame} as created by
 either \code{make_rows_df} or \code{make_cols_df}.}
 
-\item{rlpp}{numeric. Maximum number of \emph{row} lines per page (not including header materials), including
-(re)printed header and context rows}
+\item{rlpp}{(\code{numeric})\cr maximum number of \emph{row} lines per page (not including header materials), including
+(re)printed header and context rows.}
 
-\item{lpp_or_cpp}{numeric. Total maximum number of \emph{row} lines or content (column-wise characters) per page
+\item{lpp_or_cpp}{(\code{numeric})\cr total maximum number of \emph{row} lines or content (column-wise characters) per page
 (including header materials and context rows). This is only for informative results with \code{verbose = TRUE}.
 It will print \code{NA} if not specified by the pagination machinery.}
 
-\item{context_lpp_or_cpp}{numeric. Total number of context \emph{row} lines or content (column-wise characters)
+\item{context_lpp_or_cpp}{(\code{numeric})\cr total number of context \emph{row} lines or content (column-wise characters)
 per page (including header materials). Uses \code{NA} if not specified by the pagination machinery and is only
 for informative results with \code{verbose = TRUE}.}
 
-\item{min_siblings}{numeric. Minimum sibling rows which must appear on either side of pagination row for a
-mid-subtable split to be valid. Defaults to 2 for tables. It is automatically turned off
-(by using only 0) for listings.}
+\item{min_siblings}{(\code{numeric})\cr minimum sibling rows which must appear on either side of pagination row for a
+mid-subtable split to be valid. Defaults to 2 for tables. It is automatically turned off (set to 0) for listings.}
 
-\item{nosplitin}{character. List of names of sub-tables where page-breaks are not allowed, regardless of other
+\item{nosplitin}{(\code{character})\cr list of names of subtables where page breaks are not allowed, regardless of other
 considerations. Defaults to none.}
 
-\item{verbose}{logical(1). Should additional informative messages about the search for
-pagination breaks be shown. Defaults to \code{FALSE}.}
+\item{verbose}{(\code{logical(1)})\cr whether additional informative messages about the search for
+pagination breaks should be shown. Defaults to \code{FALSE}.}
 
-\item{row}{logical(1). Is pagination happening in row
-space (\code{TRUE}, the default) or column space (\code{FALSE})}
+\item{row}{(\code{logical(1)})\cr whether pagination is happening in row space (\code{TRUE}, the default) or column
+space (\code{FALSE}).}
 
-\item{have_col_fnotes}{logical(1). Does the table-like object being rendered have
-column-associated referential footnotes.}
+\item{have_col_fnotes}{(\code{logical(1)})\cr whether the table-like object being rendered has column-associated
+referential footnotes.}
 
-\item{div_height}{numeric(1). The height of the divider line when the
-associated object is rendered. Defaults to \code{1}.}
+\item{div_height}{(\code{numeric(1)})\cr the height of the divider line when the associated object is rendered.
+Defaults to \code{1}.}
 }
 \value{
-A list containing the vector of row numbers, broken up by page
+A \code{list} containing a vector of row numbers, broken up by page.
 }
 \description{
 Pagination methods should typically call the \code{make_row_df} method
 for their object and then call this function on the resulting
-pagination info data.frame.
+pagination info \code{data.frame}.
 }
 \details{
-\code{pab_indices_inner} implements the Core Pagination Algorithm
-for a single direction (vertical if \code{row = TRUE}, the default, horizontal otherwise)
-based on the pagination dataframe and (already adjusted for non-body rows/columns)
+\code{pab_indices_inner} implements the core pagination algorithm (see below)
+for a single direction (vertical if \code{row = TRUE} (the default), horizontal otherwise)
+based on the pagination data frame and (already adjusted for non-body rows/columns)
 lines (or characters) per page.
 }
 \section{Pagination Algorithm}{
 
 
-Pagination  is performed independently in  the vertical  and horizontal
-directions based solely on a \emph{pagination data.frame}, which includes the
+Pagination is performed independently in the vertical and horizontal
+directions based solely on a \emph{pagination data frame}, which includes the
 following information for each row/column:
 \itemize{
-\item number of  lines/characters rendering the row  will take \strong{after
+\item Number of lines/characters rendering the row will take \strong{after
 word-wrapping} (\code{self_extent})
-\item the indices (\code{reprint_inds})  and number of lines (\code{par_extent})
+\item The indices (\code{reprint_inds}) and number of lines (\code{par_extent})
 of the rows which act as \strong{context} for the row
-\item the row's number of siblings and position within its siblings
+\item The row's number of siblings and position within its siblings
 }
 
-Given \code{lpp}  (\code{cpp}) already  adjusted for rendered  elements which
-are  not rows/columns  and a  dataframe of  pagination information,
-pagination is  performed via  the following  algorithm, and  with a
-\code{start = 1}:
+Given \code{lpp} (\code{cpp}) is already adjusted for rendered elements which
+are not rows/columns and a data frame of pagination information,
+pagination is performed via the following algorithm with \code{start = 1}.
 
 Core Pagination Algorithm:
 \enumerate{
-\item Initial guess for pagination point is \code{start + lpp} (\code{start + cpp})
-\item While the guess is not a valid pagination position, and \code{guess > start}, decrement guess and repeat
-}
+\item Initial guess for pagination position is \code{start + lpp} (\code{start + cpp})
+\item While the guess is not a valid pagination position, and \code{guess > start},
+decrement guess and repeat.
 \itemize{
-\item an error is thrown if all possible pagination positions between
-\code{start} and \code{start + lpp} (\code{start + cpp}) would ever be \verb{< start}
+\item An error is thrown if all possible pagination positions between
+\code{start} and \code{start + lpp} (\code{start + cpp}) would be \verb{< start}
 after decrementing
 }
-\enumerate{
 \item Retain pagination index
-\item if pagination  point was less than  \code{NROW(tt)} (\code{ncol(tt)}), set
+\item If pagination point was less than \code{NROW(tt)} (\code{ncol(tt)}), set
 \code{start} to \code{pos + 1}, and repeat steps (1) - (4).
 }
 
-Validating pagination position:
+Validating Pagination Position:
 
 Given an (already adjusted) \code{lpp} or \code{cpp} value, a pagination is invalid if:
 \itemize{
-\item The rows/columns on the page would take  more than (adjusted) \code{lpp} lines/\code{cpp}
-characters to render \strong{including}
+\item The rows/columns on the page would take more than (adjusted) \code{lpp} lines/\code{cpp}
+characters to render \strong{including}:
 \itemize{
 \item word-wrapping
 \item (vertical only) context repetition
 }
-\item (vertical only) footnote messages  and or section divider lines
+\item (vertical only) footnote messages and/or section divider lines
 take up too many lines after rendering rows
 \item (vertical only) row is a label or content (row-group summary) row
-\item (vertical only)  row at the pagination point  has siblings, and
+\item (vertical only) row at the pagination point has siblings, and
 it has less than \code{min_siblings} preceding or following siblings
 \item pagination would occur within a sub-table listed in \code{nosplitin}
 }

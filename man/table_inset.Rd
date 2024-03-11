@@ -5,7 +5,7 @@
 \alias{table_inset,MatrixPrintForm-method}
 \alias{table_inset<-}
 \alias{table_inset<-,MatrixPrintForm-method}
-\title{Access or (recursively) set table inset.}
+\title{Access or (recursively) set table inset}
 \usage{
 table_inset(obj)
 
@@ -16,22 +16,21 @@ table_inset(obj) <- value
 \S4method{table_inset}{MatrixPrintForm}(obj) <- value
 }
 \arguments{
-\item{obj}{ANY. Object to get or (recursively if necessary) set
-table inset for.}
+\item{obj}{(\code{any})\cr object to get or (recursively if necessary) set table inset for.}
 
-\item{value}{character(1). String to use as new header/body separator.}
+\item{value}{(\code{character(1)})\cr string to use as new header/body separator.}
 }
 \value{
-for \code{table_inset} the integer value that the table body
-(including column heading information and section dividers),
-referential footnotes, and main footer should be inset from the
-left alignment of the titles and provenance footers during rendering.
-For \verb{table_inset<-}, the \code{obj}, with the new table_inset value
-applied recursively to it and all its subtables.
+\itemize{
+\item \code{table_inset} returns the integer value that the table body (including column heading
+information and section dividers), referential footnotes, and main footer should be inset
+from the left alignment of the titles and provenance footers during rendering.
+\item \verb{table_inset<-} returns \code{obj} with the new table_inset value applied recursively to it and
+all its subtables.
+}
 }
 \description{
-Table inset is the amount of characters that the body of
-a table, referential footnotes, and main footer material
-are inset from the left-alignment of the titles and provenance
+Table inset is the amount of characters that the body of a table, referential footnotes, and
+main footer material are inset from the left-alignment of the titles and provenance
 footer materials.
 }

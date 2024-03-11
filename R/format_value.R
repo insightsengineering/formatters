@@ -24,15 +24,15 @@ formats_3d <- c(
   "xx.xxx (xx.xxx - xx.xxx)"
 )
 
-#' @title List with currently supported formats and vertical alignments
+#' List of currently supported formats and vertical alignments
 #'
-#' @description We support `xx` style format labels grouped by 1d, 2d and 3d.
-#' Currently valid format labels can not be added dynamically. Format functions
+#' @description We support `xx` style format labels grouped by 1d, 2d, and 3d.
+#' Currently valid format labels cannot be added dynamically. Format functions
 #' must be used for special cases.
 #'
 #' @return
-#' * `list_valid_format_labels()`: A nested list, with elements listing the supported 1d, 2d,
-#'  and 3d format strings.
+#' * `list_valid_format_labels()` returns a nested list, with elements listing the supported 1d, 2d,
+#'   and 3d format strings.
 #'
 #' @examples
 #' list_valid_format_labels()
@@ -49,8 +49,9 @@ list_valid_format_labels <- function() {
     info = "xx does not modify the element, and xx. rounds a number to 0 digits"
   )
 }
+
 #' @return
-#' * `list_valid_aligns()`: a character vector of valid vertical alignments
+#' * `list_valid_aligns()` returns a character vector of valid vertical alignments.
 #'
 #' @examples
 #' list_valid_aligns()
@@ -61,19 +62,18 @@ list_valid_aligns <- function() {
   c("left", "right", "center", "decimal", "dec_right", "dec_left")
 }
 
-#' @title Check if a format or alignment is supported
+#' Check if a format or alignment is supported
 #'
 #' @description Utility functions for checking formats and alignments.
 #'
-#' @param x either format string or an object returned by \code{sprintf_format}
-#' @param stop_otherwise logical, if \code{x} is not a format should an error be
-#'   thrown
-#'
-#' @note No check if the function is actually a `formatter` is performed.
+#' @param x (`character(1)` or `function`)\cr format string or an object returned by [sprintf_format()]
+#' @param stop_otherwise (`logical(1)`)\cr whether an error should be thrown if `x` is not a valid format.
 #'
 #' @return
-#'  * `is_valid_format`: \code{TRUE} if \code{x} is \code{NULL}, a supported
-#'    format string, or a function; \code{FALSE} otherwise.
+#' * `is_valid_format` returns `TRUE` if `x` is `NULL`, a supported format string, or a function, and
+#'   `FALSE` otherwise.
+#'
+#' @note If `x` is a function, no check is performed to verify that it returns a valid format.
 #'
 #' @examples
 #' is_valid_format("xx.x")
@@ -90,10 +90,11 @@ is_valid_format <- function(x, stop_otherwise = FALSE) {
 
   is_valid
 }
-#' @param algn vector of characters that indicates the requested cell alignments.
+
+#' @param algn (`character`)\cr a character vector that indicates the requested cell alignments.
 #'
 #' @return
-#'  * `check_aligns`: `TRUE` if it passes the check.
+#'  * `check_aligns` returns `TRUE` if the provided alignments are supported, otherwise an error is thrown.
 #'
 #' @examples
 #' check_aligns(c("decimal", "dec_right"))
@@ -113,13 +114,12 @@ check_aligns <- function(algn) {
 
 #' Specify text format via a `sprintf` format string
 #'
+#' @param format (`character(1)`)\cr a format string passed to [sprintf()].
 #'
-#' @param format character(1). A format string passed to `sprintf`.
+#' @return A formatting function which wraps and will apply the specified `sprintf`-style format
+#'   to string `format`.
 #'
-#' @export
-#' @return A formatting function which wraps and will apply the specified \code{printf} style format
-#'   string \code{format}.
-#' @seealso \code{\link[base]{sprintf}}
+#' @seealso [sprintf()]
 #'
 #' @examples
 #' fmtfun <- sprintf_format("(N=%i")
@@ -127,63 +127,61 @@ check_aligns <- function(algn) {
 #'
 #' fmtfun2 <- sprintf_format("%.4f - %.2f")
 #' format_value(list(12.23456, 2.724))
+#'
+#' @export
 sprintf_format <- function(format) {
   function(x, ...) {
     do.call(sprintf, c(list(fmt = format), x))
   }
 }
 
-
 #' Round and prepare a value for display
 #'
-#' This function is used within \code{\link{format_value}} to prepare numeric values within
+#' This function is used within [format_value()] to prepare numeric values within
 #' cells for formatting and display.
 #'
-#' @aliases rounding
-#' @param x numeric(1). Value to format
-#' @param digits numeric(1). Number of digits to round to, or \code{NA} to convert to a
-#' character value with no rounding.
-#' @param na_str character(1). The value to return if \code{x} is \code{NA}.
+#' @param x (`numeric(1)`)\cr value to format.
+#' @param digits (`numeric(1)`)\cr number of digits to round to, or `NA` to convert to a
+#'   character value with no rounding.
+#' @param na_str (`character(1)`)\cr the value to return if `x` is `NA`.
 #'
 #' @details
-#' This function combines the rounding behavior of R's standards-complaint
-#' \code{\link{round}} function (see the Details section of that documentation)
-#' with the strict decimal display of \code{\link{sprintf}}. The exact behavior
-#' is as follows:
+#' This function combines the rounding behavior of R's standards-compliant [round()]
+#' function (see the Details section of that documentation) with the strict decimal display
+#' of [sprintf()]. The exact behavior is as follows:
 #'
 #' \enumerate{
-#' \item{If \code{x} is NA, the value of \code{na_str} is returned}
-#' \item{If \code{x} is non-NA but \code{digits} is NA, \code{x} is converted to a character
-#' and returned}
-#' \item{If \code{x} and \code{digits} are both non-NA, \code{round} is called first,
-#' and then \code{sprintf} is used to convert the rounded value to a character with the
-#' appropriate number of trailing zeros enforced.}
+#'   \item{If `x` is `NA`, the value of `na_str` is returned.}
+#'   \item{If `x` is non-`NA` but `digits` is `NA`, `x` is converted to a character and returned.}
+#'   \item{If `x` and `digits` are both non-NA, [round()] is called first, and then [sprintf()]
+#'     is used to convert the rounded value to a character with the appropriate number of trailing
+#'     zeros enforced.}
 #' }
 #'
-#' @return A character value representing the value after rounding, containing
-#' containing any trailling zeros required to display \emph{exactly} \code{digits}
-#' elements.
+#' @return A character value representing the value after rounding, containing any trailing zeros
+#'   required to display *exactly* `digits` elements.
+#'
 #' @note
-#' This differs from the base R \code{\link{round}} function in that \code{NA}
-#' digits indicate x should be passed converted to character and returned unchanged
-#' whereas \code{round(x, digits =NA)} returns \code{NA} for all values of \code{x}.
+#' This differs from the base R [round()] function in that `NA` digits indicate `x` should be converted
+#' to character and returned unchanged whereas `round(x, digits=NA)` returns `NA` for all values of `x`.
 #'
-#' This behavior will differ from \code{as.character(round(x, digits = digits))}
-#' in the case where there are not at least \code{digits} significant digits
-#' after the decimal that remain after rounding. It \emph{may} differ from
-#' \code{sprintf("\%.Nf", x)} for values ending in \code{5} after the decimal place
-#' on many popular operating systems due to \code{round}'s stricter adherence to the
-#' `IEC 60559` standard, particularly for R versions > 4.0.0 (see Warning in \code{\link[base:round]{round}}
-#' documentation).
+#' This behavior will differ from `as.character(round(x, digits = digits))` in the case where there are
+#' not at least `digits` significant digits after the decimal that remain after rounding. It *may* differ from
+#' `sprintf("\%.Nf", x)` for values ending in `5` after the decimal place on many popular operating systems
+#' due to `round`'s stricter adherence to the `IEC 60559` standard, particularly for R versions > 4.0.0 (see
+#' warning in [round()] documentation).
 #'
-#' @export
-#' @seealso \code{link{format_value}} \code{\link[base:round]{round}} \code{\link[base:sprintf]{sprintf}}
+#' @seealso [format_value()], [round()], [sprintf()]
+#'
 #' @examples
 #' round_fmt(0, digits = 3)
 #' round_fmt(.395, digits = 2)
 #' round_fmt(NA, digits = 1)
 #' round_fmt(NA, digits = 1, na_str = "-")
 #' round_fmt(2.765923, digits = NA)
+#'
+#' @export
+#' @aliases rounding
 round_fmt <- function(x, digits, na_str = "NA") {
   if (!is.na(digits) && digits < 0) {
     stop("round_fmt currentlyd does not support non-missing values of digits <0")
@@ -197,8 +195,6 @@ round_fmt <- function(x, digits, na_str = "NA") {
     sprintf(fmt = sprfmt, round(x, digits = digits))
   }
 }
-
-
 
 val_pct_helper <- function(x, dig1, dig2, na_str, pct = TRUE) {
   if (pct) {
@@ -230,30 +226,30 @@ sep_2d_helper <- function(x, dig1, dig2, sep, na_str, wrap = NULL) {
 ##         na_str
 ##     else
 ##         round(x, digits = digits)
-
 ## }
 
-#' Converts a (possibly compound) value into a string using the \code{format} information
+#' Converts a (possibly compound) value into a string using the `format` information
+#'
+#' @param x (`any`)\cr the value to be formatted.
+#' @param format (`character(1)` or `function`)\cr the format label (string) or formatter function to
+#'   apply to `x`.
+#' @param na_str (`character(1)`)\cr string to display when the value of `x` is missing. Defaults to `"NA"`.
+#' @param output (`character(1)`)\cr output type.
 #'
 #' @details A length-zero value for `na_str` will be interpreted as `"NA"`, as will any
 #' missing values within a non-length-zero `na_str` vector.
 #'
-#' @param x ANY. The value to be formatted
-#' @param format character(1) or function. The format label (string) or `formatter` function to apply to \code{x}.
-#' @param na_str character(1). String that should be displayed when the value of \code{x} is missing.
-#'   Defaults to \code{"NA"}.
-#' @param output character(1). output type
-#'
-#' @return formatted text representing the cell \code{x}.
-#' @export
+#' @return Formatted text representing the cell `x`.
 #'
 #' @seealso [round_fmt()]
+#'
 #' @examples
 #' x <- format_value(pi, format = "xx.xx")
 #' x
 #'
 #' format_value(x, output = "ascii")
 #'
+#' @export
 format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str = "NA") {
   ## if(is(x, "CellValue"))
   ##     x = x[[1]]
@@ -270,7 +266,6 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
     na_str[is.na(na_str)] <- "NA"
   }
   ## format <- if (!missing(format)) format else obj_format(x)
-
 
   txt <- if (all(is.na(x)) && length(na_str) == 1L) {
     na_str
@@ -431,11 +426,11 @@ setClass("fmt_config",
   )
 )
 
-#' Format Configuration
+#' Format configuration
 #'
-#' @param format character(1) or function. A format label (string) or `formatter` function.
-#' @param na_str character(1). String that should be displayed in place of missing values.
-#' @param align character(1). Alignment values should be rendered with.
+#' @param format (`character(1)` or `function`)\cr a format label (string) or formatter function.
+#' @param na_str (`character(1)`)\cr string that should be displayed in place of missing values.
+#' @param align (`character(1)`)\cr alignment values should be rendered with.
 #'
 #' @return An object of class `fmt_config` which contains the following elements:
 #'   * `format`

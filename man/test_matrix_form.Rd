@@ -4,7 +4,7 @@
 \alias{test_matrix_form}
 \alias{basic_matrix_form}
 \alias{basic_listing_mf}
-\title{Create spoof matrix form from a data.frame}
+\title{Create spoof matrix form from a data frame}
 \usage{
 basic_matrix_form(
   df,
@@ -21,34 +21,33 @@ basic_listing_mf(
 )
 }
 \arguments{
-\item{df}{data.frame}
+\item{df}{(\code{data.frame})\cr a data frame.}
 
-\item{parent_path}{character. parent path that all rows should be "children of",
-defaults to \code{"root"}, and generally should not matter to end users.}
+\item{parent_path}{(\code{character(1)})\cr parent path that all rows should be "children of".
+Defaults to \code{"root"}, and generally should not matter to end users.}
 
-\item{ignore_rownames}{logical. If \code{TRUE}, rownames are ignored.}
+\item{ignore_rownames}{(\code{logical(1)})\cr whether rownames should be ignored.}
 
-\item{add_decoration}{logical. If \code{TRUE}, adds title and footers decorations to the
-matrix form.}
+\item{add_decoration}{(\code{logical(1)})\cr whether adds title and footer decorations should
+be added to the matrix form.}
 
-\item{keycols}{character. Vector of \code{df} column names that are printed first and
-repeated values are assigned to \code{""}. This format is characteristic of a listing matrix form.
-When \code{NULL}, no key columns are used. Defaults to \code{c("vs", "gear")} for \code{mtcars} default dataset.}
+\item{keycols}{(\code{character})\cr a vector of \code{df} column names that are printed first and for which
+repeated values are assigned \code{""}. This format is characteristic of a listing matrix form.
+If \code{NULL}, no key columns are used. Defaults to \code{c("vs", "gear")} (used for \code{mtcars} dataset).}
 }
 \value{
-A valid \code{MatrixPrintForm} object representing \code{df},
-ready for ASCII rendering
+A valid \code{MatrixPrintForm} object representing \code{df} that is ready for ASCII rendering.
 
-A valid \code{MatrixPrintForm} object representing \code{df} as a listing,
-ready for ASCII rendering.
+A valid \code{MatrixPrintForm} object representing \code{df} as a listing that is ready for ASCII
+rendering.
 }
 \description{
-Useful functions for writing testing/examples, and as a
-starting point for more sophisticated custom \code{matrix_form} methods.
+Useful functions for writing tests and examples, and a starting point for
+more sophisticated custom \code{matrix_form} methods.
 }
 \section{Functions}{
 \itemize{
-\item \code{basic_listing_mf()}: Create a \code{MatrixPrintForm} object from a data.frame \code{df} that
+\item \code{basic_listing_mf()}: Create a \code{MatrixPrintForm} object from data frame \code{df} that
 respects the default formats for a listing object.
 
 }}

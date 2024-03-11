@@ -24,7 +24,7 @@
 \alias{prov_footer<-,MatrixPrintForm-method}
 \alias{all_footers}
 \alias{all_titles}
-\title{General title/footer accessors}
+\title{General title and footer accessors}
 \usage{
 main_title(obj)
 
@@ -73,15 +73,15 @@ all_footers(obj)
 all_titles(obj)
 }
 \arguments{
-\item{obj}{ANY. Object to extract information from.}
+\item{obj}{(\code{any})\cr aoject to extract information from.}
 
 \item{value}{character. New value.}
 }
 \value{
-A character scalar (\code{main_title}), a character vector (\code{main_footer}), or
-vector of length zero or more (\code{subtitles}, \code{page_titles},
-\code{prov_footer}) containing the relevant title/footer contents
+A character scalar (\code{main_title}), character vector (\code{main_footer}), or
+vector of length zero or more (\code{subtitles}, \code{page_titles}, \code{prov_footer}) containing
+the relevant title/footer contents.
 }
 \description{
-General title/footer accessors
+General title and footer accessors
 }

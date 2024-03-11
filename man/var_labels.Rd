@@ -2,28 +2,30 @@
 % Please edit documentation in R/labels.R
 \name{var_labels}
 \alias{var_labels}
-\title{Get Label Attributes of Variables in a \code{data.frame}}
+\title{Get label attributes of variables in a \code{data.frame}}
 \usage{
 var_labels(x, fill = FALSE)
 }
 \arguments{
-\item{x}{a \code{data.frame} object}
+\item{x}{(\code{data.frame})\cr a data frame object.}
 
-\item{fill}{boolean in case the \code{label} attribute does not exist if
-\code{TRUE} the variable names is returned, otherwise \code{NA}}
+\item{fill}{(\code{logical(1)})\cr whether variable names should be returned for variables for
+which the \code{label} attribute does not exist. If \code{FALSE}, these variables are filled with
+\code{NA}s instead.}
 }
 \value{
-a named character vector with the variable labels, the names
-correspond to the variable names
+a named character vector of variable labels from \code{x}, with names corresponding
+to variable names.
 }
 \description{
 Variable labels can be stored as a \code{label} attribute for each variable.
 This functions returns a named character vector with the variable labels
-(empty sting if not specified)
+(or empty strings if not specified).
 }
 \examples{
 x <- iris
 var_labels(x)
 var_labels(x) <- paste("label for", names(iris))
 var_labels(x)
+
 }

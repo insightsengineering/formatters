@@ -12,5 +12,5 @@
 \item{...}{further arguments passed to or from other methods.}
 }
 \description{
-Print an R object. see \code{[base::print()]}
+Print an R object. See \code{\link[=print]{print()}}.
 }

@@ -3,22 +3,23 @@
 \name{divider_height}
 \alias{divider_height}
 \alias{divider_height,ANY-method}
-\title{Divider Height}
+\title{Divider height}
 \usage{
 divider_height(obj)
 
 \S4method{divider_height}{ANY}(obj)
 }
 \arguments{
-\item{obj}{ANY. Object.}
+\item{obj}{(\code{any})\cr object.}
 }
 \value{
-The height, in lines of text, of the divider between
-header and body. Currently returns \code{1L} for the default method.
+The height, in lines of text, of the divider between header and body. Currently
+returns \code{1L} for the default method.
 }
 \description{
-Divider Height
+Divider height
 }
 \examples{
 divider_height(mtcars)
+
 }

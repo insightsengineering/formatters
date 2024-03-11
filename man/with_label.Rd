@@ -7,13 +7,13 @@
 with_label(x, label)
 }
 \arguments{
-\item{x}{an object}
+\item{x}{(\code{any})\cr an object.}
 
-\item{label}{label attribute to to attached to  \code{x}}
+\item{label}{(\code{character(1)})\cr label attribute to attach to \code{x}.}
 }
 \value{
-\code{x} labeled by \code{label}. Note: the exact mechanism of labeling should be
-considered an internal implementation detail, but the label will always be retrieved via \code{obj_label}.
+\code{x} labeled by \code{label}. Note that the exact mechanism of labeling should be considered
+an internal implementation detail, but the label will always be retrieved via \code{obj_label}.
 }
 \description{
 Return an object with a label attribute
@@ -21,4 +21,5 @@ Return an object with a label attribute
 \examples{
 x <- with_label(c(1, 2, 3), label = "Test")
 obj_label(x)
+
 }

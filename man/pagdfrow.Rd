@@ -2,7 +2,7 @@
 % Please edit documentation in R/pagination.R
 \name{pagdfrow}
 \alias{pagdfrow}
-\title{Create row of pagination data frame}
+\title{Create a row of a pagination data frame}
 \usage{
 pagdfrow(
   row,
@@ -27,52 +27,51 @@ pagdfrow(
 )
 }
 \arguments{
-\item{row}{ANY. Object representing the row, which is used for default values of \code{nm}, \code{lab},
-\code{extent} and \code{rclass} if provided. Must have methods for \code{obj_name}, \code{obj_label},
-and \code{nlines}, respectively, for default values of \code{nm}, \code{lab} and \code{extent} to
-be retrieved, respectively.}
+\item{row}{(\code{any})\cr object representing the row, which is used for default values of \code{nm}, \code{lab},
+\code{extent}, and \code{rclass} if provided. Must have methods for \code{obj_name}, \code{obj_label}, and \code{nlines}, to retrieve
+default values of \code{nm}, \code{lab}, and \code{extent}, respectively.}
 
-\item{nm}{character(1). Name}
+\item{nm}{(\code{character(1)})\cr name.}
 
-\item{lab}{character(1). Label}
+\item{lab}{(\code{character(1)})\cr label.}
 
-\item{rnum}{numeric(1). Absolute row number}
+\item{rnum}{(\code{numeric(1)})\cr absolute row number.}
 
-\item{pth}{character or NULL. Path within larger table}
+\item{pth}{(\code{character} or \code{NULL})\cr path within larger table.}
 
-\item{sibpos}{integer(1). Position among sibling rows}
+\item{sibpos}{(\code{integer(1)})\cr position among sibling rows.}
 
-\item{nsibs}{integer(1). Number of siblings (including self).}
+\item{nsibs}{(\code{integer(1)})\cr number of siblings (including self).}
 
-\item{extent}{numeric(1). Number of lines required to print the row}
+\item{extent}{(\code{numeric(1)})\cr number of lines required to print the row.}
 
-\item{colwidths}{numeric. Column widths}
+\item{colwidths}{(\code{numeric})\cr column widths.}
 
-\item{repext}{integer(1). Number of lines required to reprint all context for this row if it appears directly
+\item{repext}{(\code{integer(1)})\cr number of lines required to reprint all context for this row if it appears directly
 after pagination.}
 
-\item{repind}{integer. Vector of row numbers to be reprinted if this row appears directly after pagination.}
+\item{repind}{(\code{integer})\cr vector of row numbers to be reprinted if this row appears directly after pagination.}
 
-\item{indent}{integer. Indent}
+\item{indent}{(\code{integer})\cr indent.}
 
-\item{rclass}{character(1). Class of row object.}
+\item{rclass}{(\code{character(1)})\cr class of row object.}
 
-\item{nrowrefs}{integer(1). Number of row referential footnotes for this row}
+\item{nrowrefs}{(\code{integer(1)})\cr number of row referential footnotes for this row.}
 
-\item{ncellrefs}{integer(1). Number of cell referential footnotes for the cells in this row}
+\item{ncellrefs}{(\code{integer(1)})\cr number of cell referential footnotes for the cells in this row.}
 
-\item{nreflines}{integer(1). Total number of lines required by all referential footnotes}
+\item{nreflines}{(\code{integer(1)})\cr total number of lines required by all referential footnotes.}
 
-\item{force_page}{logical(1). Currently Ignored.}
+\item{force_page}{(\code{logical(1)})\cr currently ignored.}
 
-\item{page_title}{logical(1). Currently Ignored.}
+\item{page_title}{(\code{logical(1)})\cr currently ignored.}
 
-\item{trailing_sep}{character(1). The string to used as a separator below this row during printing (or
-\code{NA_character_} for no separator).}
+\item{trailing_sep}{(\code{character(1)})\cr the string to use as a separator below this row during printing.
+If \code{NA_character_}, no separator is used.}
 }
 \value{
-a single row data.frame with the columns appropriate for a pagination info data frame.
+A single row \code{data.frame} with the appropriate columns for a pagination info data frame.
 }
 \description{
-Create row of pagination data frame
+Create a row of a pagination data frame
 }
