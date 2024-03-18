@@ -10,7 +10,8 @@ basic_matrix_form(
   df,
   parent_path = "root",
   ignore_rownames = FALSE,
-  add_decoration = FALSE
+  add_decoration = FALSE,
+  fontspec = font_spec()
 )
 
 basic_listing_mf(
@@ -30,6 +31,11 @@ defaults to \code{"root"}, and generally should not matter to end users.}
 
 \item{add_decoration}{logical. If \code{TRUE}, adds title and footers decorations to the
 matrix form.}
+
+\item{fontspec}{font_spec. A font_spec object
+specifying the font information to use for
+calculating string widths and heights, as
+returned by \code{\link[=font_spec]{font_spec()}}}
 
 \item{keycols}{character. Vector of \code{df} column names that are printed first and
 repeated values are assigned to \code{""}. This format is characteristic of a listing matrix form.

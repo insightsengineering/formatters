@@ -415,11 +415,11 @@ test_that("pag_num works in paginate_to_mpfs and export_as_txt", {
 test_that("colgap is applied correctly during pagination with and without row labels ", {
   df <- mtcars
 
-  test <- basic_matrix_form(df, ignore_rowlabels = TRUE)
-  res <- paginate_to_mpfs(test, cpp = 10, col_gap = 50, verbose = TRUE)
+  test <- basic_matrix_form(df, ignore_rownames = TRUE)
+  res <- paginate_to_mpfs(test, cpp = 10, col_gap = 50)
   expect_equal(length(res),
                ncol(test))
-  test2 <- basic_matrix_form(df, rowlabels = TRUE)
-  expect_error(paginate_to_mpfs(test2, cpp = 50, col_gap = 50, verbose = TRUE),
+  test2 <- basic_matrix_form(df, ignore_rownames = FALSE)
+  expect_error(paginate_to_mpfs(test2, cpp = 50, col_gap = 50),
                ".*Unable to find any valid pagination split for page 1.*")
 })

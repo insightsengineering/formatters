@@ -99,6 +99,7 @@ reference:
     contents:
       - print,ANY-method
       - wrap_string
+      - wrap_string_ttype
       - wrap_txt
       - ifnotlen0
       - table_inset

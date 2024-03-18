@@ -5,17 +5,24 @@
 \alias{wrap_string_ttype}
 \title{wrap string given a Truetype font}
 \usage{
-split_word_ttype(string, width_spc, fontspec, min_ok_chars)
+split_word_ttype(str, width, fontspec, min_ok_chars)
 
 wrap_string_ttype(
-  string,
-  width_spc,
+  str,
+  width,
   fontspec,
   collapse = NULL,
-  min_ok_chars = min(floor(nchar(string)/2), 4, floor(width_spc/2))
+  min_ok_chars = min(floor(nchar(str)/2), 4, floor(width/2)),
+  wordbreak_ok = TRUE
 )
 }
 \arguments{
+\item{str}{character. String to be wrapped. If it is a character vector or
+a list, it will be looped as a list and returned with \code{unlist(use.names = FALSE)}.}
+
+\item{width}{numeric(1). Width, in number of spaces, that the
+text should be wrapped at.}
+
 \item{fontspec}{font_spec. A font_spec object
 specifying the font information to use for
 calculating string widths and heights, as
@@ -27,9 +34,13 @@ on either side when a word is split}
 \item{collapse}{character(1) or \code{NULL}. If the words that have been split should
 be pasted together with the collapse character. This is usually done internally
 with \code{"\\n"} to have the wrapping updated along with other internal values.}
+
+\item{wordbreak_ok}{logical(1). Should breaking within a word be allowed. If, \code{FALSE},
+attempts to wrap a string to a width narrower than its widest word will result
+in an error.}
 }
 \value{
-\code{string}, broken up into a word-wrapped vector
+\code{str}, broken up into a word-wrapped vector
 }
 \description{
 wrap string given a Truetype font

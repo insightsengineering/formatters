@@ -22,6 +22,8 @@ returned by \code{\link[=font_spec]{font_spec()}}}
 }
 \value{
 \code{x}, padded to be a string of \code{n} characters
+
+\code{x}, padded to be a string of \code{n} characters
 }
 \description{
 Pad a string and align within string

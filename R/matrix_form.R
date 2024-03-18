@@ -994,7 +994,7 @@ basic_matrix_form <- function(df, parent_path = "root", ignore_rownames = FALSE,
     has_topleft = FALSE,
     nlines_header = 1,
     nrow_header = 1,
-    has_rowlabs = rowlabels,
+    has_rowlabs = !ignore_rownames,
     fontspec = fontspec,
     col_gap = 3
   )

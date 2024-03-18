@@ -1089,16 +1089,16 @@ wrap_string <- function(str, width, collapse = NULL, fontspec = font_spec()) {
 
 #' @rdname wrap_string_ttype
 #' @export
-split_word_ttype <- function(string, width_spc, fontspec, min_ok_chars) {
-  chrs <- strsplit(string, "")[[1]]
+split_word_ttype <- function(str, width, fontspec, min_ok_chars) {
+  chrs <- strsplit(str, "")[[1]]
   nctt_chars <- nchar_ttype(chrs, fontspec, raw = TRUE)
-  ok <- which(cumsum(nctt_chars) <= width_spc)
+  ok <- which(cumsum(nctt_chars) <= width)
   if(length(ok) < min_ok_chars || length(chrs) - length(ok) < min_ok_chars)
     list(ok = character(),
-         remainder = string)
+         remainder = str)
   else
-    list(ok = substr(string, 1, length(ok)),
-         remainder = substr(string, length(ok) + 1, nchar(string)))
+    list(ok = substr(str, 1, length(ok)),
+         remainder = substr(str, length(ok) + 1, nchar(str)))
 }
 
 ## need a separate path here because **the number of characters**
@@ -1111,24 +1111,27 @@ split_word_ttype <- function(string, width_spc, fontspec, min_ok_chars) {
 #' @inheritParams wrap_string
 #' @param min_ok_chars numeric(1). Number of minimum characters which much remain
 #' on either side when a word is split
-#' @return `string`, broken up into a word-wrapped vector
+#' @param wordbreak_ok logical(1). Should breaking within a word be allowed. If, `FALSE`,
+#' attempts to wrap a string to a width narrower than its widest word will result
+#' in an error.
+#' @return `str`, broken up into a word-wrapped vector
 #' @export
-wrap_string_ttype <- function(string, width_spc, fontspec, collapse = NULL, min_ok_chars = min(floor(nchar(string)/2), 4, floor(width_spc/2)), wordbreak_ok = TRUE) {
+wrap_string_ttype <- function(str, width, fontspec, collapse = NULL, min_ok_chars = min(floor(nchar(str)/2), 4, floor(width/2)), wordbreak_ok = TRUE) {
   newdev <- open_font_dev(fontspec)
   if(newdev)
     on.exit(close_font_dev())
   
-  rawspls <- strsplit(string, "[[:space:]](?=[^[:space:]])", perl = TRUE)[[1]] #preserve all but one space
+  rawspls <- strsplit(str, "[[:space:]](?=[^[:space:]])", perl = TRUE)[[1]] #preserve all but one space
   nctt <- nchar_ttype(rawspls, fontspec, raw = TRUE)
-  pts <- which(cumsum(nctt) <= width_spc)
+  pts <- which(cumsum(nctt) <= width)
   if(length(pts) == length(rawspls))
-      return(string) ## no splitting needed
+      return(str) ## no splitting needed
   else if(length(pts) == 0) { ## no spaces, all one word, split it and keep going
       if(wordbreak_ok) {
           inner_res <- list()
           min_ok_inner <- min_ok_chars
           while(length(inner_res$ok) == 0) {
-              inner_res <- split_word_ttype(rawspls[1], width_spc, fontspec, min_ok_inner) #min_ok_chars)
+              inner_res <- split_word_ttype(rawspls[1], width, fontspec, min_ok_inner) #min_ok_chars)
               min_ok_inner <- floor(min_ok_inner/2)
           }
           done <- inner_res$ok
@@ -1136,14 +1139,14 @@ wrap_string_ttype <- function(string, width_spc, fontspec, collapse = NULL, min_
       } else {
           stop("Unable to find word wrapping solution without breaking word: ",
                rawspls[[1]], " [requires  ", nchar_ttype(rawspls[[1]], fontspec), " spaces of width, out of ",
-               width_spc, " available].")
+               width, " available].")
       }        
   } else { ## some words fit, and some words don't
  
       done_tmp <- paste(rawspls[pts], collapse = " ")
       tospl_tmp <- rawspls[length(pts) + 1]
-      width_tmp <- width_spc - sum(nctt[pts])
-      if(wordbreak_ok && width_tmp/width_spc > .33) {
+      width_tmp <- width - sum(nctt[pts])
+      if(wordbreak_ok && width_tmp/width > .33) {
           inner_res <- split_word_ttype(tospl_tmp, width_tmp, fontspec,
                                     min_ok_chars = min_ok_chars)
       } else {
@@ -1156,7 +1159,7 @@ wrap_string_ttype <- function(string, width_spc, fontspec, collapse = NULL, min_
                         collapse = " ")
   }
   ret <- c(done,
-           wrap_string_ttype(remainder, width_spc, fontspec))
+           wrap_string_ttype(remainder, width, fontspec))
   if(!is.null(collapse))
     ret <- paste(ret, collapse = collapse)
   ret

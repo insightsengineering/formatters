@@ -62,7 +62,6 @@ calculating string widths and heights, as
 returned by \code{\link[=font_spec]{font_spec()}}}
 
 \item{...}{Further parameters to be passed to \code{\link[=paginate_to_mpfs]{paginate_to_mpfs()}}.}
-
 }
 \description{
 Experimental export to the \code{RTF} format.
