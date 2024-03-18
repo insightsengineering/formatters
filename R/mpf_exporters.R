@@ -129,8 +129,8 @@ export_as_txt <- function(x,
   obj_are_tables_or_listings <- all(
     sapply(a_list, function(list_i) {
       is(list_i, "listing_df") || is(list_i, "VTableTree")
-      })
-    )
+    })
+  )
 
   all_matrix_forms <- all(sapply(a_list, is, class2 = "MatrixPrintForm"))
 

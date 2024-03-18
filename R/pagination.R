@@ -1076,12 +1076,12 @@ paginate_to_mpfs <- function(obj,
                              rep_cols = num_rep_cols(obj),
                              col_gap = 2,
                              verbose = FALSE) {
-
   if (isTRUE(page_num)) {
     page_num <- "page {i}/{n}"
   }
   checkmate::assert_string(page_num, null.ok = TRUE)
 
+  # We can return a list of paginated tables and listings
   if (.is_list_of_tables_or_listings(obj)) {
     cur_call <- match.call(expand.dots = FALSE)
     # if (!"rep_cols" %in% names(cur_call)) cur_call[["rep_cols"]] <- max(sapply(x, num_rep_cols))
@@ -1101,7 +1101,6 @@ paginate_to_mpfs <- function(obj,
         })
       )
       mpfs <- .modify_footer_for_page_numbers(mpfs, page_num, extracted_cpp)
-
     }
 
     return(mpfs)
