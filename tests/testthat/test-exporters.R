@@ -87,8 +87,6 @@ test_that("exporters work", {
       file.remove("Rplots.pdf") # coming probably from rtf::
     }
   }
-
-
 })
 
 test_that("mpf_subset_rows works when there are newlines/wrapping in column labels", {
