@@ -1076,6 +1076,42 @@ paginate_to_mpfs <- function(obj,
                              rep_cols = num_rep_cols(obj),
                              col_gap = 2,
                              verbose = FALSE) {
+
+  if (isTRUE(page_num)) {
+    page_num <- "page {i}/{n}"
+  }
+  checkmate::assert_string(page_num, null.ok = TRUE)
+
+  if (.is_list_of_tables_or_listings(obj)) {
+    cur_call <- match.call(expand.dots = FALSE)
+    # if (!"rep_cols" %in% names(cur_call)) cur_call[["rep_cols"]] <- max(sapply(x, num_rep_cols))
+    mpfs <- unlist(
+      lapply(obj, function(obj_i) {
+        cur_call[["obj"]] <- obj_i
+        eval(cur_call)
+      }),
+      recursive = FALSE
+    )
+
+    if (!is.null(page_num)) {
+      extracted_cpp <- max(
+        sapply(mpfs, function(mpf) {
+          pf <- prov_footer(mpf)
+          nchar(pf[length(pf)])
+        })
+      )
+      mpfs <- .modify_footer_for_page_numbers(mpfs, page_num, extracted_cpp)
+
+    }
+
+    return(mpfs)
+  }
+
+  if (!is.null(page_num)) {
+    # Only adding a line for pagination -> lpp - 1 would have worked too
+    prov_footer(obj) <- c(prov_footer(obj), page_num)
+  }
+
   mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size)
 
   # Turning off min_siblings for listings
@@ -1090,18 +1126,6 @@ paginate_to_mpfs <- function(obj,
   }
   if (NROW(mf_cinfo(mpf)) == 0) {
     mpf <- mpf_infer_cinfo(mpf, colwidths, rep_cols)
-  }
-
-  # Page numbers
-  if (isTRUE(page_num)) {
-    page_num <- "page {i}/{n}"
-  }
-  checkmate::assert_string(page_num, null.ok = TRUE)
-
-  if (!is.null(page_num)) {
-    # Only adding a line for pagination -> lpp - 1 would have worked too
-    prov_footer(obj) <- c(prov_footer(obj), page_num)
-    prov_footer(mpf) <- c(prov_footer(mpf), page_num)
   }
 
   if (is.null(pg_size_spec)) {
@@ -1199,27 +1223,35 @@ paginate_to_mpfs <- function(obj,
 
   # Adding page numbers if needed
   if (!is.null(page_num)) {
-    total_pages <- length(res)
-    page_str <- gsub("\\{n\\}", total_pages, page_num)
-    page_nums <- vapply(
-      seq_len(total_pages),
-      function(x) {
-        gsub("\\{i\\}", x, page_str)
-      },
-      FUN.VALUE = character(1)
+    res <- .modify_footer_for_page_numbers(
+      mf_list = res,
+      page_num_format = page_num,
+      current_cpp = pg_size_spec$cpp
     )
-    page_footer <- sprintf(paste0("%", pg_size_spec$cpp, "s"), page_nums)
-    if (any(nchar(page_footer) > pg_size_spec$cpp)) {
-      stop("Page numbering string (page_num) is too wide to fit the desired page (inserted cpp).")
-    }
-
-    res <- lapply(seq_along(res), function(pg_i) {
-      prov_footer(res[[pg_i]]) <- c(head(prov_footer(res[[pg_i]]), -1), page_footer[pg_i])
-      res[[pg_i]]
-    })
   }
 
   res
+}
+
+.modify_footer_for_page_numbers <- function(mf_list, page_num_format, current_cpp) {
+  total_pages <- length(mf_list)
+  page_str <- gsub("\\{n\\}", total_pages, page_num_format)
+  page_nums <- vapply(
+    seq_len(total_pages),
+    function(x) {
+      gsub("\\{i\\}", x, page_str)
+    },
+    FUN.VALUE = character(1)
+  )
+  page_footer <- sprintf(paste0("%", current_cpp, "s"), page_nums)
+  if (any(nchar(page_footer) > current_cpp)) {
+    stop("Page numbering string (page_num) is too wide to fit the desired page (inserted cpp).")
+  }
+
+  lapply(seq_along(mf_list), function(pg_i) {
+    prov_footer(mf_list[[pg_i]]) <- c(head(prov_footer(mf_list[[pg_i]]), -1), page_footer[pg_i])
+    mf_list[[pg_i]]
+  })
 }
 
 .is_listing <- function(mpf) {

@@ -63,27 +63,11 @@ export_as_txt <- function(x,
                           page_break = "\\s\\n",
                           page_num = default_page_number()) {
   # process lists
-  if (is(x, "list") && (is(x[[1]], "listing_df") || is(x[[1]], "TableTree"))) {
-    checkmate::assert_true(all(sapply(x, function(x) is(x, "listing_df") || is(x, "TableTree"))))
-    cur_call <- match.call(expand.dots = FALSE)
-    if (!"rep_cols" %in% names(cur_call)) cur_call[["rep_cols"]] <- max(sapply(x, num_rep_cols))
-    txt_list <- lapply(x, function(x_i) {
-      cur_call[["x"]] <- x_i
-      eval(cur_call)
-    })
-    res <- paste(txt_list, collapse = page_break)
-
-    # recalculate page numbers
-    if (!is.null(page_num)) {
-      tot_pag <- sum(gregexpr(page_break, res, fixed = TRUE)[[1]] > 0) + 1
-      pag_num_pat <- gsub("\\{[i|n]\\}", "[0-9]*", page_num)
-      res <- gsub(pag_num_pat, page_num, res)
-      for (i in seq_len(tot_pag)) {
-        res <- sub(page_num, gsub("\\{i\\}", i, gsub("\\{n\\}", tot_pag, page_num)), res, perl = TRUE)
-      }
+  if (.is_list_of_tables_or_listings(x)) {
+    if (isFALSE(paginate)) {
+      warning("paginate is FALSE, but x is a list of tables or listings, so paginate will be set to TRUE")
     }
-
-    return(if (is.null(file)) res else cat(res, file = file))
+    paginate <- TRUE
   }
 
   if (paginate) {
@@ -141,7 +125,17 @@ export_as_txt <- function(x,
   }
 }
 
+.is_list_of_tables_or_listings <- function(a_list) {
+  obj_are_tables_or_listings <- all(
+    sapply(a_list, function(list_i) {
+      is(list_i, "listing_df") || is(list_i, "VTableTree")
+      })
+    )
 
+  all_matrix_forms <- all(sapply(a_list, is, class2 = "MatrixPrintForm"))
+
+  is(a_list, "list") && (obj_are_tables_or_listings || all_matrix_forms)
+}
 
 ##     ## TODO this needs to be in terms of a MPF, so ncol(tt) needs to change
 

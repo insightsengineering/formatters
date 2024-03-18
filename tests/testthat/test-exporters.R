@@ -183,3 +183,20 @@ test_that("export_as_pdf works", {
 
   expect_equal(res$npages, 2)
 })
+
+test_that("exporting lists of tables and listings works for different exports", {
+  bmf <- basic_matrix_form(mtcars)
+  blmf <- basic_listing_mf(mtcars)
+  l_mf <- list(bmf, blmf)
+
+  output <- export_as_txt(l_mf, page_num = "page {i} of {n}", cpp = 90)
+  last_line_last_page <- strsplit(output, "\n")[[1]][168]
+
+  expect_true(grepl(last_line_last_page, pattern = "page 4 of 4"))
+  expect_equal(nchar(last_line_last_page), 90)
+
+  suppressWarnings(expect_warning(
+    export_as_txt(l_mf, paginate = FALSE),
+    "paginate is FALSE, but x is a list of tables or listings, so paginate will be set to TRUE"
+  ))
+})
