@@ -21,7 +21,7 @@ paginate_indices(
   lpp = NA_integer_,
   cpp = NA_integer_,
   min_siblings = 2,
-  nosplitin = character(),
+  nosplitin = list(rows = character(), cols = character()),
   colwidths = NULL,
   tf_wrap = FALSE,
   max_width = NULL,
@@ -29,6 +29,7 @@ paginate_indices(
   pg_size_spec = NULL,
   rep_cols = num_rep_cols(obj),
   col_gap = 3,
+  fontspec = font_spec(font_family, font_size, lineheight),
   verbose = FALSE
 )
 
@@ -53,7 +54,8 @@ paginate_to_mpfs(
   pg_size_spec = NULL,
   page_num = default_page_number(),
   rep_cols = num_rep_cols(obj),
-  col_gap = 2,
+  col_gap = 3,
+  fontspec = font_spec(font_family, font_size, lineheight),
   verbose = FALSE
 )
 
@@ -71,14 +73,15 @@ diagnose_pagination(
   cpp = NA_integer_,
   min_siblings = 2,
   nosplitin = character(),
-  colwidths = propose_column_widths(matrix_form(obj, TRUE)),
+  colwidths = propose_column_widths(matrix_form(obj, TRUE), fontspec = fontspec),
   tf_wrap = FALSE,
   max_width = NULL,
   indent_size = 2,
   pg_size_spec = NULL,
   rep_cols = num_rep_cols(obj),
-  col_gap = 2,
+  col_gap = 3,
   verbose = FALSE,
+  fontspec = font_spec(font_family, font_size, lineheight),
   ...
 )
 }
@@ -150,6 +153,11 @@ size specification. Typically this is not set in end user code.}
 row labels) to be repeated on every page. Defaults to 0}
 
 \item{col_gap}{numeric(1). Currently unused.}
+
+\item{fontspec}{font_spec. A font_spec object
+specifying the font information to use for
+calculating string widths and heights, as
+returned by \code{\link[=font_spec]{font_spec()}}}
 
 \item{verbose}{logical(1). Should additional informative messages about the search for
 pagination breaks be shown. Defaults to \code{FALSE}.}

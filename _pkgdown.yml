@@ -109,3 +109,11 @@ reference:
       - ref_df_row
       - default_page_number
       - set_default_page_number
+  - title: Font support
+    desc: Functions related to font support for pagination
+    contents:
+      - font_spec
+      - nchar_ttype
+      - open_font_dev
+
+

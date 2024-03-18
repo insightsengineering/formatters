@@ -14,7 +14,9 @@ pag_indices_inner(
   verbose = FALSE,
   row = TRUE,
   have_col_fnotes = FALSE,
-  div_height = 1L
+  div_height = 1L,
+  col_gap = 3L,
+  has_rowlabels
 )
 }
 \arguments{
@@ -50,6 +52,11 @@ column-associated referential footnotes.}
 
 \item{div_height}{numeric(1). The height of the divider line when the
 associated object is rendered. Defaults to \code{1}.}
+
+\item{col_gap}{numeric(1). Width of gap between columns, in same units as extent
+in \code{pagdf} (spaces under a particular font specification).}
+
+\item{has_rowlabels}{logical(1). Does the object being paginated have row-labels?}
 }
 \value{
 A list containing the vector of row numbers, broken up by page

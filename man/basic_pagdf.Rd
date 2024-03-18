@@ -10,7 +10,8 @@ basic_pagdf(
   rnums = seq_along(rnames),
   extents = 1L,
   rclass = "NA",
-  parent_path = "root"
+  parent_path = "root",
+  fontspec = font_spec()
 )
 }
 \arguments{
@@ -26,6 +27,11 @@ basic_pagdf(
 
 \item{parent_path}{character. parent path that all rows should be "children of",
 defaults to \code{"root"}, and generally should not matter to end users.}
+
+\item{fontspec}{font_spec. A font_spec object
+specifying the font information to use for
+calculating string widths and heights, as
+returned by \code{\link[=font_spec]{font_spec()}}}
 }
 \value{
 A data.frame suitable for use in both the \code{MatrixPrintForm} constructor and the pagination machinery

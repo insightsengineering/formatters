@@ -17,7 +17,9 @@ make_row_df(
   repr_inds = integer(),
   sibpos = NA_integer_,
   nsibs = NA_integer_,
-  max_width = NULL
+  max_width = NULL,
+  fontspec = font_spec(),
+  col_gap = 3L
 )
 
 \S4method{make_row_df}{MatrixPrintForm}(
@@ -32,7 +34,9 @@ make_row_df(
   repr_inds = integer(),
   sibpos = NA_integer_,
   nsibs = NA_integer_,
-  max_width = NULL
+  max_width = NULL,
+  fontspec = font_spec(),
+  col_gap = mf_colgap(tt) \%||\% 3L
 )
 }
 \arguments{
@@ -62,6 +66,14 @@ Defaults to \code{TRUE}. May not be supported by all methods.}
 
 \item{max_width}{numeric(1) or NULL. Maximum width for title/footer
 materials.}
+
+\item{fontspec}{font_spec. A font_spec object
+specifying the font information to use for
+calculating string widths and heights, as
+returned by \code{\link[=font_spec]{font_spec()}}}
+
+\item{col_gap}{numeric(1). The gap to be assumed between columns,
+in number of spaces with font specified by \code{fontspec}}
 }
 \value{
 a data.frame of row/column-structure information used by the pagination machinery.

@@ -4,7 +4,12 @@
 \alias{font_lcpi}
 \title{Calculate lines per inch and characters per inch for font}
 \usage{
-font_lcpi(font_family = "Courier", font_size = 8, lineheight = 1)
+font_lcpi(
+  font_family = "Courier",
+  font_size = 8,
+  lineheight = 1,
+  fontspec = font_spec(font_family, font_size, lineheight)
+)
 }
 \arguments{
 \item{font_family}{character(1). Name of a font family. An error
@@ -14,6 +19,11 @@ to Courier.}
 \item{font_size}{numeric(1). Font size, defaults to 12.}
 
 \item{lineheight}{numeric(1). Line height, defaults to 1.}
+
+\item{fontspec}{font_spec. A font_spec object
+specifying the font information to use for
+calculating string widths and heights, as
+returned by \code{\link[=font_spec]{font_spec()}}}
 }
 \value{
 named list with \code{cpi} and \code{lpi}, the characters and lines per
