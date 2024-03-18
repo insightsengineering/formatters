@@ -62,7 +62,7 @@ export_as_txt <- function(x,
                           verbose = FALSE,
                           page_break = "\\s\\n",
                           page_num = default_page_number()) {
-  # process lists
+  # Processing lists of tables or listings
   if (.is_list_of_tables_or_listings(x)) {
     if (isFALSE(paginate)) {
       warning("paginate is FALSE, but x is a list of tables or listings, so paginate will be set to TRUE")
@@ -560,16 +560,33 @@ export_as_pdf <- function(x,
                           cpp = NULL,
                           hsep = "-",
                           indent_size = 2,
+                          rep_cols = num_rep_cols(x),
                           tf_wrap = TRUE,
                           max_width = NULL,
-                          colwidths = propose_column_widths(x)) {
+                          colwidths = NULL) {
   stopifnot(tools::file_ext(file) != ".pdf")
-  if (!is.null(colwidths) && length(colwidths) != ncol(x) + 1) {
-    stop(
-      "non-null colwidths argument must have length ncol(x) + 1 [",
-      ncol(x) + 1, "], got length ", length(colwidths)
-    )
+
+  # Processing lists of tables or listings
+  if (.is_list_of_tables_or_listings(x)) {
+    if (isFALSE(paginate)) {
+      warning("paginate is FALSE, but x is a list of tables or listings, so paginate will be set to TRUE")
+    }
+    paginate <- TRUE
+
+
+  } else if (is.null(colwidths)) {
+    colwidths <- propose_column_widths(x)
+    ncol_x <- ncol(x)
+
+    # This check will be done inside paginate_to_mpfs in case of lists
+    if (!is.null(colwidths) && length(colwidths) != ncol_x + 1) {
+      stop(
+        "non-null colwidths argument must have length ncol(x) + 1 [",
+        ncol_x + 1, "], got length ", length(colwidths)
+      )
+    }
   }
+
   gp_plot <- grid::gpar(fontsize = font_size, fontfamily = font_family)
 
   if (!is.null(height)) {
@@ -621,7 +638,7 @@ export_as_pdf <- function(x,
       max_width = max_width,
       indent_size = indent_size,
       verbose = FALSE,
-      rep_cols = num_rep_cols(x),
+      rep_cols = rep_cols,
       page_num = page_num
     )
   } else {

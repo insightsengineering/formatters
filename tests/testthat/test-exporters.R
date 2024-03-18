@@ -182,7 +182,7 @@ test_that("export_as_pdf works", {
   expect_equal(res$npages, 2)
 })
 
-test_that("exporting lists of tables and listings works for different exports", {
+test_that("exporting lists of tables and listings works", {
   bmf <- basic_matrix_form(mtcars)
   blmf <- basic_listing_mf(mtcars)
   l_mf <- list(bmf, blmf)
@@ -197,4 +197,19 @@ test_that("exporting lists of tables and listings works for different exports", 
     export_as_txt(l_mf, paginate = FALSE),
     "paginate is FALSE, but x is a list of tables or listings, so paginate will be set to TRUE"
   ))
+
+  # export_as_pdf
+  tmpf <- tempfile(fileext = ".pdf")
+  tmpf <- "to_delete.pdf"
+  output <- export_as_pdf(l_mf, file = tmpf, page_num = "page {i} of {n}", cpp = 90)
+  expect_true(file.exists(tmpf))
+  file.remove(tmpf)
+
+  tmpf <- tempfile(fileext = ".pdf")
+  suppressWarnings(expect_warning(
+    export_as_pdf(l_mf, file = tmpf, paginate = FALSE),
+    "paginate is FALSE, but x is a list of tables or listings, so paginate will be set to TRUE"
+  ))
+  expect_true(file.exists(tmpf))
+  file.remove(tmpf)
 })
