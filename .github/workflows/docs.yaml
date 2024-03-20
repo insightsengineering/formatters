@@ -5,15 +5,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "inst/templates/**"
-      - "_pkgdown.*"
-      - DESCRIPTION
-      - "**.md"
-      - "**.Rmd"
-      - "man/**"
-      - "LICENSE.*"
-      - NAMESPACE
   pull_request:
     types:
       - opened
@@ -22,15 +13,6 @@ on:
       - ready_for_review
     branches:
       - main
-    paths:
-      - "inst/templates/**"
-      - "_pkgdown.*"
-      - DESCRIPTION
-      - "**.md"
-      - "**.Rmd"
-      - "man/**"
-      - "LICENSE.*"
-      - NAMESPACE
   workflow_dispatch:
 
 jobs:
@@ -40,4 +22,5 @@ jobs:
     secrets:
       REPO_GITHUB_TOKEN: ${{ secrets.REPO_GITHUB_TOKEN }}
     with:
+      sd-direction: upstream
       default-landing-page: latest-tag
