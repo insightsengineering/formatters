@@ -77,7 +77,7 @@ obj_align(obj) <- value
 \S4method{obj_align}{fmt_config}(obj) <- value
 }
 \arguments{
-\item{obj}{(\code{any})\cr the object.}
+\item{obj}{(\code{ANY})\cr the object.}
 
 \item{value}{character(1). The new label}
 }

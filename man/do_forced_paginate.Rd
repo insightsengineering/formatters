@@ -10,7 +10,7 @@ do_forced_paginate(obj)
 \S4method{do_forced_paginate}{ANY}(obj)
 }
 \arguments{
-\item{obj}{(\code{any})\cr object to be paginated. The \code{ANY} method simply returns a list of
+\item{obj}{(\code{ANY})\cr object to be paginated. The \code{ANY} method simply returns a list of
 length one, containing \code{obj}.}
 }
 \value{

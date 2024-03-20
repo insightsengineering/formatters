@@ -17,7 +17,7 @@ toString(x, ...)
 )
 }
 \arguments{
-\item{x}{(\code{any})\cr object to be prepared for rendering.}
+\item{x}{(\code{ANY})\cr object to be prepared for rendering.}
 
 \item{...}{additional parameters passed to individual methods.}
 

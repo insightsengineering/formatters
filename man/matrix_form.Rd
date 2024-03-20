@@ -20,7 +20,7 @@ matrix_form(
 )
 }
 \arguments{
-\item{obj}{(\code{any})\cr object to be transformed into a ready-to-render form (a \code{\link{MatrixPrintForm}} object).}
+\item{obj}{(\code{ANY})\cr object to be transformed into a ready-to-render form (a \code{\link{MatrixPrintForm}} object).}
 
 \item{indent_rownames}{(\code{logical(1)})\cr if \code{TRUE}, the row names column in the \code{strings} matrix of \code{obj}
 will have indented row names (strings pre-fixed).}

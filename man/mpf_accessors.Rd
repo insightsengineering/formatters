@@ -96,7 +96,7 @@ mf_has_rlabels(mf)
 \arguments{
 \item{mf}{(\code{MatrixPrintForm})\cr a \code{MatrixPrintForm} object.}
 
-\item{value}{(\code{any})\cr the new value for the component in question.}
+\item{value}{(\code{ANY})\cr the new value for the component in question.}
 
 \item{x}{\code{MatrixPrintForm}. The object.}
 }

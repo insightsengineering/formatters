@@ -107,7 +107,7 @@ NULL
 #' @param page_title (`logical(1)`)\cr currently ignored.
 #' @param trailing_sep (`character(1)`)\cr the string to use as a separator below this row during printing.
 #'   If `NA_character_`, no separator is used.
-#' @param row (`any`)\cr object representing the row, which is used for default values of `nm`, `lab`,
+#' @param row (`ANY`)\cr object representing the row, which is used for default values of `nm`, `lab`,
 #'   `extent`, and `rclass` if provided. Must have methods for `obj_name`, `obj_label`, and `nlines`, to retrieve
 #'   default values of `nm`, `lab`, and `extent`, respectively.
 #'
@@ -527,7 +527,7 @@ pag_indices_inner <- function(pagdf,
 #' Find column indices for vertical pagination
 #'
 #' @inheritParams pag_indices_inner
-#' @param obj (`any`)\cr object to be paginated. Must have a [matrix_form()] method.
+#' @param obj (`ANY`)\cr object to be paginated. Must have a [matrix_form()] method.
 #' @param cpp (`numeric(1)`)\cr number of characters per page (width).
 #' @param colwidths (`numeric`)\cr vector of column widths (in characters) for use in vertical pagination.
 #' @param rep_cols (`numeric(1)`)\cr number of *columns* (not including row labels) to be repeated on every page.
@@ -613,7 +613,7 @@ mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf)) {
 
 #' Basic/spoof pagination info data frame
 #'
-#' Returns a minimal pagination info `data.frame` (with no sibling/footnote/etc. info).
+#' Returns a minimal pagination info `data.frame` (with no info on siblings, footnotes, etc.).
 #'
 #' @inheritParams test_matrix_form
 #' @param rnames (`character`)\cr vector of row names.

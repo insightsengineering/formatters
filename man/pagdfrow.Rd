@@ -27,7 +27,7 @@ pagdfrow(
 )
 }
 \arguments{
-\item{row}{(\code{any})\cr object representing the row, which is used for default values of \code{nm}, \code{lab},
+\item{row}{(\code{ANY})\cr object representing the row, which is used for default values of \code{nm}, \code{lab},
 \code{extent}, and \code{rclass} if provided. Must have methods for \code{obj_name}, \code{obj_label}, and \code{nlines}, to retrieve
 default values of \code{nm}, \code{lab}, and \code{extent}, respectively.}
 

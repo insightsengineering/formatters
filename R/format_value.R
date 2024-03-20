@@ -230,7 +230,7 @@ sep_2d_helper <- function(x, dig1, dig2, sep, na_str, wrap = NULL) {
 
 #' Converts a (possibly compound) value into a string using the `format` information
 #'
-#' @param x (`any`)\cr the value to be formatted.
+#' @param x (`ANY`)\cr the value to be formatted.
 #' @param format (`character(1)` or `function`)\cr the format label (string) or formatter function to
 #'   apply to `x`.
 #' @param na_str (`character(1)`)\cr string to display when the value of `x` is missing. Defaults to `"NA"`.

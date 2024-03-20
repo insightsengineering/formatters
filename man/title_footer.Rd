@@ -73,7 +73,7 @@ all_footers(obj)
 all_titles(obj)
 }
 \arguments{
-\item{obj}{(\code{any})\cr aoject to extract information from.}
+\item{obj}{(\code{ANY})\cr object to extract information from.}
 
 \item{value}{character. New value.}
 }

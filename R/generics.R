@@ -4,13 +4,13 @@
 ### machinery.
 
 ## nocov start
-#' Make row layout summary dataframes for use during pagination
+#' Make row layout summary data frames for use during pagination
 #'
 #' All relevant information about table rows (e.g. indentations) is summarized in a `data.frame`.
 #' This function works **only** on `rtables` and `rlistings` objects, and not on their `print` counterparts
 #' (like [`MatrixPrintForm`]).
 #'
-#' @param tt (`any`)\cr object representing the table-like object to be summarized.
+#' @param tt (`ANY`)\cr object representing the table-like object to be summarized.
 #' @param visible_only (`logical(1)`)\cr should only visible aspects of the table structure be reflected
 #'   in this summary. Defaults to `TRUE`. May not be supported by all methods.
 #' @param incontent (`logical(1)`)\cr internal detail, do not set manually.
@@ -84,7 +84,7 @@ setMethod("make_row_df", "MatrixPrintForm", function(tt, colwidths = NULL, visib
 #' Although `rtable`s are represented as a tree data structure when outputting the table to ASCII or HTML,
 #' it is useful to map the `rtable` to an in-between state with the formatted cells in a matrix form.
 #'
-#' @param obj (`any`)\cr object to be transformed into a ready-to-render form (a [`MatrixPrintForm`] object).
+#' @param obj (`ANY`)\cr object to be transformed into a ready-to-render form (a [`MatrixPrintForm`] object).
 #' @param indent_rownames (`logical(1)`)\cr if `TRUE`, the row names column in the `strings` matrix of `obj`
 #'   will have indented row names (strings pre-fixed).
 #' @param expand_newlines (`logical(1)`)\cr whether the generated matrix form should expand rows whose values
@@ -133,7 +133,7 @@ setMethod("matrix_form", "MatrixPrintForm", function(obj,
 ## this will be customizable someday. I have foreseen it (spooky noises)
 #' Divider height
 #'
-#' @param obj (`any`)\cr object.
+#' @param obj (`ANY`)\cr object.
 #'
 #' @return The height, in lines of text, of the divider between header and body. Currently
 #'   returns `1L` for the default method.
@@ -155,7 +155,7 @@ setMethod(
 
 #' Number of lines required to print a value
 #'
-#' @param x (`any`)\cr the object to be printed.
+#' @param x (`ANY`)\cr the object to be printed.
 #' @param colwidths (`numeric`)\cr column widths (if necessary).
 #' @param max_width (`numeric(1)`)\cr width that strings should be wrapped to when
 #'   determining how many lines they require.
@@ -212,7 +212,7 @@ setMethod("nlines", "character", function(x, colwidths, max_width) {
 #' Transform a complex object into a string representation ready to be printed or written
 #' to a plain-text file.
 #'
-#' @param x (`any`)\cr object to be prepared for rendering.
+#' @param x (`ANY`)\cr object to be prepared for rendering.
 #' @param ... additional parameters passed to individual methods.
 #'
 #' @export
@@ -237,7 +237,7 @@ setMethod("print", "ANY", base::print) ## nocov
 #'
 #' Getters and setters for basic, relatively universal attributes of "table-like" objects.
 #'
-#' @param obj (`any`)\cr the object.
+#' @param obj (`ANY`)\cr the object.
 #' @param value (`character(1)` or `FormatSpec`)\cr the new value of the attribute.
 #'
 #' @return The name, format, or label of `obj` for getters, or `obj` after modification for setters.
@@ -385,7 +385,7 @@ setMethod("obj_align<-", "fmt_config", function(obj, value) {
 
 #' General title and footer accessors
 #'
-#' @param obj (`any`)\cr aoject to extract information from.
+#' @param obj (`ANY`)\cr object to extract information from.
 #'
 #' @return A character scalar (`main_title`), character vector (`main_footer`), or
 #'   vector of length zero or more (`subtitles`, `page_titles`, `prov_footer`) containing
@@ -553,7 +553,7 @@ all_titles <- function(obj) c(main_title(obj), subtitles(obj), page_titles(obj))
 #' main footer material are inset from the left-alignment of the titles and provenance
 #' footer materials.
 #'
-#' @param obj (`any`)\cr object to get or (recursively if necessary) set table inset for.
+#' @param obj (`ANY`)\cr object to get or (recursively if necessary) set table inset for.
 #' @param value (`character(1)`)\cr string to use as new header/body separator.
 #'
 #' @return
@@ -599,7 +599,7 @@ setMethod(
 #' is expected to have all information necessary to locate such page breaks, and the
 #' `do_forced_pag` method is expected to fully perform those paginations.
 #'
-#' @param obj (`any`)\cr object to be paginated. The `ANY` method simply returns a list of
+#' @param obj (`ANY`)\cr object to be paginated. The `ANY` method simply returns a list of
 #'   length one, containing `obj`.
 #'
 #' @return A list of sub-objects, which will be further paginated by the standard pagination
@@ -621,7 +621,7 @@ setMethod("do_forced_paginate", "ANY", function(obj) list(obj))
 #'
 #' Absent a class-specific method, this function returns 0, indicating no always-repeated columns.
 #'
-#' @param obj (`any`)\cr a table-like object.
+#' @param obj (`ANY`)\cr a table-like object.
 #'
 #' @return An integer.
 #'

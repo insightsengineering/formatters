@@ -16,7 +16,7 @@ table_inset(obj) <- value
 \S4method{table_inset}{MatrixPrintForm}(obj) <- value
 }
 \arguments{
-\item{obj}{(\code{any})\cr object to get or (recursively if necessary) set table inset for.}
+\item{obj}{(\code{ANY})\cr object to get or (recursively if necessary) set table inset for.}
 
 \item{value}{(\code{character(1)})\cr string to use as new header/body separator.}
 }

@@ -10,7 +10,7 @@ num_rep_cols(obj)
 \S4method{num_rep_cols}{ANY}(obj)
 }
 \arguments{
-\item{obj}{(\code{any})\cr a table-like object.}
+\item{obj}{(\code{ANY})\cr a table-like object.}
 }
 \value{
 An integer.

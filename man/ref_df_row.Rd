@@ -2,7 +2,7 @@
 % Please edit documentation in R/matrix_form.R
 \name{ref_df_row}
 \alias{ref_df_row}
-\title{Create a row for a referential footnote information dataframe}
+\title{Create a row for a referential footnote information data frame}
 \usage{
 ref_df_row(
   row_path = NA_character_,
@@ -39,5 +39,5 @@ determining how many lines they require.}
 A single row data frame with the appropriate columns.
 }
 \description{
-Create a row for a referential footnote information dataframe
+Create a row for a referential footnote information data frame
 }

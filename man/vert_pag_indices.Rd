@@ -13,7 +13,7 @@ vert_pag_indices(
 )
 }
 \arguments{
-\item{obj}{(\code{any})\cr object to be paginated. Must have a \code{\link[=matrix_form]{matrix_form()}} method.}
+\item{obj}{(\code{ANY})\cr object to be paginated. Must have a \code{\link[=matrix_form]{matrix_form()}} method.}
 
 \item{cpp}{(\code{numeric(1)})\cr number of characters per page (width).}
 

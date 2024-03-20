@@ -8,9 +8,9 @@
 a \%||\% b
 }
 \arguments{
-\item{a}{(\code{any})\cr element to select \emph{only} if it is not of length 0.}
+\item{a}{(\code{ANY})\cr element to select \emph{only} if it is not of length 0.}
 
-\item{b}{(\code{any})\cr element to select if \code{a} has length 0.}
+\item{b}{(\code{ANY})\cr element to select if \code{a} has length 0.}
 }
 \value{
 \code{a} if it is not of length 0, otherwise \code{b}.

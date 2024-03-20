@@ -1,6 +1,6 @@
 #' Return an object with a label attribute
 #'
-#' @param x (`any`)\cr an object.
+#' @param x (`ANY`)\cr an object.
 #' @param label (`character(1)`)\cr label attribute to attach to `x`.
 #'
 #' @return `x` labeled by `label`. Note that the exact mechanism of labeling should be considered

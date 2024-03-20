@@ -10,7 +10,7 @@ divider_height(obj)
 \S4method{divider_height}{ANY}(obj)
 }
 \arguments{
-\item{obj}{(\code{any})\cr object.}
+\item{obj}{(\code{ANY})\cr object.}
 }
 \value{
 The height, in lines of text, of the divider between header and body. Currently

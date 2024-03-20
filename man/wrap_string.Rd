@@ -10,7 +10,7 @@ wrap_string(str, width, collapse = NULL)
 wrap_txt(str, width, collapse = NULL)
 }
 \arguments{
-\item{str}{(\code{string}, \code{character}, or \code{list})\cr string to be wrapped. If it is a \verb{character vector} or
+\item{str}{(\code{character(1)}, \code{character}, or \code{list})\cr string to be wrapped. If it is a \code{vector} or
 a \code{list}, it will be looped as a \code{list} and returned with \code{unlist(use.names = FALSE)}.}
 
 \item{width}{(\code{numeric(1)})\cr width, in characters, that the text should be wrapped to.}

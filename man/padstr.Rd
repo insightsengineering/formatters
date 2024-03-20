@@ -7,7 +7,7 @@
 padstr(x, n, just = list_valid_aligns())
 }
 \arguments{
-\item{x}{(\code{string})\cr a string.}
+\item{x}{(\code{character(1)})\cr a string.}
 
 \item{n}{(\code{integer(1)})\cr number of characters in the output string. If \code{n < nchar(x)}, an error is thrown.}
 

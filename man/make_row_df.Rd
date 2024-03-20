@@ -3,7 +3,7 @@
 \name{make_row_df}
 \alias{make_row_df}
 \alias{make_row_df,MatrixPrintForm-method}
-\title{Make row layout summary dataframes for use during pagination}
+\title{Make row layout summary data frames for use during pagination}
 \usage{
 make_row_df(
   tt,
@@ -36,7 +36,7 @@ make_row_df(
 )
 }
 \arguments{
-\item{tt}{(\code{any})\cr object representing the table-like object to be summarized.}
+\item{tt}{(\code{ANY})\cr object representing the table-like object to be summarized.}
 
 \item{colwidths}{(\code{numeric})\cr internal detail, do not set manually.}
 

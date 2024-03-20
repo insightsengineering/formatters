@@ -16,7 +16,7 @@ nlines(x, colwidths = NULL, max_width = NULL)
 \S4method{nlines}{character}(x, colwidths = NULL, max_width = NULL)
 }
 \arguments{
-\item{x}{(\code{any})\cr the object to be printed.}
+\item{x}{(\code{ANY})\cr the object to be printed.}
 
 \item{colwidths}{(\code{numeric})\cr column widths (if necessary).}
 

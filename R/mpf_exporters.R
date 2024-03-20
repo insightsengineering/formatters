@@ -11,7 +11,7 @@
 #' @inheritParams paginate_indices
 #' @inheritParams toString
 #' @inheritParams propose_column_widths
-#' @param x (`any`)\cr a table-like object to export. Must have an applicable `matrix_form` method.
+#' @param x (`ANY`)\cr a table-like object to export. Must have an applicable `matrix_form` method.
 #' @param file (`character(1)` or `NULL`)\cr if non-`NULL`, the path to write a text file to
 #'   containing `x` rendered as ASCII text.
 #' @param page_break (`character(1)`)\cr page break symbol (defaults to `"\\n\\s"`).

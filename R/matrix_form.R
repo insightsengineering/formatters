@@ -182,8 +182,8 @@ disp_from_spans <- function(spans) {
 #'   Must be a supported text alignment. See [decimal_align] for allowed values.
 #' @param formats (`matrix`)\cr matrix of same dimension as `strings` giving the text format
 #'   information for each element. Must be repeated to match placeholders in `strings`.
-#' @param row_info (`data.frame`)\cr data frame with row-information necessary for pagination
-#'   (XXX document exactly what that is).
+#' @param row_info (`data.frame`)\cr data frame with row-information necessary for pagination (see
+#'   [basic_pagdf()] for more details).
 #' @param line_grouping (`integer`)\cr sequence of integers indicating how print lines correspond
 #'   to semantic rows in the object. Typically this should not be set manually unless
 #'   `expand_newlines` is set to `FALSE`.
@@ -320,7 +320,7 @@ MatrixPrintForm <- function(strings = NULL,
   ret
 }
 
-#' Create a row for a referential footnote information dataframe
+#' Create a row for a referential footnote information data frame
 #'
 #' @inheritParams nlines
 #' @param row_path (`character`)\cr row path (or `NA_character_` for none).
@@ -441,7 +441,7 @@ mform_build_refdf <- function(mform) {
 #' internal use in, e.g., [`matrix_form`] methods, and should generally not be called by end users.
 #'
 #' @param mf (`MatrixPrintForm`)\cr a `MatrixPrintForm` object.
-#' @param value (`any`)\cr the new value for the component in question.
+#' @param value (`ANY`)\cr the new value for the component in question.
 #'
 #' @return
 #' * Getters return the associated element of `mf`.

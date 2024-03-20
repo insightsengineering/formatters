@@ -33,7 +33,7 @@ export_as_txt(
 )
 }
 \arguments{
-\item{x}{(\code{any})\cr a table-like object to export. Must have an applicable \code{matrix_form} method.}
+\item{x}{(\code{ANY})\cr a table-like object to export. Must have an applicable \code{matrix_form} method.}
 
 \item{file}{(\code{character(1)} or \code{NULL})\cr if non-\code{NULL}, the path to write a text file to
 containing \code{x} rendered as ASCII text.}

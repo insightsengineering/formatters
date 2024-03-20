@@ -30,7 +30,7 @@ export_as_pdf(
 )
 }
 \arguments{
-\item{x}{(\code{any})\cr a table-like object to export. Must have an applicable \code{matrix_form} method.}
+\item{x}{(\code{ANY})\cr a table-like object to export. Must have an applicable \code{matrix_form} method.}
 
 \item{file}{(\code{character(1)})\cr file to write to, must have \code{.pdf} extension.}
 

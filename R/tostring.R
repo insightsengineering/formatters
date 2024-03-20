@@ -699,7 +699,7 @@ new_line_warning <- function(str_v) {
 #' If the width is smaller than any large word, these will be truncated after `width` characters. If
 #' the split leaves trailing groups of empty spaces, they will be dropped.
 #'
-#' @param str (`string`, `character`, or `list`)\cr string to be wrapped. If it is a `character vector` or
+#' @param str (`character(1)`, `character`, or `list`)\cr string to be wrapped. If it is a `vector` or
 #'   a `list`, it will be looped as a `list` and returned with `unlist(use.names = FALSE)`.
 #' @param width (`numeric(1)`)\cr width, in characters, that the text should be wrapped to.
 #' @param collapse (`character(1)` or `NULL`)\cr collapse character used to separate segments of words that
@@ -953,7 +953,7 @@ spans_to_viscell <- function(spans) {
 #'
 #' Row names are also considered a column for the output.
 #'
-#' @param x (`any`)\cr a `MatrixPrintForm` object, or an object with a `matrix_form` method.
+#' @param x (`ANY`)\cr a `MatrixPrintForm` object, or an object with a `matrix_form` method.
 #' @param indent_size (`numeric(1)`)\cr indent size, in characters. Ignored when `x` is already
 #'   a `MatrixPrintForm` object in favor of information there.
 #'
@@ -1018,7 +1018,7 @@ propose_column_widths <- function(x, indent_size = 2) {
 
 #' Pad a string and align within string
 #'
-#' @param x (`string`)\cr a string.
+#' @param x (`character(1)`)\cr a string.
 #' @param n (`integer(1)`)\cr number of characters in the output string. If `n < nchar(x)`, an error is thrown.
 #' @param just (`character(1)`)\cr text alignment justification to use. Defaults to `"center"`. Must be one of
 #'   `"center"`, `"right"`, `"left"`, `"dec_right"`, `"dec_left"`, or `"decimal"`.

@@ -7,7 +7,7 @@
 with_label(x, label)
 }
 \arguments{
-\item{x}{(\code{any})\cr an object.}
+\item{x}{(\code{ANY})\cr an object.}
 
 \item{label}{(\code{character(1)})\cr label attribute to attach to \code{x}.}
 }

@@ -46,8 +46,8 @@ Must be a supported text alignment. See \link{decimal_align} for allowed values.
 \item{formats}{(\code{matrix})\cr matrix of same dimension as \code{strings} giving the text format
 information for each element. Must be repeated to match placeholders in \code{strings}.}
 
-\item{row_info}{(\code{data.frame})\cr data frame with row-information necessary for pagination
-(XXX document exactly what that is).}
+\item{row_info}{(\code{data.frame})\cr data frame with row-information necessary for pagination (see
+\code{\link[=basic_pagdf]{basic_pagdf()}} for more details).}
 
 \item{line_grouping}{(\code{integer})\cr sequence of integers indicating how print lines correspond
 to semantic rows in the object. Typically this should not be set manually unless

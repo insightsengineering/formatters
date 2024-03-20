@@ -31,7 +31,7 @@ Defaults to \code{"root"}, and generally should not matter to end users.}
 A \code{data.frame} suitable for use in both the \code{MatrixPrintForm} constructor and the pagination machinery.
 }
 \description{
-Returns a minimal pagination info \code{data.frame} (with no sibling/footnote/etc. info).
+Returns a minimal pagination info \code{data.frame} (with no info on siblings, footnotes, etc.).
 }
 \examples{
 basic_pagdf(c("hi", "there"))

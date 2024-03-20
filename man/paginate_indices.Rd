@@ -83,7 +83,7 @@ diagnose_pagination(
 )
 }
 \arguments{
-\item{obj}{(\code{any})\cr object to be paginated. Must have a \code{\link[=matrix_form]{matrix_form()}} method.}
+\item{obj}{(\code{ANY})\cr object to be paginated. Must have a \code{\link[=matrix_form]{matrix_form()}} method.}
 
 \item{page_type}{(\code{character(1)})\cr name of a page type. See \code{\link{page_types}}. Ignored
 when \code{pg_width} and \code{pg_height} are set directly.}

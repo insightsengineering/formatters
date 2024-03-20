@@ -4,8 +4,8 @@
 
 #' `%||%` (if length-0) alternative operator
 #'
-#' @param a (`any`)\cr element to select *only* if it is not of length 0.
-#' @param b (`any`)\cr element to select if `a` has length 0.
+#' @param a (`ANY`)\cr element to select *only* if it is not of length 0.
+#' @param b (`ANY`)\cr element to select if `a` has length 0.
 #'
 #' @return `a` if it is not of length 0, otherwise `b`.
 #'
