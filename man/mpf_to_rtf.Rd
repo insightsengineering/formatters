@@ -12,7 +12,10 @@ mpf_to_rtf(
   pg_height = page_dim(page_type)[if (landscape) 1 else 2],
   landscape = FALSE,
   margins = c(4, 4, 4, 4),
+  font_family = "Courier",
   font_size = 8,
+  lineheight = 1,
+  fontspec = font_spec(font_family, font_size, lineheight),
   ...
 )
 }
@@ -38,7 +41,18 @@ be inverted  for landscape?  Defaults to  \code{FALSE}, ignored when
 to \code{.5} inches for both vertical margins and \code{.75} for both
 horizontal margins.}
 
+\item{font_family}{character(1). Name of a font family. An error
+will be thrown if the family named is not monospaced. Defaults
+to Courier.}
+
 \item{font_size}{numeric(1). Font size, defaults to 12.}
+
+\item{lineheight}{numeric(1). Line height, defaults to 1.}
+
+\item{fontspec}{font_spec. A font_spec object
+specifying the font information to use for
+calculating string widths and heights, as
+returned by \code{\link[=font_spec]{font_spec()}}}
 
 \item{...}{Passed to individual methods.}
 }

@@ -12,7 +12,7 @@ pagdfrow(
   pth,
   sibpos = NA_integer_,
   nsibs = NA_integer_,
-  extent = nlines(row, colwidths),
+  extent = nlines(row, colwidths, fontspec = fontspec),
   colwidths = NULL,
   repext = 0L,
   repind = integer(),
@@ -23,7 +23,8 @@ pagdfrow(
   nreflines = 0L,
   force_page = FALSE,
   page_title = NA_character_,
-  trailing_sep = NA_character_
+  trailing_sep = NA_character_,
+  fontspec
 )
 }
 \arguments{
@@ -69,6 +70,11 @@ after pagination.}
 
 \item{trailing_sep}{character(1). The string to used as a separator below this row during printing (or
 \code{NA_character_} for no separator).}
+
+\item{fontspec}{font_spec. A font_spec object
+specifying the font information to use for
+calculating string widths and heights, as
+returned by \code{\link[=font_spec]{font_spec()}}}
 }
 \value{
 a single row data.frame with the columns appropriate for a pagination info data frame.

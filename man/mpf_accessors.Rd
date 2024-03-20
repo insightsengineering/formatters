@@ -14,6 +14,8 @@
 \alias{mf_nlheader}
 \alias{mf_nrheader}
 \alias{mf_colgap}
+\alias{mf_fontspec}
+\alias{mf_fontspec<-}
 \alias{mf_strings<-}
 \alias{mf_spans<-}
 \alias{mf_aligns<-}
@@ -58,6 +60,10 @@ mf_nlheader(mf)
 mf_nrheader(mf)
 
 mf_colgap(mf)
+
+mf_fontspec(mf)
+
+mf_fontspec(mf) <- value
 
 mf_strings(mf) <- value
 

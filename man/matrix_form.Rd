@@ -9,14 +9,18 @@ matrix_form(
   obj,
   indent_rownames = FALSE,
   expand_newlines = TRUE,
-  indent_size = 2
+  indent_size = 2,
+  fontspec = NULL,
+  col_gap = NULL
 )
 
 \S4method{matrix_form}{MatrixPrintForm}(
   obj,
   indent_rownames = FALSE,
   expand_newlines = TRUE,
-  indent_size = 2
+  indent_size = 2,
+  fontspec = NULL,
+  col_gap = NULL
 )
 }
 \arguments{
@@ -32,6 +36,14 @@ ASCII). Defaults to \code{TRUE}}
 
 \item{indent_size}{numeric(1). Number of spaces to be used per level of indent (if supported by
 the relevant method). Defaults to 2.}
+
+\item{fontspec}{font_spec. A font_spec object
+specifying the font information to use for
+calculating string widths and heights, as
+returned by \code{\link[=font_spec]{font_spec()}}}
+
+\item{col_gap}{numeric(1). The gap to be assumed between columns,
+in number of spaces with font specified by \code{fontspec}}
 }
 \value{
 A \code{MatrixPrintForm} classed list with the following elements:
