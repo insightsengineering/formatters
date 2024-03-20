@@ -44,7 +44,7 @@ margins and \code{.75} for both horizontal margins.}
 An RTF object.
 }
 \description{
-Experimental export to rich text format (RTF) via the \code{\link{r2rtf}} package.
+Experimental export to rich text format (RTF) via the \code{r2rtf} package.
 }
 \details{
 This function provides a low-level coercion of a \code{MatrixPrintForm} object into

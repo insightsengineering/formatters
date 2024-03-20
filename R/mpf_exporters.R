@@ -199,7 +199,7 @@ mpf_to_dfbody <- function(mpf, colwidths) {
 
 #' Transform `MatrixPrintForm` to RTF
 #'
-#' Experimental export to rich text format (RTF) via the [`r2rtf`] package.
+#' Experimental export to rich text format (RTF) via the `r2rtf` package.
 #'
 #' @inheritParams page_lcpp
 #' @inheritParams toString
