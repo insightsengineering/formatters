@@ -12,7 +12,7 @@
 \alias{ex_adqs}
 \alias{ex_adrs}
 \alias{ex_advs}
-\title{Simulated \code{CDISC} Alike Data for Examples}
+\title{Simulated CDISC-like data for examples}
 \format{
 \code{rds} (\code{data.frame})
 
@@ -56,6 +56,6 @@ ex_adrs
 ex_advs
 }
 \description{
-Simulated \code{CDISC} Alike Data for Examples
+Simulated CDISC-like data for examples
 }
 \keyword{datasets}

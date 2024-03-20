@@ -168,7 +168,7 @@ sprintf_format <- function(format) {
 #' This behavior will differ from `as.character(round(x, digits = digits))` in the case where there are
 #' not at least `digits` significant digits after the decimal that remain after rounding. It *may* differ from
 #' `sprintf("\%.Nf", x)` for values ending in `5` after the decimal place on many popular operating systems
-#' due to `round`'s stricter adherence to the `IEC 60559` standard, particularly for R versions > 4.0.0 (see
+#' due to `round`'s stricter adherence to the IEC 60559 standard, particularly for R versions > 4.0.0 (see
 #' warning in [round()] documentation).
 #'
 #' @seealso [format_value()], [round()], [sprintf()]

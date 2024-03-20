@@ -16,7 +16,7 @@ options as the default horizontal separator. Must be a single character. Use
 \code{getOption("formatters_default_hsep")} to get its current value (\code{NULL} if not set).}
 }
 \value{
-\code{unicode} 2014 (long dash for generating solid horizontal line) if in a
+unicode 2014 (long dash for generating solid horizontal line) if in a
 locale that uses a UTF character set, otherwise an ASCII hyphen with a
 once-per-session warning.
 }

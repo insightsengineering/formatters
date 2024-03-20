@@ -7,7 +7,7 @@
 #'   options as the default horizontal separator. Must be a single character. Use
 #'   `getOption("formatters_default_hsep")` to get its current value (`NULL` if not set).
 #'
-#' @return `unicode` 2014 (long dash for generating solid horizontal line) if in a
+#' @return unicode 2014 (long dash for generating solid horizontal line) if in a
 #'   locale that uses a UTF character set, otherwise an ASCII hyphen with a
 #'   once-per-session warning.
 #'

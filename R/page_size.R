@@ -41,10 +41,13 @@ pg_dim_names <- list(
   legal = c(8.5, 14)
 )
 
-#' Supported Named Page `TypesList` supported named page types
+#' Supported named page types
 #'
-#' @return for `page_types` a character vector of supported page types,
-#' for `page_dim` the dimensions (width, then height) of the selected page type.
+#' List supported named page types.
+#'
+#' @return
+#' * `page_types` returns a character vector of supported page types
+#' * `page_dim` returns the dimensions (width, then height) of the selected page type.
 #'
 #' @export
 #' @examples

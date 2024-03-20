@@ -43,7 +43,7 @@ to character and returned unchanged whereas \code{round(x, digits=NA)} returns \
 This behavior will differ from \code{as.character(round(x, digits = digits))} in the case where there are
 not at least \code{digits} significant digits after the decimal that remain after rounding. It \emph{may} differ from
 \code{sprintf("\\\%.Nf", x)} for values ending in \code{5} after the decimal place on many popular operating systems
-due to \code{round}'s stricter adherence to the \verb{IEC 60559} standard, particularly for R versions > 4.0.0 (see
+due to \code{round}'s stricter adherence to the IEC 60559 standard, particularly for R versions > 4.0.0 (see
 warning in \code{\link[=round]{round()}} documentation).
 }
 \examples{

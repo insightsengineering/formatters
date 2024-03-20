@@ -31,7 +31,7 @@ reference:
       - sprintf_format
       - fmt_config
   - title: Generics Interface For Pagination
-    desc: Generics requried for pagination machinery
+    desc: Generics required for pagination machinery
     contents:
       - make_row_df
       - pagdfrow
@@ -62,7 +62,6 @@ reference:
       - spread_integer
       - is.wholenumber
   - title: Pagination
-    desc: Pagination functionality
     contents:
       - paginate_indices
       - pagination_algo
@@ -71,7 +70,7 @@ reference:
       - pagdfrow
       - basic_pagdf
   - title: Variable Labels
-    desc: Functions for Assigning Labels to Variables In Data
+    desc: Functions for assigning labels to variables in data
     contents:
       - var_labels<-
       - var_labels
@@ -79,7 +78,6 @@ reference:
       - var_relabel
       - with_label
   - title: General Accessors
-    desc: General accessors
     contents:
       - starts_with("obj_")
   - title: Data
@@ -88,14 +86,14 @@ reference:
       - ex_adsl
       - DM
   - title: Export
-    desc: Export into different object
+    desc: Export into different object types
     contents:
       - export_as_txt
       - export_as_rtf
       - export_as_pdf
       - mpf_to_rtf
   - title: Miscellany
-    desc: Other documented functions not interesting to end users
+    desc: Other documented functions used by developers of this package
     contents:
       - print,ANY-method
       - wrap_string
