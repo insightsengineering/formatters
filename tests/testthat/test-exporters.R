@@ -193,23 +193,34 @@ test_that("exporting lists of tables and listings works", {
   expect_true(grepl(last_line_last_page, pattern = "page 4 of 4"))
   expect_equal(nchar(last_line_last_page), 90)
 
-  suppressWarnings(expect_warning(
+  expect_warning(
     export_as_txt(l_mf, paginate = FALSE),
     "paginate is FALSE, but x is a list of tables or listings, so paginate will be set to TRUE"
-  ))
+  )
 
   # export_as_pdf
   tmpf <- tempfile(fileext = ".pdf")
   tmpf <- "to_delete.pdf"
-  output <- export_as_pdf(l_mf, file = tmpf, page_num = "page {i} of {n}", cpp = 90)
+  output <- export_as_pdf(bmf, file = tmpf, page_num = "page {i} of {n}", cpp = 90)
   expect_true(file.exists(tmpf))
   file.remove(tmpf)
 
-  tmpf <- tempfile(fileext = ".pdf")
-  suppressWarnings(expect_warning(
+  expect_warning(
     export_as_pdf(l_mf, file = tmpf, paginate = FALSE),
     "paginate is FALSE, but x is a list of tables or listings, so paginate will be set to TRUE"
-  ))
+  )
+  expect_true(file.exists(tmpf))
+  file.remove(tmpf)
+
+  # export_as_rtf
+  tmpf <- tempfile(fileext = ".rtf")
+  output <- export_as_rtf(bmf, file = tmpf, page_num = "page {i} of {n}", cpp = 90)
+  expect_true(file.exists(tmpf))
+
+  expect_warning(
+    export_as_pdf(l_mf, file = tmpf, paginate = FALSE),
+    "paginate is FALSE, but x is a list of tables or listings, so paginate will be set to TRUE"
+  )
   expect_true(file.exists(tmpf))
   file.remove(tmpf)
 })

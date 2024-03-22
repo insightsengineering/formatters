@@ -413,3 +413,31 @@ test_that("pag_num works in paginate_to_mpfs and export_as_txt", {
   pages_tst_exp <- lapply(strsplit(pg_tst_exp, "OoOoO")[[1]], function(x) strsplit(x, "\n")[[1]])
   expect_equal(pages_tst_exp, print_pg_tst)
 })
+
+
+test_that("colwidths and num_rep_cols work when using lists of tables and listings", {
+  bmf <- basic_matrix_form(mtcars)
+  blmf <- basic_listing_mf(mtcars)
+  l_mf <- list(bmf, blmf)
+
+  output <- export_as_txt(l_mf, page_num = "page {i} of {n}", cpp = 90, colwidths = rep(8, 12))
+  nchar_lines <- sapply(strsplit(output, "\n")[[1]], nchar)
+
+  expect_equal(max(nchar_lines), 90)
+  expect_true(grepl(names(nchar_lines)[length(nchar_lines)], pattern = "page 4 of 4"))
+  expect_equal(unname(nchar_lines[length(nchar_lines)]), 90) # last line is full (page number)
+
+  sorted_tnl <- sort(table(nchar_lines), decreasing = TRUE)
+
+  expect_equal(unname(sorted_tnl[names(sorted_tnl) == "90"]), 4) # there are 4 pages (with page number)
+  expect_equal(names(sorted_tnl[c(1, 2)]), c("85", "52"))
+
+  expect_error(
+    export_as_txt(l_mf, colwidths = rep(8, 11)),
+    "non-null colwidths argument must have length ncol"
+  )
+
+  expect_silent(
+    output <- export_as_txt(l_mf, page_num = "page {i} of {n}", cpp = 90, colwidths = rep(8, 12), num_rep_cols = 2)
+  )
+})

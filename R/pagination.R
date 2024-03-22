@@ -1073,7 +1073,7 @@ paginate_to_mpfs <- function(obj,
                              indent_size = 2,
                              pg_size_spec = NULL,
                              page_num = default_page_number(),
-                             rep_cols = num_rep_cols(obj),
+                             rep_cols = NULL,
                              col_gap = 2,
                              verbose = FALSE) {
   if (isTRUE(page_num)) {
@@ -1084,11 +1084,10 @@ paginate_to_mpfs <- function(obj,
   # We can return a list of paginated tables and listings
   if (.is_list_of_tables_or_listings(obj)) {
     cur_call <- match.call(expand.dots = FALSE)
-    # if (!"rep_cols" %in% names(cur_call)) cur_call[["rep_cols"]] <- max(sapply(x, num_rep_cols))
     mpfs <- unlist(
       lapply(obj, function(obj_i) {
         cur_call[["obj"]] <- obj_i
-        eval(cur_call)
+        eval(cur_call, envir = parent.frame(3L))
       }),
       recursive = FALSE
     )
@@ -1118,11 +1117,25 @@ paginate_to_mpfs <- function(obj,
     min_siblings <- 0
   }
 
+  # Checking colwidths
   if (is.null(colwidths)) {
     colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf)
   } else {
+    # This check will be done inside paginate_to_mpfs in case of lists
+    if (!is.null(colwidths) && length(colwidths) != ncol(mpf) + 1) {
+      stop(
+        "non-null colwidths argument must have length ncol(x) (+ 1 if row labels are present) [",
+        ncol(mpf) + 1, "], got length ", length(colwidths)
+      )
+    }
+
     mf_col_widths(mpf) <- colwidths
   }
+
+  if(is.null(rep_cols)) {
+    rep_cols <- num_rep_cols(mpf)
+  }
+
   if (NROW(mf_cinfo(mpf)) == 0) {
     mpf <- mpf_infer_cinfo(mpf, colwidths, rep_cols)
   }

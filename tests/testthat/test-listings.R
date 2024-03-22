@@ -93,7 +93,9 @@ test_that("listings are correctly paginated when a wrapping happens on non-domin
     ignore_rownames = TRUE, add_decoration = FALSE
   )
 
-  pgs <- paginate_to_mpfs(lst, colwidths = c(30, 11, 12), lpp = 5)
+  expect_silent(
+    pgs <- paginate_to_mpfs(lst, colwidths = c(30, 11, 12), lpp = 5)
+  )
 
   expect_true(all(
     sapply(pgs, function(x) strsplit(toString(x), "\n")[[1]] %>% length() <= 5)
