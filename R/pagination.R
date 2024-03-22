@@ -1099,7 +1099,7 @@ paginate_to_mpfs <- function(obj,
           nchar(pf[length(pf)])
         })
       )
-      mpfs <- .modify_footer_for_page_numbers(mpfs, page_num, extracted_cpp)
+      mpfs <- .modify_footer_for_page_nums(mpfs, page_num, extracted_cpp)
     }
 
     return(mpfs)
@@ -1235,7 +1235,7 @@ paginate_to_mpfs <- function(obj,
 
   # Adding page numbers if needed
   if (!is.null(page_num)) {
-    res <- .modify_footer_for_page_numbers(
+    res <- .modify_footer_for_page_nums(
       mf_list = res,
       page_num_format = page_num,
       current_cpp = pg_size_spec$cpp
@@ -1245,7 +1245,7 @@ paginate_to_mpfs <- function(obj,
   res
 }
 
-.modify_footer_for_page_numbers <- function(mf_list, page_num_format, current_cpp) {
+.modify_footer_for_page_nums <- function(mf_list, page_num_format, current_cpp) {
   total_pages <- length(mf_list)
   page_str <- gsub("\\{n\\}", total_pages, page_num_format)
   page_nums <- vapply(
