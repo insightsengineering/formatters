@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.920892494929006" branch-rate="0" lines-covered="2270" lines-valid="2465" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-03-22 11:06:00.96366">
+<coverage line-rate="0.920892494929006" branch-rate="0" lines-covered="2270" lines-valid="2465" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-03-22 11:12:03.206615">
   <sources>
     <source>/__w/formatters/formatters/formatters</source>
   </sources>
@@ -3903,7 +3903,7 @@
                 <line number="1245" hits="38" branch="false"/>
               </lines>
             </method>
-            <method name=".modify_footer_for_page_numbers" signature="" line-rate="1" branch-rate="0" complexity="0">
+            <method name=".modify_footer_for_page_nums" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="1249" hits="16" branch="false"/>
                 <line number="1250" hits="16" branch="false"/>
