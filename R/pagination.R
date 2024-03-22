@@ -1132,7 +1132,7 @@ paginate_to_mpfs <- function(obj,
     mf_col_widths(mpf) <- colwidths
   }
 
-  if(is.null(rep_cols)) {
+  if (is.null(rep_cols)) {
     rep_cols <- num_rep_cols(mpf)
   }
 

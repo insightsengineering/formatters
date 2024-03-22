@@ -442,14 +442,12 @@ export_as_rtf <- function(x,
                           font_size = 8,
                           font_family = "Courier",
                           ...) {
-
   # Processing lists of tables or listings
   if (.is_list_of_tables_or_listings(x)) {
     if (isFALSE(paginate)) {
       warning("paginate is FALSE, but x is a list of tables or listings, so paginate will be set to TRUE")
     }
     paginate <- TRUE
-
   }
 
   if (!requireNamespace("r2rtf")) {
@@ -573,7 +571,6 @@ export_as_pdf <- function(x,
       warning("paginate is FALSE, but x is a list of tables or listings, so paginate will be set to TRUE")
     }
     paginate <- TRUE
-
   }
 
   gp_plot <- grid::gpar(fontsize = font_size, fontfamily = font_family)
