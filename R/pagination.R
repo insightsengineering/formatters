@@ -1257,7 +1257,7 @@ paginate_to_mpfs <- function(obj,
   )
   page_footer <- sprintf(paste0("%", current_cpp, "s"), page_nums)
   if (any(nchar(page_footer) > current_cpp)) {
-    stop("Page numbering string (page_num) is too wide to fit the desired page (inserted cpp).")
+    stop("Page numbering string (page_num) is too wide to fit the desired page size width (cpp).")
   }
 
   lapply(seq_along(mf_list), function(pg_i) {
