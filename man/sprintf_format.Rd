@@ -24,13 +24,13 @@ fmtfun2 <- sprintf_format("\%.4f - \%.2f")
 format_value(list(12.23456, 2.724))
 
 # You can also customise rtables values
-library(rtables)
 fmtfun3 <- sprintf_format("this range => \%.1f")
 format_value(100, format = fmtfun3)
 
 fmtfun4 <- sprintf_format("sadbasd asa a \%.2f asda a \%.1f")
 format_value(list(12.23456, 2.724), format = fmtfun4)
-
+\dontrun{
+require(rtable)
 lyt <- basic_table() \%>\%
   split_cols_by("Species") \%>\%
   analyze("Sepal.Length", afun = function(x) {
@@ -39,13 +39,14 @@ lyt <- basic_table() \%>\%
       "range" = rcell(diff(range(x)), format = fmtfun3)
     )
   })
-
 build_table(lyt, iris)
+}
+
 }
 \seealso{
 \code{\link[base]{sprintf}}
 
-\code{\link[base]{round_fmt}}
+\code{\link[formatters]{round_fmt}}
 
-\code{\link[base]{list_valid_format_labels}}
+\code{\link[formatters]{list_formats}}
 }
