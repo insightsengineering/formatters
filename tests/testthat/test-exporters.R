@@ -195,7 +195,7 @@ test_that("exporting lists of tables and listings works", {
 
   expect_warning(
     export_as_txt(l_mf, paginate = FALSE),
-    "paginate is FALSE, but x is a list of tables or listings, so paginate will be set to TRUE"
+    "paginate is FALSE, but x is a list of tables or listings, so paginate will automatically be updated to TRUE"
   )
 
   # export_as_pdf
@@ -207,7 +207,7 @@ test_that("exporting lists of tables and listings works", {
 
   expect_warning(
     export_as_pdf(l_mf, file = tmpf, paginate = FALSE),
-    "paginate is FALSE, but x is a list of tables or listings, so paginate will be set to TRUE"
+    "paginate is FALSE, but x is a list of tables or listings, so paginate will automatically be updated to TRUE"
   )
   expect_true(file.exists(tmpf))
   file.remove(tmpf)
@@ -219,7 +219,7 @@ test_that("exporting lists of tables and listings works", {
 
   expect_warning(
     export_as_pdf(l_mf, file = tmpf, paginate = FALSE),
-    "paginate is FALSE, but x is a list of tables or listings, so paginate will be set to TRUE"
+    "paginate is FALSE, but x is a list of tables or listings, so paginate will automatically be updated to TRUE"
   )
   expect_true(file.exists(tmpf))
   file.remove(tmpf)

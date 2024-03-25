@@ -246,7 +246,7 @@ valid_pag <- function(pagdf,
   }
 
   # Fix for counting the right number of lines when there is wrapping on a keycols
-  if (.is_listing(pagdf) && !is.null(pagdf$self_extent_page_break)) {
+  if (.is_listing_mf(pagdf) && !is.null(pagdf$self_extent_page_break)) {
     pagdf$self_extent[start] <- pagdf$self_extent_page_break[start]
   }
 
@@ -995,7 +995,7 @@ paginate_indices <- function(obj,
   #                 in the above call, so we need to keep this information in mf_rinfo
   #                 and use it here.
   mfri <- mf_rinfo(mpf)
-  if (NROW(mfri) > 1 && .is_listing(mpf) && length(.keycols_from_listing(obj)) > 0) {
+  if (NROW(mfri) > 1 && .is_listing_mf(mpf) && length(.keycols_from_listing(obj)) > 0) {
     # Lets determine the groupings created by keycols
     keycols_grouping_df <- NULL
     keycols <- .keycols_from_listing(obj)
@@ -1079,7 +1079,7 @@ paginate_to_mpfs <- function(obj,
   if (isTRUE(page_num)) {
     page_num <- "page {i}/{n}"
   }
-  checkmate::assert_string(page_num, null.ok = TRUE)
+  checkmate::assert_string(page_num, null.ok = TRUE, min.chars = 1)
 
   # We can return a list of paginated tables and listings
   if (.is_list_of_tables_or_listings(obj)) {
@@ -1113,7 +1113,7 @@ paginate_to_mpfs <- function(obj,
   mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size)
 
   # Turning off min_siblings for listings
-  if (.is_listing(mpf)) {
+  if (.is_listing_mf(mpf)) {
     min_siblings <- 0
   }
 
@@ -1121,11 +1121,15 @@ paginate_to_mpfs <- function(obj,
   if (is.null(colwidths)) {
     colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf)
   } else {
+    cur_ncol <- ncol(mpf)
+    if (!.is_listing_mf(mpf)) {
+      cur_ncol <- cur_ncol + as.numeric(mf_has_rlabels(mpf))
+    }
     # This check will be done inside paginate_to_mpfs in case of lists
-    if (!is.null(colwidths) && length(colwidths) != ncol(mpf) + 1) {
+    if (!is.null(colwidths) && length(colwidths) != cur_ncol) {
       stop(
-        "non-null colwidths argument must have length ncol(x) (+ 1 if row labels are present) [",
-        ncol(mpf) + 1, "], got length ", length(colwidths)
+        "non-null colwidths argument must have length ncol(x) (+ 1 if row labels are present and if it is a table) [",
+        cur_ncol, "], got length ", length(colwidths)
       )
     }
 
@@ -1133,7 +1137,7 @@ paginate_to_mpfs <- function(obj,
   }
 
   if (is.null(rep_cols)) {
-    rep_cols <- num_rep_cols(mpf)
+    rep_cols <- num_rep_cols(obj) # obj and not mpf bc keycols are rep_cols if listings (not in mpf)
   }
 
   if (NROW(mf_cinfo(mpf)) == 0) {
@@ -1214,7 +1218,7 @@ paginate_to_mpfs <- function(obj,
     verbose = verbose
   )
 
-  ind_keycols <- if (.is_listing(mpf)) {
+  ind_keycols <- if (.is_listing_mf(mpf)) {
     which(colnames(obj) %in% .keycols_from_listing(obj))
   } else {
     NULL
@@ -1266,13 +1270,14 @@ paginate_to_mpfs <- function(obj,
   })
 }
 
-.is_listing <- function(mpf) {
-  all(mf_rinfo(mpf)$node_class == "listing_df")
+# This works only with matrix_form objects
+.is_listing_mf <- function(x) {
+  all(mf_rinfo(x)$node_class == "listing_df")
 }
 
 # Shallow copy of get_keycols
 .keycols_from_listing <- function(obj) {
-  names(which(sapply(obj, inherits, what = "listing_keycol")))
+  names(which(sapply(obj, is, class2 ="listing_keycol")))
 }
 
 

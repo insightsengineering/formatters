@@ -915,8 +915,12 @@ basic_matrix_form <- function(df, parent_path = "root", ignore_rownames = FALSE,
     has_topleft = FALSE,
     nlines_header = 1,
     nrow_header = 1,
-    has_rowlabs = TRUE
+    has_rowlabs = isFALSE(ignore_rownames)
   )
+
+  # Check for ncols
+  stopifnot(mf_has_rlabels(ret) == isFALSE(ignore_rownames))
+
   ret <- mform_build_refdf(ret)
 
   if (add_decoration) {
@@ -994,7 +998,8 @@ basic_listing_mf <- function(df,
 
   dfmf$aligns[seq(2, nrow(dfmf$aligns)), ] <- "center" # the default for listings
 
-  dfmf$formats[] <- 1 # the default for listings is numeric??
+  # the default for listings is a 1 double??
+  dfmf$formats <- matrix(1, nrow = nrow(dfmf$formats), ncol = ncol(dfmf$formats))
 
   # row info
   ri <- dfmf$row_info
@@ -1003,10 +1008,17 @@ basic_listing_mf <- function(df,
   ri$path <- as.list(NA_character_) # same format of listings
   ri$node_class <- "listing_df"
   # l_ri$pos_in_siblings # why is it like this in rlistings?? also n_siblings
+  class(ri$path) <- "AsIs" # Artifact from I()
   dfmf$row_info <- ri
 
   # colwidths need to be sorted too!!
   dfmf$col_widths <- dfmf$col_widths[colnames(mf_strings(dfmf))]
+
+  if (!add_decoration) {
+    # This is probably a forced behavior in the original matrix_form in rlistings
+    main_title(dfmf) <- character()
+    main_footer(dfmf) <- character()
+  }
 
   dfmf
 }
@@ -1047,7 +1059,7 @@ reconstruct_basic_fnote_list <- function(mf) {
   tmp_strmat <- mf_strings(mf)[i_mat, j_mat, drop = FALSE]
 
   # Only for listings
-  if (nrow(tmp_strmat) > 0 && .is_listing(mf)) { # safe check for empty listings
+  if (nrow(tmp_strmat) > 0 && .is_listing_mf(mf)) { # safe check for empty listings
 
     # Fix for missing labels in key columns (only for rlistings)
     empty_keycols <- !nzchar(tmp_strmat[-seq_len(nlh), keycols, drop = FALSE][1, ])
