@@ -30,9 +30,5 @@ fmtfun4 <- sprintf_format("sadbasd asa a \%.2f asda a \%.1f")
 format_value(list(12.23456, 2.724), format = fmtfun4)
 }
 \seealso{
-\code{\link[base]{sprintf}}
-
-\code{\link[formatters]{round_fmt}}
-
-\code{\link[formatters]{list_formats}}
+\code{\link[base]{sprintf}} \code{\link[=round_fmt]{round_fmt()}} \code{link{list_formats}}
 }
