@@ -15,7 +15,7 @@ basic_matrix_form(
 
 basic_listing_mf(
   df,
-  keycols = c("vs", "gear"),
+  keycols = names(df)[1],
   ignore_rownames = FALSE,
   add_decoration = TRUE
 )
@@ -33,7 +33,7 @@ matrix form.}
 
 \item{keycols}{character. Vector of \code{df} column names that are printed first and
 repeated values are assigned to \code{""}. This format is characteristic of a listing matrix form.
-When \code{NULL}, no key columns are used. Defaults to \code{c("vs", "gear")} for \code{mtcars} default dataset.}
+When \code{NULL}, no key columns are used.}
 }
 \value{
 A valid \code{MatrixPrintForm} object representing \code{df},

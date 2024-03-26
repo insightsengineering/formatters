@@ -20,6 +20,7 @@ MatrixPrintForm(
   main_title = "",
   subtitles = character(),
   page_titles = character(),
+  listing_keycols = NULL,
   main_footer = "",
   prov_footer = character(),
   header_section_div = NA_character_,
