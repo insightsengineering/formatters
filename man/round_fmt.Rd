@@ -13,7 +13,7 @@ round_fmt(x, digits, na_str = "NA")
 \item{digits}{(\code{numeric(1)})\cr number of digits to round to, or \code{NA} to convert to a
 character value with no rounding.}
 
-\item{na_str}{(\code{character(1)})\cr the value to return if \code{x} is \code{NA}.}
+\item{na_str}{(\code{string})\cr the value to return if \code{x} is \code{NA}.}
 }
 \value{
 A character value representing the value after rounding, containing any trailing zeros

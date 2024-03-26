@@ -24,7 +24,7 @@ basic_pagdf(
 
 \item{rclass}{(\code{character})\cr class(es) for the rows. Defaults to \code{"NA"}.}
 
-\item{parent_path}{(\code{character(1)})\cr parent path that all rows should be "children of".
+\item{parent_path}{(\code{string})\cr parent path that all rows should be "children of".
 Defaults to \code{"root"}, and generally should not matter to end users.}
 }
 \value{

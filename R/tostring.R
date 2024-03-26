@@ -341,11 +341,11 @@ decimal_align <- function(string_mat, align_mat) {
 #' @param widths (`numeric` or  `NULL`)\cr Proposed widths for the columns of `x`. The expected
 #'   length of this numeric vector can be retrieved with `ncol(x) + 1` as the column of row names
 #'   must also be considered.
-#' @param hsep (`character(1)`)\cr character to repeat to create header/body separator line. If
+#' @param hsep (`string`)\cr character to repeat to create header/body separator line. If
 #'   `NULL`, the object value will be used. If `" "`, an empty separator will be printed. See
 #'   [default_hsep()] for more information.
-#' @param tf_wrap (`logical(1)`)\cr whether the text for title, subtitles, and footnotes should be wrapped.
-#' @param max_width (`integer(1)`, `character(1)` or `NULL`)\cr width that title and footer (including
+#' @param tf_wrap (`flag`)\cr whether the text for title, subtitles, and footnotes should be wrapped.
+#' @param max_width (`integer(1)`, `string` or `NULL`)\cr width that title and footer (including
 #'   footnotes) materials should be word-wrapped to. If `NULL`, it is set to the current print width of the
 #'   session (`getOption("width")`). If set to `"auto"`, the width of the table (plus any table inset) is
 #'   used. Parameter is ignored if `tf_wrap = FALSE`.
@@ -699,10 +699,10 @@ new_line_warning <- function(str_v) {
 #' If the width is smaller than any large word, these will be truncated after `width` characters. If
 #' the split leaves trailing groups of empty spaces, they will be dropped.
 #'
-#' @param str (`character(1)`, `character`, or `list`)\cr string to be wrapped. If it is a `vector` or
+#' @param str (`string`, `character`, or `list`)\cr string to be wrapped. If it is a `vector` or
 #'   a `list`, it will be looped as a `list` and returned with `unlist(use.names = FALSE)`.
 #' @param width (`numeric(1)`)\cr width, in characters, that the text should be wrapped to.
-#' @param collapse (`character(1)` or `NULL`)\cr collapse character used to separate segments of words that
+#' @param collapse (`string` or `NULL`)\cr collapse character used to separate segments of words that
 #'   have been split and should be pasted together. This is usually done internally with `"\n"` to update
 #'   the wrapping along with other internal values.
 #'
@@ -1018,9 +1018,9 @@ propose_column_widths <- function(x, indent_size = 2) {
 
 #' Pad a string and align within string
 #'
-#' @param x (`character(1)`)\cr a string.
+#' @param x (`string`)\cr a string.
 #' @param n (`integer(1)`)\cr number of characters in the output string. If `n < nchar(x)`, an error is thrown.
-#' @param just (`character(1)`)\cr text alignment justification to use. Defaults to `"center"`. Must be one of
+#' @param just (`string`)\cr text alignment justification to use. Defaults to `"center"`. Must be one of
 #'   `"center"`, `"right"`, `"left"`, `"dec_right"`, `"dec_left"`, or `"decimal"`.
 #'
 #' @return `x`, padded to be a string of length `n`.

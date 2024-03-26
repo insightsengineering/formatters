@@ -7,7 +7,7 @@
 sprintf_format(format)
 }
 \arguments{
-\item{format}{(\code{character(1)})\cr a format string passed to \code{\link[=sprintf]{sprintf()}}.}
+\item{format}{(\code{string})\cr a format string passed to \code{\link[=sprintf]{sprintf()}}.}
 }
 \value{
 A formatting function which wraps and will apply the specified \code{sprintf}-style format

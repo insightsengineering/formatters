@@ -18,7 +18,7 @@ table_inset(obj) <- value
 \arguments{
 \item{obj}{(\code{ANY})\cr object to get or (recursively if necessary) set table inset for.}
 
-\item{value}{(\code{character(1)})\cr string to use as new header/body separator.}
+\item{value}{(\code{string})\cr string to use as new header/body separator.}
 }
 \value{
 \itemize{

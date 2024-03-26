@@ -21,14 +21,14 @@ mpf_to_rtf(
 
 \item{colwidths}{(\code{numeric})\cr column widths.}
 
-\item{page_type}{(\code{character(1)})\cr name of a page type. See \code{\link{page_types}}. Ignored
+\item{page_type}{(\code{string})\cr name of a page type. See \code{\link{page_types}}. Ignored
 when \code{pg_width} and \code{pg_height} are set directly.}
 
 \item{pg_width}{(\code{numeric(1)})\cr page width in inches.}
 
 \item{pg_height}{(\code{numeric(1)})\cr page height in inches.}
 
-\item{landscape}{(\code{logical(1)})\cr whether the dimensions of \code{page_type} should be
+\item{landscape}{(\code{flag})\cr whether the dimensions of \code{page_type} should be
 inverted for landscape orientation. Defaults to \code{FALSE}, ignored when \code{pg_width} and
 \code{pg_height} are set directly.}
 

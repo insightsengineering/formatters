@@ -10,7 +10,7 @@ default_page_number()
 set_default_page_number(page_number)
 }
 \arguments{
-\item{page_number}{(\code{character(1)})\cr single string value to set the page number format.
+\item{page_number}{(\code{string})\cr single string value to set the page number format.
 It should be formatted similarly to the following format: \code{"page {i}/{n}"}.
 \code{{i}} will be replaced with the current page number, and \code{{n}} will be replaced with the
 total page number. Current \code{cpp} is used to position the string in the bottom right corner.}

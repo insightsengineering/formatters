@@ -9,12 +9,12 @@ format_value(x, format = NULL, output = c("ascii", "html"), na_str = "NA")
 \arguments{
 \item{x}{(\code{ANY})\cr the value to be formatted.}
 
-\item{format}{(\code{character(1)} or \code{function})\cr the format label (string) or formatter function to
+\item{format}{(\code{string} or \code{function})\cr the format label (string) or formatter function to
 apply to \code{x}.}
 
-\item{output}{(\code{character(1)})\cr output type.}
+\item{output}{(\code{string})\cr output type.}
 
-\item{na_str}{(\code{character(1)})\cr string to display when the value of \code{x} is missing. Defaults to \code{"NA"}.}
+\item{na_str}{(\code{string})\cr string to display when the value of \code{x} is missing. Defaults to \code{"NA"}.}
 }
 \value{
 Formatted text representing the cell \code{x}.

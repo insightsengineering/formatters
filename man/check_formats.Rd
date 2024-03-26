@@ -11,9 +11,9 @@ is_valid_format(x, stop_otherwise = FALSE)
 check_aligns(algn)
 }
 \arguments{
-\item{x}{(\code{character(1)} or \code{function})\cr format string or an object returned by \code{\link[=sprintf_format]{sprintf_format()}}}
+\item{x}{(\code{string} or \code{function})\cr format string or an object returned by \code{\link[=sprintf_format]{sprintf_format()}}}
 
-\item{stop_otherwise}{(\code{logical(1)})\cr whether an error should be thrown if \code{x} is not a valid format.}
+\item{stop_otherwise}{(\code{flag})\cr whether an error should be thrown if \code{x} is not a valid format.}
 
 \item{algn}{(\code{character})\cr a character vector that indicates the requested cell alignments.}
 }

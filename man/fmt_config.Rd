@@ -7,11 +7,11 @@
 fmt_config(format = NULL, na_str = "NA", align = "center")
 }
 \arguments{
-\item{format}{(\code{character(1)} or \code{function})\cr a format label (string) or formatter function.}
+\item{format}{(\code{string} or \code{function})\cr a format label (string) or formatter function.}
 
-\item{na_str}{(\code{character(1)})\cr string that should be displayed in place of missing values.}
+\item{na_str}{(\code{string})\cr string that should be displayed in place of missing values.}
 
-\item{align}{(\code{character(1)})\cr alignment values should be rendered with.}
+\item{align}{(\code{string})\cr alignment values should be rendered with.}
 }
 \value{
 An object of class \code{fmt_config} which contains the following elements:

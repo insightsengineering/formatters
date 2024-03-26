@@ -85,17 +85,17 @@ diagnose_pagination(
 \arguments{
 \item{obj}{(\code{ANY})\cr object to be paginated. Must have a \code{\link[=matrix_form]{matrix_form()}} method.}
 
-\item{page_type}{(\code{character(1)})\cr name of a page type. See \code{\link{page_types}}. Ignored
+\item{page_type}{(\code{string})\cr name of a page type. See \code{\link{page_types}}. Ignored
 when \code{pg_width} and \code{pg_height} are set directly.}
 
-\item{font_family}{(\code{character(1)})\cr name of a font family. An error will be thrown
+\item{font_family}{(\code{string})\cr name of a font family. An error will be thrown
 if the family named is not monospaced. Defaults to \code{"Courier"}.}
 
 \item{font_size}{(\code{numeric(1)})\cr font size. Defaults to \code{12}.}
 
 \item{lineheight}{(\code{numeric(1)})\cr line height. Defaults to \code{1}.}
 
-\item{landscape}{(\code{logical(1)})\cr whether the dimensions of \code{page_type} should be
+\item{landscape}{(\code{flag})\cr whether the dimensions of \code{page_type} should be
 inverted for landscape orientation. Defaults to \code{FALSE}, ignored when \code{pg_width} and
 \code{pg_height} are set directly.}
 
@@ -121,9 +121,9 @@ considerations. Defaults to none.}
 
 \item{colwidths}{(\code{numeric})\cr vector of column widths (in characters) for use in vertical pagination.}
 
-\item{tf_wrap}{(\code{logical(1)})\cr whether the text for title, subtitles, and footnotes should be wrapped.}
+\item{tf_wrap}{(\code{flag})\cr whether the text for title, subtitles, and footnotes should be wrapped.}
 
-\item{max_width}{(\code{integer(1)}, \code{character(1)} or \code{NULL})\cr width that title and footer (including
+\item{max_width}{(\code{integer(1)}, \code{string} or \code{NULL})\cr width that title and footer (including
 footnotes) materials should be word-wrapped to. If \code{NULL}, it is set to the current print width of the
 session (\code{getOption("width")}). If set to \code{"auto"}, the width of the table (plus any table inset) is
 used. Parameter is ignored if \code{tf_wrap = FALSE}.}
@@ -139,10 +139,10 @@ Defaults to 0.}
 
 \item{col_gap}{(\code{numeric(1)})\cr currently ignored.}
 
-\item{verbose}{(\code{logical(1)})\cr whether additional informative messages about the search for
+\item{verbose}{(\code{flag})\cr whether additional informative messages about the search for
 pagination breaks should be shown. Defaults to \code{FALSE}.}
 
-\item{page_num}{(\code{character(1)})\cr placeholder string for page numbers. See \link{default_page_number} for more
+\item{page_num}{(\code{string})\cr placeholder string for page numbers. See \link{default_page_number} for more
 information. Defaults to \code{NULL}.}
 
 \item{...}{additional parameters passed to individual methods.}

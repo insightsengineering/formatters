@@ -21,19 +21,19 @@ export_as_rtf(
 \arguments{
 \item{x}{(\code{ANY})\cr a table-like object to export. Must have an applicable \code{matrix_form} method.}
 
-\item{file}{(\code{character(1)} or \code{NULL})\cr if non-\code{NULL}, the path to write a text file to
+\item{file}{(\code{string} or \code{NULL})\cr if non-\code{NULL}, the path to write a text file to
 containing \code{x} rendered as ASCII text.}
 
 \item{colwidths}{(\code{numeric})\cr vector of column widths (in characters) for use in vertical pagination.}
 
-\item{page_type}{(\code{character(1)})\cr name of a page type. See \code{\link{page_types}}. Ignored
+\item{page_type}{(\code{string})\cr name of a page type. See \code{\link{page_types}}. Ignored
 when \code{pg_width} and \code{pg_height} are set directly.}
 
 \item{pg_width}{(\code{numeric(1)})\cr page width in inches.}
 
 \item{pg_height}{(\code{numeric(1)})\cr page height in inches.}
 
-\item{landscape}{(\code{logical(1)})\cr whether the dimensions of \code{page_type} should be
+\item{landscape}{(\code{flag})\cr whether the dimensions of \code{page_type} should be
 inverted for landscape orientation. Defaults to \code{FALSE}, ignored when \code{pg_width} and
 \code{pg_height} are set directly.}
 
@@ -43,7 +43,7 @@ margins and \code{.75} for both horizontal margins.}
 
 \item{font_size}{(\code{numeric(1)})\cr font size. Defaults to \code{12}.}
 
-\item{font_family}{(\code{character(1)})\cr name of a font family. An error will be thrown
+\item{font_family}{(\code{string})\cr name of a font family. An error will be thrown
 if the family named is not monospaced. Defaults to \code{"Courier"}.}
 
 \item{...}{additional parameters passed to \code{\link[=paginate_to_mpfs]{paginate_to_mpfs()}}.}

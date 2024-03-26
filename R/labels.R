@@ -1,7 +1,7 @@
 #' Return an object with a label attribute
 #'
 #' @param x (`ANY`)\cr an object.
-#' @param label (`character(1)`)\cr label attribute to attach to `x`.
+#' @param label (`string`)\cr label attribute to attach to `x`.
 #'
 #' @return `x` labeled by `label`. Note that the exact mechanism of labeling should be considered
 #'   an internal implementation detail, but the label will always be retrieved via `obj_label`.
@@ -23,7 +23,7 @@ with_label <- function(x, label) {
 #' (or empty strings if not specified).
 #'
 #' @param x (`data.frame`)\cr a data frame object.
-#' @param fill (`logical(1)`)\cr whether variable names should be returned for variables for
+#' @param fill (`flag`)\cr whether variable names should be returned for variables for
 #'   which the `label` attribute does not exist. If `FALSE`, these variables are filled with
 #'   `NA`s instead.
 #'

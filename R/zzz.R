@@ -3,7 +3,7 @@
 #' The default horizontal separator character which can be displayed in the current
 #' charset for use in rendering table-like objects.
 #'
-#' @param hsep_char (`character(1)`)\cr character that will be set in the R environment
+#' @param hsep_char (`string`)\cr character that will be set in the R environment
 #'   options as the default horizontal separator. Must be a single character. Use
 #'   `getOption("formatters_default_hsep")` to get its current value (`NULL` if not set).
 #'
@@ -52,7 +52,7 @@ set_default_hsep <- function(hsep_char) {
 #' If set, the default page number string will appear on the bottom right of
 #' every page of a paginated table. The current `cpp` is used to position the string.
 #'
-#' @param page_number (`character(1)`)\cr single string value to set the page number format.
+#' @param page_number (`string`)\cr single string value to set the page number format.
 #'   It should be formatted similarly to the following format: `"page {i}/{n}"`.
 #'   `{i}` will be replaced with the current page number, and `{n}` will be replaced with the
 #'   total page number. Current `cpp` is used to position the string in the bottom right corner.

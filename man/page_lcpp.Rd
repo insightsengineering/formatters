@@ -16,14 +16,14 @@ page_lcpp(
 )
 }
 \arguments{
-\item{page_type}{(\code{character(1)})\cr name of a page type. See \code{\link{page_types}}. Ignored
+\item{page_type}{(\code{string})\cr name of a page type. See \code{\link{page_types}}. Ignored
 when \code{pg_width} and \code{pg_height} are set directly.}
 
-\item{landscape}{(\code{logical(1)})\cr whether the dimensions of \code{page_type} should be
+\item{landscape}{(\code{flag})\cr whether the dimensions of \code{page_type} should be
 inverted for landscape orientation. Defaults to \code{FALSE}, ignored when \code{pg_width} and
 \code{pg_height} are set directly.}
 
-\item{font_family}{(\code{character(1)})\cr name of a font family. An error will be thrown
+\item{font_family}{(\code{string})\cr name of a font family. An error will be thrown
 if the family named is not monospaced. Defaults to \code{"Courier"}.}
 
 \item{font_size}{(\code{numeric(1)})\cr font size. Defaults to \code{12}.}

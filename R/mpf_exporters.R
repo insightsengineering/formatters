@@ -12,10 +12,10 @@
 #' @inheritParams toString
 #' @inheritParams propose_column_widths
 #' @param x (`ANY`)\cr a table-like object to export. Must have an applicable `matrix_form` method.
-#' @param file (`character(1)` or `NULL`)\cr if non-`NULL`, the path to write a text file to
+#' @param file (`string` or `NULL`)\cr if non-`NULL`, the path to write a text file to
 #'   containing `x` rendered as ASCII text.
-#' @param page_break (`character(1)`)\cr page break symbol (defaults to `"\\n\\s"`).
-#' @param paginate (`logical(1)`)\cr whether pagination should be performed. Defaults to `TRUE`
+#' @param page_break (`string`)\cr page break symbol (defaults to `"\\n\\s"`).
+#' @param paginate (`flag`)\cr whether pagination should be performed. Defaults to `TRUE`
 #'   if page size is specified (including the default).
 #' @param ... additional parameters passed to [paginate_to_mpfs()].
 #'
@@ -466,7 +466,7 @@ export_as_rtf <- function(x,
 #' The PDF output from this function is based on the ASCII output created with [toString()].
 #'
 #' @inheritParams export_as_txt
-#' @param file (`character(1)`)\cr file to write to, must have `.pdf` extension.
+#' @param file (`string`)\cr file to write to, must have `.pdf` extension.
 #' @param width `r lifecycle::badge("deprecated")` Please use the `pg_width` argument or specify
 #'   `page_type` instead.
 #' @param height `r lifecycle::badge("deprecated")` Please use the `pg_height` argument or

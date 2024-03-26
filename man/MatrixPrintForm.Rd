@@ -60,18 +60,18 @@ to semantic rows in the object. Typically this should not be set manually unless
 
 \item{nrow_header}{(\code{numeric(1)})\cr number of \emph{rows} corresponding to the header.}
 
-\item{has_topleft}{(\code{logical(1)})\cr does the corresponding table have "top left information"
+\item{has_topleft}{(\code{flag})\cr does the corresponding table have "top left information"
 which should be treated differently when expanding newlines. Ignored if \code{expand_newlines}
 is \code{FALSE}.}
 
-\item{has_rowlabs}{(\code{logical(1)})\cr do the matrices (\code{strings}, \code{spans}, \code{aligns}) each contain a
+\item{has_rowlabs}{(\code{flag})\cr do the matrices (\code{strings}, \code{spans}, \code{aligns}) each contain a
 column that corresponds with row labels (rather than with table cell values). Defaults to \code{TRUE}.}
 
-\item{expand_newlines}{(\code{logical(1)})\cr whether the matrix form generated should expand rows whose
+\item{expand_newlines}{(\code{flag})\cr whether the matrix form generated should expand rows whose
 values contain newlines into multiple 'physical' rows (as they will appear when rendered into
 ASCII). Defaults to \code{TRUE}.}
 
-\item{main_title}{(\code{character(1)})\cr main title as a string.}
+\item{main_title}{(\code{string})\cr main title as a string.}
 
 \item{subtitles}{(\code{character})\cr subtitles, as a character vector.}
 
@@ -81,9 +81,9 @@ ASCII). Defaults to \code{TRUE}.}
 
 \item{prov_footer}{(\code{character})\cr provenance footer information, as a character vector.}
 
-\item{header_section_div}{(\code{character(1)})\cr divider to be used between header and body sections.}
+\item{header_section_div}{(\code{string})\cr divider to be used between header and body sections.}
 
-\item{horizontal_sep}{(\code{character(1)})\cr horizontal separator to be used for printing divisors
+\item{horizontal_sep}{(\code{string})\cr horizontal separator to be used for printing divisors
 between header and table body and between different footers.}
 
 \item{col_gap}{(\code{numeric(1)})\cr space (in characters) between columns.}

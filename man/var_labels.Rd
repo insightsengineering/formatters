@@ -9,7 +9,7 @@ var_labels(x, fill = FALSE)
 \arguments{
 \item{x}{(\code{data.frame})\cr a data frame object.}
 
-\item{fill}{(\code{logical(1)})\cr whether variable names should be returned for variables for
+\item{fill}{(\code{flag})\cr whether variable names should be returned for variables for
 which the \code{label} attribute does not exist. If \code{FALSE}, these variables are filled with
 \code{NA}s instead.}
 }

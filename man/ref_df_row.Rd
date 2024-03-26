@@ -24,13 +24,13 @@ ref_df_row(
 
 \item{col}{(\code{integer(1)})\cr integer position of the column.}
 
-\item{symbol}{(\code{character(1)})\cr symbol for the reference. \code{NA_character_} to use the
+\item{symbol}{(\code{string})\cr symbol for the reference. \code{NA_character_} to use the
 \code{ref_index} automatically.}
 
 \item{ref_index}{(\code{integer(1)})\cr index of the footnote, used for ordering even when
 symbol is not \code{NA}.}
 
-\item{msg}{(\code{character(1)})\cr the string message, not including the symbol portion (\verb{\{symbol\} - })}
+\item{msg}{(\code{string})\cr the string message, not including the symbol portion (\verb{\{symbol\} - })}
 
 \item{max_width}{(\code{numeric(1)})\cr width that strings should be wrapped to when
 determining how many lines they require.}

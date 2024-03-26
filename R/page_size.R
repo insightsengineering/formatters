@@ -57,7 +57,7 @@ page_types <- function() {
   names(pg_dim_names)
 }
 
-#' @param page_type (`character(1)`)\cr the name of a page size specification. Call
+#' @param page_type (`string`)\cr the name of a page size specification. Call
 #'   [page_types()] for supported values.
 #'
 #' @export
@@ -121,12 +121,12 @@ marg_order <- c("bottom", "left", "top", "right")
 
 #' Determine lines per page (LPP) and characters per page (CPP) based on font and page type
 #'
-#' @param page_type (`character(1)`)\cr name of a page type. See [`page_types`]. Ignored
+#' @param page_type (`string`)\cr name of a page type. See [`page_types`]. Ignored
 #'   when `pg_width` and `pg_height` are set directly.
-#' @param landscape (`logical(1)`)\cr whether the dimensions of `page_type` should be
+#' @param landscape (`flag`)\cr whether the dimensions of `page_type` should be
 #'   inverted for landscape orientation. Defaults to `FALSE`, ignored when `pg_width` and
 #'   `pg_height` are set directly.
-#' @param font_family (`character(1)`)\cr name of a font family. An error will be thrown
+#' @param font_family (`string`)\cr name of a font family. An error will be thrown
 #'   if the family named is not monospaced. Defaults to `"Courier"`.
 #' @param font_size (`numeric(1)`)\cr font size. Defaults to `12`.
 #' @param lineheight (`numeric(1)`)\cr line height. Defaults to `1`.

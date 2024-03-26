@@ -10,12 +10,12 @@ wrap_string(str, width, collapse = NULL)
 wrap_txt(str, width, collapse = NULL)
 }
 \arguments{
-\item{str}{(\code{character(1)}, \code{character}, or \code{list})\cr string to be wrapped. If it is a \code{vector} or
+\item{str}{(\code{string}, \code{character}, or \code{list})\cr string to be wrapped. If it is a \code{vector} or
 a \code{list}, it will be looped as a \code{list} and returned with \code{unlist(use.names = FALSE)}.}
 
 \item{width}{(\code{numeric(1)})\cr width, in characters, that the text should be wrapped to.}
 
-\item{collapse}{(\code{character(1)} or \code{NULL})\cr collapse character used to separate segments of words that
+\item{collapse}{(\code{string} or \code{NULL})\cr collapse character used to separate segments of words that
 have been split and should be pasted together. This is usually done internally with \code{"\\n"} to update
 the wrapping along with other internal values.}
 }

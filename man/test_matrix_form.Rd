@@ -23,12 +23,12 @@ basic_listing_mf(
 \arguments{
 \item{df}{(\code{data.frame})\cr a data frame.}
 
-\item{parent_path}{(\code{character(1)})\cr parent path that all rows should be "children of".
+\item{parent_path}{(\code{string})\cr parent path that all rows should be "children of".
 Defaults to \code{"root"}, and generally should not matter to end users.}
 
-\item{ignore_rownames}{(\code{logical(1)})\cr whether rownames should be ignored.}
+\item{ignore_rownames}{(\code{flag})\cr whether rownames should be ignored.}
 
-\item{add_decoration}{(\code{logical(1)})\cr whether adds title and footer decorations should
+\item{add_decoration}{(\code{flag})\cr whether adds title and footer decorations should
 be added to the matrix form.}
 
 \item{keycols}{(\code{character})\cr a vector of \code{df} column names that are printed first and for which

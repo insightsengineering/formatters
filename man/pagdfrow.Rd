@@ -31,9 +31,9 @@ pagdfrow(
 \code{extent}, and \code{rclass} if provided. Must have methods for \code{obj_name}, \code{obj_label}, and \code{nlines}, to retrieve
 default values of \code{nm}, \code{lab}, and \code{extent}, respectively.}
 
-\item{nm}{(\code{character(1)})\cr name.}
+\item{nm}{(\code{string})\cr name.}
 
-\item{lab}{(\code{character(1)})\cr label.}
+\item{lab}{(\code{string})\cr label.}
 
 \item{rnum}{(\code{numeric(1)})\cr absolute row number.}
 
@@ -54,7 +54,7 @@ after pagination.}
 
 \item{indent}{(\code{integer})\cr indent.}
 
-\item{rclass}{(\code{character(1)})\cr class of row object.}
+\item{rclass}{(\code{string})\cr class of row object.}
 
 \item{nrowrefs}{(\code{integer(1)})\cr number of row referential footnotes for this row.}
 
@@ -62,11 +62,11 @@ after pagination.}
 
 \item{nreflines}{(\code{integer(1)})\cr total number of lines required by all referential footnotes.}
 
-\item{force_page}{(\code{logical(1)})\cr currently ignored.}
+\item{force_page}{(\code{flag})\cr currently ignored.}
 
-\item{page_title}{(\code{logical(1)})\cr currently ignored.}
+\item{page_title}{(\code{flag})\cr currently ignored.}
 
-\item{trailing_sep}{(\code{character(1)})\cr the string to use as a separator below this row during printing.
+\item{trailing_sep}{(\code{string})\cr the string to use as a separator below this row during printing.
 If \code{NA_character_}, no separator is used.}
 }
 \value{

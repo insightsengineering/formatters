@@ -66,8 +66,8 @@ list_valid_aligns <- function() {
 #'
 #' @description Utility functions for checking formats and alignments.
 #'
-#' @param x (`character(1)` or `function`)\cr format string or an object returned by [sprintf_format()]
-#' @param stop_otherwise (`logical(1)`)\cr whether an error should be thrown if `x` is not a valid format.
+#' @param x (`string` or `function`)\cr format string or an object returned by [sprintf_format()]
+#' @param stop_otherwise (`flag`)\cr whether an error should be thrown if `x` is not a valid format.
 #'
 #' @return
 #' * `is_valid_format` returns `TRUE` if `x` is `NULL`, a supported format string, or a function, and
@@ -114,7 +114,7 @@ check_aligns <- function(algn) {
 
 #' Specify text format via a `sprintf` format string
 #'
-#' @param format (`character(1)`)\cr a format string passed to [sprintf()].
+#' @param format (`string`)\cr a format string passed to [sprintf()].
 #'
 #' @return A formatting function which wraps and will apply the specified `sprintf`-style format
 #'   to string `format`.
@@ -143,7 +143,7 @@ sprintf_format <- function(format) {
 #' @param x (`numeric(1)`)\cr value to format.
 #' @param digits (`numeric(1)`)\cr number of digits to round to, or `NA` to convert to a
 #'   character value with no rounding.
-#' @param na_str (`character(1)`)\cr the value to return if `x` is `NA`.
+#' @param na_str (`string`)\cr the value to return if `x` is `NA`.
 #'
 #' @details
 #' This function combines the rounding behavior of R's standards-compliant [round()]
@@ -231,10 +231,10 @@ sep_2d_helper <- function(x, dig1, dig2, sep, na_str, wrap = NULL) {
 #' Converts a (possibly compound) value into a string using the `format` information
 #'
 #' @param x (`ANY`)\cr the value to be formatted.
-#' @param format (`character(1)` or `function`)\cr the format label (string) or formatter function to
+#' @param format (`string` or `function`)\cr the format label (string) or formatter function to
 #'   apply to `x`.
-#' @param na_str (`character(1)`)\cr string to display when the value of `x` is missing. Defaults to `"NA"`.
-#' @param output (`character(1)`)\cr output type.
+#' @param na_str (`string`)\cr string to display when the value of `x` is missing. Defaults to `"NA"`.
+#' @param output (`string`)\cr output type.
 #'
 #' @details A length-zero value for `na_str` will be interpreted as `"NA"`, as will any
 #' missing values within a non-length-zero `na_str` vector.
@@ -428,9 +428,9 @@ setClass("fmt_config",
 
 #' Format configuration
 #'
-#' @param format (`character(1)` or `function`)\cr a format label (string) or formatter function.
-#' @param na_str (`character(1)`)\cr string that should be displayed in place of missing values.
-#' @param align (`character(1)`)\cr alignment values should be rendered with.
+#' @param format (`string` or `function`)\cr a format label (string) or formatter function.
+#' @param na_str (`string`)\cr string that should be displayed in place of missing values.
+#' @param align (`string`)\cr alignment values should be rendered with.
 #'
 #' @return An object of class `fmt_config` which contains the following elements:
 #'   * `format`

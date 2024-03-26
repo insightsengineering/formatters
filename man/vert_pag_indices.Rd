@@ -19,7 +19,7 @@ vert_pag_indices(
 
 \item{colwidths}{(\code{numeric})\cr vector of column widths (in characters) for use in vertical pagination.}
 
-\item{verbose}{(\code{logical(1)})\cr whether additional informative messages about the search for
+\item{verbose}{(\code{flag})\cr whether additional informative messages about the search for
 pagination breaks should be shown. Defaults to \code{FALSE}.}
 
 \item{rep_cols}{(\code{numeric(1)})\cr number of \emph{columns} (not including row labels) to be repeated on every page.

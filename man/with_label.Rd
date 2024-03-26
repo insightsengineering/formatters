@@ -9,7 +9,7 @@ with_label(x, label)
 \arguments{
 \item{x}{(\code{ANY})\cr an object.}
 
-\item{label}{(\code{character(1)})\cr label attribute to attach to \code{x}.}
+\item{label}{(\code{string})\cr label attribute to attach to \code{x}.}
 }
 \value{
 \code{x} labeled by \code{label}. Note that the exact mechanism of labeling should be considered

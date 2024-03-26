@@ -191,20 +191,20 @@ disp_from_spans <- function(spans) {
 #' @param nlines_header (`numeric(1)`)\cr number of lines taken up by the values of the header
 #'   (i.e. not including the divider).
 #' @param nrow_header (`numeric(1)`)\cr number of *rows* corresponding to the header.
-#' @param has_topleft (`logical(1)`)\cr does the corresponding table have "top left information"
+#' @param has_topleft (`flag`)\cr does the corresponding table have "top left information"
 #'   which should be treated differently when expanding newlines. Ignored if `expand_newlines`
 #'   is `FALSE`.
-#' @param has_rowlabs (`logical(1)`)\cr do the matrices (`strings`, `spans`, `aligns`) each contain a
+#' @param has_rowlabs (`flag`)\cr do the matrices (`strings`, `spans`, `aligns`) each contain a
 #'   column that corresponds with row labels (rather than with table cell values). Defaults to `TRUE`.
-#' @param main_title (`character(1)`)\cr main title as a string.
+#' @param main_title (`string`)\cr main title as a string.
 #' @param subtitles (`character`)\cr subtitles, as a character vector.
 #' @param page_titles (`character`)\cr page-specific titles, as a character vector.
 #' @param main_footer (`character`)\cr main footer, as a character vector.
 #' @param prov_footer (`character`)\cr provenance footer information, as a character vector.
-#' @param header_section_div (`character(1)`)\cr divider to be used between header and body sections.
-#' @param horizontal_sep (`character(1)`)\cr horizontal separator to be used for printing divisors
+#' @param header_section_div (`string`)\cr divider to be used between header and body sections.
+#' @param horizontal_sep (`string`)\cr horizontal separator to be used for printing divisors
 #'   between header and table body and between different footers.
-#' @param expand_newlines (`logical(1)`)\cr whether the matrix form generated should expand rows whose
+#' @param expand_newlines (`flag`)\cr whether the matrix form generated should expand rows whose
 #'   values contain newlines into multiple 'physical' rows (as they will appear when rendered into
 #'   ASCII). Defaults to `TRUE`.
 #' @param col_gap (`numeric(1)`)\cr space (in characters) between columns.
@@ -327,11 +327,11 @@ MatrixPrintForm <- function(strings = NULL,
 #' @param col_path (`character`)\cr column path (or `NA_character_` for none).
 #' @param row (`integer(1)`)\cr integer position of the row.
 #' @param col (`integer(1)`)\cr integer position of the column.
-#' @param symbol (`character(1)`)\cr symbol for the reference. `NA_character_` to use the
+#' @param symbol (`string`)\cr symbol for the reference. `NA_character_` to use the
 #'   `ref_index` automatically.
 #' @param ref_index (`integer(1)`)\cr index of the footnote, used for ordering even when
 #'   symbol is not `NA`.
-#' @param msg (`character(1)`)\cr the string message, not including the symbol portion (`{symbol} - `)
+#' @param msg (`string`)\cr the string message, not including the symbol portion (`{symbol} - `)
 #'
 #' @return A single row data frame with the appropriate columns.
 #'
@@ -784,10 +784,10 @@ mf_has_rlabels <- function(mf) ncol(mf$strings) > mf_ncol(mf)
 #' more sophisticated custom `matrix_form` methods.
 #'
 #' @param df (`data.frame`)\cr a data frame.
-#' @param parent_path (`character(1)`)\cr parent path that all rows should be "children of".
+#' @param parent_path (`string`)\cr parent path that all rows should be "children of".
 #'   Defaults to `"root"`, and generally should not matter to end users.
-#' @param ignore_rownames (`logical(1)`)\cr whether rownames should be ignored.
-#' @param add_decoration (`logical(1)`)\cr whether adds title and footer decorations should
+#' @param ignore_rownames (`flag`)\cr whether rownames should be ignored.
+#' @param add_decoration (`flag`)\cr whether adds title and footer decorations should
 #'   be added to the matrix form.
 #'
 #' @return A valid `MatrixPrintForm` object representing `df` that is ready for ASCII rendering.

@@ -87,8 +87,8 @@ NULL
 
 #' Create a row of a pagination data frame
 #'
-#' @param nm (`character(1)`)\cr name.
-#' @param lab (`character(1)`)\cr label.
+#' @param nm (`string`)\cr name.
+#' @param lab (`string`)\cr label.
 #' @param rnum (`numeric(1)`)\cr absolute row number.
 #' @param pth (`character` or `NULL`)\cr path within larger table.
 #' @param sibpos (`integer(1)`)\cr position among sibling rows.
@@ -99,13 +99,13 @@ NULL
 #'   after pagination.
 #' @param repind (`integer`)\cr vector of row numbers to be reprinted if this row appears directly after pagination.
 #' @param indent (`integer`)\cr indent.
-#' @param rclass (`character(1)`)\cr class of row object.
+#' @param rclass (`string`)\cr class of row object.
 #' @param nrowrefs (`integer(1)`)\cr number of row referential footnotes for this row.
 #' @param ncellrefs (`integer(1)`)\cr number of cell referential footnotes for the cells in this row.
 #' @param nreflines (`integer(1)`)\cr total number of lines required by all referential footnotes.
-#' @param force_page (`logical(1)`)\cr currently ignored.
-#' @param page_title (`logical(1)`)\cr currently ignored.
-#' @param trailing_sep (`character(1)`)\cr the string to use as a separator below this row during printing.
+#' @param force_page (`flag`)\cr currently ignored.
+#' @param page_title (`flag`)\cr currently ignored.
+#' @param trailing_sep (`string`)\cr the string to use as a separator below this row during printing.
 #'   If `NA_character_`, no separator is used.
 #' @param row (`ANY`)\cr object representing the row, which is used for default values of `nm`, `lab`,
 #'   `extent`, and `rclass` if provided. Must have methods for `obj_name`, `obj_label`, and `nlines`, to retrieve
@@ -455,11 +455,11 @@ find_pag <- function(pagdf,
 #'   mid-subtable split to be valid. Defaults to 2 for tables. It is automatically turned off (set to 0) for listings.
 #' @param nosplitin (`character`)\cr list of names of subtables where page breaks are not allowed, regardless of other
 #'   considerations. Defaults to none.
-#' @param verbose (`logical(1)`)\cr whether additional informative messages about the search for
+#' @param verbose (`flag`)\cr whether additional informative messages about the search for
 #'   pagination breaks should be shown. Defaults to `FALSE`.
-#' @param row (`logical(1)`)\cr whether pagination is happening in row space (`TRUE`, the default) or column
+#' @param row (`flag`)\cr whether pagination is happening in row space (`TRUE`, the default) or column
 #'   space (`FALSE`).
-#' @param have_col_fnotes (`logical(1)`)\cr whether the table-like object being rendered has column-associated
+#' @param have_col_fnotes (`flag`)\cr whether the table-like object being rendered has column-associated
 #'   referential footnotes.
 #' @param div_height (`numeric(1)`)\cr the height of the divider line when the associated object is rendered.
 #'   Defaults to `1`.
@@ -832,7 +832,7 @@ splice_idx_lists <- function(lsts) {
 #' @param pg_size_spec (`page_size_spec`)\cr. a pre-calculated page size specification. Typically this is not set by
 #'   end users.
 #' @param col_gap (`numeric(1)`)\cr currently ignored.
-#' @param page_num (`character(1)`)\cr placeholder string for page numbers. See [default_page_number] for more
+#' @param page_num (`string`)\cr placeholder string for page numbers. See [default_page_number] for more
 #'   information. Defaults to `NULL`.
 #'
 #' @return

@@ -11,9 +11,9 @@
 #' (like [`MatrixPrintForm`]).
 #'
 #' @param tt (`ANY`)\cr object representing the table-like object to be summarized.
-#' @param visible_only (`logical(1)`)\cr should only visible aspects of the table structure be reflected
+#' @param visible_only (`flag`)\cr should only visible aspects of the table structure be reflected
 #'   in this summary. Defaults to `TRUE`. May not be supported by all methods.
-#' @param incontent (`logical(1)`)\cr internal detail, do not set manually.
+#' @param incontent (`flag`)\cr internal detail, do not set manually.
 #' @param repr_ext (`integer(1)`)\cr internal detail, do not set manually.
 #' @param repr_inds (`integer`)\cr internal detail, do not set manually.
 #' @param sibpos (`integer(1)`)\cr internal detail, do not set manually.
@@ -85,9 +85,9 @@ setMethod("make_row_df", "MatrixPrintForm", function(tt, colwidths = NULL, visib
 #' it is useful to map the `rtable` to an in-between state with the formatted cells in a matrix form.
 #'
 #' @param obj (`ANY`)\cr object to be transformed into a ready-to-render form (a [`MatrixPrintForm`] object).
-#' @param indent_rownames (`logical(1)`)\cr if `TRUE`, the row names column in the `strings` matrix of `obj`
+#' @param indent_rownames (`flag`)\cr if `TRUE`, the row names column in the `strings` matrix of `obj`
 #'   will have indented row names (strings pre-fixed).
-#' @param expand_newlines (`logical(1)`)\cr whether the generated matrix form should expand rows whose values
+#' @param expand_newlines (`flag`)\cr whether the generated matrix form should expand rows whose values
 #'   contain newlines into multiple 'physical' rows (as they will appear when rendered into ASCII). Defaults
 #'   to `TRUE`.
 #' @param indent_size (`numeric(1)`)\cr number of spaces to be used per level of indent (if supported by
@@ -238,7 +238,7 @@ setMethod("print", "ANY", base::print) ## nocov
 #' Getters and setters for basic, relatively universal attributes of "table-like" objects.
 #'
 #' @param obj (`ANY`)\cr the object.
-#' @param value (`character(1)` or `FormatSpec`)\cr the new value of the attribute.
+#' @param value (`string` or `FormatSpec`)\cr the new value of the attribute.
 #'
 #' @return The name, format, or label of `obj` for getters, or `obj` after modification for setters.
 #'
@@ -554,7 +554,7 @@ all_titles <- function(obj) c(main_title(obj), subtitles(obj), page_titles(obj))
 #' footer materials.
 #'
 #' @param obj (`ANY`)\cr object to get or (recursively if necessary) set table inset for.
-#' @param value (`character(1)`)\cr string to use as new header/body separator.
+#' @param value (`string`)\cr string to use as new header/body separator.
 #'
 #' @return
 #' * `table_inset` returns the integer value that the table body (including column heading

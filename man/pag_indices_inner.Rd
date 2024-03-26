@@ -38,13 +38,13 @@ mid-subtable split to be valid. Defaults to 2 for tables. It is automatically tu
 \item{nosplitin}{(\code{character})\cr list of names of subtables where page breaks are not allowed, regardless of other
 considerations. Defaults to none.}
 
-\item{verbose}{(\code{logical(1)})\cr whether additional informative messages about the search for
+\item{verbose}{(\code{flag})\cr whether additional informative messages about the search for
 pagination breaks should be shown. Defaults to \code{FALSE}.}
 
-\item{row}{(\code{logical(1)})\cr whether pagination is happening in row space (\code{TRUE}, the default) or column
+\item{row}{(\code{flag})\cr whether pagination is happening in row space (\code{TRUE}, the default) or column
 space (\code{FALSE}).}
 
-\item{have_col_fnotes}{(\code{logical(1)})\cr whether the table-like object being rendered has column-associated
+\item{have_col_fnotes}{(\code{flag})\cr whether the table-like object being rendered has column-associated
 referential footnotes.}
 
 \item{div_height}{(\code{numeric(1)})\cr the height of the divider line when the associated object is rendered.

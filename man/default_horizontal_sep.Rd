@@ -11,7 +11,7 @@ default_hsep()
 set_default_hsep(hsep_char)
 }
 \arguments{
-\item{hsep_char}{(\code{character(1)})\cr character that will be set in the R environment
+\item{hsep_char}{(\code{string})\cr character that will be set in the R environment
 options as the default horizontal separator. Must be a single character. Use
 \code{getOption("formatters_default_hsep")} to get its current value (\code{NULL} if not set).}
 }

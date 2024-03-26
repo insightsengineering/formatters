@@ -7,7 +7,7 @@
 font_lcpi(font_family = "Courier", font_size = 8, lineheight = 1)
 }
 \arguments{
-\item{font_family}{(\code{character(1)})\cr name of a font family. An error will be thrown
+\item{font_family}{(\code{string})\cr name of a font family. An error will be thrown
 if the family named is not monospaced. Defaults to \code{"Courier"}.}
 
 \item{font_size}{(\code{numeric(1)})\cr font size. Defaults to \code{12}.}
