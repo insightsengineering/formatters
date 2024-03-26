@@ -1,5 +1,5 @@
 test_that("basic_listing_mf respect core modifications from table matrix_form", {
-  expect_silent(lmf <- basic_listing_mf(mtcars))
+  expect_silent(lmf <- basic_listing_mf(mtcars, keycols = c("vs", "gear")))
 
   # strings
   cols_test <- mf_strings(lmf)[, c(1, 2)]
@@ -26,7 +26,7 @@ test_that("basic_listing_mf respect core modifications from table matrix_form", 
   expect_identical(colnames(mf_strings(lmf)), names(lmf$col_widths))
 
   # snapshot
-  expect_silent(lmf <- basic_listing_mf(mtcars[c(1, 2), c("vs", "gear", "mpg")]))
+  expect_silent(lmf <- basic_listing_mf(mtcars[c(1, 2),  c("vs", "gear", "mpg")], keycols = c("vs", "gear")))
   print_out <- c(
     "main title",
     "sub",

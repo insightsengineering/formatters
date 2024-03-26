@@ -184,7 +184,7 @@ test_that("export_as_pdf works", {
 
 test_that("exporting lists of tables and listings works", {
   bmf <- basic_matrix_form(mtcars)
-  blmf <- basic_listing_mf(mtcars)
+  blmf <- basic_listing_mf(mtcars, keycols = c("vs", "gear"))
   l_mf <- list(bmf, blmf)
 
   output <- export_as_txt(l_mf, page_num = "page {i} of {n}", cpp = 90)

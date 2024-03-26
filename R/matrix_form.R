@@ -286,6 +286,7 @@ MatrixPrintForm <- function(strings = NULL,
                             main_title = "",
                             subtitles = character(),
                             page_titles = character(),
+                            listing_keycols = NULL,
                             main_footer = "",
                             prov_footer = character(),
                             header_section_div = NA_character_,
@@ -315,6 +316,7 @@ MatrixPrintForm <- function(strings = NULL,
       header_section_div = header_section_div,
       horizontal_sep = horizontal_sep,
       col_gap = col_gap,
+      listing_keycols = listing_keycols,
       table_inset = as.integer(table_inset),
       has_topleft = has_topleft,
       indent_size = indent_size,
@@ -950,7 +952,7 @@ basic_matrix_form <- function(df, parent_path = "root", ignore_rownames = FALSE,
 #'
 #' @export
 basic_listing_mf <- function(df,
-                             keycols = c("vs", "gear"),
+                             keycols = names(df)[1], # c("vs", "gear")
                              ignore_rownames = FALSE,
                              add_decoration = TRUE) {
   checkmate::assert_data_frame(df)
@@ -961,6 +963,9 @@ basic_listing_mf <- function(df,
     ignore_rownames = ignore_rownames,
     add_decoration = add_decoration
   )
+
+  # keycols addition to MatrixPrintForm (should happen in the constructor)
+  dfmf$listing_keycols <- keycols
 
   # Modifications needed for making it a listings
   mf_strings(dfmf)[1, ] <- colnames(mf_strings(dfmf)) # set colnames
@@ -1013,6 +1018,11 @@ basic_listing_mf <- function(df,
 
   # colwidths need to be sorted too!!
   dfmf$col_widths <- dfmf$col_widths[colnames(mf_strings(dfmf))]
+
+  # Adjustment for presence of rownames column
+  # if (isFALSE(ignore_rownames)) {
+  #   attr(dfmf, "ncols") <- attr(dfmf, "ncols") + 1
+  # }
 
   if (!add_decoration) {
     # This is probably a forced behavior in the original matrix_form in rlistings
@@ -1101,6 +1111,7 @@ reconstruct_basic_fnote_list <- function(mf) {
   } else {
     newspans <- mf_spans(mf)[i_mat, j_mat, drop = FALSE]
   }
+
   mf_spans(mf) <- newspans
   mf_formats(mf) <- mf_formats(mf)[i_mat, j_mat, drop = FALSE]
 

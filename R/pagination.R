@@ -995,14 +995,22 @@ paginate_indices <- function(obj,
   #                 in the above call, so we need to keep this information in mf_rinfo
   #                 and use it here.
   mfri <- mf_rinfo(mpf)
-  if (NROW(mfri) > 1 && .is_listing_mf(mpf) && length(.keycols_from_listing(obj)) > 0) {
+  keycols <- .keycols_from_listing(obj)
+  if (NROW(mfri) > 1 && .is_listing_mf(mpf) && length(keycols) > 0) {
     # Lets determine the groupings created by keycols
     keycols_grouping_df <- NULL
-    keycols <- .keycols_from_listing(obj)
     for (i in seq_along(keycols)) {
       kcol <- keycols[i]
-      kcolvec <- obj[[kcol]]
-      kcolvec <- vapply(kcolvec, format_value, "", format = obj_format(kcolvec), na_str = obj_na_str(kcolvec))
+      if (is(obj, "MatrixPrintForm")) {
+        # This makes the function work also in the case we have only matrix form (mainly for testing purposes)
+        kcolvec <- mf_strings(obj)[, mf_strings(obj)[1, , drop = TRUE] == kcol][-1]
+        while (any(kcolvec == "")) {
+          kcolvec[which(kcolvec == "")] <- kcolvec[which(kcolvec == "") - 1]
+        }
+      } else {
+        kcolvec <- obj2[[kcol]]
+        kcolvec <- vapply(kcolvec, format_value, "", format = obj_format(kcolvec), na_str = obj_na_str(kcolvec))
+      }
       groupings <- as.numeric(factor(kcolvec, levels = unique(kcolvec)))
       where_they_start <- which(c(1, diff(groupings)) > 0)
       keycols_grouping_df <- cbind(
@@ -1271,13 +1279,17 @@ paginate_to_mpfs <- function(obj,
 }
 
 # This works only with matrix_form objects
-.is_listing_mf <- function(x) {
-  all(mf_rinfo(x)$node_class == "listing_df")
+.is_listing_mf <- function(mf) {
+  all(mf_rinfo(mf)$node_class == "listing_df")
 }
 
 # Shallow copy of get_keycols
 .keycols_from_listing <- function(obj) {
-  names(which(sapply(obj, is, class2 ="listing_keycol")))
+  if (is(obj, "listing_df")) {
+    names(which(sapply(obj, is, class2 = "listing_keycol")))
+  } else {
+    obj$listing_keycols
+  }
 }
 
 
