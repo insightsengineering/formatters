@@ -119,14 +119,19 @@ check_aligns <- function(algn) {
 #' @export
 #' @return A formatting function which wraps and will apply the specified \code{printf} style format
 #'   string \code{format}.
-#' @seealso \code{\link[base]{sprintf}}
-#'
+#' @seealso \code{\link[base]{sprintf}} [round_fmt()] \code{link{list_formats}}
 #' @examples
 #' fmtfun <- sprintf_format("(N=%i")
 #' format_value(100, format = fmtfun)
 #'
 #' fmtfun2 <- sprintf_format("%.4f - %.2f")
 #' format_value(list(12.23456, 2.724))
+#'
+#' fmtfun3 <- sprintf_format("this range => %.1f")
+#' format_value(100, format = fmtfun3)
+#'
+#' fmtfun4 <- sprintf_format("sadbasd asa a %.2f asda a %.1f")
+#' format_value(list(12.23456, 2.724), format = fmtfun4)
 sprintf_format <- function(format) {
   function(x, ...) {
     do.call(sprintf, c(list(fmt = format), x))
