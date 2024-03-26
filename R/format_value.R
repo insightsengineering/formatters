@@ -119,12 +119,7 @@ check_aligns <- function(algn) {
 #' @export
 #' @return A formatting function which wraps and will apply the specified \code{printf} style format
 #'   string \code{format}.
-#' @seealso \code{\link[base]{sprintf}}
-#'
-#'  \code{\link[formatters]{round_fmt}}
-#'
-#'  \code{\link[formatters]{list_formats}}
-#'
+#' @seealso \code{\link[base]{sprintf}} [round_fmt()] \code{link{list_formats}}
 #' @examples
 #' fmtfun <- sprintf_format("(N=%i")
 #' format_value(100, format = fmtfun)
