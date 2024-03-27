@@ -58,10 +58,20 @@ export_as_txt <- function(x,
                           colwidths = NULL,
                           min_siblings = 2,
                           nosplitin = character(),
-                          rep_cols = num_rep_cols(x),
+                          rep_cols = NULL,
                           verbose = FALSE,
                           page_break = "\\s\\n",
                           page_num = default_page_number()) {
+  # Processing lists of tables or listings
+  if (.is_list_of_tables_or_listings(x)) {
+    if (isFALSE(paginate)) {
+      warning(
+        "paginate is FALSE, but x is a list of tables or listings, ",
+        "so paginate will automatically be updated to TRUE"
+      )
+    }
+    paginate <- TRUE
+  }
 
   if (paginate) {
     pages <- paginate_to_mpfs(
@@ -101,7 +111,7 @@ export_as_txt <- function(x,
     )
   }
 
-  ## we dont' set widths here because we already but that info on mpf
+  ## we don't set widths here because we already put that info in mpf
   ## so its on each of the pages.
   strings <- vapply(
     pages, toString, "",
@@ -118,7 +128,22 @@ export_as_txt <- function(x,
   }
 }
 
+.is_list_of_tables_or_listings <- function(a_list) {
+  all_matrix_forms <- FALSE
+  obj_are_tables_or_listings <- FALSE
 
+  if (is(a_list[[1]], "MatrixPrintForm")) {
+    all_matrix_forms <- all(sapply(a_list, is, class2 = "MatrixPrintForm"))
+  } else {
+    obj_are_tables_or_listings <- all(
+      sapply(a_list, function(list_i) {
+        is(list_i, "listing_df") || is(list_i, "VTableTree")
+      })
+    )
+  }
+
+  is(a_list, "list") && (obj_are_tables_or_listings || all_matrix_forms)
+}
 
 ##     ## TODO this needs to be in terms of a MPF, so ncol(tt) needs to change
 
@@ -416,7 +441,7 @@ mpf_to_rtf <- function(mpf,
 
 export_as_rtf <- function(x,
                           file = NULL,
-                          colwidths = propose_column_widths(matrix_form(x, TRUE)),
+                          colwidths = NULL,
                           page_type = "letter",
                           pg_width = page_dim(page_type)[if (landscape) 2 else 1],
                           pg_height = page_dim(page_type)[if (landscape) 1 else 2],
@@ -425,6 +450,17 @@ export_as_rtf <- function(x,
                           font_size = 8,
                           font_family = "Courier",
                           ...) {
+  # Processing lists of tables or listings
+  if (.is_list_of_tables_or_listings(x)) {
+    if (isFALSE(paginate)) {
+      warning(
+        "paginate is FALSE, but x is a list of tables or listings, ",
+        "so paginate will automatically be updated to TRUE"
+      )
+    }
+    paginate <- TRUE
+  }
+
   if (!requireNamespace("r2rtf")) {
     stop("RTF export requires the r2rtf package, please install it.")
   }
@@ -432,20 +468,11 @@ export_as_rtf <- function(x,
     names(margins) <- marg_order
   }
 
-  fullmf <- matrix_form(x, indent_rownames = TRUE)
-  req_ncols <- ncol(fullmf) + as.numeric(mf_has_rlabels(fullmf))
-  if (!is.null(colwidths) && length(colwidths) != req_ncols) {
-    stop(
-      "non-null colwidths argument must have length ncol(x) (+ 1 if row labels are present) [",
-      req_ncols, "], got length ", length(colwidths)
-    )
-  }
-
   true_width <- pg_width - sum(margins[c("left", "right")])
   true_height <- pg_height - sum(margins[c("top", "bottom")])
 
   mpfs <- paginate_to_mpfs(
-    fullmf,
+    x,
     font_family = font_family, font_size = font_size,
     pg_width = true_width,
     pg_height = true_height,
@@ -543,16 +570,23 @@ export_as_pdf <- function(x,
                           cpp = NULL,
                           hsep = "-",
                           indent_size = 2,
+                          rep_cols = num_rep_cols(x),
                           tf_wrap = TRUE,
                           max_width = NULL,
-                          colwidths = propose_column_widths(x)) {
+                          colwidths = NULL) {
   stopifnot(tools::file_ext(file) != ".pdf")
-  if (!is.null(colwidths) && length(colwidths) != ncol(x) + 1) {
-    stop(
-      "non-null colwidths argument must have length ncol(x) + 1 [",
-      ncol(x) + 1, "], got length ", length(colwidths)
-    )
+
+  # Processing lists of tables or listings
+  if (.is_list_of_tables_or_listings(x)) {
+    if (isFALSE(paginate)) {
+      warning(
+        "paginate is FALSE, but x is a list of tables or listings, ",
+        "so paginate will automatically be updated to TRUE"
+      )
+    }
+    paginate <- TRUE
   }
+
   gp_plot <- grid::gpar(fontsize = font_size, fontfamily = font_family)
 
   if (!is.null(height)) {
@@ -604,7 +638,7 @@ export_as_pdf <- function(x,
       max_width = max_width,
       indent_size = indent_size,
       verbose = FALSE,
-      rep_cols = num_rep_cols(x),
+      rep_cols = rep_cols,
       page_num = page_num
     )
   } else {
