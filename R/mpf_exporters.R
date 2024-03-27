@@ -65,7 +65,10 @@ export_as_txt <- function(x,
   # Processing lists of tables or listings
   if (.is_list_of_tables_or_listings(x)) {
     if (isFALSE(paginate)) {
-      warning("paginate is FALSE, but x is a list of tables or listings, so paginate will automatically be updated to TRUE")
+      warning(
+        "paginate is FALSE, but x is a list of tables or listings, ",
+        "so paginate will automatically be updated to TRUE"
+      )
     }
     paginate <- TRUE
   }
@@ -450,7 +453,10 @@ export_as_rtf <- function(x,
   # Processing lists of tables or listings
   if (.is_list_of_tables_or_listings(x)) {
     if (isFALSE(paginate)) {
-      warning("paginate is FALSE, but x is a list of tables or listings, so paginate will automatically be updated to TRUE")
+      warning(
+        "paginate is FALSE, but x is a list of tables or listings, ",
+        "so paginate will automatically be updated to TRUE"
+      )
     }
     paginate <- TRUE
   }
@@ -573,7 +579,10 @@ export_as_pdf <- function(x,
   # Processing lists of tables or listings
   if (.is_list_of_tables_or_listings(x)) {
     if (isFALSE(paginate)) {
-      warning("paginate is FALSE, but x is a list of tables or listings, so paginate will automatically be updated to TRUE")
+      warning(
+        "paginate is FALSE, but x is a list of tables or listings, ",
+        "so paginate will automatically be updated to TRUE"
+      )
     }
     paginate <- TRUE
   }

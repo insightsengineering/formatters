@@ -219,6 +219,8 @@ disp_from_spans <- function(spans) {
 #' @param main_footer character(1). Main footer as a string.
 #' @param prov_footer character. Provenance footer information as a
 #'     character vector.
+#' @param listing_keycols character. If matrix form of a listing, this containes
+#'     the key columns as a character vector.
 #' @param header_section_div character(1). Divider to be used between header
 #'     and body sections.
 #' @param horizontal_sep character(1). Horizontal separator to be used for printing
