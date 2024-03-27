@@ -1,5 +1,6 @@
 test_that("basic_listing_mf respect core modifications from table matrix_form", {
-  expect_silent(lmf <- basic_listing_mf(mtcars, keycols = c("vs", "gear")))
+  mtcars_rn <- mtcars %>% dplyr::mutate("rnms" = rownames(mtcars))
+  expect_silent(lmf <- basic_listing_mf(mtcars_rn, keycols = c("vs", "gear")))
 
   # strings
   cols_test <- mf_strings(lmf)[, c(1, 2)]
@@ -26,7 +27,8 @@ test_that("basic_listing_mf respect core modifications from table matrix_form", 
   expect_identical(colnames(mf_strings(lmf)), names(lmf$col_widths))
 
   # snapshot
-  expect_silent(lmf <- basic_listing_mf(mtcars[c(1, 2), c("vs", "gear", "mpg")], keycols = c("vs", "gear")))
+  tmp_mtcars <- mtcars_rn[c(1, 2), c("vs", "gear", "rnms", "mpg")]
+  expect_silent(lmf <- basic_listing_mf(tmp_mtcars, keycols = c("vs", "gear")))
   print_out <- c(
     "main title",
     "sub",
@@ -89,8 +91,7 @@ test_that("listings are correctly paginated when a wrapping happens on non-domin
   ))
 
   lst <- basic_listing_mf(iris2,
-    keycols = c("Species", "Petal.Width"),
-    ignore_rownames = TRUE, add_decoration = FALSE
+    keycols = c("Species", "Petal.Width"), add_decoration = FALSE
   )
 
   expect_silent(
@@ -122,10 +123,7 @@ test_that("listings are correctly paginated when a wrapping happens on non-domin
   levels(tmp_fct) <- paste0("Very long level name ", levels(tmp_fct))
   iris2$Petal.Width <- as.character(tmp_fct)
 
-  lst <- basic_listing_mf(iris2,
-    keycols = c("Species", "Petal.Width"),
-    ignore_rownames = TRUE, add_decoration = FALSE
-  )
+  lst <- basic_listing_mf(iris2, keycols = c("Species", "Petal.Width"), add_decoration = FALSE)
 
   pgs <- paginate_to_mpfs(lst, colwidths = c(30, 15, 12), lpp = 8)
 

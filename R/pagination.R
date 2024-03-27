@@ -1146,6 +1146,9 @@ paginate_to_mpfs <- function(obj,
 
   if (is.null(rep_cols)) {
     rep_cols <- num_rep_cols(obj) # obj and not mpf bc keycols are rep_cols if listings (not in mpf)
+    if (is(obj, "MatrixPrintForm") && .is_listing_mf(obj)) {
+      rep_cols <- length(.keycols_from_listing(obj))
+    }
   }
 
   if (NROW(mf_cinfo(mpf)) == 0) {

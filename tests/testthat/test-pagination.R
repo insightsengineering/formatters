@@ -416,11 +416,11 @@ test_that("pag_num works in paginate_to_mpfs and export_as_txt", {
 
 
 test_that("colwidths and num_rep_cols work when using lists of tables and listings", {
-  bmf <- basic_matrix_form(mtcars)
+  bmf <- basic_matrix_form(mtcars, ignore_rownames = TRUE)
   blmf <- basic_listing_mf(mtcars, keycols = c("vs", "gear"))
   l_mf <- list(bmf, blmf)
 
-  output <- export_as_txt(l_mf, page_num = "page {i} of {n}", cpp = 90, colwidths = rep(8, 12))
+  output <- export_as_txt(l_mf, page_num = "page {i} of {n}", cpp = 90, colwidths = rep(8, 11))
   nchar_lines <- sapply(strsplit(output, "\n")[[1]], nchar)
 
   expect_equal(max(nchar_lines), 90)
@@ -433,11 +433,11 @@ test_that("colwidths and num_rep_cols work when using lists of tables and listin
   expect_equal(names(sorted_tnl[c(1, 2)]), c("85", "52"))
 
   expect_error(
-    export_as_txt(l_mf, colwidths = rep(8, 11)),
+    export_as_txt(l_mf, colwidths = rep(8, 10)),
     "non-null colwidths argument must have length ncol"
   )
 
   expect_silent(
-    output <- export_as_txt(l_mf, page_num = "page {i} of {n}", cpp = 90, colwidths = rep(8, 12), num_rep_cols = 2)
+    output <- export_as_txt(l_mf, page_num = "page {i} of {n}", cpp = 90, colwidths = rep(8, 11), num_rep_cols = 2)
   )
 })

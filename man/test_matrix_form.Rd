@@ -13,12 +13,7 @@ basic_matrix_form(
   add_decoration = FALSE
 )
 
-basic_listing_mf(
-  df,
-  keycols = names(df)[1],
-  ignore_rownames = FALSE,
-  add_decoration = TRUE
-)
+basic_listing_mf(df, keycols = names(df)[1], add_decoration = TRUE)
 }
 \arguments{
 \item{df}{data.frame}
@@ -32,8 +27,7 @@ defaults to \code{"root"}, and generally should not matter to end users.}
 matrix form.}
 
 \item{keycols}{character. Vector of \code{df} column names that are printed first and
-repeated values are assigned to \code{""}. This format is characteristic of a listing matrix form.
-When \code{NULL}, no key columns are used.}
+repeated values are assigned to \code{""}. This format is characteristic of a listing matrix form.}
 }
 \value{
 A valid \code{MatrixPrintForm} object representing \code{df},

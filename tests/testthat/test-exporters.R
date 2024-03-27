@@ -187,11 +187,11 @@ test_that("exporting lists of tables and listings works", {
   blmf <- basic_listing_mf(mtcars, keycols = c("vs", "gear"))
   l_mf <- list(bmf, blmf)
 
-  output <- export_as_txt(l_mf, page_num = "page {i} of {n}", cpp = 90)
+  output <- export_as_txt(l_mf, page_num = "page {i} of {n}", cpp = 70)
   last_line_last_page <- strsplit(output, "\n")[[1]][168]
 
   expect_true(grepl(last_line_last_page, pattern = "page 4 of 4"))
-  expect_equal(nchar(last_line_last_page), 90)
+  expect_equal(nchar(last_line_last_page), 70)
 
   expect_warning(
     export_as_txt(l_mf, paginate = FALSE),
@@ -200,10 +200,8 @@ test_that("exporting lists of tables and listings works", {
 
   # export_as_pdf
   tmpf <- tempfile(fileext = ".pdf")
-  tmpf <- "to_delete.pdf"
-  output <- export_as_pdf(bmf, file = tmpf, page_num = "page {i} of {n}", cpp = 90)
+  output <- export_as_pdf(bmf, file = tmpf, page_num = "page {i} of {n}", cpp = 70)
   expect_true(file.exists(tmpf))
-  file.remove(tmpf)
 
   expect_warning(
     export_as_pdf(l_mf, file = tmpf, paginate = FALSE),
@@ -214,7 +212,7 @@ test_that("exporting lists of tables and listings works", {
 
   # export_as_rtf
   tmpf <- tempfile(fileext = ".rtf")
-  output <- export_as_rtf(bmf, file = tmpf, page_num = "page {i} of {n}", cpp = 90)
+  output <- export_as_rtf(bmf, file = tmpf, page_num = "page {i} of {n}", cpp = 70)
   expect_true(file.exists(tmpf))
 
   expect_warning(

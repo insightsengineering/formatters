@@ -942,7 +942,6 @@ basic_matrix_form <- function(df, parent_path = "root", ignore_rownames = FALSE,
 #'
 #' @param keycols character. Vector of `df` column names that are printed first and
 #'   repeated values are assigned to `""`. This format is characteristic of a listing matrix form.
-#'   When `NULL`, no key columns are used.
 #' @return A valid `MatrixPrintForm` object representing `df` as a listing,
 #'   ready for ASCII rendering.
 #'
@@ -952,15 +951,14 @@ basic_matrix_form <- function(df, parent_path = "root", ignore_rownames = FALSE,
 #'
 #' @export
 basic_listing_mf <- function(df,
-                             keycols = names(df)[1], # c("vs", "gear")
-                             ignore_rownames = FALSE,
+                             keycols = names(df)[1],
                              add_decoration = TRUE) {
   checkmate::assert_data_frame(df)
   checkmate::assert_subset(keycols, colnames(df))
 
   dfmf <- basic_matrix_form(
     df = df,
-    ignore_rownames = ignore_rownames,
+    ignore_rownames = TRUE,
     add_decoration = add_decoration
   )
 
@@ -1018,11 +1016,6 @@ basic_listing_mf <- function(df,
 
   # colwidths need to be sorted too!!
   dfmf$col_widths <- dfmf$col_widths[colnames(mf_strings(dfmf))]
-
-  # Adjustment for presence of rownames column
-  # if (isFALSE(ignore_rownames)) {
-  #   attr(dfmf, "ncols") <- attr(dfmf, "ncols") + 1
-  # }
 
   if (!add_decoration) {
     # This is probably a forced behavior in the original matrix_form in rlistings
