@@ -93,7 +93,7 @@ ASCII). Defaults to \code{TRUE}}
 \item{page_titles}{character.  Page-specific titles, as a character
 vector.}
 
-\item{listing_keycols}{character. If matrix form of a listing, this containes
+\item{listing_keycols}{character. If matrix form of a listing, this contains
 the key columns as a character vector.}
 
 \item{main_footer}{character(1). Main footer as a string.}
