@@ -1008,7 +1008,7 @@ paginate_indices <- function(obj,
           kcolvec[which(kcolvec == "")] <- kcolvec[which(kcolvec == "") - 1]
         }
       } else {
-        kcolvec <- obj2[[kcol]]
+        kcolvec <- obj[[kcol]]
         kcolvec <- vapply(kcolvec, format_value, "", format = obj_format(kcolvec), na_str = obj_na_str(kcolvec))
       }
       groupings <- as.numeric(factor(kcolvec, levels = unique(kcolvec)))
