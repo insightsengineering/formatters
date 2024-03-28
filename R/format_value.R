@@ -94,7 +94,7 @@ is_valid_format <- function(x, stop_otherwise = FALSE) {
 #' @param algn (`character`)\cr a character vector that indicates the requested cell alignments.
 #'
 #' @return
-#'  * `check_aligns` returns `TRUE` if the provided alignments are supported, otherwise an error is thrown.
+#'  * `check_aligns` returns `TRUE` if the provided alignments are supported, otherwise, an error is thrown.
 #'
 #' @examples
 #' check_aligns(c("decimal", "dec_right"))
@@ -116,7 +116,7 @@ check_aligns <- function(algn) {
 #'
 #' @param format (`string`)\cr a format string passed to [sprintf()].
 #'
-#' @return A formatting function which wraps and will apply the specified `sprintf`-style format
+#' @return A formatting function which wraps and applies the specified `sprintf`-style format
 #'   to string `format`.
 #'
 #' @seealso [sprintf()]
