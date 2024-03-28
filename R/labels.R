@@ -4,7 +4,7 @@
 #' @param label (`string`)\cr label attribute to attach to `x`.
 #'
 #' @return `x` labeled by `label`. Note that the exact mechanism of labeling should be considered
-#'   an internal implementation detail, but the label will always be retrieved via `obj_label`.
+#'   an internal implementation detail, but the label can always be retrieved via `obj_label`.
 #'
 #' @examples
 #' x <- with_label(c(1, 2, 3), label = "Test")
