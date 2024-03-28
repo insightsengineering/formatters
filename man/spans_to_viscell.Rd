@@ -2,36 +2,36 @@
 % Please edit documentation in R/tostring.R
 \name{spans_to_viscell}
 \alias{spans_to_viscell}
-\title{Transform vectors of spans (with duplication) to Visibility vector}
+\title{Transform a vector of spans (with duplication) into a visibility vector}
 \usage{
 spans_to_viscell(spans)
 }
 \arguments{
-\item{spans}{numeric. A vector of spans, with each span value repeated
+\item{spans}{(\code{numeric})\cr a vector of spans, with each span value repeated
 for the cells it covers.}
 }
 \value{
-a logical vector the same length as \code{spans} indicating
-whether the contents of a string vector with those spans
+A logical vector the same length as \code{spans} indicating whether the contents of a string vector
+with those spans is valid.
 }
 \description{
-Transform vectors of spans (with duplication) to Visibility vector
+Transform a vector of spans (with duplication) into a visibility vector
 }
 \details{
-The values of \code{spans} are assumed to be repeated to such that
-each individual position covered by the span has the repeated value.
+The values of \code{spans} are assumed to be repeated such that each individual position covered by the
+span has the repeated value.
 
-This means that each block of values in \code{span} must be of a length
-at least equal to its value (i.e. two 2s, three 3s, etc).
+This means that each block of values in \code{spans} must be of a length at least equal to its value
+(i.e. two 2s, three 3s, etc).
 
-This function correctly handles cases where two spans of the same size
-are next to each other; i.e., a block of four 2s represents two large
-cells each of which span two individual cells.
+This function correctly handles cases where two spans of the same size are next to each other;
+i.e., a block of four 2s represents two large cells each of which spans two individual cells.
 }
 \note{
-Currently no  checking or  enforcement is done  that the  vector of
-spans is valid in the sense described in the Details section above.
+Currently no checking or enforcement is done to verify that the vector of spans is valid according to
+the specifications described in the Details section above.
 }
 \examples{
 spans_to_viscell(c(2, 2, 2, 2, 1, 3, 3, 3))
+
 }

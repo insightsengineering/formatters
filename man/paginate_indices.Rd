@@ -83,174 +83,146 @@ diagnose_pagination(
 )
 }
 \arguments{
-\item{obj}{ANY.  object   to   be  paginated.   Must  have   a
-\code{\link{matrix_form}} method.}
+\item{obj}{(\code{ANY})\cr object to be paginated. Must have a \code{\link[=matrix_form]{matrix_form()}} method.}
 
-\item{page_type}{character(1).   Name   of  a  page  type.   See
-\code{page_types}.   Ignored when  \code{pg_width} and  \code{pg_height}
-are set directly.}
+\item{page_type}{(\code{string})\cr name of a page type. See \code{\link{page_types}}. Ignored
+when \code{pg_width} and \code{pg_height} are set directly.}
 
-\item{font_family}{character(1). Name of a font family. An error
-will be thrown if the family named is not monospaced. Defaults
-to Courier.}
+\item{font_family}{(\code{string})\cr name of a font family. An error will be thrown
+if the family named is not monospaced. Defaults to \code{"Courier"}.}
 
-\item{font_size}{numeric(1). Font size, defaults to 12.}
+\item{font_size}{(\code{numeric(1)})\cr font size. Defaults to \code{12}.}
 
-\item{lineheight}{numeric(1). Line height, defaults to 1.}
+\item{lineheight}{(\code{numeric(1)})\cr line height. Defaults to \code{1}.}
 
-\item{landscape}{logical(1). Should the  dimensions of \code{page_type}
-be inverted  for landscape?  Defaults to  \code{FALSE}, ignored when
-\code{pg_width} and \code{pg_height} are set directly.}
+\item{landscape}{(\code{flag})\cr whether the dimensions of \code{page_type} should be
+inverted for landscape orientation. Defaults to \code{FALSE}, ignored when \code{pg_width} and
+\code{pg_height} are set directly.}
 
-\item{pg_width}{numeric(1). Page width in inches.}
+\item{pg_width}{(\code{numeric(1)})\cr page width in inches.}
 
-\item{pg_height}{numeric(1). Page height in inches.}
+\item{pg_height}{(\code{numeric(1)})\cr page height in inches.}
 
-\item{margins}{numeric(4). Named numeric vector containing \code{'bottom'},
-\code{'left'}, \code{'top'}, and \code{'right'} margins in inches. Defaults
-to \code{.5} inches for both vertical margins and \code{.75} for both
-horizontal margins.}
+\item{margins}{(\code{numeric(4)})\cr named numeric vector containing \code{"bottom"}, \code{"left"},
+\code{"top"}, and \code{"right"} margins in inches. Defaults to \code{.5} inches for both vertical
+margins and \code{.75} for both horizontal margins.}
 
-\item{lpp}{numeric(1) or NULL. Lines per page. if NA (the default,
-this is calculated automatically based on the specified page
-size). \code{NULL} indicates no vertical pagination should occur.}
+\item{lpp}{(\code{numeric(1)} or \code{NULL})\cr lines per page. If \code{NA} (the default), this is calculated automatically
+based on the specified page size). \code{NULL} indicates no vertical pagination should occur.}
 
-\item{cpp}{numeric(1) or NULL. Width in characters per page. if NA (the default,
-this is calculated automatically based on the specified page
-size). \code{NULL} indicates no horizontal pagination should occur.}
+\item{cpp}{(\code{numeric(1)} or \code{NULL})\cr width (in characters) per page. If \code{NA} (the default), this is calculated
+automatically based on the specified page size). \code{NULL} indicates no horizontal pagination should occur.}
 
-\item{min_siblings}{numeric. Minimum sibling rows which must appear on either side of pagination row for a
-mid-subtable split to be valid. Defaults to 2 for tables. It is automatically turned off
-(by using only 0) for listings.}
+\item{min_siblings}{(\code{numeric})\cr minimum sibling rows which must appear on either side of pagination row for a
+mid-subtable split to be valid. Defaults to 2 for tables. It is automatically turned off (set to 0) for listings.}
 
-\item{nosplitin}{character. List of names of sub-tables where page-breaks are not allowed, regardless of other
+\item{nosplitin}{(\code{character})\cr list of names of subtables where page breaks are not allowed, regardless of other
 considerations. Defaults to none.}
 
-\item{colwidths}{numeric vector.  Column widths (in characters) for
-use with vertical pagination.}
+\item{colwidths}{(\code{numeric})\cr vector of column widths (in characters) for use in vertical pagination.}
 
-\item{tf_wrap}{logical(1). Should  the texts for  title, subtitle,
-and footnotes be wrapped?}
+\item{tf_wrap}{(\code{flag})\cr whether the text for title, subtitles, and footnotes should be wrapped.}
 
-\item{max_width}{integer(1), character(1) or \code{NULL}. Width that title
-and   footer   (including   footnotes)  materials   should   be
-word-wrapped to. If \code{NULL}, it is  set to the current print width
-of the  session (\code{getOption("width")}). If set to \code{"auto"},
-the width of the table (plus any table inset) is used. Ignored
-completely if \code{tf_wrap} is \code{FALSE}.}
+\item{max_width}{(\code{integer(1)}, \code{string} or \code{NULL})\cr width that title and footer (including
+footnotes) materials should be word-wrapped to. If \code{NULL}, it is set to the current print width of the
+session (\code{getOption("width")}). If set to \code{"auto"}, the width of the table (plus any table inset) is
+used. Parameter is ignored if \code{tf_wrap = FALSE}.}
 
-\item{indent_size}{numeric(1). Indent size in characters. Ignored
-when \code{x} is already a \code{MatrixPrintForm} object in favor of information
-there.}
+\item{indent_size}{(\code{numeric(1)})\cr indent size, in characters. Ignored when \code{x} is already
+a \code{MatrixPrintForm} object in favor of information there.}
 
-\item{pg_size_spec}{page_size_spec. A pre-calculated page
-size specification. Typically this is not set in end user code.}
+\item{pg_size_spec}{(\code{page_size_spec})\cr. a pre-calculated page size specification. Typically this is not set by
+end users.}
 
-\item{rep_cols}{numeric(1). Number of \emph{columns} (not including
-row labels) to be repeated on every page. Defaults to 0}
+\item{rep_cols}{(\code{numeric(1)})\cr number of \emph{columns} (not including row labels) to be repeated on every page.
+Defaults to 0.}
 
-\item{col_gap}{numeric(1). Currently unused.}
+\item{col_gap}{(\code{numeric(1)})\cr currently ignored.}
 
-\item{verbose}{logical(1). Should additional informative messages about the search for
-pagination breaks be shown. Defaults to \code{FALSE}.}
+\item{verbose}{(\code{flag})\cr whether additional informative messages about the search for
+pagination breaks should be shown. Defaults to \code{FALSE}.}
 
-\item{page_num}{character(1). Placeholder string for page numbers. Check
-\link{default_page_number} for more information. Defaults to \code{NULL}.}
+\item{page_num}{(\code{string})\cr placeholder string for page numbers. See \link{default_page_number} for more
+information. Defaults to \code{NULL}.}
 
-\item{...}{Passed to individual methods.}
+\item{...}{additional parameters passed to individual methods.}
 }
 \value{
-for \code{paginate_indices} a list with two elements of the same
-length:   \code{pag_row_indices},    and   \code{pag_col_indices}.    For
-\code{paginate_to_mpfs},   a  list   of  \code{MatrixPrintForm} objects
-representing each individual page after pagination (including
-forced pagination if necessary).
+\itemize{
+\item \code{paginate_indices} returns a \code{list} with two elements of the same length: \code{pag_row_indices} and \code{pag_col_indices}.
+\item \code{paginate_to_mpfs} returns a \code{list} of  \code{MatrixPrintForm} objects representing each individual page after
+pagination (including forced pagination if necessary).
+}
 
-For \code{diagnose_pagination} a list containing:
+\itemize{
+\item \code{diagnose_pagination} returns a \code{list} containing:
 
 \describe{
-\item{\code{lpp_diagnostics}}{diagnostic information regarding lines per page}
-\item{\code{row_diagnostics}}{basic information about rows, whether pagination was attempted
-after each row, and the final result of such an attempt, if made}
-\item{\verb{cpp_diagnostics\}\{diagnostic information regarding columns per page\} \\item\{}col_diagnostics`}{(very) basic information about leaf columns, whether pagination
-was attempted after each leaf column, ad the final result of such attempts, if made}
+\item{\code{lpp_diagnostics}}{Diagnostic information regarding lines per page.}
+\item{\code{row_diagnostics}}{Basic information about rows, whether pagination was attempted
+after each row, and the final result of such an attempt, if made.}
+\item{\code{cpp_diagnostics}}{Diagnostic information regarding columns per page.}
+\item{\code{col_diagnostics}}{Very basic information about leaf columns, whether pagination
+was attempted after each leaf column, ad the final result of such attempts, if made.}
+}
 }
 }
 \description{
-These functions perform or diagnose bi-directional pagination on
-an object.
-
-\code{paginate_to_mpfs} renders \code{obj} into the \code{MatrixPrintForm} (\code{MPF})
-intermediate representation, and then paginates that \code{MPF} into
-component \code{MPF}s each corresponding to an individual page and
-returns those in a list.
-
-\code{paginate_indices} renders \code{obj} into an \code{MPF}, then uses
-that representation to calculate the rows and columns of
-\code{obj} corresponding to each page of the pagination of \code{obj},
-but simply returns these indices rather than paginating
-\code{obj} itself (see details for an important caveat).
-
-\code{diagnose_pagination} attempts pagination via \code{paginate_to_mpfs}
-and then returns diagnostic information which explains why page
-breaks were positioned where they were, or alternatively why
-no valid paginations could be found.
+These functions perform or diagnose bi-directional pagination on an object.
 }
 \details{
-All three of these functions generally support all classes which have
-a corresponding \code{matrix_form} method which returns a valid \code{MatrixPrintForm}
-object (including \code{MatrixPrintForm} objects themselves).
+\code{paginate_indices} renders \code{obj} into a \code{MatrixPrintForm} (MPF), then uses that representation to
+calculate the rows and columns of \code{obj} corresponding to each page of the pagination of \code{obj}, but
+simply returns these indices rather than paginating \code{obj} itself (see Details for an important caveat).
 
-\code{paginate_indices} is directly called by \code{paginate_to_mpfs} (and thus
-\code{diagnose_pagination}). For most classes, and most tables represented
-by supported classes, calling \code{paginate_to_mpfs} is equivalent to a
-manual \verb{paginate_indices -> subset obj into pages -> matrix_form}
-workflow.
+\code{paginate_to_mpfs} renders \code{obj} into its MPF intermediate representation, then paginates that MPF into
+component MPFs each corresponding to an individual page and returns those in a \code{list}.
 
-The exception to this equivalence is objects which support 'forced pagination',
-or pagination logic which built into the object itself rather than being a
-function of space on a page. Forced pagination generally involves the creation
-of, e.g., page-specific titles which apply to these forced paginations.
-\code{paginate_to_mpfs} and \code{diagnose_pagination} support forced pagination by
-automatically calling the \code{do_forced_pagination} generic on the object
-and then paginating each object returned by that generic separately. The
-assumption here, then, is that page-specific titles and such are
-handled by the class' \code{do_forced_pagination} method.
+\code{diagnose_pagination} attempts pagination via \code{paginate_to_mpfs}, then returns diagnostic information
+which explains why page breaks were positioned where they were, or alternatively why no valid pagination
+could be found.
 
-\code{paginate_indices}, on the other hand, \emph{does not support forced pagination},
-because it returns only a set of  indices for row and column subsetting for each page,
-and thus cannot retain any changes, e.g., to titles, done within \code{do_forced_paginate}.
-\code{paginate_indices} does call \code{do_forced_paginate}, but instead of continuing, it
-throws an error in the case that the result is more than a single "page".
+All three of these functions generally support all classes which have a corresponding \code{\link[=matrix_form]{matrix_form()}}
+method which returns a valid \code{MatrixPrintForm} object (including \code{MatrixPrintForm} objects themselves).
 
-\code{diagnose_pagination} attempts pagination and then, regardless of success
-or failure, returns diagnostic information about pagination
-attempts (if any) after each row and column.
+\code{paginate_indices} is directly called by \code{paginate_to_mpfs} (and thus \code{diagnose_pagination}). For most
+classes, and most tables represented by supported classes, calling \code{paginate_to_mpfs} is equivalent to a
+manual \verb{paginate_indices -> subset obj into pages -> matrix_form} workflow.
 
-The diagnostics data reflects the final time the pagination algorithm
-evaluated a page break at the specified location, regardless of how
-many times the position was assessed total.
+The exception to this equivalence is objects which support "forced pagination", or pagination logic which
+is built into the object itself rather than being a function of space on a page. Forced pagination
+generally involves the creation of, e.g., page-specific titles which apply to these forced paginations.
+\code{paginate_to_mpfs} and \code{diagnose_pagination} support forced pagination by automatically calling the
+\code{\link[=do_forced_paginate]{do_forced_paginate()}} generic on the object and then paginating each object returned by that generic
+separately. The assumption here, then, is that page-specific titles and such are handled by the class'
+\code{\link[=do_forced_paginate]{do_forced_paginate()}} method.
 
-To get information about intermediate attempts, perform pagination
-with \code{verbose = TRUE} and inspect the messages in order.
+\code{paginate_indices}, on the other hand, \emph{does not support forced pagination}, because it returns only a
+set of indices for row and column subsetting for each page, and thus cannot retain any changes, e.g.,
+to titles, done within \code{\link[=do_forced_paginate]{do_forced_paginate()}}. \code{paginate_indices} does call \code{\link[=do_forced_paginate]{do_forced_paginate()}}, but
+instead of continuing it throws an error in the case that the result is larger than a single "page".
+
+\code{diagnose_pagination} attempts pagination and then, regardless of success or failure, returns diagnostic
+information about pagination attempts (if any) after each row and column.
+
+The diagnostics data reflects the final time the pagination algorithm evaluated a page break at the
+specified location, regardless of how many times the position was assessed in total.
+
+To get information about intermediate attempts, perform pagination with \code{verbose = TRUE} and inspect
+the messages in order.
 }
 \note{
-For  \code{diagnose_pagination},   the  column  labels  are  not
-displayed  in  the  \code{col_diagnostics} element  due  to  certain
-internal  implementation details;  rather  the diagnostics  are
-reported in terms of absolute (leaf) column position. This is a
-known  limitation,  and  may  eventually be  changed,  but  the
+For \code{diagnose_pagination}, the column labels are not displayed in the \code{col_diagnostics} element
+due to certain internal implementation details; rather the diagnostics are reported in terms of
+absolute (leaf) column position. This is a known limitation, and may eventually be changed, but the
 information remains useful as it is currently reported.
 
-\code{diagnose_pagination} is intended for interactive debugging
-use and \emph{should not be programmed against}, as the exact
-content and form of the  verbose messages it captures and
-returns is subject to change.
+\code{diagnose_pagination} is intended for interactive debugging use and \emph{should not be programmed against},
+as the exact content and form of the verbose messages it captures and returns is subject to change.
 
-because \code{diagnose_pagination} relies on \code{capture.output(type = "message")},
-it cannot be used within the \code{testthat} (and likely other) testing frameworks,
-and likely cannot be used within \code{knitr}/\code{rmarkdown} contexts either,
-as this clashes with those systems' capture of messages.
+Because \code{diagnose_pagination} relies on \code{capture.output(type = "message")}, it cannot be used within the
+\code{testthat} (and likely other) testing frameworks, and likely cannot be used within \code{knitr}/\code{rmarkdown}
+contexts either, as this clashes with those systems' capture of messages.
 }
 \examples{
 mpf <- basic_matrix_form(mtcars)

@@ -4,7 +4,7 @@
 \alias{list_formats}
 \alias{list_valid_format_labels}
 \alias{list_valid_aligns}
-\title{List with currently supported formats and vertical alignments}
+\title{List of currently supported formats and vertical alignments}
 \usage{
 list_valid_format_labels()
 
@@ -12,17 +12,17 @@ list_valid_aligns()
 }
 \value{
 \itemize{
-\item \code{list_valid_format_labels()}: A nested list, with elements listing the supported 1d, 2d,
+\item \code{list_valid_format_labels()} returns a nested list, with elements listing the supported 1d, 2d,
 and 3d format strings.
 }
 
 \itemize{
-\item \code{list_valid_aligns()}: a character vector of valid vertical alignments
+\item \code{list_valid_aligns()} returns a character vector of valid vertical alignments.
 }
 }
 \description{
-We support \code{xx} style format labels grouped by 1d, 2d and 3d.
-Currently valid format labels can not be added dynamically. Format functions
+We support \code{xx} style format labels grouped by 1d, 2d, and 3d.
+Currently valid format labels cannot be added dynamically. Format functions
 must be used for special cases.
 }
 \examples{

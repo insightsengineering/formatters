@@ -2,21 +2,21 @@
 % Please edit documentation in R/tostring.R
 \name{spread_integer}
 \alias{spread_integer}
-\title{spread \code{x} into \code{len} elements}
+\title{Spread an integer to a given length}
 \usage{
 spread_integer(x, len)
 }
 \arguments{
-\item{x}{numeric(1). The number to spread}
+\item{x}{(\code{integer(1)})\cr number to spread.}
 
-\item{len}{numeric(1). The number of times to repeat \code{x}}
+\item{len}{(\code{integer(1)})\cr number of times to repeat \code{x}.}
 }
 \value{
-if \code{x} is a scalar "whole number" value (see \code{\link{is.wholenumber}}),
-the value \code{x} repeated \code{len} times. If not, an error is thrown.
+If \code{x} is a scalar whole number value (see \code{\link[=is.wholenumber]{is.wholenumber()}}), the value \code{x} is repeated \code{len} times.
+Otherwise, an error is thrown.
 }
 \description{
-spread \code{x} into \code{len} elements
+Spread an integer to a given length
 }
 \examples{
 spread_integer(3, 1)
@@ -28,4 +28,5 @@ spread_integer(4, 3)
 spread_integer(5, 3)
 spread_integer(6, 3)
 spread_integer(7, 3)
+
 }

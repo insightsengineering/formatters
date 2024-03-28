@@ -3,21 +3,20 @@
 \name{ifnotlen0}
 \alias{ifnotlen0}
 \alias{\%||\%}
-\title{\verb{\%||\%} If length-0 alternative operator}
+\title{\verb{\%||\%} (if length-0) alternative operator}
 \usage{
 a \%||\% b
 }
 \arguments{
-\item{a}{ANY. Element to select only if it is not length 0}
+\item{a}{(\code{ANY})\cr element to select \emph{only} if it is not of length 0.}
 
-\item{b}{ANY. Element to select if \code{a} is length 0}
+\item{b}{(\code{ANY})\cr element to select if \code{a} has length 0.}
 }
 \value{
-\code{a}, unless it  is length 0, in which case  \code{b} (even in the
-case \code{b} is also length 0)
+\code{a} if it is not of length 0, otherwise \code{b}.
 }
 \description{
-\verb{\%||\%} If length-0 alternative operator
+\verb{\%||\%} (if length-0) alternative operator
 }
 \examples{
 6 \%||\% 10
@@ -25,4 +24,5 @@ case \code{b} is also length 0)
 character() \%||\% "hi"
 
 NULL \%||\% "hi"
+
 }

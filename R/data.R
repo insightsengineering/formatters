@@ -1,15 +1,13 @@
 ## data
 
-#' `DM` data
+#' DM data
 #'
-#' @format `rds` (data.frame)
+#' @format `rds` (`data.frame`)
 "DM"
 
-
-
-#' Simulated `CDISC` Alike Data for Examples
+#' Simulated CDISC-like data for examples
 #'
-#' @format `rds` (data.frame)
+#' @format `rds` (`data.frame`)
 #' @rdname cdisc_data
 "ex_adsl"
 

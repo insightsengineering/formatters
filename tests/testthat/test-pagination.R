@@ -9,7 +9,6 @@ test_that("pagination works", {
     ftmsg
   )
 
-
   ## min_siblings following siblings test
   pagindices <- pag_indices_inner(
     mf_rinfo(dfmf),
@@ -85,16 +84,12 @@ test_that("pagination works", {
     matrix(c("", "tleft mats", "m", "pg"), nrow = 2, ncol = 2)
   )
 
-
   ## https://github.com/insightsengineering/formatters/issues/77
 
   dfmf3 <- dfmf
   mf_rinfo(dfmf3)$trailing_sep[31] <- "-"
   str <- toString(dfmf3)
   expect_true(grepl("Volvo 142E", str))
-
-
-
 
   strout <- toString(dfmf)
   expect_true(any(grepl(ftmsg, strout)))
@@ -126,7 +121,6 @@ test_that("pagination works", {
     verbose = TRUE
   )
   expect_true(all(sapply(hpagmpfs, function(x) max(mf_lgrouping(x)) - mf_nrheader(x)) == 2L))
-
 
   ## vpaginds <- vert_pag_indices(df2mf, cpp = 40, verbose = TRUE)
 
@@ -180,7 +174,6 @@ test_that("pagination works", {
     rep(1L, 5)
   )
 
-
   ## they all appear
   expect_equal(
     sort(unique(unlist(vpaginds3))),
@@ -210,7 +203,6 @@ test_that("pagination works", {
   expect_false(grepl("1[[:space:]]*1", strout))
   expect_true(grepl("3[[:space:]]*3", strout))
 
-
   expect_identical(
     spread_integer(7, 3),
     c(3, 2, 2)
@@ -236,8 +228,6 @@ test_that("pagination works", {
   expect_identical(prov_footer(df3mf), "file: myfile.txt")
   expect_identical(nlines(NULL), 0L)
   expect_identical(nlines("hi\nthere"), 2L)
-
-
 
   ## coverage for handling of ref footnotes in pagination machinery
   ## also covered partially in closely related export test
@@ -284,7 +274,6 @@ test_that("pagination works", {
 
   expect_identical(page_lcpp(pg_width = 4, pg_height = 4, margins = rep(0, 4)), list(cpp = 60, lpp = 36))
 
-
   ## first vertical pagination is "forced" after row 1,
   ## 2 additional vertical paginations within second "forced page" (3 total)
   ## 3 horizontal paginations
@@ -325,6 +314,7 @@ test_that("pagination works", {
     TRUE
   })
 })
+
 test_that("page to lcpp stuff works", {
   expect_identical(
     page_lcpp(margins = c(
@@ -339,7 +329,6 @@ test_that("page to lcpp stuff works", {
     calc_lcpp(page_type = "letter")
   )
 })
-
 
 test_that("non-monospaced fonts are caught", {
   ## non-monospaced fonts
@@ -364,7 +353,6 @@ test_that("spans and string matrix match after pagination when table has single 
     dim(pag_test[[1]]$strings)
   )
 })
-
 
 test_that("pag_num works in paginate_to_mpfs and export_as_txt", {
   tst <- basic_matrix_form(mtcars, add_decoration = TRUE)

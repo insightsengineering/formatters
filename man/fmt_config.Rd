@@ -2,16 +2,16 @@
 % Please edit documentation in R/format_value.R
 \name{fmt_config}
 \alias{fmt_config}
-\title{Format Configuration}
+\title{Format configuration}
 \usage{
 fmt_config(format = NULL, na_str = "NA", align = "center")
 }
 \arguments{
-\item{format}{character(1) or function. A format label (string) or \code{formatter} function.}
+\item{format}{(\code{string} or \code{function})\cr a format label (string) or formatter function.}
 
-\item{na_str}{character(1). String that should be displayed in place of missing values.}
+\item{na_str}{(\code{string})\cr string that should be displayed in place of missing values.}
 
-\item{align}{character(1). Alignment values should be rendered with.}
+\item{align}{(\code{string})\cr alignment values should be rendered with.}
 }
 \value{
 An object of class \code{fmt_config} which contains the following elements:
@@ -22,7 +22,7 @@ An object of class \code{fmt_config} which contains the following elements:
 }
 }
 \description{
-Format Configuration
+Format configuration
 }
 \examples{
 fmt_config(format = "xx.xx", na_str = "-", align = "left")

@@ -2,19 +2,20 @@
 % Please edit documentation in R/labels.R
 \name{var_labels_remove}
 \alias{var_labels_remove}
-\title{Remove Variable Labels of a \code{data.frame}}
+\title{Remove variable labels of a \code{data.frame}}
 \usage{
 var_labels_remove(x)
 }
 \arguments{
-\item{x}{a \code{data.frame} object}
+\item{x}{(\code{data.frame})\cr a \code{data.frame} object.}
 }
 \value{
-the same data frame as \code{x} stripped of variable labels
+\code{x} with its variable labels stripped.
 }
 \description{
-Removing labels attributes from a variables in a data frame
+Remove \code{label} attribute from all variables in a data frame.
 }
 \examples{
 x <- var_labels_remove(iris)
+
 }

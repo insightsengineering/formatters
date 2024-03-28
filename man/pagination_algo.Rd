@@ -9,52 +9,50 @@ Pagination
 \section{Pagination Algorithm}{
 
 
-Pagination  is performed independently in  the vertical  and horizontal
-directions based solely on a \emph{pagination data.frame}, which includes the
+Pagination is performed independently in the vertical and horizontal
+directions based solely on a \emph{pagination data frame}, which includes the
 following information for each row/column:
 \itemize{
-\item number of  lines/characters rendering the row  will take \strong{after
+\item Number of lines/characters rendering the row will take \strong{after
 word-wrapping} (\code{self_extent})
-\item the indices (\code{reprint_inds})  and number of lines (\code{par_extent})
+\item The indices (\code{reprint_inds}) and number of lines (\code{par_extent})
 of the rows which act as \strong{context} for the row
-\item the row's number of siblings and position within its siblings
+\item The row's number of siblings and position within its siblings
 }
 
-Given \code{lpp}  (\code{cpp}) already  adjusted for rendered  elements which
-are  not rows/columns  and a  dataframe of  pagination information,
-pagination is  performed via  the following  algorithm, and  with a
-\code{start = 1}:
+Given \code{lpp} (\code{cpp}) is already adjusted for rendered elements which
+are not rows/columns and a data frame of pagination information,
+pagination is performed via the following algorithm with \code{start = 1}.
 
 Core Pagination Algorithm:
 \enumerate{
-\item Initial guess for pagination point is \code{start + lpp} (\code{start + cpp})
-\item While the guess is not a valid pagination position, and \code{guess > start}, decrement guess and repeat
-}
+\item Initial guess for pagination position is \code{start + lpp} (\code{start + cpp})
+\item While the guess is not a valid pagination position, and \code{guess > start},
+decrement guess and repeat.
 \itemize{
-\item an error is thrown if all possible pagination positions between
-\code{start} and \code{start + lpp} (\code{start + cpp}) would ever be \verb{< start}
+\item An error is thrown if all possible pagination positions between
+\code{start} and \code{start + lpp} (\code{start + cpp}) would be \verb{< start}
 after decrementing
 }
-\enumerate{
 \item Retain pagination index
-\item if pagination  point was less than  \code{NROW(tt)} (\code{ncol(tt)}), set
+\item If pagination point was less than \code{NROW(tt)} (\code{ncol(tt)}), set
 \code{start} to \code{pos + 1}, and repeat steps (1) - (4).
 }
 
-Validating pagination position:
+Validating Pagination Position:
 
 Given an (already adjusted) \code{lpp} or \code{cpp} value, a pagination is invalid if:
 \itemize{
-\item The rows/columns on the page would take  more than (adjusted) \code{lpp} lines/\code{cpp}
-characters to render \strong{including}
+\item The rows/columns on the page would take more than (adjusted) \code{lpp} lines/\code{cpp}
+characters to render \strong{including}:
 \itemize{
 \item word-wrapping
 \item (vertical only) context repetition
 }
-\item (vertical only) footnote messages  and or section divider lines
+\item (vertical only) footnote messages and/or section divider lines
 take up too many lines after rendering rows
 \item (vertical only) row is a label or content (row-group summary) row
-\item (vertical only)  row at the pagination point  has siblings, and
+\item (vertical only) row at the pagination point has siblings, and
 it has less than \code{min_siblings} preceding or following siblings
 \item pagination would occur within a sub-table listed in \code{nosplitin}
 }

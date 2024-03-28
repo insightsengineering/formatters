@@ -2,21 +2,22 @@
 % Please edit documentation in R/labels.R
 \name{var_labels<-}
 \alias{var_labels<-}
-\title{Set Label Attributes of All Variables in a \code{data.frame}}
+\title{Set label attributes of all variables in a \code{data.frame}}
 \usage{
 var_labels(x) <- value
 }
 \arguments{
-\item{x}{a \code{data.frame} object}
+\item{x}{(\code{data.frame})\cr a data frame object.}
 
-\item{value}{new variable labels, \code{NA} removes the variable label}
+\item{value}{(\code{character})\cr a vector of new variable labels. If any values are \code{NA},
+the label for that variable is removed.}
 }
 \value{
-modifies the variable labels of \code{x}
+\code{x} with modified variable labels.
 }
 \description{
-Variable labels can be stored as a \code{label} attribute for each variable.
-This functions sets all non-missing (non-NA) variable labels in a \code{data.frame}
+Variable labels can be stored as the \code{label} attribute for each variable.
+This functions sets all non-missing (non-\code{NA}) variable labels in a \code{data.frame}.
 }
 \examples{
 x <- iris
@@ -27,4 +28,5 @@ var_labels(x)
 if (interactive()) {
   View(x) # in RStudio data viewer labels are displayed
 }
+
 }

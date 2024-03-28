@@ -11,28 +11,27 @@ is_valid_format(x, stop_otherwise = FALSE)
 check_aligns(algn)
 }
 \arguments{
-\item{x}{either format string or an object returned by \code{sprintf_format}}
+\item{x}{(\code{string} or \code{function})\cr format string or an object returned by \code{\link[=sprintf_format]{sprintf_format()}}}
 
-\item{stop_otherwise}{logical, if \code{x} is not a format should an error be
-thrown}
+\item{stop_otherwise}{(\code{flag})\cr whether an error should be thrown if \code{x} is not a valid format.}
 
-\item{algn}{vector of characters that indicates the requested cell alignments.}
+\item{algn}{(\code{character})\cr a character vector that indicates the requested cell alignments.}
 }
 \value{
 \itemize{
-\item \code{is_valid_format}: \code{TRUE} if \code{x} is \code{NULL}, a supported
-format string, or a function; \code{FALSE} otherwise.
+\item \code{is_valid_format} returns \code{TRUE} if \code{x} is \code{NULL}, a supported format string, or a function, and
+\code{FALSE} otherwise.
 }
 
 \itemize{
-\item \code{check_aligns}: \code{TRUE} if it passes the check.
+\item \code{check_aligns} returns \code{TRUE} if the provided alignments are supported, otherwise, an error is thrown.
 }
 }
 \description{
 Utility functions for checking formats and alignments.
 }
 \note{
-No check if the function is actually a \code{formatter} is performed.
+If \code{x} is a function, no check is performed to verify that it returns a valid format.
 }
 \examples{
 is_valid_format("xx.x")
