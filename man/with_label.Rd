@@ -13,7 +13,7 @@ with_label(x, label)
 }
 \value{
 \code{x} labeled by \code{label}. Note that the exact mechanism of labeling should be considered
-an internal implementation detail, but the label will always be retrieved via \code{obj_label}.
+an internal implementation detail, but the label can always be retrieved via \code{obj_label}.
 }
 \description{
 Return an object with a label attribute
