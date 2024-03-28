@@ -24,7 +24,7 @@ check_aligns(algn)
 }
 
 \itemize{
-\item \code{check_aligns} returns \code{TRUE} if the provided alignments are supported, otherwise an error is thrown.
+\item \code{check_aligns} returns \code{TRUE} if the provided alignments are supported, otherwise, an error is thrown.
 }
 }
 \description{

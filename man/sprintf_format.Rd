@@ -10,7 +10,7 @@ sprintf_format(format)
 \item{format}{(\code{string})\cr a format string passed to \code{\link[=sprintf]{sprintf()}}.}
 }
 \value{
-A formatting function which wraps and will apply the specified \code{sprintf}-style format
+A formatting function which wraps and applies the specified \code{sprintf}-style format
 to string \code{format}.
 }
 \description{
