@@ -24,7 +24,7 @@ export_as_pdf(
   cpp = NULL,
   hsep = "-",
   indent_size = 2,
-  rep_cols = num_rep_cols(x),
+  rep_cols = NULL,
   tf_wrap = TRUE,
   max_width = NULL,
   colwidths = NULL

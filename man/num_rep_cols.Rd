@@ -3,11 +3,14 @@
 \name{num_rep_cols}
 \alias{num_rep_cols}
 \alias{num_rep_cols,ANY-method}
+\alias{num_rep_cols,MatrixPrintForm-method}
 \title{Number of repeated columns}
 \usage{
 num_rep_cols(obj)
 
 \S4method{num_rep_cols}{ANY}(obj)
+
+\S4method{num_rep_cols}{MatrixPrintForm}(obj)
 }
 \arguments{
 \item{obj}{ANY. A table-like object.}
@@ -31,4 +34,6 @@ of which is handled separately.
 \examples{
 mpf <- basic_matrix_form(mtcars)
 num_rep_cols(mpf)
+lmpf <- basic_listing_mf(mtcars)
+num_rep_cols(lmpf)
 }
