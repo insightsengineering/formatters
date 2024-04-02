@@ -418,6 +418,9 @@ test_that("pag_num works in paginate_to_mpfs and export_as_txt", {
 test_that("colwidths and num_rep_cols work when using lists of tables and listings", {
   bmf <- basic_matrix_form(mtcars, ignore_rownames = TRUE)
   blmf <- basic_listing_mf(mtcars, keycols = c("vs", "gear"))
+  expect_equal(num_rep_cols(bmf), 0L)
+  expect_equal(num_rep_cols(blmf), 2L)
+
   l_mf <- list(bmf, blmf)
 
   output <- export_as_txt(l_mf, page_num = "page {i} of {n}", cpp = 90, colwidths = rep(8, 11))
@@ -440,4 +443,23 @@ test_that("colwidths and num_rep_cols work when using lists of tables and listin
   expect_silent(
     output <- export_as_txt(l_mf, page_num = "page {i} of {n}", cpp = 90, colwidths = rep(8, 11), num_rep_cols = 2)
   )
+})
+
+test_that("rep_cols works as intended for listings and tables", {
+  bmf <- basic_matrix_form(mtcars, ignore_rownames = FALSE)
+  blmf <- basic_listing_mf(mtcars, keycols = c("vs", "gear"))
+  expect_equal(num_rep_cols(bmf), 0L) # repeated rowlabels are excluded from num_rep_cols
+  expect_equal(num_rep_cols(blmf), 2L)
+
+  out <- export_as_txt(bmf, rep_cols = 2, cpp = 90) %>% strsplit("\n") %>% unlist()
+  expect_true(grepl(out[35], pattern = "mpg")) # mpg is repeated
+  expect_true(grepl(out[35], pattern = "cyl")) # cyl is repeated
+
+  out <- export_as_txt(blmf, cpp = 70) %>% strsplit("\n") %>% unlist()
+  expect_true(grepl(out[51], pattern = "vs")) # vs is repeated
+  expect_true(grepl(out[51], pattern = "gear")) # gear is repeated
+
+  out <- export_as_txt(blmf, rep_cols = 1, cpp = 70) %>% strsplit("\n") %>% unlist()
+  expect_true(grepl(out[51], pattern = "vs")) # vs is repeated
+  expect_false(grepl(out[51], pattern = "gear")) # gear is NOT repeated
 })

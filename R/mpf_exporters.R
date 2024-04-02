@@ -145,53 +145,7 @@ export_as_txt <- function(x,
   is(a_list, "list") && (obj_are_tables_or_listings || all_matrix_forms)
 }
 
-##     ## TODO this needs to be in terms of a MPF, so ncol(tt) needs to change
-
-##     ## if(!is.null(colwidths) && length(colwidths) != ncol(tt) + 1)
-##     ##     stop("non-null colwidths argument must have length ncol(tt) + 1 [",
-##     ##          ncol(tt) + 1, "], got length ", length(colwidths))
-
-##     mpf <- matrix_form(x, indent_rownames = TRUE)
-
-##     ps_spec <- calc_lcpp(page_type = page_type,
-##                          landscape = landscape,
-##                          pg_width = pg_width,
-##                          pg_height = pg_height,
-##                          font_family = font_family,
-##                          cpp = cpp,
-##                          lpp = lpp)
-
-##     ## This needs to return list(x) in cases where no pagination was necessary
-##     idx_lst <- paginate(mpf, .page_size_spec = ps_spec, colwidths = colwidths,
-##                      tf_wrap = tf_wrap, ## XXX I think we don't need this
-##                      ...)
-
-##     tbls <- lapply(idx_lst, function(ii)
-##     ## XXX how do we partition the colwidths ???
-##     ## Also this is gross make it a function!!!
-##     res <- paste(mapply(function(tb, cwidths, ...) {
-##         ## 1 and +1 are because cwidths includes rowlabel 'column'
-##         cinds <- c(1, .figure_out_colinds(tb, tt) + 1L)
-##         toString(tb, widths = cwidths[cinds], ...)
-##     },
-##     MoreArgs = list(hsep = hsep,
-##                     indent_size = indent_size,
-##                     tf_wrap = tf_wrap,
-##                     max_width = max_width,
-##                     cwidths = colwidths),
-##     SIMPLIFY = FALSE,
-##     tb = tbls),
-##     collapse = page_break)
-
-##     if(!is.null(file))
-##         cat(res, file = file)
-##     else
-##         res
-## }
-
-
-
-
+# RTF support ------------------------------------------------------------------
 ## In use, must be tested
 prep_header_line <- function(mf, i) {
   ret <- mf$strings[i, mf$display[i, , drop = TRUE], drop = TRUE]
@@ -508,6 +462,7 @@ export_as_rtf <- function(x,
 }
 
 
+# PDF support ------------------------------------------------------------------
 #' Export as PDF
 #'
 #' The PDF output is based on the ASCII output created with [toString()]
@@ -570,7 +525,7 @@ export_as_pdf <- function(x,
                           cpp = NULL,
                           hsep = "-",
                           indent_size = 2,
-                          rep_cols = num_rep_cols(x),
+                          rep_cols = NULL,
                           tf_wrap = TRUE,
                           max_width = NULL,
                           colwidths = NULL) {

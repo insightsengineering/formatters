@@ -1133,22 +1133,18 @@ paginate_to_mpfs <- function(obj,
     if (!.is_listing_mf(mpf)) {
       cur_ncol <- cur_ncol + as.numeric(mf_has_rlabels(mpf))
     }
-    # This check will be done inside paginate_to_mpfs in case of lists
-    if (!is.null(colwidths) && length(colwidths) != cur_ncol) {
+    if (length(colwidths) != cur_ncol) {
       stop(
         "non-null colwidths argument must have length ncol(x) (+ 1 if row labels are present and if it is a table) [",
         cur_ncol, "], got length ", length(colwidths)
       )
     }
-
     mf_col_widths(mpf) <- colwidths
   }
 
+  # For listings, keycols are mandatory rep_num_cols
   if (is.null(rep_cols)) {
-    rep_cols <- num_rep_cols(obj) # obj and not mpf bc keycols are rep_cols if listings (not in mpf)
-    if (is(obj, "MatrixPrintForm") && .is_listing_mf(obj)) {
-      rep_cols <- length(.keycols_from_listing(obj))
-    }
+    rep_cols <- num_rep_cols(obj)
   }
 
   if (NROW(mf_cinfo(mpf)) == 0) {
