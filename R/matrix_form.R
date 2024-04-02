@@ -1063,12 +1063,12 @@ reconstruct_basic_fnote_list <- function(mf) {
 
   tmp_strmat <- mf_strings(mf)[i_mat, j_mat, drop = FALSE]
 
-  # Only for listings
+  # Only for listings - Fix pagination with empty values in key columns
   if (nrow(tmp_strmat) > 0 && .is_listing_mf(mf)) { # safe check for empty listings
-    ind_keycols <- which(colnames(mf_strings(mf)$strings) %in% keycols)
+    ind_keycols <- which(colnames(tmp_strmat) %in% keycols)
 
     # Fix for missing labels in key columns (only for rlistings)
-    empty_keycols <- !nzchar(tmp_strmat[-seq_len(nlh), keycols, drop = FALSE][1, ])
+    empty_keycols <- !nzchar(tmp_strmat[-seq_len(nlh), ind_keycols, drop = FALSE][1, ])
 
     if (any(empty_keycols)) { # only if there are missing keycol labels
       # find the first non-empty label in the key columns
@@ -1103,7 +1103,7 @@ reconstruct_basic_fnote_list <- function(mf) {
   mf_lgrouping(mf) <- as.integer(as.factor(mf_lgrouping(mf)[i_mat]))
 
   if (!row) {
-    newspans <- truncate_spans(mf_spans(mf), j_mat) # 'i' is the columns here, b/c row is FALSE
+    newspans <- truncate_spans(mf_spans(mf), j_mat) # 'i' is the columns here, bc row is FALSE
   } else {
     newspans <- mf_spans(mf)[i_mat, j_mat, drop = FALSE]
   }

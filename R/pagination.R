@@ -1228,7 +1228,6 @@ paginate_to_mpfs <- function(obj,
   pagmats <- lapply(page_indices$pag_row_indices, function(ii) {
     mpf_subset_rows(mpf, ii, keycols = .get_keycols_from_listing(obj))
   })
-
   ## these chunks now carry around their (correctly subset) col widths...
   res <- lapply(pagmats, function(matii) {
     lapply(page_indices$pag_col_indices, function(jj) {
