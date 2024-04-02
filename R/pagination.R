@@ -995,7 +995,7 @@ paginate_indices <- function(obj,
   #                 in the above call, so we need to keep this information in mf_rinfo
   #                 and use it here.
   mfri <- mf_rinfo(mpf)
-  keycols <- .keycols_from_listing(obj)
+  keycols <- .get_keycols_from_listing(obj)
   if (NROW(mfri) > 1 && .is_listing_mf(mpf) && length(keycols) > 0) {
     # Lets determine the groupings created by keycols
     keycols_grouping_df <- NULL
@@ -1225,20 +1225,14 @@ paginate_to_mpfs <- function(obj,
     verbose = verbose
   )
 
-  ind_keycols <- if (.is_listing_mf(mpf)) {
-    which(colnames(obj) %in% .keycols_from_listing(obj))
-  } else {
-    NULL
-  }
-
   pagmats <- lapply(page_indices$pag_row_indices, function(ii) {
-    mpf_subset_rows(mpf, ii, keycols = ind_keycols)
+    mpf_subset_rows(mpf, ii, keycols = .get_keycols_from_listing(obj))
   })
 
   ## these chunks now carry around their (correctly subset) col widths...
   res <- lapply(pagmats, function(matii) {
     lapply(page_indices$pag_col_indices, function(jj) {
-      mpf_subset_cols(matii, jj, keycols = ind_keycols)
+      mpf_subset_cols(matii, jj, keycols = .get_keycols_from_listing(obj))
     })
   })
 
@@ -1282,15 +1276,16 @@ paginate_to_mpfs <- function(obj,
   all(mf_rinfo(mf)$node_class == "listing_df")
 }
 
-# Shallow copy of get_keycols
-.keycols_from_listing <- function(obj) {
+# Extended copy of get_keycols
+.get_keycols_from_listing <- function(obj) {
   if (is(obj, "listing_df")) {
     names(which(sapply(obj, is, class2 = "listing_keycol")))
-  } else {
+  } else if (is(obj, "MatrixPrintForm") && .is_listing_mf(obj)) {
     obj$listing_keycols
+  } else {
+    NULL # table case
   }
 }
-
 
 #' @importFrom utils capture.output
 #' @details

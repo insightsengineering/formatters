@@ -1065,6 +1065,7 @@ reconstruct_basic_fnote_list <- function(mf) {
 
   # Only for listings
   if (nrow(tmp_strmat) > 0 && .is_listing_mf(mf)) { # safe check for empty listings
+    ind_keycols <- which(colnames(mf_strings(mf)$strings) %in% keycols)
 
     # Fix for missing labels in key columns (only for rlistings)
     empty_keycols <- !nzchar(tmp_strmat[-seq_len(nlh), keycols, drop = FALSE][1, ])

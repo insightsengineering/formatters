@@ -645,7 +645,7 @@ setMethod("num_rep_cols", "ANY", function(obj) 0L)
 #' @rdname num_rep_cols
 setMethod("num_rep_cols", "MatrixPrintForm", function(obj) {
   if (.is_listing_mf(obj)) {
-    return(length(.keycols_from_listing(obj)))
+    return(length(.get_keycols_from_listing(obj)))
   } else {
     return(0L) # same as ANY for non-listing objects
   }
