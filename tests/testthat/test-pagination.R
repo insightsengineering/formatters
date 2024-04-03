@@ -401,7 +401,7 @@ test_that("pag_num works in paginate_to_mpfs and export_as_txt", {
       lpp = 20,
       page_num = "This is too long, it is breaking"
     ),
-    "Page numbering string \\(page_num\\) is too wide to fit the desired page \\(inserted cpp\\)."
+    "Page numbering string \\(page_num\\) is too wide to fit the desired page size width \\(cpp\\)."
   )
 
   # Very stringent test with export_as_txt
@@ -412,4 +412,60 @@ test_that("pag_num works in paginate_to_mpfs and export_as_txt", {
   )
   pages_tst_exp <- lapply(strsplit(pg_tst_exp, "OoOoO")[[1]], function(x) strsplit(x, "\n")[[1]])
   expect_equal(pages_tst_exp, print_pg_tst)
+})
+
+
+test_that("colwidths and num_rep_cols work when using lists of tables and listings", {
+  bmf <- basic_matrix_form(mtcars, ignore_rownames = TRUE)
+  blmf <- basic_listing_mf(mtcars, keycols = c("vs", "gear"))
+  expect_equal(num_rep_cols(bmf), 0L)
+  expect_equal(num_rep_cols(blmf), 2L)
+
+  l_mf <- list(bmf, blmf)
+
+  output <- export_as_txt(l_mf, page_num = "page {i} of {n}", cpp = 90, colwidths = rep(8, 11))
+  nchar_lines <- sapply(strsplit(output, "\n")[[1]], nchar)
+
+  expect_equal(max(nchar_lines), 90)
+  expect_true(grepl(names(nchar_lines)[length(nchar_lines)], pattern = "page 4 of 4"))
+  expect_equal(unname(nchar_lines[length(nchar_lines)]), 90) # last line is full (page number)
+
+  sorted_tnl <- sort(table(nchar_lines), decreasing = TRUE)
+
+  expect_equal(unname(sorted_tnl[names(sorted_tnl) == "90"]), 4) # there are 4 pages (with page number)
+  expect_equal(names(sorted_tnl[c(1, 2)]), c("85", "52"))
+
+  expect_error(
+    export_as_txt(l_mf, colwidths = rep(8, 10)),
+    "non-null colwidths argument must have length ncol"
+  )
+
+  expect_silent(
+    output <- export_as_txt(l_mf, page_num = "page {i} of {n}", cpp = 90, colwidths = rep(8, 11), num_rep_cols = 2)
+  )
+})
+
+test_that("rep_cols works as intended for listings and tables", {
+  bmf <- basic_matrix_form(mtcars, ignore_rownames = FALSE)
+  blmf <- basic_listing_mf(mtcars, keycols = c("vs", "gear"))
+  expect_equal(num_rep_cols(bmf), 0L) # repeated rowlabels are excluded from num_rep_cols
+  expect_equal(num_rep_cols(blmf), 2L)
+
+  out <- export_as_txt(bmf, rep_cols = 2, cpp = 90) %>%
+    strsplit("\n") %>%
+    unlist()
+  expect_true(grepl(out[35], pattern = "mpg")) # mpg is repeated
+  expect_true(grepl(out[35], pattern = "cyl")) # cyl is repeated
+
+  out <- export_as_txt(blmf, cpp = 70) %>%
+    strsplit("\n") %>%
+    unlist()
+  expect_true(grepl(out[51], pattern = "vs")) # vs is repeated
+  expect_true(grepl(out[51], pattern = "gear")) # gear is repeated
+
+  out <- export_as_txt(blmf, rep_cols = 1, cpp = 70) %>%
+    strsplit("\n") %>%
+    unlist()
+  expect_true(grepl(out[51], pattern = "vs")) # vs is repeated
+  expect_false(grepl(out[51], pattern = "gear")) # gear is NOT repeated
 })

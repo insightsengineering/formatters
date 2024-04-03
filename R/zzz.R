@@ -66,7 +66,7 @@ set_default_hsep <- function(hsep_char) {
 #' default_page_number()
 #'
 #' @name default_page_number
-#'@export
+#' @export
 default_page_number <- function() {
   getOption("formatter_default_page_number", default = NULL)
 }
