@@ -37,8 +37,6 @@ Suggests:
     stringi (>= 1.6),
     testthat (>= 3.0.4),
     withr (>= 2.0.0)
-RdMacros:
-    lifecycle
 VignetteBuilder:
     knitr
 Config/Needs/verdepcheck: mllg/checkmate, rstudio/htmltools,
