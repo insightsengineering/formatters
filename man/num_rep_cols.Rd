@@ -31,10 +31,7 @@ This number \emph{does not} include row labels, the repetition of which is handl
 \examples{
 mpf <- basic_matrix_form(mtcars)
 num_rep_cols(mpf)
-<<<<<<< HEAD
-
-=======
 lmpf <- basic_listing_mf(mtcars)
 num_rep_cols(lmpf)
->>>>>>> main
+
 }

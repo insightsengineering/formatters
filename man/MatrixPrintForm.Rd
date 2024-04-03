@@ -78,14 +78,10 @@ ASCII). Defaults to \code{TRUE}.}
 
 \item{page_titles}{(\code{character})\cr page-specific titles, as a character vector.}
 
-<<<<<<< HEAD
-\item{main_footer}{(\code{character})\cr main footer, as a character vector.}
-=======
-\item{listing_keycols}{character. If matrix form of a listing, this contains
+\item{listing_keycols}{(\code{character})\cr. if matrix form of a listing, this contains
 the key columns as a character vector.}
 
-\item{main_footer}{character(1). Main footer as a string.}
->>>>>>> main
+\item{main_footer}{(\code{character})\cr main footer, as a character vector.}
 
 \item{prov_footer}{(\code{character})\cr provenance footer information, as a character vector.}
 
