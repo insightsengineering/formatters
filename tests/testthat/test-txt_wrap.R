@@ -51,7 +51,10 @@ test_that("tf_wordwrap and table inset work (including together)", {
   )
 })
 
-test_that("toString() is silent when newline is in decorations (footnotes, titles) as matrix_form constructor expands all newlines", {
+test_that(paste(
+  "toString() is silent when newline is in decorations (footnotes, titles)",
+  "as matrix_form constructor expands all newlines"
+), {
   bmf <- basic_matrix_form(iris)
   main_title(bmf) <- "some\nvery\nspacious\ntitle"
   prov_footer(bmf) <- "some\nvery\nspacious\nfooter"

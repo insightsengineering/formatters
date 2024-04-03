@@ -201,6 +201,8 @@ disp_from_spans <- function(spans) {
 #' @param page_titles (`character`)\cr page-specific titles, as a character vector.
 #' @param main_footer (`character`)\cr main footer, as a character vector.
 #' @param prov_footer (`character`)\cr provenance footer information, as a character vector.
+#' @param listing_keycols (`character`)\cr. if matrix form of a listing, this contains
+#'   the key columns as a character vector.
 #' @param header_section_div (`string`)\cr divider to be used between header and body sections.
 #' @param horizontal_sep (`string`)\cr horizontal separator to be used for printing divisors
 #'   between header and table body and between different footers.
@@ -267,6 +269,7 @@ MatrixPrintForm <- function(strings = NULL,
                             main_title = "",
                             subtitles = character(),
                             page_titles = character(),
+                            listing_keycols = NULL,
                             main_footer = "",
                             prov_footer = character(),
                             header_section_div = NA_character_,
@@ -296,6 +299,7 @@ MatrixPrintForm <- function(strings = NULL,
       header_section_div = header_section_div,
       horizontal_sep = horizontal_sep,
       col_gap = col_gap,
+      listing_keycols = listing_keycols,
       table_inset = as.integer(table_inset),
       has_topleft = has_topleft,
       indent_size = indent_size,
@@ -863,8 +867,12 @@ basic_matrix_form <- function(df,
     has_topleft = FALSE,
     nlines_header = 1,
     nrow_header = 1,
-    has_rowlabs = TRUE
+    has_rowlabs = isFALSE(ignore_rownames)
   )
+
+  # Check for ncols
+  stopifnot(mf_has_rlabels(ret) == isFALSE(ignore_rownames))
+
   ret <- mform_build_refdf(ret)
 
   if (add_decoration) {
@@ -882,7 +890,6 @@ basic_matrix_form <- function(df,
 #'
 #' @param keycols (`character`)\cr a vector of `df` column names that are printed first and for which
 #'   repeated values are assigned `""`. This format is characteristic of a listing matrix form.
-#'   If `NULL`, no key columns are used. Defaults to `c("vs", "gear")` (used for `mtcars` dataset).
 #'
 #' @return A valid `MatrixPrintForm` object representing `df` as a listing that is ready for ASCII
 #'   rendering.
@@ -893,17 +900,19 @@ basic_matrix_form <- function(df,
 #'
 #' @export
 basic_listing_mf <- function(df,
-                             keycols = c("vs", "gear"),
-                             ignore_rownames = FALSE,
+                             keycols = names(df)[1],
                              add_decoration = TRUE) {
   checkmate::assert_data_frame(df)
   checkmate::assert_subset(keycols, colnames(df))
 
   dfmf <- basic_matrix_form(
     df = df,
-    ignore_rownames = ignore_rownames,
+    ignore_rownames = TRUE,
     add_decoration = add_decoration
   )
+
+  # keycols addition to MatrixPrintForm (should happen in the constructor)
+  dfmf$listing_keycols <- keycols
 
   # Modifications needed for making it a listings
   mf_strings(dfmf)[1, ] <- colnames(mf_strings(dfmf)) # set colnames
@@ -941,7 +950,8 @@ basic_listing_mf <- function(df,
 
   dfmf$aligns[seq(2, nrow(dfmf$aligns)), ] <- "center" # the default for listings
 
-  dfmf$formats[] <- 1 # the default for listings is numeric??
+  # the default for listings is a 1 double??
+  dfmf$formats <- matrix(1, nrow = nrow(dfmf$formats), ncol = ncol(dfmf$formats))
 
   # row info
   ri <- dfmf$row_info
@@ -950,10 +960,17 @@ basic_listing_mf <- function(df,
   ri$path <- as.list(NA_character_) # same format of listings
   ri$node_class <- "listing_df"
   # l_ri$pos_in_siblings # why is it like this in rlistings?? also n_siblings
+  class(ri$path) <- "AsIs" # Artifact from I()
   dfmf$row_info <- ri
 
   # colwidths need to be sorted too!!
   dfmf$col_widths <- dfmf$col_widths[colnames(mf_strings(dfmf))]
+
+  if (!add_decoration) {
+    # This is probably a forced behavior in the original matrix_form in rlistings
+    main_title(dfmf) <- character()
+    main_footer(dfmf) <- character()
+  }
 
   dfmf
 }
@@ -991,11 +1008,12 @@ reconstruct_basic_fnote_list <- function(mf) {
 
   tmp_strmat <- mf_strings(mf)[i_mat, j_mat, drop = FALSE]
 
-  # Only for listings
-  if (nrow(tmp_strmat) > 0 && .is_listing(mf)) { # safe check for empty listings
+  # Only for listings - Fix pagination with empty values in key columns
+  if (nrow(tmp_strmat) > 0 && .is_listing_mf(mf)) { # safe check for empty listings
+    ind_keycols <- which(colnames(tmp_strmat) %in% keycols)
 
     # Fix for missing labels in key columns (only for rlistings)
-    empty_keycols <- !nzchar(tmp_strmat[-seq_len(nlh), keycols, drop = FALSE][1, ])
+    empty_keycols <- !nzchar(tmp_strmat[-seq_len(nlh), ind_keycols, drop = FALSE][1, ])
 
     if (any(empty_keycols)) { # only if there are missing keycol labels
       # find the first non-empty label in the key columns
@@ -1030,10 +1048,11 @@ reconstruct_basic_fnote_list <- function(mf) {
   mf_lgrouping(mf) <- as.integer(as.factor(mf_lgrouping(mf)[i_mat]))
 
   if (!row) {
-    newspans <- truncate_spans(mf_spans(mf), j_mat) # 'i' is the columns here, b/c row is FALSE
+    newspans <- truncate_spans(mf_spans(mf), j_mat) # 'i' is the columns here, bc row is FALSE
   } else {
     newspans <- mf_spans(mf)[i_mat, j_mat, drop = FALSE]
   }
+
   mf_spans(mf) <- newspans
   mf_formats(mf) <- mf_formats(mf)[i_mat, j_mat, drop = FALSE]
 

@@ -13,12 +13,7 @@ basic_matrix_form(
   add_decoration = FALSE
 )
 
-basic_listing_mf(
-  df,
-  keycols = c("vs", "gear"),
-  ignore_rownames = FALSE,
-  add_decoration = TRUE
-)
+basic_listing_mf(df, keycols = names(df)[1], add_decoration = TRUE)
 }
 \arguments{
 \item{df}{(\code{data.frame})\cr a data frame.}
@@ -31,9 +26,14 @@ Defaults to \code{"root"}, and generally should not matter to end users.}
 \item{add_decoration}{(\code{flag})\cr whether adds title and footer decorations should
 be added to the matrix form.}
 
+<<<<<<< HEAD
 \item{keycols}{(\code{character})\cr a vector of \code{df} column names that are printed first and for which
 repeated values are assigned \code{""}. This format is characteristic of a listing matrix form.
 If \code{NULL}, no key columns are used. Defaults to \code{c("vs", "gear")} (used for \code{mtcars} dataset).}
+=======
+\item{keycols}{character. Vector of \code{df} column names that are printed first and
+repeated values are assigned to \code{""}. This format is characteristic of a listing matrix form.}
+>>>>>>> main
 }
 \value{
 A valid \code{MatrixPrintForm} object representing \code{df} that is ready for ASCII rendering.

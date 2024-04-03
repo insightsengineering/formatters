@@ -24,9 +24,10 @@ export_as_pdf(
   cpp = NULL,
   hsep = "-",
   indent_size = 2,
+  rep_cols = NULL,
   tf_wrap = TRUE,
   max_width = NULL,
-  colwidths = propose_column_widths(x)
+  colwidths = NULL
 )
 }
 \arguments{
@@ -83,7 +84,15 @@ automatically based on the specified page size). \code{NULL} indicates no horizo
 \item{indent_size}{(\code{numeric(1)})\cr indent size, in characters. Ignored when \code{x} is already
 a \code{MatrixPrintForm} object in favor of information there.}
 
+<<<<<<< HEAD
 \item{tf_wrap}{(\code{flag})\cr whether the text for title, subtitles, and footnotes should be wrapped.}
+=======
+\item{rep_cols}{numeric(1). Number of \emph{columns} (not including
+row labels) to be repeated on every page. Defaults to 0}
+
+\item{tf_wrap}{logical(1). Should  the texts for  title, subtitle,
+and footnotes be wrapped?}
+>>>>>>> main
 
 \item{max_width}{(\code{integer(1)}, \code{string} or \code{NULL})\cr width that title and footer (including
 footnotes) materials should be word-wrapped to. If \code{NULL}, it is set to the current print width of the
