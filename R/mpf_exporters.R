@@ -131,20 +131,25 @@ export_as_txt <- function(x,
 }
 
 .is_list_of_tables_or_listings <- function(a_list) {
-  all_matrix_forms <- FALSE
-  obj_are_tables_or_listings <- FALSE
+  if (is(a_list, "list")) {
+    all_matrix_forms <- FALSE
+    obj_are_tables_or_listings <- FALSE
 
-  if (is(a_list[[1]], "MatrixPrintForm")) {
-    all_matrix_forms <- all(sapply(a_list, is, class2 = "MatrixPrintForm"))
+    if (is(a_list[[1]], "MatrixPrintForm")) {
+      all_matrix_forms <- all(sapply(a_list, is, class2 = "MatrixPrintForm"))
+    } else {
+      obj_are_tables_or_listings <- all(
+        sapply(a_list, function(list_i) {
+          is(list_i, "listing_df") || is(list_i, "VTableTree")
+        })
+      )
+    }
+    out <- obj_are_tables_or_listings || all_matrix_forms
   } else {
-    obj_are_tables_or_listings <- all(
-      sapply(a_list, function(list_i) {
-        is(list_i, "listing_df") || is(list_i, "VTableTree")
-      })
-    )
+    out <- FALSE
   }
 
-  is(a_list, "list") && (obj_are_tables_or_listings || all_matrix_forms)
+  out
 }
 
 # RTF support ------------------------------------------------------------------
