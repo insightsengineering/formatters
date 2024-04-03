@@ -1555,8 +1555,8 @@ nchar_ttype <- function(x, fontspec = font_spec(), tol = sqrt(.Machine$double.ep
 #' padstr("abc", 5, "right")
 #'
 #' \dontrun{
-#'   # Expect error: "abc" has more than 1 characters
-#'   padstr("abc", 1)
+#' # Expect error: "abc" has more than 1 characters
+#' padstr("abc", 1)
 #' }
 #' @return `x`, padded to be a string of `n` characters
 #'

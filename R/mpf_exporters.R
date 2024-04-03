@@ -58,12 +58,22 @@ export_as_txt <- function(x,
                           colwidths = NULL,
                           min_siblings = 2,
                           nosplitin = character(),
-                          rep_cols = num_rep_cols(x),
+                          rep_cols = NULL,
                           verbose = FALSE,
                           page_break = "\\s\\n",
                           page_num = default_page_number(), 
-
                           fontspec = font_spec(font_family, font_size, lineheight)) {
+  # Processing lists of tables or listings
+  if (.is_list_of_tables_or_listings(x)) {
+    if (isFALSE(paginate)) {
+      warning(
+        "paginate is FALSE, but x is a list of tables or listings, ",
+        "so paginate will automatically be updated to TRUE"
+      )
+    }
+    paginate <- TRUE
+  }
+                         
   if (paginate) {
     pages <- paginate_to_mpfs(
       x,
@@ -103,7 +113,7 @@ export_as_txt <- function(x,
     )
   }
 
-  ## we dont' set widths here because we already but that info on mpf
+  ## we don't set widths here because we already put that info in mpf
   ## so its on each of the pages.
   strings <- vapply(
     pages, toString, "",
@@ -120,55 +130,24 @@ export_as_txt <- function(x,
   }
 }
 
+.is_list_of_tables_or_listings <- function(a_list) {
+  all_matrix_forms <- FALSE
+  obj_are_tables_or_listings <- FALSE
 
+  if (is(a_list[[1]], "MatrixPrintForm")) {
+    all_matrix_forms <- all(sapply(a_list, is, class2 = "MatrixPrintForm"))
+  } else {
+    obj_are_tables_or_listings <- all(
+      sapply(a_list, function(list_i) {
+        is(list_i, "listing_df") || is(list_i, "VTableTree")
+      })
+    )
+  }
 
-##     ## TODO this needs to be in terms of a MPF, so ncol(tt) needs to change
+  is(a_list, "list") && (obj_are_tables_or_listings || all_matrix_forms)
+}
 
-##     ## if(!is.null(colwidths) && length(colwidths) != ncol(tt) + 1)
-##     ##     stop("non-null colwidths argument must have length ncol(tt) + 1 [",
-##     ##          ncol(tt) + 1, "], got length ", length(colwidths))
-
-##     mpf <- matrix_form(x, indent_rownames = TRUE)
-
-##     ps_spec <- calc_lcpp(page_type = page_type,
-##                          landscape = landscape,
-##                          pg_width = pg_width,
-##                          pg_height = pg_height,
-##                          font_family = font_family,
-##                          cpp = cpp,
-##                          lpp = lpp)
-
-##     ## This needs to return list(x) in cases where no pagination was necessary
-##     idx_lst <- paginate(mpf, .page_size_spec = ps_spec, colwidths = colwidths,
-##                      tf_wrap = tf_wrap, ## XXX I think we don't need this
-##                      ...)
-
-##     tbls <- lapply(idx_lst, function(ii)
-##     ## XXX how do we partition the colwidths ???
-##     ## Also this is gross make it a function!!!
-##     res <- paste(mapply(function(tb, cwidths, ...) {
-##         ## 1 and +1 are because cwidths includes rowlabel 'column'
-##         cinds <- c(1, .figure_out_colinds(tb, tt) + 1L)
-##         toString(tb, widths = cwidths[cinds], ...)
-##     },
-##     MoreArgs = list(hsep = hsep,
-##                     indent_size = indent_size,
-##                     tf_wrap = tf_wrap,
-##                     max_width = max_width,
-##                     cwidths = colwidths),
-##     SIMPLIFY = FALSE,
-##     tb = tbls),
-##     collapse = page_break)
-
-##     if(!is.null(file))
-##         cat(res, file = file)
-##     else
-##         res
-## }
-
-
-
-
+# RTF support ------------------------------------------------------------------
 ## In use, must be tested
 prep_header_line <- function(mf, i) {
   ret <- mf$strings[i, mf$display[i, , drop = TRUE], drop = TRUE]
@@ -424,7 +403,8 @@ mpf_to_rtf <- function(mpf,
 
 export_as_rtf <- function(x,
                           file = NULL,
-                          colwidths = propose_column_widths(matrix_form(x, TRUE, fontspec = fontspec), fontspec = fontspec),
+                          # colwidths = propose_column_widths(matrix_form(x, TRUE, fontspec = fontspec), fontspec = fontspec),
+                          colwidths = NULL,
                           page_type = "letter",
                           pg_width = page_dim(page_type)[if (landscape) 2 else 1],
                           pg_height = page_dim(page_type)[if (landscape) 1 else 2],
@@ -435,6 +415,17 @@ export_as_rtf <- function(x,
                           lineheight = 1,
                           fontspec = font_spec(font_family, font_size, lineheight),
                           ...) {
+  # Processing lists of tables or listings
+  if (.is_list_of_tables_or_listings(x)) {
+    if (isFALSE(paginate)) {
+      warning(
+        "paginate is FALSE, but x is a list of tables or listings, ",
+        "so paginate will automatically be updated to TRUE"
+      )
+    }
+    paginate <- TRUE
+  }
+
   if (!requireNamespace("r2rtf")) {
     stop("RTF export requires the r2rtf package, please install it.")
   }
@@ -446,20 +437,21 @@ export_as_rtf <- function(x,
     names(margins) <- marg_order
   }
 
-  fullmf <- matrix_form(x, indent_rownames = TRUE, fontspec = fontspec)
-  req_ncols <- ncol(fullmf) + as.numeric(mf_has_rlabels(fullmf))
-  if (!is.null(colwidths) && length(colwidths) != req_ncols) {
-    stop(
-      "non-null colwidths argument must have length ncol(x) (+ 1 if row labels are present) [",
-      req_ncols, "], got length ", length(colwidths)
-    )
-  }
+  # NEEDS TO BE INTO paginate_to_mpfs so to have this check once for all paginations
+  # fullmf <- matrix_form(x, indent_rownames = TRUE, fontspec = fontspec)
+  # req_ncols <- ncol(fullmf) + as.numeric(mf_has_rlabels(fullmf))
+  # if (!is.null(colwidths) && length(colwidths) != req_ncols) {
+  #   stop(
+  #     "non-null colwidths argument must have length ncol(x) (+ 1 if row labels are present) [",
+  #     req_ncols, "], got length ", length(colwidths)
+  #   )
+  # }
 
   true_width <- pg_width - sum(margins[c("left", "right")])
   true_height <- pg_height - sum(margins[c("top", "bottom")])
 
   mpfs <- paginate_to_mpfs(
-    fullmf,
+    x,
     fontspec = fontspec,
     pg_width = true_width,
     pg_height = true_height,
@@ -495,6 +487,7 @@ export_as_rtf <- function(x,
 }
 
 
+# PDF support ------------------------------------------------------------------
 #' Export as PDF
 #'
 #' The PDF output is based on the ASCII output created with [toString()]
@@ -559,10 +552,12 @@ export_as_pdf <- function(x,
                           cpp = NULL,
                           hsep = "-",
                           indent_size = 2,
+                          rep_cols = NULL,
                           tf_wrap = TRUE,
                           max_width = NULL,
+                          colwidths = NULL,
                           fontspec = font_spec(font_family, font_size, lineheight),
-                          colwidths = propose_column_widths(x, indent_size = indent_size, fontspec = fontspec),
+                          #colwidths = propose_column_widths(x, indent_size = indent_size, fontspec = fontspec),
                           ttype_ok = FALSE) {
   ## this has to happen at the very beginning before the first use of fontspec
   ## which happens in the default value of colwidths. yay lazy evaluation...
@@ -571,11 +566,16 @@ export_as_pdf <- function(x,
   }
 
   stopifnot(tools::file_ext(file) != ".pdf")
-  if (!is.null(colwidths) && length(colwidths) != ncol(x) + 1) {
-    stop(
-      "non-null colwidths argument must have length ncol(x) + 1 [",
-      ncol(x) + 1, "], got length ", length(colwidths)
-    )
+
+  # Processing lists of tables or listings
+  if (.is_list_of_tables_or_listings(x)) {
+    if (isFALSE(paginate)) {
+      warning(
+        "paginate is FALSE, but x is a list of tables or listings, ",
+        "so paginate will automatically be updated to TRUE"
+      )
+    }
+    paginate <- TRUE
   }
 
   gp_plot <- gpar_from_fspec(fontspec)
@@ -623,7 +623,7 @@ export_as_pdf <- function(x,
       max_width = max_width,
       indent_size = indent_size,
       verbose = FALSE,
-      rep_cols = num_rep_cols(x),
+      rep_cols = rep_cols,
       page_num = page_num
     )
   } else {

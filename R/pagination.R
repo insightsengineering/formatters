@@ -250,7 +250,7 @@ valid_pag <- function(pagdf,
   }
 
   # Fix for counting the right number of lines when there is wrapping on a keycols
-  if (.is_listing(pagdf) && !is.null(pagdf$self_extent_page_break)) {
+  if (.is_listing_mf(pagdf) && !is.null(pagdf$self_extent_page_break)) {
     pagdf$self_extent[start] <- pagdf$self_extent_page_break[start]
   }
 
@@ -1057,14 +1057,22 @@ paginate_indices <- function(obj,
   #                 in the above call, so we need to keep this information in mf_rinfo
   #                 and use it here.
   mfri <- mf_rinfo(mpf)
-  if (NROW(mfri) > 1 && .is_listing(mpf) && length(.keycols_from_listing(obj)) > 0) {
+  keycols <- .get_keycols_from_listing(obj)
+  if (NROW(mfri) > 1 && .is_listing_mf(mpf) && length(keycols) > 0) {
     # Lets determine the groupings created by keycols
     keycols_grouping_df <- NULL
-    keycols <- .keycols_from_listing(obj)
     for (i in seq_along(keycols)) {
       kcol <- keycols[i]
-      kcolvec <- obj[[kcol]]
-      kcolvec <- vapply(kcolvec, format_value, "", format = obj_format(kcolvec), na_str = obj_na_str(kcolvec))
+      if (is(obj, "MatrixPrintForm")) {
+        # This makes the function work also in the case we have only matrix form (mainly for testing purposes)
+        kcolvec <- mf_strings(obj)[, mf_strings(obj)[1, , drop = TRUE] == kcol][-1]
+        while (any(kcolvec == "")) {
+          kcolvec[which(kcolvec == "")] <- kcolvec[which(kcolvec == "") - 1]
+        }
+      } else {
+        kcolvec <- obj[[kcol]]
+        kcolvec <- vapply(kcolvec, format_value, "", format = obj_format(kcolvec), na_str = obj_na_str(kcolvec))
+      }
       groupings <- as.numeric(factor(kcolvec, levels = unique(kcolvec)))
       where_they_start <- which(c(1, diff(groupings)) > 0)
       keycols_grouping_df <- cbind(
@@ -1139,40 +1147,82 @@ paginate_to_mpfs <- function(obj,
                              indent_size = 2,
                              pg_size_spec = NULL,
                              page_num = default_page_number(),
-                             rep_cols = num_rep_cols(obj),
-                             col_gap = 3,
+                             rep_cols = NULL,
+                             # rep_cols = num_rep_cols(obj),
+                             # col_gap = 3, # this could be change in default - breaking change
+                             col_gap = 2,
                              fontspec = font_spec(font_family, font_size, lineheight),
                              verbose = FALSE) {
   newdev <- open_font_dev(fontspec)
-  if(newdev)
+  if(newdev) {
     on.exit(close_font_dev())
-  
-  mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec)
-
-  # Turning off min_siblings for listings
-  if (.is_listing(mpf)) {
-    min_siblings <- 0
   }
 
-  if (is.null(colwidths)) {
-    colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf, fontspec = fontspec)
-  } else {
-    mf_col_widths(mpf) <- colwidths
-  }
-  if (NROW(mf_cinfo(mpf)) == 0) {
-    mpf <- mpf_infer_cinfo(mpf, colwidths, rep_cols, fontspec = fontspec)
-  }
-
-  # Page numbers
   if (isTRUE(page_num)) {
     page_num <- "page {i}/{n}"
   }
-  checkmate::assert_string(page_num, null.ok = TRUE)
+  checkmate::assert_string(page_num, null.ok = TRUE, min.chars = 1)
+
+  # We can return a list of paginated tables and listings
+  if (.is_list_of_tables_or_listings(obj)) {
+    cur_call <- match.call(expand.dots = FALSE)
+    mpfs <- unlist(
+      lapply(obj, function(obj_i) {
+        cur_call[["obj"]] <- obj_i
+        eval(cur_call, envir = parent.frame(3L))
+      }),
+      recursive = FALSE
+    )
+
+    if (!is.null(page_num)) {
+      extracted_cpp <- max(
+        sapply(mpfs, function(mpf) {
+          pf <- prov_footer(mpf)
+          nchar(pf[length(pf)])
+        })
+      )
+      mpfs <- .modify_footer_for_page_nums(mpfs, page_num, extracted_cpp)
+    }
+
+    return(mpfs)
+  }
 
   if (!is.null(page_num)) {
     # Only adding a line for pagination -> lpp - 1 would have worked too
     prov_footer(obj) <- c(prov_footer(obj), page_num)
-    prov_footer(mpf) <- c(prov_footer(mpf), page_num)
+  }
+
+  mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec)
+
+  # Turning off min_siblings for listings
+  if (.is_listing_mf(mpf)) {
+    min_siblings <- 0
+  }
+
+  # Checking colwidths
+  if (is.null(colwidths)) {
+    colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf, fontspec = fontspec)
+  } else {
+    cur_ncol <- ncol(mpf)
+    if (!.is_listing_mf(mpf)) {
+      cur_ncol <- cur_ncol + as.numeric(mf_has_rlabels(mpf))
+    }
+    if (length(colwidths) != cur_ncol) {
+      stop(
+        "non-null colwidths argument must have length ncol(x) (+ 1 if row labels are present and if it is a table) [",
+        cur_ncol, "], got length ", length(colwidths)
+      )
+    }
+    mf_col_widths(mpf) <- colwidths
+  }
+
+  # For listings, keycols are mandatory rep_num_cols
+  if (is.null(rep_cols)) {
+    rep_cols <- num_rep_cols(obj)
+  }
+
+  if (NROW(mf_cinfo(mpf)) == 0) {
+    mpf <- mpf_infer_cinfo(mpf, colwidths, rep_cols, fontspec = fontspec)
   }
 
   if (is.null(pg_size_spec)) {
@@ -1254,20 +1304,13 @@ paginate_to_mpfs <- function(obj,
     fontspec = fontspec
   )
 
-  ind_keycols <- if (.is_listing(mpf)) {
-    which(colnames(obj) %in% .keycols_from_listing(obj))
-  } else {
-    NULL
-  }
-
   pagmats <- lapply(page_indices$pag_row_indices, function(ii) {
-    mpf_subset_rows(mpf, ii, keycols = ind_keycols)
+    mpf_subset_rows(mpf, ii, keycols = .get_keycols_from_listing(obj))
   })
-
   ## these chunks now carry around their (correctly subset) col widths...
   res <- lapply(pagmats, function(matii) {
     lapply(page_indices$pag_col_indices, function(jj) {
-      mpf_subset_cols(matii, jj, keycols = ind_keycols)
+      mpf_subset_cols(matii, jj, keycols = .get_keycols_from_listing(obj))
     })
   })
 
@@ -1275,38 +1318,52 @@ paginate_to_mpfs <- function(obj,
 
   # Adding page numbers if needed
   if (!is.null(page_num)) {
-    total_pages <- length(res)
-    page_str <- gsub("\\{n\\}", total_pages, page_num)
-    page_nums <- vapply(
-      seq_len(total_pages),
-      function(x) {
-        gsub("\\{i\\}", x, page_str)
-      },
-      FUN.VALUE = character(1)
+    res <- .modify_footer_for_page_nums(
+      mf_list = res,
+      page_num_format = page_num,
+      current_cpp = pg_size_spec$cpp
     )
-    page_footer <- sprintf(paste0("%", pg_size_spec$cpp, "s"), page_nums)
-    if (any(nchar(page_footer) > pg_size_spec$cpp)) {
-      stop("Page numbering string (page_num) is too wide to fit the desired page (inserted cpp).")
-    }
-
-    res <- lapply(seq_along(res), function(pg_i) {
-      prov_footer(res[[pg_i]]) <- c(head(prov_footer(res[[pg_i]]), -1), page_footer[pg_i])
-      res[[pg_i]]
-    })
   }
 
   res
 }
 
-.is_listing <- function(mpf) {
-  all(mf_rinfo(mpf)$node_class == "listing_df")
+.modify_footer_for_page_nums <- function(mf_list, page_num_format, current_cpp) {
+  total_pages <- length(mf_list)
+  page_str <- gsub("\\{n\\}", total_pages, page_num_format)
+  page_nums <- vapply(
+    seq_len(total_pages),
+    function(x) {
+      gsub("\\{i\\}", x, page_str)
+    },
+    FUN.VALUE = character(1)
+  )
+  page_footer <- sprintf(paste0("%", current_cpp, "s"), page_nums)
+  if (any(nchar(page_footer) > current_cpp)) {
+    stop("Page numbering string (page_num) is too wide to fit the desired page size width (cpp).")
+  }
+
+  lapply(seq_along(mf_list), function(pg_i) {
+    prov_footer(mf_list[[pg_i]]) <- c(head(prov_footer(mf_list[[pg_i]]), -1), page_footer[pg_i])
+    mf_list[[pg_i]]
+  })
 }
 
-# Shallow copy of get_keycols
-.keycols_from_listing <- function(obj) {
-  names(which(sapply(obj, inherits, what = "listing_keycol")))
+# This works only with matrix_form objects
+.is_listing_mf <- function(mf) {
+  all(mf_rinfo(mf)$node_class == "listing_df")
 }
 
+# Extended copy of get_keycols
+.get_keycols_from_listing <- function(obj) {
+  if (is(obj, "listing_df")) {
+    names(which(sapply(obj, is, class2 = "listing_keycol")))
+  } else if (is(obj, "MatrixPrintForm") && .is_listing_mf(obj)) {
+    obj$listing_keycols
+  } else {
+    NULL # table case
+  }
+}
 
 #' @importFrom utils capture.output
 #' @details

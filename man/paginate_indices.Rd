@@ -53,9 +53,10 @@ paginate_to_mpfs(
   indent_size = 2,
   pg_size_spec = NULL,
   page_num = default_page_number(),
-  rep_cols = num_rep_cols(obj),
-  col_gap = 3,
+
   fontspec = font_spec(font_family, font_size, lineheight),
+  rep_cols = NULL,
+  col_gap = 2,
   verbose = FALSE
 )
 

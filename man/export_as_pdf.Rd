@@ -25,11 +25,12 @@ export_as_pdf(
   cpp = NULL,
   hsep = "-",
   indent_size = 2,
+  rep_cols = NULL,
   tf_wrap = TRUE,
   max_width = NULL,
   fontspec = font_spec(font_family, font_size, lineheight),
-  colwidths = propose_column_widths(x, indent_size = indent_size, fontspec = fontspec),
   ttype_ok = FALSE
+  colwidths = NULL
 )
 }
 \arguments{
@@ -97,6 +98,9 @@ for more information.}
 \item{indent_size}{numeric(1). Indent size in characters. Ignored
 when \code{x} is already a \code{MatrixPrintForm} object in favor of information
 there.}
+
+\item{rep_cols}{numeric(1). Number of \emph{columns} (not including
+row labels) to be repeated on every page. Defaults to 0}
 
 \item{tf_wrap}{logical(1). Should  the texts for  title, subtitle,
 and footnotes be wrapped?}

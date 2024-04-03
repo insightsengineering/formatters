@@ -659,10 +659,21 @@ setMethod("do_forced_paginate", "ANY", function(obj) list(obj))
 #' @examples
 #' mpf <- basic_matrix_form(mtcars)
 #' num_rep_cols(mpf)
+#' lmpf <- basic_listing_mf(mtcars)
+#' num_rep_cols(lmpf)
 setGeneric("num_rep_cols", function(obj) standardGeneric("num_rep_cols"))
 #' @export
 #' @rdname num_rep_cols
 setMethod("num_rep_cols", "ANY", function(obj) 0L)
+#' @export
+#' @rdname num_rep_cols
+setMethod("num_rep_cols", "MatrixPrintForm", function(obj) {
+  if (.is_listing_mf(obj)) {
+    return(length(.get_keycols_from_listing(obj)))
+  } else {
+    return(0L) # same as ANY for non-listing objects
+  }
+})
 
 #' @export
 #' @rdname num_rep_cols

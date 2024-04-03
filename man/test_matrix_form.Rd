@@ -14,12 +14,7 @@ basic_matrix_form(
   fontspec = font_spec()
 )
 
-basic_listing_mf(
-  df,
-  keycols = c("vs", "gear"),
-  ignore_rownames = FALSE,
-  add_decoration = TRUE
-)
+basic_listing_mf(df, keycols = names(df)[1], add_decoration = TRUE)
 }
 \arguments{
 \item{df}{data.frame}
@@ -38,8 +33,7 @@ calculating string widths and heights, as
 returned by \code{\link[=font_spec]{font_spec()}}}
 
 \item{keycols}{character. Vector of \code{df} column names that are printed first and
-repeated values are assigned to \code{""}. This format is characteristic of a listing matrix form.
-When \code{NULL}, no key columns are used. Defaults to \code{c("vs", "gear")} for \code{mtcars} default dataset.}
+repeated values are assigned to \code{""}. This format is characteristic of a listing matrix form.}
 }
 \value{
 A valid \code{MatrixPrintForm} object representing \code{df},

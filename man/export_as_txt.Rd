@@ -26,7 +26,7 @@ export_as_txt(
   colwidths = NULL,
   min_siblings = 2,
   nosplitin = character(),
-  rep_cols = num_rep_cols(x),
+  rep_cols = NULL,
   verbose = FALSE,
   page_break = "\\\\s\\\\n",
   page_num = default_page_number(),
