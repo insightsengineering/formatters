@@ -12,7 +12,7 @@ starting point for more sophisticated custom matrix_form methods."><meta propert
     
     <a class="navbar-brand me-2" href="../index.html">formatters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5.9015</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5.9016</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,28 +29,6 @@ starting point for more sophisticated custom matrix_form methods."><meta propert
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.4-rc1">v0.5.4-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3-rc2">v0.5.3-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3-rc1">v0.5.3-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.2-rc1">v0.5.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1-rc1">v0.5.1-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0-rc1">v0.5.0-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.5">v0.5.5</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3">v0.5.3</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.2">v0.5.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1">v0.5.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0">v0.5.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.1">v0.4.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.0">v0.4.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.3.3">v0.3.3</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -93,12 +71,7 @@ starting point for more sophisticated custom <code>matrix_form</code> methods.</
 <span>  add_decoration <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">basic_listing_mf</span><span class="op">(</span></span>
-<span>  <span class="va">df</span>,</span>
-<span>  keycols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"vs"</span>, <span class="st">"gear"</span><span class="op">)</span>,</span>
-<span>  ignore_rownames <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  add_decoration <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">basic_listing_mf</span><span class="op">(</span><span class="va">df</span>, keycols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, add_decoration <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -123,8 +96,7 @@ matrix form.</p></dd>
 
 <dt>keycols</dt>
 <dd><p>character. Vector of <code>df</code> column names that are printed first and
-repeated values are assigned to <code>""</code>. This format is characteristic of a listing matrix form.
-When <code>NULL</code>, no key columns are used. Defaults to <code>c("vs", "gear")</code> for <code>mtcars</code> default dataset.</p></dd>
+repeated values are assigned to <code>""</code>. This format is characteristic of a listing matrix form.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -190,42 +162,42 @@ respects the default formats for a listing object.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sub</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> titles</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> vs   gear          rnms           mpg    cyl   disp    hp    drat    wt     qsec    am   carb</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0     3      Hornet Sportabout    18.7    8     360    175   3.15   3.44    17.02   0     2  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 Duster 360        14.3    8     360    245   3.21   3.57    15.84   0     4  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 Merc 450SE        16.4    8    275.8   180   3.07   4.07    17.4    0     3  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 Merc 450SL        17.3    8    275.8   180   3.07   3.73    17.6    0     3  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 Merc 450SLC       15.2    8    275.8   180   3.07   3.78     18     0     3  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             Cadillac Fleetwood    10.4    8     472    205   2.93   5.25    17.98   0     4  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             Lincoln Continental   10.4    8     460    215    3     5.424   17.82   0     4  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              Chrysler Imperial    14.7    8     440    230   3.23   5.345   17.42   0     4  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              Dodge Challenger     15.5    8     318    150   2.76   3.52    16.87   0     2  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 AMC Javelin       15.2    8     304    150   3.15   3.435   17.3    0     2  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 Camaro Z28        13.3    8     350    245   3.73   3.84    15.41   0     4  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              Pontiac Firebird     19.2    8     400    175   3.08   3.845   17.05   0     2  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       4          Mazda RX4         21     6     160    110   3.9    2.62    16.46   1     4  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                Mazda RX4 Wag       21     6     160    110   3.9    2.875   17.02   1     4  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       5        Porsche 914-2       26     4    120.3   91    4.43   2.14    16.7    1     2  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               Ford Pantera L      15.8    8     351    264   4.22   3.17    14.5    1     4  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                Ferrari Dino       19.7    6     145    175   3.62   2.77    15.5    1     6  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                Maserati Bora       15     8     301    335   3.54   3.57    14.6    1     8  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     3       Hornet 4 Drive      21.4    6     258    110   3.08   3.215   19.44   0     1  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   Valiant         18.1    6     225    105   2.76   3.46    20.22   0     1  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                Toyota Corona      21.5    4    120.1   97    3.7    2.465   20.01   0     1  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       4         Datsun 710        22.8    4     108    93    3.85   2.32    18.61   1     1  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  Merc 240D        24.4    4    146.7   62    3.69   3.19     20     0     2  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  Merc 230         22.8    4    140.8   95    3.92   3.15    22.9    0     2  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  Merc 280         19.2    6    167.6   123   3.92   3.44    18.3    0     4  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  Merc 280C        17.8    6    167.6   123   3.92   3.44    18.9    0     4  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  Fiat 128         32.4    4    78.7    66    4.08    2.2    19.47   1     1  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 Honda Civic       30.4    4    75.7    52    4.93   1.615   18.52   1     2  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               Toyota Corolla      33.9    4    71.1    65    4.22   1.835   19.9    1     1  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  Fiat X1-9        27.3    4     79     66    4.08   1.935   18.9    1     1  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 Volvo 142E        21.4    4     121    109   4.11   2.78    18.6    1     2  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       5        Lotus Europa       30.4    4    95.1    113   3.77   1.513   16.9    1     2  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> mpg    cyl   disp    hp    drat    wt     qsec    vs   am   gear   carb</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10.4    8     472    205   2.93   5.25    17.98   0    0     3      4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         8     460    215    3     5.424   17.82   0    0     3      4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13.3    8     350    245   3.73   3.84    15.41   0    0     3      4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14.3    8     360    245   3.21   3.57    15.84   0    0     3      4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14.7    8     440    230   3.23   5.345   17.42   0    0     3      4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  15     8     301    335   3.54   3.57    14.6    0    1     5      8  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15.2    8    275.8   180   3.07   3.78     18     0    0     3      3  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         8     304    150   3.15   3.435   17.3    0    0     3      2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15.5    8     318    150   2.76   3.52    16.87   0    0     3      2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15.8    8     351    264   4.22   3.17    14.5    0    1     5      4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16.4    8    275.8   180   3.07   4.07    17.4    0    0     3      3  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17.3    8    275.8   180   3.07   3.73    17.6    0    0     3      3  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17.8    6    167.6   123   3.92   3.44    18.9    1    0     4      4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18.1    6     225    105   2.76   3.46    20.22   1    0     3      1  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18.7    8     360    175   3.15   3.44    17.02   0    0     3      2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19.2    6    167.6   123   3.92   3.44    18.3    1    0     4      4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         8     400    175   3.08   3.845   17.05   0    0     3      2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19.7    6     145    175   3.62   2.77    15.5    0    1     5      6  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  21     6     160    110   3.9    2.62    16.46   0    1     4      4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         6     160    110   3.9    2.875   17.02   0    1     4      4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21.4    6     258    110   3.08   3.215   19.44   1    0     3      1  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         4     121    109   4.11   2.78    18.6    1    1     4      2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21.5    4    120.1   97    3.7    2.465   20.01   1    0     3      1  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22.8    4     108    93    3.85   2.32    18.61   1    1     4      1  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         4    140.8   95    3.92   3.15    22.9    1    0     4      2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24.4    4    146.7   62    3.69   3.19     20     1    0     4      2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  26     4    120.3   91    4.43   2.14    16.7    0    1     5      2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27.3    4     79     66    4.08   1.935   18.9    1    1     4      1  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30.4    4    75.7    52    4.93   1.615   18.52   1    1     4      2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         4    95.1    113   3.77   1.513   16.9    1    1     5      2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32.4    4    78.7    66    4.08    2.2    19.47   1    1     4      1  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33.9    4    71.1    65    4.22   1.835   19.9    1    1     4      1  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> main</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   footer</span>
