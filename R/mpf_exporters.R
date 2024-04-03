@@ -130,7 +130,6 @@ export_as_txt <- function(x,
 
 .is_list_of_tables_or_listings <- function(a_list) {
   if (is(a_list, "list")) {
-
     all_matrix_forms <- FALSE
     obj_are_tables_or_listings <- FALSE
 
