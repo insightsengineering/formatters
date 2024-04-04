@@ -1,7 +1,7 @@
 Package: formatters
 Title: ASCII Formatting for Values and Tables
-Version: 0.5.5.9018
-Date: 2024-04-03
+Version: 0.5.5.9019
+Date: 2024-04-04
 Authors@R: c(
     person("Gabriel", "Becker", , "gabembecker@gmail.com", role = "aut",
            comment = "original creator of the package"),
@@ -41,7 +41,7 @@ VignetteBuilder:
     knitr
 Config/Needs/verdepcheck: mllg/checkmate, rstudio/htmltools,
     tidyverse/dplyr, rstudio/gt, hughjonesd/huxtable, yihui/knitr,
-    r-lib/lifecycle, Merck/r2rtf, rstudio/rmarkdown, gagolews/stringi, 
+    r-lib/lifecycle, Merck/r2rtf, rstudio/rmarkdown, gagolews/stringi,
     r-lib/testthat, r-lib/withr
 Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
