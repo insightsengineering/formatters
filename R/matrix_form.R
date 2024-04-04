@@ -214,6 +214,8 @@ disp_from_spans <- function(spans) {
 #'   information for each element. Must be repeated to match placeholders in `strings`.
 #' @param row_info (`data.frame`)\cr data frame with row-information necessary for pagination (see
 #'   [basic_pagdf()] for more details).
+#' @param colpaths (`list` or `NULL`)\cr `NULL`, or a list of paths to each leaf column,
+#'   for use during horizontal pagination.
 #' @param line_grouping (`integer`)\cr sequence of integers indicating how print lines correspond
 #'   to semantic rows in the object. Typically this should not be set manually unless
 #'   `expand_newlines` is set to `FALSE`.
@@ -245,6 +247,7 @@ disp_from_spans <- function(spans) {
 #'   equal to `ncol(strings)`.
 #' @param indent_size (`numeric(1)`)\cr number of spaces to be used per level of indent (if supported by
 #'   the relevant method). Defaults to 2.
+#' @param rep_cols (`numeric(1)`)\cr number of columns to be repeated as context during horizontal pagination.
 #'
 #' @return An object of class `MatrixPrintForm`. Currently this is implemented as an S3 class inheriting
 #'   from list with the following elements:

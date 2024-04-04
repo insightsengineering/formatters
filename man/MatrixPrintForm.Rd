@@ -53,6 +53,9 @@ information for each element. Must be repeated to match placeholders in \code{st
 \item{row_info}{(\code{data.frame})\cr data frame with row-information necessary for pagination (see
 \code{\link[=basic_pagdf]{basic_pagdf()}} for more details).}
 
+\item{colpaths}{(\code{list} or \code{NULL})\cr \code{NULL}, or a list of paths to each leaf column,
+for use during horizontal pagination.}
+
 \item{line_grouping}{(\code{integer})\cr sequence of integers indicating how print lines correspond
 to semantic rows in the object. Typically this should not be set manually unless
 \code{expand_newlines} is set to \code{FALSE}.}
@@ -105,6 +108,8 @@ the relevant method). Defaults to 2.}
 
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
 calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
+
+\item{rep_cols}{(\code{numeric(1)})\cr number of columns to be repeated as context during horizontal pagination.}
 }
 \value{
 An object of class \code{MatrixPrintForm}. Currently this is implemented as an S3 class inheriting

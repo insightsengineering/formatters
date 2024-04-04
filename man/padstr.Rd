@@ -13,6 +13,9 @@ padstr(x, n, just = list_valid_aligns(), fontspec = font_spec())
 
 \item{just}{(\code{string})\cr text alignment justification to use. Defaults to \code{"center"}. Must be one of
 \code{"center"}, \code{"right"}, \code{"left"}, \code{"dec_right"}, \code{"dec_left"}, or \code{"decimal"}.}
+
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 }
 \value{
 \code{x}, padded to be a string of length \code{n}.

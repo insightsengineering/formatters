@@ -1544,6 +1544,7 @@ nchar_ttype <- function(x, fontspec = font_spec(), tol = sqrt(.Machine$double.ep
 
 #' Pad a string and align within string
 #'
+#' @inheritParams open_font_dev
 #' @param x (`string`)\cr a string.
 #' @param n (`integer(1)`)\cr number of characters in the output string. If `n < nchar(x)`, an error is thrown.
 #' @param just (`string`)\cr text alignment justification to use. Defaults to `"center"`. Must be one of
