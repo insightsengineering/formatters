@@ -3,16 +3,17 @@
 \name{wrap_string}
 \alias{wrap_string}
 \alias{wrap_txt}
-\title{Wrap a string to within a precise width}
+\title{Wrap a string to a precise width}
 \usage{
 wrap_string(str, width, collapse = NULL, fontspec = font_spec())
 
 wrap_txt(str, width, collapse = NULL, fontspec = font_spec())
 }
 \arguments{
-\item{str}{character. String to be wrapped. If it is a character vector or
-a list, it will be looped as a list and returned with \code{unlist(use.names = FALSE)}.}
+\item{str}{(\code{string}, \code{character}, or \code{list})\cr string to be wrapped. If it is a \code{vector} or
+a \code{list}, it will be looped as a \code{list} and returned with \code{unlist(use.names = FALSE)}.}
 
+<<<<<<< HEAD
 \item{width}{numeric(1). Width, in number of spaces, that the
 text should be wrapped at.}
 
@@ -24,29 +25,31 @@ with \code{"\\n"} to have the wrapping updated along with other internal values.
 specifying the font information to use for
 calculating string widths and heights, as
 returned by \code{\link[=font_spec]{font_spec()}}}
+=======
+\item{width}{(\code{numeric(1)})\cr width, in characters, that the text should be wrapped to.}
+
+\item{collapse}{(\code{string} or \code{NULL})\cr collapse character used to separate segments of words that
+have been split and should be pasted together. This is usually done internally with \code{"\\n"} to update
+the wrapping along with other internal values.}
+>>>>>>> main
 }
 \value{
-A string if \code{str} is one element and if \code{collapse = NULL}. Otherwise, is
-a list of elements (if \code{length(str) > 1}) that can contain strings or vector of
-characters (if \code{collapse = NULL}).
+A string if \code{str} is one element and if \code{collapse = NULL}. Otherwise, a list of elements
+(if \code{length(str) > 1}) that can contain strings or vectors of characters (if \code{collapse = NULL}).
 }
 \description{
-Core wrapping functionality that preserve white spaces. Only \code{"\\n"} is not supported
-by core functionality \code{\link[stringi:stri_wrap]{stringi::stri_wrap()}}. This is usually solved before hand by
-\code{\link[=matrix_form]{matrix_form()}}. If the width is smaller than any large word, these will be truncated
-after \code{width} characters. If the split leaves trailing groups of empty spaces,
-they will be dropped.
+Core wrapping functionality that preserves whitespace. Newline character \code{"\\n"} is not supported
+by core functionality \code{\link[stringi:stri_wrap]{stringi::stri_wrap()}}. This is usually solved beforehand by \code{\link[=matrix_form]{matrix_form()}}.
+If the width is smaller than any large word, these will be truncated after \code{width} characters. If
+the split leaves trailing groups of empty spaces, they will be dropped.
 }
 \details{
-Word wrapping happens as with \code{\link[stringi:stri_wrap]{stringi::stri_wrap()}}
-with the following exception: individual words which are longer
-than \code{max_width} are broken up in a way that fits with the rest of the
-word wrapping.
+Word wrapping happens similarly to \code{\link[stringi:stri_wrap]{stringi::stri_wrap()}} with the following difference: individual
+words which are longer than \code{max_width} are broken up in a way that fits with other word wrapping.
 }
 \section{Functions}{
 \itemize{
-\item \code{wrap_txt()}: function that flattens the list of wrapped strings with
-\code{unist(str, use.names = FALSE)}. This is deprecated, use \code{\link[=wrap_string]{wrap_string()}} instead.
+\item \code{wrap_txt()}: Deprecated function. Please use \code{\link[=wrap_string]{wrap_string()}} instead.
 
 }}
 \examples{

@@ -12,30 +12,33 @@ font_lcpi(
 )
 }
 \arguments{
-\item{font_family}{character(1). Name of a font family. An error
-will be thrown if the family named is not monospaced. Defaults
-to Courier.}
+\item{font_family}{(\code{string})\cr name of a font family. An error will be thrown
+if the family named is not monospaced. Defaults to \code{"Courier"}.}
 
-\item{font_size}{numeric(1). Font size, defaults to 12.}
+\item{font_size}{(\code{numeric(1)})\cr font size. Defaults to \code{12}.}
 
+<<<<<<< HEAD
 \item{lineheight}{numeric(1). Line height, defaults to 1.}
 
 \item{fontspec}{font_spec. A font_spec object
 specifying the font information to use for
 calculating string widths and heights, as
 returned by \code{\link[=font_spec]{font_spec()}}}
+=======
+\item{lineheight}{(\code{numeric(1)})\cr line height. Defaults to \code{1}.}
+>>>>>>> main
 }
 \value{
-named list with \code{cpi} and \code{lpi}, the characters and lines per
+A named list with \code{cpi} and \code{lpi}, the characters and lines per
 inch, respectively.
 }
 \description{
 Calculate lines per inch and characters per inch for font
 }
 \details{
-This function creates opens pdf graphics device  writing to an temporary file,
-then utilizes \code{\link[grid:grid.convert]{grid::convertWidth()}} and \code{\link[grid:grid.convert]{grid::convertHeight()}} to calculate
-lines per inch and characters per inch for the specified font family, size, and
+This function opens a PDF graphics device, writes to a temporary file, then
+utilizes \code{\link[grid:grid.convert]{grid::convertWidth()}} and \code{\link[grid:grid.convert]{grid::convertHeight()}} to calculate lines
+per inch and characters per inch for the specified font family, size, and
 line height.
 
 An error is thrown if the font is not monospaced (determined by comparing
@@ -47,5 +50,6 @@ font_lcpi <- getFromNamespace("font_lcpi", "formatters")
 font_lcpi()
 font_lcpi(font_size = 8)
 font_lcpi(font_size = 8, lineheight = 1.1)
+
 }
 \keyword{internal}

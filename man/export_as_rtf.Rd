@@ -2,7 +2,7 @@
 % Please edit documentation in R/mpf_exporters.R
 \name{export_as_rtf}
 \alias{export_as_rtf}
-\title{Export table to \code{RTF}}
+\title{Export as RTF}
 \usage{
 export_as_rtf(
   x,
@@ -21,32 +21,29 @@ export_as_rtf(
 )
 }
 \arguments{
-\item{x}{ANY.  The  table-like object  to  export.  Must have  an
-applicable \code{matrix_form} method.}
+\item{x}{(\code{ANY})\cr a table-like object to export. Must have an applicable \code{matrix_form} method.}
 
-\item{file}{character(1) or NULL.  If non-NULL, the path to write a
-text file to containing the \code{x} rendered as ASCII text,}
+\item{file}{(\code{string} or \code{NULL})\cr if non-\code{NULL}, the path to write a text file to
+containing \code{x} rendered as ASCII text.}
 
-\item{colwidths}{numeric vector.  Column widths (in characters) for
-use with vertical pagination.}
+\item{colwidths}{(\code{numeric})\cr vector of column widths (in characters) for use in vertical pagination.}
 
-\item{page_type}{character(1).   Name   of  a  page  type.   See
-\code{page_types}.   Ignored when  \code{pg_width} and  \code{pg_height}
-are set directly.}
+\item{page_type}{(\code{string})\cr name of a page type. See \code{\link{page_types}}. Ignored
+when \code{pg_width} and \code{pg_height} are set directly.}
 
-\item{pg_width}{numeric(1). Page width in inches.}
+\item{pg_width}{(\code{numeric(1)})\cr page width in inches.}
 
-\item{pg_height}{numeric(1). Page height in inches.}
+\item{pg_height}{(\code{numeric(1)})\cr page height in inches.}
 
-\item{landscape}{logical(1). Should the  dimensions of \code{page_type}
-be inverted  for landscape?  Defaults to  \code{FALSE}, ignored when
-\code{pg_width} and \code{pg_height} are set directly.}
+\item{landscape}{(\code{flag})\cr whether the dimensions of \code{page_type} should be
+inverted for landscape orientation. Defaults to \code{FALSE}, ignored when \code{pg_width} and
+\code{pg_height} are set directly.}
 
-\item{margins}{numeric(4). Named numeric vector containing \code{'bottom'},
-\code{'left'}, \code{'top'}, and \code{'right'} margins in inches. Defaults
-to \code{.5} inches for both vertical margins and \code{.75} for both
-horizontal margins.}
+\item{margins}{(\code{numeric(4)})\cr named numeric vector containing \code{"bottom"}, \code{"left"},
+\code{"top"}, and \code{"right"} margins in inches. Defaults to \code{.5} inches for both vertical
+margins and \code{.75} for both horizontal margins.}
 
+<<<<<<< HEAD
 \item{font_family}{character(1). Name of a font family. An error
 will be thrown if the family named is not monospaced. Defaults
 to Courier.}
@@ -61,18 +58,26 @@ calculating string widths and heights, as
 returned by \code{\link[=font_spec]{font_spec()}}}
 
 \item{...}{Further parameters to be passed to \code{\link[=paginate_to_mpfs]{paginate_to_mpfs()}}.}
+=======
+\item{font_size}{(\code{numeric(1)})\cr font size. Defaults to \code{12}.}
+
+\item{font_family}{(\code{string})\cr name of a font family. An error will be thrown
+if the family named is not monospaced. Defaults to \code{"Courier"}.}
+
+\item{...}{additional parameters passed to \code{\link[=paginate_to_mpfs]{paginate_to_mpfs()}}.}
+>>>>>>> main
 }
 \description{
-Experimental export to the \code{RTF} format.
+Experimental export to the rich text format (RTF) format.
 }
 \details{
-\code{RTF} export occurs by via the following steps
-
+RTF export occurs via the following steps:
 \itemize{
-\item{the table is paginated to the page size (Vertically and horizontally)}
-\item{Each separate page is converted to a \code{MatrixPrintForm} and from there to \code{RTF}-encoded text}
-\item{Separate \code{RTFs} text chunks are combined and written out as a single \code{RTF} file}
+\item The table is paginated to the specified page size (vertically and horizontally).
+\item Each separate page is converted to a \code{MatrixPrintForm} object and then to
+RTF-encoded text.
+\item Separate RTF text chunks are combined and written to a single RTF file.
 }
 
-Conversion of \code{MatrixPrintForm} objects to \code{RTF} is done via \code{\link[=mpf_to_rtf]{mpf_to_rtf()}}.
+Conversion of \code{MatrixPrintForm} objects to RTF is done via \code{\link[=mpf_to_rtf]{mpf_to_rtf()}}.
 }

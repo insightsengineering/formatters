@@ -2,7 +2,7 @@
 % Please edit documentation in R/mpf_exporters.R
 \name{export_as_txt}
 \alias{export_as_txt}
-\title{Export a table-like object to plain (ASCII) text with page break}
+\title{Export a table-like object to plain (ASCII) text with page breaks}
 \usage{
 export_as_txt(
   x,
@@ -34,89 +34,75 @@ export_as_txt(
 )
 }
 \arguments{
-\item{x}{ANY.  The  table-like object  to  export.  Must have  an
-applicable \code{matrix_form} method.}
+\item{x}{(\code{ANY})\cr a table-like object to export. Must have an applicable \code{matrix_form} method.}
 
-\item{file}{character(1) or NULL.  If non-NULL, the path to write a
-text file to containing the \code{x} rendered as ASCII text,}
+\item{file}{(\code{string} or \code{NULL})\cr if non-\code{NULL}, the path to write a text file to
+containing \code{x} rendered as ASCII text.}
 
-\item{page_type}{character(1).   Name   of  a  page  type.   See
-\code{page_types}.   Ignored when  \code{pg_width} and  \code{pg_height}
-are set directly.}
+\item{page_type}{(\code{string})\cr name of a page type. See \code{\link{page_types}}. Ignored
+when \code{pg_width} and \code{pg_height} are set directly.}
 
-\item{landscape}{logical(1). Should the  dimensions of \code{page_type}
-be inverted  for landscape?  Defaults to  \code{FALSE}, ignored when
-\code{pg_width} and \code{pg_height} are set directly.}
+\item{landscape}{(\code{flag})\cr whether the dimensions of \code{page_type} should be
+inverted for landscape orientation. Defaults to \code{FALSE}, ignored when \code{pg_width} and
+\code{pg_height} are set directly.}
 
-\item{pg_width}{numeric(1). Page width in inches.}
+\item{pg_width}{(\code{numeric(1)})\cr page width in inches.}
 
-\item{pg_height}{numeric(1). Page height in inches.}
+\item{pg_height}{(\code{numeric(1)})\cr page height in inches.}
 
-\item{font_family}{character(1). Name of a font family. An error
-will be thrown if the family named is not monospaced. Defaults
-to Courier.}
+\item{font_family}{(\code{string})\cr name of a font family. An error will be thrown
+if the family named is not monospaced. Defaults to \code{"Courier"}.}
 
-\item{font_size}{numeric(1). Font size, defaults to 12.}
+\item{font_size}{(\code{numeric(1)})\cr font size. Defaults to \code{12}.}
 
-\item{lineheight}{numeric(1). Line height, defaults to 1.}
+\item{lineheight}{(\code{numeric(1)})\cr line height. Defaults to \code{1}.}
 
-\item{margins}{numeric(4). Named numeric vector containing \code{'bottom'},
-\code{'left'}, \code{'top'}, and \code{'right'} margins in inches. Defaults
-to \code{.5} inches for both vertical margins and \code{.75} for both
-horizontal margins.}
+\item{margins}{(\code{numeric(4)})\cr named numeric vector containing \code{"bottom"}, \code{"left"},
+\code{"top"}, and \code{"right"} margins in inches. Defaults to \code{.5} inches for both vertical
+margins and \code{.75} for both horizontal margins.}
 
-\item{paginate}{logical(1). Whether pagination should be performed,
-defaults to \code{TRUE} if page size is specified (including
-the default).}
+\item{paginate}{(\code{flag})\cr whether pagination should be performed. Defaults to \code{TRUE}
+if page size is specified (including the default).}
 
-\item{cpp}{numeric(1) or NULL. Width in characters per page. if NA (the default,
-this is calculated automatically based on the specified page
-size). \code{NULL} indicates no horizontal pagination should occur.}
+\item{cpp}{(\code{numeric(1)} or \code{NULL})\cr width (in characters) per page. If \code{NA} (the default), this is calculated
+automatically based on the specified page size). \code{NULL} indicates no horizontal pagination should occur.}
 
-\item{lpp}{numeric(1) or NULL. Lines per page. if NA (the default,
-this is calculated automatically based on the specified page
-size). \code{NULL} indicates no vertical pagination should occur.}
+\item{lpp}{(\code{numeric(1)} or \code{NULL})\cr lines per page. If \code{NA} (the default), this is calculated automatically
+based on the specified page size). \code{NULL} indicates no vertical pagination should occur.}
 
-\item{...}{Further parameters to be passed to \code{\link[=paginate_to_mpfs]{paginate_to_mpfs()}}.}
+\item{...}{additional parameters passed to \code{\link[=paginate_to_mpfs]{paginate_to_mpfs()}}.}
 
-\item{hsep}{character(1). Characters to repeat to create
-header/body separator line. If \code{NULL}, the object value will be
-used. If \code{" "}, an empty separator will be printed. Check \code{\link[=default_hsep]{default_hsep()}}
-for more information.}
+\item{hsep}{(\code{string})\cr character to repeat to create header/body separator line. If
+\code{NULL}, the object value will be used. If \code{" "}, an empty separator will be printed. See
+\code{\link[=default_hsep]{default_hsep()}} for more information.}
 
-\item{indent_size}{numeric(1). Indent size in characters. Ignored
-when \code{x} is already a \code{MatrixPrintForm} object in favor of information
-there.}
+\item{indent_size}{(\code{numeric(1)})\cr indent size, in characters. Ignored when \code{x} is already
+a \code{MatrixPrintForm} object in favor of information there.}
 
-\item{tf_wrap}{logical(1). Should  the texts for  title, subtitle,
-and footnotes be wrapped?}
+\item{tf_wrap}{(\code{flag})\cr whether the text for title, subtitles, and footnotes should be wrapped.}
 
-\item{max_width}{integer(1), character(1) or \code{NULL}. Width that title
-and   footer   (including   footnotes)  materials   should   be
-word-wrapped to. If \code{NULL}, it is  set to the current print width
-of the  session (\code{getOption("width")}). If set to \code{"auto"},
-the width of the table (plus any table inset) is used. Ignored
-completely if \code{tf_wrap} is \code{FALSE}.}
+\item{max_width}{(\code{integer(1)}, \code{string} or \code{NULL})\cr width that title and footer (including
+footnotes) materials should be word-wrapped to. If \code{NULL}, it is set to the current print width of the
+session (\code{getOption("width")}). If set to \code{"auto"}, the width of the table (plus any table inset) is
+used. Parameter is ignored if \code{tf_wrap = FALSE}.}
 
-\item{colwidths}{numeric vector.  Column widths (in characters) for
-use with vertical pagination.}
+\item{colwidths}{(\code{numeric})\cr vector of column widths (in characters) for use in vertical pagination.}
 
-\item{min_siblings}{numeric. Minimum sibling rows which must appear on either side of pagination row for a
-mid-subtable split to be valid. Defaults to 2 for tables. It is automatically turned off
-(by using only 0) for listings.}
+\item{min_siblings}{(\code{numeric})\cr minimum sibling rows which must appear on either side of pagination row for a
+mid-subtable split to be valid. Defaults to 2 for tables. It is automatically turned off (set to 0) for listings.}
 
-\item{nosplitin}{character. List of names of sub-tables where page-breaks are not allowed, regardless of other
+\item{nosplitin}{(\code{character})\cr list of names of subtables where page breaks are not allowed, regardless of other
 considerations. Defaults to none.}
 
-\item{rep_cols}{numeric(1). Number of \emph{columns} (not including
-row labels) to be repeated on every page. Defaults to 0}
+\item{rep_cols}{(\code{numeric(1)})\cr number of \emph{columns} (not including row labels) to be repeated on every page.
+Defaults to 0.}
 
-\item{verbose}{logical(1). Should additional informative messages about the search for
-pagination breaks be shown. Defaults to \code{FALSE}.}
+\item{verbose}{(\code{flag})\cr whether additional informative messages about the search for
+pagination breaks should be shown. Defaults to \code{FALSE}.}
 
-\item{page_break}{character(1).  Page break  symbol (defaults  to
-outputting \code{"\\n\\s"}).}
+\item{page_break}{(\code{string})\cr page break symbol (defaults to \code{"\\\\n\\\\s"}).}
 
+<<<<<<< HEAD
 \item{page_num}{character(1). Placeholder string for page numbers. Check
 \link{default_page_number} for more information. Defaults to \code{NULL}.}
 
@@ -124,24 +110,26 @@ outputting \code{"\\n\\s"}).}
 specifying the font information to use for
 calculating string widths and heights, as
 returned by \code{\link[=font_spec]{font_spec()}}}
+=======
+\item{page_num}{(\code{string})\cr placeholder string for page numbers. See \link{default_page_number} for more
+information. Defaults to \code{NULL}.}
+>>>>>>> main
 }
 \value{
-if \code{file} is NULL, the total paginated and then concatenated
-string value, otherwise the file that was written.
+If \code{file} is \code{NULL}, the full paginated and concatenated string value is returned,
+otherwise the output is written to \code{file} and no value (invisible \code{NULL}) is returned.
 }
 \description{
-This function converts \code{x} to a \code{MatrixPrintForm} object via
-\code{matrix_form}, paginates it via \code{paginate}, converts each
-page to ASCII text via \code{toString}, and emits the strings to \code{file},
-separated by \code{page_break}.
+This function converts \code{x} to a \code{MatrixPrintForm} object via \code{\link[=matrix_form]{matrix_form()}}, paginates it
+via \code{\link[=paginate_to_mpfs]{paginate_to_mpfs()}}, converts each page to ASCII text via \code{\link[=toString]{toString()}}, and outputs
+the strings, separated by \code{page_break}, to \code{file}.
 }
 \details{
-if  \code{x} has an \code{num_rep_cols}  method, the value
-returned by it will be  used for \code{rep_cols} by default, if
-not, 0 will be used.
+If \code{x} has a \code{num_rep_cols} method, the value returned by it will be used for \code{rep_cols} by
+default. Otherwise, 0 will be used.
 
-If \code{x} has an applicable \code{do_mand_paginate} method, it will be invoked
-during the pagination process.
+If \code{x} has an applicable \code{do_forced_paginate} method, it will be invoked during the
+pagination process.
 }
 \examples{
 export_as_txt(basic_matrix_form(mtcars), pg_height = 5, pg_width = 4)

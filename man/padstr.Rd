@@ -7,10 +7,11 @@
 padstr(x, n, just = list_valid_aligns(), fontspec = font_spec())
 }
 \arguments{
-\item{x}{string}
+\item{x}{(\code{string})\cr a string.}
 
-\item{n}{number  of  character  of the  output  string,  if \code{n  < nchar(x)} an error is thrown}
+\item{n}{(\code{integer(1)})\cr number of characters in the output string. If \code{n < nchar(x)}, an error is thrown.}
 
+<<<<<<< HEAD
 \item{just}{character(1).   Text  alignment   justification  to
 use. Defaults to \code{center}. Must be \code{center}, \code{right}, \code{left},
 \code{dec_right}, \code{dec_left} or \code{decimal}.}
@@ -24,6 +25,13 @@ returned by \code{\link[=font_spec]{font_spec()}}}
 \code{x}, padded to be a string of \code{n} characters
 
 \code{x}, padded to be a string of \code{n} characters
+=======
+\item{just}{(\code{string})\cr text alignment justification to use. Defaults to \code{"center"}. Must be one of
+\code{"center"}, \code{"right"}, \code{"left"}, \code{"dec_right"}, \code{"dec_left"}, or \code{"decimal"}.}
+}
+\value{
+\code{x}, padded to be a string of length \code{n}.
+>>>>>>> main
 }
 \description{
 Pad a string and align within string
@@ -39,4 +47,5 @@ padstr("abc", 5, "right")
 # Expect error: "abc" has more than 1 characters
 padstr("abc", 1)
 }
+
 }

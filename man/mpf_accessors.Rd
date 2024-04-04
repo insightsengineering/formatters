@@ -33,7 +33,7 @@
 \alias{ncol,MatrixPrintForm-method}
 \alias{mpf_has_rlabels}
 \alias{mf_has_rlabels}
-\title{\code{Setters} and \code{getters} for aspects of \code{MatrixPrintForm} Objects}
+\title{Getters and setters for aspects of \code{MatrixPrintForm} objects}
 \usage{
 mf_strings(mf)
 
@@ -100,18 +100,19 @@ mpf_has_rlabels(mf)
 mf_has_rlabels(mf)
 }
 \arguments{
-\item{mf}{\code{MatrixPrintForm(1)}. A \code{MatrixPrintForm} object}
+\item{mf}{(\code{MatrixPrintForm})\cr a \code{MatrixPrintForm} object.}
 
-\item{value}{ANY. The new value for the component in question.}
+\item{value}{(\code{ANY})\cr the new value for the component in question.}
 
 \item{x}{\code{MatrixPrintForm}. The object.}
 }
 \value{
-The element of the \code{MatrixPrintForm} associated with the \code{getter}, or
-the modified \code{MatrixPrintForm} object in the case of a \code{setter}.
+\itemize{
+\item Getters return the associated element of \code{mf}.
+\item Setters return the modified \code{mf} object.
+}
 }
 \description{
-Most of these functions, particularly the \code{settters}, are intended
-almost exclusively for internal use in, e.g., \code{matrix_form} methods,
-and should generally not be called by end users.
+Most of these functions, particularly the setters, are intended almost exclusively for
+internal use in, e.g., \code{\link{matrix_form}} methods, and should generally not be called by end users.
 }

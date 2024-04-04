@@ -15,12 +15,12 @@ default_hsep()
 set_default_hsep(hsep_char)
 }
 \arguments{
-\item{hsep_char}{character(1). Character that will be set in the R environment
-options as default for creating the horizontal separator. It needs to be
-single character. Use \code{getOption("formatters_default_hsep")} to get its current
-value (\code{NULL} if not set).}
+\item{hsep_char}{(\code{string})\cr character that will be set in the R environment
+options as the default horizontal separator. Must be a single character. Use
+\code{getOption("formatters_default_hsep")} to get its current value (\code{NULL} if not set).}
 }
 \value{
+<<<<<<< HEAD
 \code{unicode} 2014 (long dash for generating solid horizontal line)
 if in a locale that uses a UTF character set, otherwise an ASCII hyphen
 with a once-per-session warning.
@@ -35,6 +35,15 @@ displayed in the current \code{charset} for use in rendering table-likes.
 
 The default horizontal separator character which can be
 displayed in the current \code{charset} for use in rendering table-likes.
+=======
+unicode 2014 (long dash for generating solid horizontal line) if in a
+locale that uses a UTF character set, otherwise an ASCII hyphen with a
+once-per-session warning.
+}
+\description{
+The default horizontal separator character which can be displayed in the current
+charset for use in rendering table-like objects.
+>>>>>>> main
 }
 \examples{
 default_hsep()

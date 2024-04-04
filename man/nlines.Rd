@@ -16,10 +16,11 @@ nlines(x, colwidths = NULL, max_width = NULL, fontspec, col_gap)
 \S4method{nlines}{character}(x, colwidths = NULL, max_width = NULL, fontspec, col_gap = NULL)
 }
 \arguments{
-\item{x}{ANY. The object to be printed}
+\item{x}{(\code{ANY})\cr the object to be printed.}
 
-\item{colwidths}{numeric. Column widths (if necessary).}
+\item{colwidths}{(\code{numeric})\cr column widths (if necessary).}
 
+<<<<<<< HEAD
 \item{max_width}{numeric(1). Width strings should be wrapped to
 when determining how many lines they require.}
 
@@ -30,10 +31,13 @@ returned by \code{\link[=font_spec]{font_spec()}}}
 
 \item{col_gap}{numeric(1). Width of gap between columns in number of spaces.
 Only used by methods which must calculate span widths after wrapping.}
+=======
+\item{max_width}{(\code{numeric(1)})\cr width that strings should be wrapped to when
+determining how many lines they require.}
+>>>>>>> main
 }
 \value{
-A scalar numeric indicating the number of lines needed
-to render the object \code{x}.
+The number of lines needed to render the object \code{x}.
 }
 \description{
 Number of lines required to print a value

@@ -2,36 +2,32 @@
   !(is.null(page_type) && is.null(pg_width) && is.null(pg_height) && is.null(cpp) && is.null(lpp))
 }
 
-#' Export a table-like object to plain (ASCII) text with page break
+#' Export a table-like object to plain (ASCII) text with page breaks
 #'
-#' This function converts \code{x} to a \code{MatrixPrintForm} object via
-#' \code{matrix_form}, paginates it via \code{paginate}, converts each
-#' page to ASCII text via \code{toString}, and emits the strings to \code{file},
-#' separated by \code{page_break}.
+#' This function converts `x` to a `MatrixPrintForm` object via [matrix_form()], paginates it
+#' via [paginate_to_mpfs()], converts each page to ASCII text via [toString()], and outputs
+#' the strings, separated by `page_break`, to `file`.
 #'
 #' @inheritParams paginate_indices
 #' @inheritParams toString
 #' @inheritParams propose_column_widths
-#' @param x  ANY.  The  table-like object  to  export.  Must have  an
-#'     applicable \code{matrix_form} method.
-#' @param file character(1) or NULL.  If non-NULL, the path to write a
-#'     text file to containing the \code{x} rendered as ASCII text,
-#' @param page_break  character(1).  Page break  symbol (defaults  to
-#'     outputting \code{"\\n\\s"}).
-#' @param paginate logical(1). Whether pagination should be performed,
-#'     defaults to \code{TRUE} if page size is specified (including
-#'     the default).
-#' @param ...  Further parameters to be passed to [paginate_to_mpfs()].
+#' @param x (`ANY`)\cr a table-like object to export. Must have an applicable `matrix_form` method.
+#' @param file (`string` or `NULL`)\cr if non-`NULL`, the path to write a text file to
+#'   containing `x` rendered as ASCII text.
+#' @param page_break (`string`)\cr page break symbol (defaults to `"\\n\\s"`).
+#' @param paginate (`flag`)\cr whether pagination should be performed. Defaults to `TRUE`
+#'   if page size is specified (including the default).
+#' @param ... additional parameters passed to [paginate_to_mpfs()].
 #'
-#' @details if  \code{x} has an \code{num_rep_cols}  method, the value
-#'     returned by it will be  used for \code{rep_cols} by default, if
-#'     not, 0 will be used.
+#' @details
+#' If `x` has a `num_rep_cols` method, the value returned by it will be used for `rep_cols` by
+#' default. Otherwise, 0 will be used.
 #'
-#' If \code{x} has an applicable \code{do_mand_paginate} method, it will be invoked
-#' during the pagination process.
+#' If `x` has an applicable `do_forced_paginate` method, it will be invoked during the
+#' pagination process.
 #'
-#' @return if \code{file} is NULL, the total paginated and then concatenated
-#' string value, otherwise the file that was written.
+#' @return If `file` is `NULL`, the full paginated and concatenated string value is returned,
+#'   otherwise the output is written to `file` and no value (invisible `NULL`) is returned.
 #'
 #' @examples
 #' export_as_txt(basic_matrix_form(mtcars), pg_height = 5, pg_width = 4)
@@ -153,6 +149,7 @@ export_as_txt <- function(x,
 }
 
 # RTF support ------------------------------------------------------------------
+
 ## In use, must be tested
 prep_header_line <- function(mf, i) {
   ret <- mf$strings[i, mf$display[i, , drop = TRUE], drop = TRUE]
@@ -177,9 +174,6 @@ prep_header_line <- function(mf, i) {
 ##   )
 ## }
 
-
-
-
 mpf_to_dfbody <- function(mpf, colwidths, fontspec) {
   mf <- matrix_form(mpf, indent_rownames = TRUE, fontspec = fontspec)
   nlr <- mf_nlheader(mf)
@@ -196,23 +190,24 @@ mpf_to_dfbody <- function(mpf, colwidths, fontspec) {
   myfakedf
 }
 
-
-#' Transform `MPF` to `RTF`
+#' Transform `MatrixPrintForm` to RTF
 #'
-#' Experimental export to `RTF` via the `r2rtf` package
+#' Experimental export to rich text format (RTF) via the `r2rtf` package.
 #'
 #' @inheritParams page_lcpp
 #' @inheritParams toString
 #' @inheritParams grid::plotViewport
-#' @param mpf `MatrixPrintForm`. `MatrixPrintForm` object.
-#' @param colwidths character(1). Column widths.
-#' @details This function provides a low-level coercion of a
-#' `MatrixPrintForm` object into text containing the corresponding
-#' table in `RTF`. Currently, no pagination is done at this level,
-#' and should be done prior to calling this function, though that
+#' @param mpf (`MatrixPrintForm`)\cr a `MatrixPrintForm` object.
+#' @param colwidths (`numeric`)\cr column widths.
+#'
+#' @details
+#' This function provides a low-level coercion of a `MatrixPrintForm` object into
+#' text containing the corresponding table in RTF. Currently, no pagination is done
+#' at this level, and should be done prior to calling this function, though that
 #' may change in the future.
 #'
-#' @return An `RTF` object
+#' @return An RTF object.
+#'
 #' @export
 mpf_to_rtf <- function(mpf,
                        colwidths = NULL,
@@ -318,7 +313,6 @@ mpf_to_rtf <- function(mpf,
 ##       cumsum(mf$display[i, ])
 ##     )
 
-
 ##     for (j in seq_along(spanspl)) {
 ##       if (length(spanspl[[j]]) > 1) {
 ##         ret <- huxtable::merge_cells(ret, row = i, col = spanspl[[j]])
@@ -341,9 +335,6 @@ mpf_to_rtf <- function(mpf,
 ##   ## a bunch more stuff here
 ##   huxtable::quick_rtf(huxt, ..., file = file)
 ## }
-
-
-
 
 ## ## XXX Experimental. Not to be exported without approval
 ## mpf_to_gt <- function(obj) {
@@ -385,27 +376,24 @@ mpf_to_rtf <- function(mpf,
 ##   ret
 ## }
 
-
-
-#' Export table to `RTF`
+#' Export as RTF
 #'
-#' Experimental export to the `RTF` format.
+#' Experimental export to the rich text format (RTF) format.
 #'
-#' @details `RTF` export occurs by via the following steps
+#' @details RTF export occurs via the following steps:
+#'   * The table is paginated to the specified page size (vertically and horizontally).
+#'   * Each separate page is converted to a `MatrixPrintForm` object and then to
+#'     RTF-encoded text.
+#'   * Separate RTF text chunks are combined and written to a single RTF file.
 #'
-#' \itemize{
-#' \item{the table is paginated to the page size (Vertically and horizontally)}
-#' \item{Each separate page is converted to a `MatrixPrintForm` and from there to `RTF`-encoded text}
-#' \item{Separate `RTFs` text chunks are combined and written out as a single `RTF` file}
-#' }
+#'   Conversion of `MatrixPrintForm` objects to RTF is done via [mpf_to_rtf()].
 #'
-#' Conversion of `MatrixPrintForm` objects to `RTF` is done via [formatters::mpf_to_rtf()].
 #' @inheritParams export_as_txt
 #' @inheritParams toString
 #' @inheritParams grid::plotViewport
 #' @inheritParams paginate_to_mpfs
+#'
 #' @export
-
 export_as_rtf <- function(x,
                           file = NULL,
                           # colwidths = propose_column_widths(matrix_form(x, TRUE, fontspec = fontspec), fontspec = fontspec),
@@ -493,41 +481,38 @@ export_as_rtf <- function(x,
 
 
 # PDF support ------------------------------------------------------------------
+
 #' Export as PDF
 #'
-#' The PDF output is based on the ASCII output created with [toString()]
+#' The PDF output from this function is based on the ASCII output created with [toString()].
 #'
 #' @inheritParams export_as_txt
 #' @inheritParams toString
-#' @param file file to write, must have `.pdf` extension
-#' @param width Deprecated, please use `pg_width` or specify
-#'   `page_type`. The width of the graphics region in inches
-#' @param height Deprecated, please use `pg_height` or specify
-#'   `page_type`. The height of the graphics region in inches
-#' @param fontsize Deprecated, please use `font_size`. The size of
-#'   text (in points)
-#' @param margins numeric(4). The number of lines/characters of margin on the
-#'   bottom, left, top, and right sides of the page.
+#' @param file (`string`)\cr file to write to, must have `.pdf` extension.
+#' @param width `r lifecycle::badge("deprecated")` Please use the `pg_width` argument or specify
+#'   `page_type` instead.
+#' @param height `r lifecycle::badge("deprecated")` Please use the `pg_height` argument or
+#'   specify `page_type` instead.
+#' @param fontsize `r lifecycle::badge("deprecated")` Please use the `font_size` argument instead.
+#' @param margins (`numeric(4)`)\cr the number of lines/characters of the margin on the bottom,
+#'   left, top, and right sides of the page, respectively.
 #'
 #' @importFrom grDevices pdf
 #' @importFrom grid textGrob grid.newpage gpar pushViewport plotViewport unit grid.draw
 #'   convertWidth convertHeight grobHeight grobWidth
-#'
-#' @details By default, pagination is performed with default
-#' `cpp` and `lpp` defined by specified page dimensions and margins.
-#' User-specified `lpp` and `cpp` values override this, and should
-#' be used with caution.
-#'
-#' Title and footer materials are also word-wrapped by default
-#' (unlike when printed to the terminal), with `cpp`, as
-#' defined above, as the default `max_width`.
-#'
-#' @seealso [export_as_txt()]
-#'
 #' @importFrom grid textGrob get.gpar
 #' @importFrom grDevices dev.off
 #' @importFrom tools file_ext
-#' @export
+#'
+#' @details
+#' By default, pagination is performed with default `cpp` and `lpp` defined by specified page
+#' dimensions and margins. User-specified `lpp` and `cpp` values override this, and should
+#' be used with caution.
+#'
+#' Title and footer materials are also word-wrapped by default (unlike when printed to the
+#' terminal), with `cpp` (as defined above) as the default `max_width`.
+#'
+#' @seealso [export_as_txt()]
 #'
 #' @examples
 #' \dontrun{
@@ -537,6 +522,8 @@ export_as_rtf <- function(x,
 #' tf <- tempfile(fileext = ".pdf")
 #' export_as_pdf(basic_matrix_form(mtcars), file = tf, lpp = 8)
 #' }
+#'
+#' @export
 export_as_pdf <- function(x,
                           file,
                           page_type = "letter",

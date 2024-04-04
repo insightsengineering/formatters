@@ -2,7 +2,7 @@
 % Please edit documentation in R/matrix_form.R
 \name{MatrixPrintForm}
 \alias{MatrixPrintForm}
-\title{Matrix Print Form - Intermediate Representation for ASCII Table Printing}
+\title{Constructor for Matrix Print Form}
 \usage{
 MatrixPrintForm(
   strings = NULL,
@@ -35,93 +35,80 @@ MatrixPrintForm(
 )
 }
 \arguments{
-\item{strings}{character  matrix.  Matrix  of formatted,  ready to
-display  strings  organized as  they  will  be positioned  when
-rendered.   Elements that  span more  than one  column must  be
-followed  by  the  correct number  of  placeholders  (typically
-either empty strings or repeats of the value).}
+\item{strings}{(\verb{character matrix})\cr matrix of formatted, ready-to-display strings
+organized as they will be positioned when rendered. Elements that span more than one
+column must be followed by the correct number of placeholders (typically either empty
+strings or repeats of the value).}
 
-\item{spans}{numeric  matrix.    Matrix  of  same  dimension  as
-\code{strings}  giving   the  spanning  information   for  each
-element.    Must  be   repeated   to   match  placeholders   in
-\code{strings}.}
+\item{spans}{(\verb{numeric matrix})\cr matrix of same dimension as \code{strings} giving the
+spanning information for each element. Must be repeated to match placeholders in \code{strings}.}
 
-\item{aligns}{character  matrix.   Matrix  of same  dimension  as
-\code{strings} giving  the text alignment information  for each
-element. Must  be   repeated   to   match  placeholders   in
-\code{strings}. Must be a supported text alignment. See
-\link{decimal_align} allowed values.}
+\item{aligns}{(\verb{character matrix})\cr matrix of same dimension as \code{strings} giving the text
+alignment information for each element. Must be repeated to match placeholders in \code{strings}.
+Must be a supported text alignment. See \link{decimal_align} for allowed values.}
 
-\item{formats}{matrix. Matrix  of same dimension
-as  \code{strings} giving  the text  format information  for
-each  element.   Must  be  repeated to  match  placeholders  in
-\code{strings}.}
+\item{formats}{(\code{matrix})\cr matrix of same dimension as \code{strings} giving the text format
+information for each element. Must be repeated to match placeholders in \code{strings}.}
 
+<<<<<<< HEAD
 \item{row_info}{data.frame.   Data.frame  with  row-information
 necessary for pagination as returned by make_row_df.}
 
 \item{colpaths}{listOrNULL. NULL, or a list of paths to each leaf column,
 for use during horizontal pagination.}
+=======
+\item{row_info}{(\code{data.frame})\cr data frame with row-information necessary for pagination (see
+\code{\link[=basic_pagdf]{basic_pagdf()}} for more details).}
+>>>>>>> main
 
-\item{line_grouping}{integer. Sequence of  integers indicating how
-print  lines  correspond  to   semantic  rows  in  the  object.
-Typically   this   should   not    be   set   manually   unless
-\code{expact_newlines} is set to \code{FALSE}.}
+\item{line_grouping}{(\code{integer})\cr sequence of integers indicating how print lines correspond
+to semantic rows in the object. Typically this should not be set manually unless
+\code{expand_newlines} is set to \code{FALSE}.}
 
-\item{ref_fnotes}{list.   Referential  footnote  information  if
-applicable.}
+\item{ref_fnotes}{(\code{list})\cr referential footnote information, if applicable.}
 
-\item{nlines_header}{numeric(1). Number  of lines taken up  by the
-values of the header (i.e. not including the divider).}
+\item{nlines_header}{(\code{numeric(1)})\cr number of lines taken up by the values of the header
+(i.e. not including the divider).}
 
-\item{nrow_header}{numeric(1).  Number of \emph{rows} corresponding
-to the header.}
+\item{nrow_header}{(\code{numeric(1)})\cr number of \emph{rows} corresponding to the header.}
 
-\item{has_topleft}{logical(1).  Does the  corresponding table have
-'top left information' which should be treated differently when
-expanding  newlines.   Ignored   if  \code{expand_newlines}  is
-\code{FALSE}.}
+\item{has_topleft}{(\code{flag})\cr does the corresponding table have "top left information"
+which should be treated differently when expanding newlines. Ignored if \code{expand_newlines}
+is \code{FALSE}.}
 
-\item{has_rowlabs}{logical(1). Do  the matrices  (\code{strings},
-\code{spans},  \code{aligns})   each  contain  a   column  that
-corresponds  with  row  labels  (Rather than  with  table  cell
-values).  Defaults to \code{TRUE}.}
+\item{has_rowlabs}{(\code{flag})\cr do the matrices (\code{strings}, \code{spans}, \code{aligns}) each contain a
+column that corresponds with row labels (rather than with table cell values). Defaults to \code{TRUE}.}
 
-\item{expand_newlines}{logical(1). Should the matrix form generated
-expand  rows  whose  values   contain  newlines  into  multiple
-'physical'  rows  (as  they  will  appear  when  rendered  into
-ASCII). Defaults to \code{TRUE}}
+\item{expand_newlines}{(\code{flag})\cr whether the matrix form generated should expand rows whose
+values contain newlines into multiple 'physical' rows (as they will appear when rendered into
+ASCII). Defaults to \code{TRUE}.}
 
-\item{main_title}{character(1). Main title as a string.}
+\item{main_title}{(\code{string})\cr main title as a string.}
 
-\item{subtitles}{character. Subtitles, as a character vector.}
+\item{subtitles}{(\code{character})\cr subtitles, as a character vector.}
 
-\item{page_titles}{character.  Page-specific titles, as a character
-vector.}
+\item{page_titles}{(\code{character})\cr page-specific titles, as a character vector.}
 
-\item{listing_keycols}{character. If matrix form of a listing, this contains
+\item{listing_keycols}{(\code{character})\cr. if matrix form of a listing, this contains
 the key columns as a character vector.}
 
-\item{main_footer}{character(1). Main footer as a string.}
+\item{main_footer}{(\code{character})\cr main footer, as a character vector.}
 
-\item{prov_footer}{character. Provenance footer information as a
-character vector.}
+\item{prov_footer}{(\code{character})\cr provenance footer information, as a character vector.}
 
-\item{header_section_div}{character(1). Divider to be used between header
-and body sections.}
+\item{header_section_div}{(\code{string})\cr divider to be used between header and body sections.}
 
-\item{horizontal_sep}{character(1). Horizontal separator to be used for printing
-divisors between header and table body and between different footers.}
+\item{horizontal_sep}{(\code{string})\cr horizontal separator to be used for printing divisors
+between header and table body and between different footers.}
 
-\item{col_gap}{numeric(1). Space (in characters) between columns}
+\item{col_gap}{(\code{numeric(1)})\cr space (in characters) between columns.}
 
-\item{table_inset}{numeric(1). Table inset. See
-\code{\link{table_inset}}}
+\item{table_inset}{(\code{numeric(1)})\cr table inset. See \code{\link[=table_inset]{table_inset()}}.}
 
-\item{colwidths}{numeric. NULL, or a vector of column rendering widths.
-if non-NULL, must have length equal to \code{ncol(strings)}}
+\item{colwidths}{(\code{numeric} or \code{NULL})\cr column rendering widths. If non-\code{NULL}, must have length
+equal to \code{ncol(strings)}.}
 
-\item{indent_size}{numeric(1). Number of spaces to be used per level of indent (if supported by
+\item{indent_size}{(\code{numeric(1)})\cr number of spaces to be used per level of indent (if supported by
 the relevant method). Defaults to 2.}
 
 \item{fontspec}{font_spec. A font_spec object
@@ -132,10 +119,10 @@ returned by \code{\link[=font_spec]{font_spec()}}}
 \item{rep_cols}{numeric(1). Number of columns to be repeated as context during horizontal pagination.}
 }
 \value{
-An object of class \code{MatrixPrintForm}. Currently this is
-implemented as an S3 class inheriting from list with the following
-elements:
+An object of class \code{MatrixPrintForm}. Currently this is implemented as an S3 class inheriting
+from list with the following elements:
 \describe{
+<<<<<<< HEAD
 \item{\code{strings}}{see argument}
 \item{\code{spans}}{see argument}
 \item{\code{aligns}}{see argument}
@@ -156,24 +143,44 @@ when the table is rendered}
 \item{\code{horizontal_sep}}{see argument}
 \item{\code{col_gap}}{see argument}
 \item{\code{table_inset}}{see argument}
+=======
+\item{\code{strings}}{see argument.}
+\item{\code{spans}}{see argument.}
+\item{\code{aligns}}{see argument.}
+\item{\code{display}}{logical matrix of same dimension as \code{strings} that specifies whether an element
+in \code{strings} will be displayed when the table is rendered.}
+\item{\code{formats}}{see argument.}
+\item{\code{row_info}}{see argument.}
+\item{\code{line_grouping}}{see argument.}
+\item{\code{ref_footnotes}}{see argument.}
+\item{\code{main_title}}{see argument.}
+\item{\code{subtitles}}{see argument.}
+\item{\code{page_titles}}{see argument.}
+\item{\code{main_footer}}{see argument.}
+\item{\code{prov_footer}}{see argument.}
+\item{\code{header_section_div}}{see argument.}
+\item{\code{horizontal_sep}}{see argument.}
+\item{\code{col_gap}}{see argument.}
+\item{\code{table_inset}}{see argument.}
+>>>>>>> main
 }
 
 as well as the following attributes:
+
 \describe{
-\item{\code{nlines_header}}{see argument}
-\item{\code{nrow_header}}{see argument}
-\item{\code{ncols}}{number of columns \emph{of the table}, not including
-any row names/row labels}
+\item{\code{nlines_header}}{see argument.}
+\item{\code{nrow_header}}{see argument.}
+\item{\code{ncols}}{number of columns \emph{of the table}, not including any row names/row labels}
 }
 }
 \description{
-Matrix Print Form - Intermediate Representation for ASCII Table Printing
+Constructor for \code{MatrixPrintForm}, an intermediate representation for ASCII table printing.
 }
 \note{
 The bare constructor for the \code{MatrixPrintForm} should generally
 only be called by \code{matrix_form} custom methods, and almost never from other code.
 }
 \examples{
-basic_matrix_form(iris) # calls matrix_form that calls this constructor
+basic_matrix_form(iris) # calls matrix_form which calls this constructor
 
 }

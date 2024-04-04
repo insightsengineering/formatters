@@ -3,25 +3,22 @@
 \name{do_forced_paginate}
 \alias{do_forced_paginate}
 \alias{do_forced_paginate,ANY-method}
-\title{Generic for Performing "Forced Pagination"}
+\title{Generic for performing "forced" pagination}
 \usage{
 do_forced_paginate(obj)
 
 \S4method{do_forced_paginate}{ANY}(obj)
 }
 \arguments{
-\item{obj}{The object to be paginated.
-
-The \code{ANY} method simply returns a list of length one, containing
-\code{obj}.}
+\item{obj}{(\code{ANY})\cr object to be paginated. The \code{ANY} method simply returns a list of
+length one, containing \code{obj}.}
 }
 \value{
-a list of subobjects, which will be further paginated
-by the standard pagination algorithm.
+A list of sub-objects, which will be further paginated by the standard pagination
+algorithm.
 }
 \description{
-Forced pagination is pagination which happens regardless of
-position on page. The object is expected to have all information
-necessary to locate such page breaks, and the \code{do_forced_pag}
-method is expected to fully perform those paginations.
+Forced pagination is pagination which happens regardless of position on page. The object
+is expected to have all information necessary to locate such page breaks, and the
+\code{do_forced_pag} method is expected to fully perform those paginations.
 }
