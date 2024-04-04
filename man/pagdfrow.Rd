@@ -67,18 +67,11 @@ after pagination.}
 
 \item{page_title}{(\code{flag})\cr currently ignored.}
 
-<<<<<<< HEAD
-\item{trailing_sep}{character(1). The string to used as a separator below this row during printing (or
-\code{NA_character_} for no separator).}
-
-\item{fontspec}{font_spec. A font_spec object
-specifying the font information to use for
-calculating string widths and heights, as
-returned by \code{\link[=font_spec]{font_spec()}}}
-=======
 \item{trailing_sep}{(\code{string})\cr the string to use as a separator below this row during printing.
 If \code{NA_character_}, no separator is used.}
->>>>>>> main
+
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 }
 \value{
 A single row \code{data.frame} with the appropriate columns for a pagination info data frame.

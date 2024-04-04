@@ -102,18 +102,11 @@ pagination breaks should be shown. Defaults to \code{FALSE}.}
 
 \item{page_break}{(\code{string})\cr page break symbol (defaults to \code{"\\\\n\\\\s"}).}
 
-<<<<<<< HEAD
-\item{page_num}{character(1). Placeholder string for page numbers. Check
-\link{default_page_number} for more information. Defaults to \code{NULL}.}
-
-\item{fontspec}{font_spec. A font_spec object
-specifying the font information to use for
-calculating string widths and heights, as
-returned by \code{\link[=font_spec]{font_spec()}}}
-=======
 \item{page_num}{(\code{string})\cr placeholder string for page numbers. See \link{default_page_number} for more
 information. Defaults to \code{NULL}.}
->>>>>>> main
+
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 }
 \value{
 If \code{file} is \code{NULL}, the full paginated and concatenated string value is returned,

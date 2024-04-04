@@ -7,16 +7,16 @@
 font_spec(font_family = "Courier", font_size = 8, lineheight = 1)
 }
 \arguments{
-\item{font_family}{character(1). Font Family to use during
+\item{font_family}{(\code{character(1)})\cr font family to use during
 string width and lines-per-page calculations. You can specify
-'Times New Roman' as "Times" or "serif", regardless of OS.
-Beyond that, see \code{family} entry in \code{\link[graphics]{par}}
+"Times New Roman" as "Times" or "serif", regardless of OS.
+Beyond that, see \code{family} entry in \code{\link[graphics:par]{graphics::par()}}
 for details.}
 
-\item{font_size}{numeric(1). Font size to use during string width
+\item{font_size}{(\code{numeric(1)})\cr font size to use during string width
 calculations and lines-per-page calculations.}
 
-\item{lineheight}{numeric(1). Line height to use during
+\item{lineheight}{(\code{numeric(1)})\cr line height to use during
 lines-per-page calculations.}
 }
 \description{
@@ -28,13 +28,11 @@ to the rendering or pagination machinery defines
 a font for use when calculating word wrapping and pagination.
 }
 \note{
-Specifying font in this way to, e.g.,
-\code{\link{export_as_txt}} or \code{\link{toString}} will not
-effect the font size of the output, as these are both raw text
-formats. \code{\link{export_as_pdf}} will use the specified font.
+Specifying font in this way to, e.g., \code{\link[=export_as_txt]{export_as_txt()}} or
+\code{\link[=toString]{toString()}} will not affect the font size of the output, as these
+are both raw text formats. \code{\link[=export_as_pdf]{export_as_pdf()}} will use the specified font.
 }
 \examples{
-
 fspec <- font_spec("Courier", 8, 1)
 
 lets <- paste(letters, collapse = "")
@@ -47,6 +45,5 @@ nchar_ttype(lets, fspec2)
 
 }
 \seealso{
-\code{\link{nchar_ttype}}, \code{\link{toString}},
-\code{\link{paginate}} \code{\link{export_as_pdf}}
+\code{\link[=nchar_ttype]{nchar_ttype()}}, \code{\link[=toString]{toString()}}, \code{\link{pagination_algo}}, \code{\link[=export_as_pdf]{export_as_pdf()}}
 }

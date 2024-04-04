@@ -20,21 +20,14 @@ nlines(x, colwidths = NULL, max_width = NULL, fontspec, col_gap)
 
 \item{colwidths}{(\code{numeric})\cr column widths (if necessary).}
 
-<<<<<<< HEAD
-\item{max_width}{numeric(1). Width strings should be wrapped to
-when determining how many lines they require.}
-
-\item{fontspec}{font_spec. A font_spec object
-specifying the font information to use for
-calculating string widths and heights, as
-returned by \code{\link[=font_spec]{font_spec()}}}
-
-\item{col_gap}{numeric(1). Width of gap between columns in number of spaces.
-Only used by methods which must calculate span widths after wrapping.}
-=======
 \item{max_width}{(\code{numeric(1)})\cr width that strings should be wrapped to when
 determining how many lines they require.}
->>>>>>> main
+
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
+
+\item{col_gap}{(\code{numeric(1)})\cr width of gap between columns in number of spaces.
+Only used by methods which must calculate span widths after wrapping.}
 }
 \value{
 The number of lines needed to render the object \code{x}.

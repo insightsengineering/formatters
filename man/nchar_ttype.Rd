@@ -12,25 +12,25 @@ nchar_ttype(
 )
 }
 \arguments{
-\item{x}{character. The string(s) to calculate width(s) for.}
+\item{x}{(\code{character})\cr the string(s) to calculate width(s) for.}
 
-\item{fontspec}{font_spec or NULL. If non-NULL, the font to use for
-the calculations (as returned by \code{\link{font_spec}}). Defaults to "Courier",
+\item{fontspec}{(\code{font_spec} or \code{NULL})\cr if non-NULL, the font to use for
+the calculations (as returned by \code{\link[=font_spec]{font_spec()}}). Defaults to "Courier",
 which is a monospace font. If NULL, the width will be returned
 in number of characters by calling \code{nchar} directly.}
 
-\item{tol}{numeric(1). The tolerance to use when determining
+\item{tol}{(\code{numeric(1)})\cr the tolerance to use when determining
 if a multiple needs to be rounded up to the next integer. See
 Details.}
 
-\item{raw}{logical(1). Should unrounded widths be returned. Defaults to \code{FALSE}}
+\item{raw}{(\code{logical(1)})\cr whether unrounded widths should be returned. Defaults to \code{FALSE}.}
 }
 \description{
 This function returns the width of each element \code{x}
 \emph{as a multiple of the width of the space character
 for in declared font}, rounded up to the nearest
 integer. This is used extensively in the text rendering
-(\code{\link{toString}}) and pagination machinery for
+(\code{\link[=toString]{toString()}}) and pagination machinery for
 calculating word wrapping, default column widths,
 lines per page, etc.
 }
@@ -38,20 +38,20 @@ lines per page, etc.
 String width is defined in terms of spaces within
 the specified font. For monospace fonts, this definition
 collapses to the number of characters in the string
-(\code{\link[base]{nchar}}), but for truetype fonts it does
-not.
+(\code{\link[=nchar]{nchar()}}), but for truetype fonts it does not.
 
 For \code{raw = FALSE}, non-integer values (the norm in a truetype
 setting) for the number of spaces a string takes up is rounded
-up, *unless the multiple is less than \code{tol} above the last integer
-before it. E.g., if \code{k - num_spaces < tol} for an integer
+up, \emph{unless the multiple is less than \code{tol} above the last integer
+before it}. E.g., if \code{k - num_spaces < tol} for an integer
 \code{k}, \code{k} is returned instead of \code{k+1}.
 }
 \examples{
 nchar_ttype("hi there!")
 
 nchar_ttype("hi there!", font_spec("Times"))
+
 }
 \seealso{
-\code{link{font_spec}}
+\code{\link[=font_spec]{font_spec()}}
 }

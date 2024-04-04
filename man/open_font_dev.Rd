@@ -10,14 +10,16 @@ open_font_dev(fontspec)
 close_font_dev()
 }
 \arguments{
-\item{fontspec}{font_spec. A font_spec object
-specifying the font information to use for
-calculating string widths and heights, as
-returned by \code{\link[=font_spec]{font_spec()}}}
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 }
 \value{
-For \code{open_font_dev} a logical value indicating
-whether a \emph{new} pdf device was opened; for \code{close_font_dev}, NULL. In both cases the value is returned invisibly.
+\itemize{
+\item \code{open_font_dev} returns a logical value indicating whether a \emph{new} pdf device was opened.
+\item \code{close_font_dev} returns \code{NULL}.
+}
+
+In both cases the value is returned invisibly.
 }
 \description{
 Activate font state
@@ -27,10 +29,10 @@ The font device state is an environment with
 four variables guaranteed to be set:
 
 \describe{
-\item{open}{logical(1). whether a device is already open with font info}
-\item{fontspec}{font_spec. the font specification, if any, that is currently active (\code{list()} if none is).}
-\item{spacewidth}{numeric(1). The width of the space character in the currently active font.}
-\item{ismonospace}{logical(1). Whether the specified font is monospaced.}
+\item{\code{open}}{(\code{logical(1)})\cr whether a device is already open with font info}
+\item{\code{fontspec}}{(\code{font_spec})\cr the font specification, if any, that is currently active (\code{list()} if none is).}
+\item{\code{spacewidth}}{(\code{numeric(1)})\cr the width of the space character in the currently active font.}
+\item{\code{ismonospace}}{(\code{logical(1)})\cr whether the specified font is monospaced.}
 }
 
 \code{open_font_dev} opens a pdf device with the specified font
@@ -45,4 +47,5 @@ and clears the cached values.
 open_font_dev(font_spec("Times"))
 nchar_ttype("Hiya there", font_spec("Times"))
 close_font_dev()
+
 }

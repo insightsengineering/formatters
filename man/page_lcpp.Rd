@@ -37,16 +37,10 @@ margins and \code{.75} for both horizontal margins.}
 
 \item{pg_width}{(\code{numeric(1)})\cr page width in inches.}
 
-<<<<<<< HEAD
-\item{pg_height}{numeric(1). Page height in inches.}
-
-\item{fontspec}{font_spec. A font_spec object
-specifying the font information to use for
-calculating string widths and heights, as
-returned by \code{\link[=font_spec]{font_spec()}}}
-=======
 \item{pg_height}{(\code{numeric(1)})\cr page height in inches.}
->>>>>>> main
+
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 }
 \value{
 A named list containing LPP (lines per page) and CPP (characters per page)

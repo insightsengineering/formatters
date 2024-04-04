@@ -43,29 +43,17 @@ inverted for landscape orientation. Defaults to \code{FALSE}, ignored when \code
 \code{"top"}, and \code{"right"} margins in inches. Defaults to \code{.5} inches for both vertical
 margins and \code{.75} for both horizontal margins.}
 
-<<<<<<< HEAD
-\item{font_family}{character(1). Name of a font family. An error
-will be thrown if the family named is not monospaced. Defaults
-to Courier.}
-
-\item{font_size}{numeric(1). Font size, defaults to 12.}
-
-\item{lineheight}{numeric(1). Line height, defaults to 1.}
-
-\item{fontspec}{font_spec. A font_spec object
-specifying the font information to use for
-calculating string widths and heights, as
-returned by \code{\link[=font_spec]{font_spec()}}}
-
-\item{...}{Further parameters to be passed to \code{\link[=paginate_to_mpfs]{paginate_to_mpfs()}}.}
-=======
-\item{font_size}{(\code{numeric(1)})\cr font size. Defaults to \code{12}.}
-
 \item{font_family}{(\code{string})\cr name of a font family. An error will be thrown
 if the family named is not monospaced. Defaults to \code{"Courier"}.}
 
+\item{font_size}{(\code{numeric(1)})\cr font size. Defaults to \code{12}.}
+
+\item{lineheight}{(\code{numeric(1)})\cr line height. Defaults to \code{1}.}
+
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
+
 \item{...}{additional parameters passed to \code{\link[=paginate_to_mpfs]{paginate_to_mpfs()}}.}
->>>>>>> main
 }
 \description{
 Experimental export to the rich text format (RTF) format.

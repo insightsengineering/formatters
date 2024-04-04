@@ -15,30 +15,27 @@ times_font_name <- function() {
 
 #' Font size specification
 #'
+#' @param font_family (`character(1)`)\cr font family to use during
+#'   string width and lines-per-page calculations. You can specify
+#'   "Times New Roman" as "Times" or "serif", regardless of OS.
+#'   Beyond that, see `family` entry in [graphics::par()]
+#'   for details.
+#' @param font_size (`numeric(1)`)\cr font size to use during string width
+#'   calculations and lines-per-page calculations.
+#' @param lineheight (`numeric(1)`)\cr line height to use during
+#'   lines-per-page calculations.
+#'
 #' @details Passing the output of this constructor
 #' to the rendering or pagination machinery defines
 #' a font for use when calculating word wrapping and pagination.
 #'
-#' @param font_family character(1). Font Family to use during
-#' string width and lines-per-page calculations. You can specify
-#' 'Times New Roman' as "Times" or "serif", regardless of OS.
-#' Beyond that, see `family` entry in \code{\link[graphics]{par}}
-#' for details.
-#' @param font_size numeric(1). Font size to use during string width
-#' calculations and lines-per-page calculations.
-#' @param lineheight numeric(1). Line height to use during
-#' lines-per-page calculations.
+#' @note Specifying font in this way to, e.g., [export_as_txt()] or
+#' [toString()] will not affect the font size of the output, as these
+#' are both raw text formats. [export_as_pdf()] will use the specified font.
 #'
-#' @note Specifying font in this way to, e.g.,
-#' \code{\link{export_as_txt}} or \code{\link{toString}} will not
-#' effect the font size of the output, as these are both raw text
-#' formats. \code{\link{export_as_pdf}} will use the specified font.
+#' @seealso [nchar_ttype()], [toString()], [`pagination_algo`], [export_as_pdf()]
 #'
-#' @export
-#' @seealso \code{\link{nchar_ttype}}, \code{\link{toString}},
-#' \code{\link{paginate}} \code{\link{export_as_pdf}}
 #' @examples
-#'
 #' fspec <- font_spec("Courier", 8, 1)
 #'
 #' lets <- paste(letters, collapse = "")
@@ -49,6 +46,7 @@ times_font_name <- function() {
 #'
 #' nchar_ttype(lets, fspec2)
 #'
+#' @export
 font_spec <- function(font_family = "Courier",
                       font_size = 8,
                       lineheight = 1) {

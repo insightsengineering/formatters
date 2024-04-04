@@ -53,10 +53,9 @@ paginate_to_mpfs(
   indent_size = 2,
   pg_size_spec = NULL,
   page_num = default_page_number(),
-
-  fontspec = font_spec(font_family, font_size, lineheight),
   rep_cols = NULL,
   col_gap = 2,
+  fontspec = font_spec(font_family, font_size, lineheight),
   verbose = FALSE
 )
 
@@ -143,18 +142,11 @@ Defaults to 0.}
 
 \item{col_gap}{(\code{numeric(1)})\cr currently ignored.}
 
-<<<<<<< HEAD
-\item{fontspec}{font_spec. A font_spec object
-specifying the font information to use for
-calculating string widths and heights, as
-returned by \code{\link[=font_spec]{font_spec()}}}
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 
-\item{verbose}{logical(1). Should additional informative messages about the search for
-pagination breaks be shown. Defaults to \code{FALSE}.}
-=======
 \item{verbose}{(\code{flag})\cr whether additional informative messages about the search for
 pagination breaks should be shown. Defaults to \code{FALSE}.}
->>>>>>> main
 
 \item{page_num}{(\code{string})\cr placeholder string for page numbers. See \link{default_page_number} for more
 information. Defaults to \code{NULL}.}

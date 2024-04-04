@@ -9,19 +9,11 @@ propose_column_widths(x, indent_size = 2, fontspec = font_spec())
 \arguments{
 \item{x}{(\code{ANY})\cr a \code{MatrixPrintForm} object, or an object with a \code{matrix_form} method.}
 
-<<<<<<< HEAD
-\item{indent_size}{numeric(1). Indent size in characters. Ignored
-when \code{x} is already a \code{MatrixPrintForm} object in favor of information
-there.}
-
-\item{fontspec}{font_spec. A font_spec object
-specifying the font information to use for
-calculating string widths and heights, as
-returned by \code{\link[=font_spec]{font_spec()}}}
-=======
 \item{indent_size}{(\code{numeric(1)})\cr indent size, in characters. Ignored when \code{x} is already
 a \code{MatrixPrintForm} object in favor of information there.}
->>>>>>> main
+
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 }
 \value{
 A vector of column widths based on the content of \code{x} for use in printing and pagination.
@@ -30,7 +22,20 @@ A vector of column widths based on the content of \code{x} for use in printing a
 Row names are also considered a column for the output.
 }
 \examples{
-mf <- basic_matrix_form(mtcars)
+library(dplyr)
+library(rtables)
+iris2 <- iris \%>\%
+  group_by(Species) \%>\%
+  mutate(group = as.factor(rep_len(c("a", "b"), length.out = n()))) \%>\%
+  ungroup()
+
+l <- basic_table() \%>\%
+  split_cols_by("Species") \%>\%
+  split_cols_by("group") \%>\%
+  analyze(c("Sepal.Length", "Petal.Width"), afun = list_wrap_x(summary) , format = "xx.xx")
+
+tbl <- build_table(l, iris2)
+mf <- matrix_form(tbl)
 propose_column_widths(mf)
 
 }

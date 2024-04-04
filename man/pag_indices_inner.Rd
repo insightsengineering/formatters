@@ -49,18 +49,13 @@ space (\code{FALSE}).}
 \item{have_col_fnotes}{(\code{flag})\cr whether the table-like object being rendered has column-associated
 referential footnotes.}
 
-<<<<<<< HEAD
-\item{div_height}{numeric(1). The height of the divider line when the
-associated object is rendered. Defaults to \code{1}.}
-
-\item{col_gap}{numeric(1). Width of gap between columns, in same units as extent
-in \code{pagdf} (spaces under a particular font specification).}
-
-\item{has_rowlabels}{logical(1). Does the object being paginated have row-labels?}
-=======
 \item{div_height}{(\code{numeric(1)})\cr the height of the divider line when the associated object is rendered.
 Defaults to \code{1}.}
->>>>>>> main
+
+\item{col_gap}{(\code{numeric(1)})\cr width of gap between columns, in same units as extent in \code{pagdf} (spaces
+under a particular font specification).}
+
+\item{has_rowlabels}{(\code{logical(1)})\cr whether the object being paginated has row labels.}
 }
 \value{
 A \code{list} containing a vector of row numbers, broken up by page.

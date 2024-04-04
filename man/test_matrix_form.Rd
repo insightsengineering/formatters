@@ -27,18 +27,11 @@ Defaults to \code{"root"}, and generally should not matter to end users.}
 \item{add_decoration}{(\code{flag})\cr whether adds title and footer decorations should
 be added to the matrix form.}
 
-<<<<<<< HEAD
-\item{fontspec}{font_spec. A font_spec object
-specifying the font information to use for
-calculating string widths and heights, as
-returned by \code{\link[=font_spec]{font_spec()}}}
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 
-\item{keycols}{character. Vector of \code{df} column names that are printed first and
-repeated values are assigned to \code{""}. This format is characteristic of a listing matrix form.}
-=======
 \item{keycols}{(\code{character})\cr a vector of \code{df} column names that are printed first and for which
 repeated values are assigned \code{""}. This format is characteristic of a listing matrix form.}
->>>>>>> main
 }
 \value{
 A valid \code{MatrixPrintForm} object representing \code{df} that is ready for ASCII rendering.

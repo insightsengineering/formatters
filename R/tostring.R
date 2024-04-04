@@ -18,19 +18,17 @@ cwidth_inches_unsafe <- function(x) {
 ## returns whether it opened a new device or not
 #' Activate font state
 #'
-#' @param fontspec font_spec. A font_spec object
-#' specifying the font information to use for
-#' calculating string widths and heights, as
-#' returned by [font_spec()]
+#' @param fontspec (`font_spec`)\cr a font_spec object specifying the font information to use for
+#'   calculating string widths and heights, as returned by [font_spec()].
 #'
 #' @details The font device state is an environment with
 #' four variables guaranteed to be set:
 #'
 #' \describe{
-#'   \item{open}{logical(1). whether a device is already open with font info}
-#'   \item{fontspec}{font_spec. the font specification, if any, that is currently active (`list()` if none is).}
-#'   \item{spacewidth}{numeric(1). The width of the space character in the currently active font.}
-#'   \item{ismonospace}{logical(1). Whether the specified font is monospaced.}
+#'   \item{`open`}{(`logical(1)`)\cr whether a device is already open with font info}
+#'   \item{`fontspec`}{(`font_spec`)\cr the font specification, if any, that is currently active (`list()` if none is).}
+#'   \item{`spacewidth`}{(`numeric(1)`)\cr the width of the space character in the currently active font.}
+#'   \item{`ismonospace`}{(`logical(1)`)\cr whether the specified font is monospaced.}
 #' }
 #'
 #' `open_font_dev` opens a pdf device with the specified font
@@ -41,13 +39,18 @@ cwidth_inches_unsafe <- function(x) {
 #' `close_font_dev` closes any open font state device
 #' and clears the cached values.
 #'
-#' @return For `open_font_dev` a logical value indicating
-#' whether a *new* pdf device was opened; for `close_font_dev`, NULL. In both cases the value is returned invisibly.
-#' @export
+#' @return
+#' - `open_font_dev` returns a logical value indicating whether a *new* pdf device was opened.
+#' - `close_font_dev` returns `NULL`.
+#'
+#' In both cases the value is returned invisibly.
+#'
 #' @examples
 #' open_font_dev(font_spec("Times"))
 #' nchar_ttype("Hiya there", font_spec("Times"))
 #' close_font_dev()
+#'
+#' @export
 open_font_dev <- function(fontspec) {
     ## XXX to remove for debugging only
     ## if(identical(fontspec, font_spec()))
@@ -989,7 +992,7 @@ wrap_string <- function(str, width, collapse = NULL, fontspec = font_spec()) {
     )
   }
 
-  if(!is_monospace(fontspec)) 
+  if(!is_monospace(fontspec))
       return(wrap_string_ttype(str, width, fontspec, collapse = collapse))
 
   # str can be also a vector or list. In this case simplify manages the output
@@ -1099,7 +1102,7 @@ wrap_string_ttype <- function(str, width, fontspec, collapse = NULL, min_ok_char
   newdev <- open_font_dev(fontspec)
   if(newdev)
     on.exit(close_font_dev())
-  
+
   rawspls <- strsplit(str, "[[:space:]](?=[^[:space:]])", perl = TRUE)[[1]] #preserve all but one space
   nctt <- nchar_ttype(rawspls, fontspec, raw = TRUE)
   pts <- which(cumsum(nctt) <= width)
@@ -1119,9 +1122,9 @@ wrap_string_ttype <- function(str, width, fontspec, collapse = NULL, min_ok_char
           stop("Unable to find word wrapping solution without breaking word: ",
                rawspls[[1]], " [requires  ", nchar_ttype(rawspls[[1]], fontspec), " spaces of width, out of ",
                width, " available].")
-      }        
+      }
   } else { ## some words fit, and some words don't
- 
+
       done_tmp <- paste(rawspls[pts], collapse = " ")
       tospl_tmp <- rawspls[length(pts) + 1]
       width_tmp <- width - sum(nctt[pts])
@@ -1165,7 +1168,7 @@ wrap_string_ttype <- function(str, width, fontspec, collapse = NULL, min_ok_char
     new_dev <- open_font_dev(fontspec)
     if(new_dev)
       on.exit(close_font_dev())
-    
+
     if(is_monospace(fontspec = fontspec) || nchar(str) == 0)
         return(w)
     nchars <- nchar(str)
@@ -1487,7 +1490,7 @@ nchar_ttype <- function(x, fontspec = font_spec(), tol = sqrt(.Machine$double.ep
   ## above will error.
   num_inches_raw <- vapply(x, cwidth_inches_unsafe, 1.0)
   num_spaces_raw <- num_inches_raw / space_width
-  if(!raw) {  
+  if(!raw) {
     num_spaces_ceil <- ceiling(num_spaces_raw)
     ## we don't want to add one when the answer is e.g, 3.0000000000000953
     within_tol <- which(num_spaces_raw + 1 - num_spaces_ceil <= tol)

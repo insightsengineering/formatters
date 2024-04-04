@@ -13,25 +13,14 @@ wrap_txt(str, width, collapse = NULL, fontspec = font_spec())
 \item{str}{(\code{string}, \code{character}, or \code{list})\cr string to be wrapped. If it is a \code{vector} or
 a \code{list}, it will be looped as a \code{list} and returned with \code{unlist(use.names = FALSE)}.}
 
-<<<<<<< HEAD
-\item{width}{numeric(1). Width, in number of spaces, that the
-text should be wrapped at.}
-
-\item{collapse}{character(1) or \code{NULL}. If the words that have been split should
-be pasted together with the collapse character. This is usually done internally
-with \code{"\\n"} to have the wrapping updated along with other internal values.}
-
-\item{fontspec}{font_spec. A font_spec object
-specifying the font information to use for
-calculating string widths and heights, as
-returned by \code{\link[=font_spec]{font_spec()}}}
-=======
 \item{width}{(\code{numeric(1)})\cr width, in characters, that the text should be wrapped to.}
 
 \item{collapse}{(\code{string} or \code{NULL})\cr collapse character used to separate segments of words that
 have been split and should be pasted together. This is usually done internally with \code{"\\n"} to update
 the wrapping along with other internal values.}
->>>>>>> main
+
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 }
 \value{
 A string if \code{str} is one element and if \code{collapse = NULL}. Otherwise, a list of elements

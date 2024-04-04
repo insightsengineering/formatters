@@ -11,27 +11,11 @@ padstr(x, n, just = list_valid_aligns(), fontspec = font_spec())
 
 \item{n}{(\code{integer(1)})\cr number of characters in the output string. If \code{n < nchar(x)}, an error is thrown.}
 
-<<<<<<< HEAD
-\item{just}{character(1).   Text  alignment   justification  to
-use. Defaults to \code{center}. Must be \code{center}, \code{right}, \code{left},
-\code{dec_right}, \code{dec_left} or \code{decimal}.}
-
-\item{fontspec}{font_spec. A font_spec object
-specifying the font information to use for
-calculating string widths and heights, as
-returned by \code{\link[=font_spec]{font_spec()}}}
-}
-\value{
-\code{x}, padded to be a string of \code{n} characters
-
-\code{x}, padded to be a string of \code{n} characters
-=======
 \item{just}{(\code{string})\cr text alignment justification to use. Defaults to \code{"center"}. Must be one of
 \code{"center"}, \code{"right"}, \code{"left"}, \code{"dec_right"}, \code{"dec_left"}, or \code{"decimal"}.}
 }
 \value{
 \code{x}, padded to be a string of length \code{n}.
->>>>>>> main
 }
 \description{
 Pad a string and align within string

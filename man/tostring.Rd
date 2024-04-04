@@ -36,25 +36,16 @@ used. Parameter is ignored if \code{tf_wrap = FALSE}.}
 
 \item{col_gap}{(\code{numeric(1)})\cr space (in characters) between columns.}
 
-<<<<<<< HEAD
-\item{hsep}{character(1). Characters to repeat to create
-header/body separator line. If \code{NULL}, the object value will be
-used. If \code{" "}, an empty separator will be printed. Check \code{\link[=default_hsep]{default_hsep()}}
-for more information.}
+\item{hsep}{(\code{string})\cr character to repeat to create header/body separator line. If
+\code{NULL}, the object value will be used. If \code{" "}, an empty separator will be printed. See
+\code{\link[=default_hsep]{default_hsep()}} for more information.}
 
-\item{fontspec}{font_spec. A font_spec object
-specifying the font information to use for
-calculating string widths and heights, as
-returned by \code{\link[=font_spec]{font_spec()}}}
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 
 \item{ttype_ok}{logical(1). Should truetype (non-monospace) fonts be
 allowed via \code{fontspec}. Defaults to \code{FALSE}. This parameter is primarily
 for internal testing and generally should not be set by end users.}
-=======
-\item{hsep}{(\code{string})\cr character to repeat to create header/body separator line. If
-\code{NULL}, the object value will be used. If \code{" "}, an empty separator will be printed. See
-\code{\link[=default_hsep]{default_hsep()}} for more information.}
->>>>>>> main
 }
 \value{
 A character string containing the ASCII rendering of the table-like object represented by \code{x}.

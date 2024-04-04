@@ -50,16 +50,8 @@ Must be a supported text alignment. See \link{decimal_align} for allowed values.
 \item{formats}{(\code{matrix})\cr matrix of same dimension as \code{strings} giving the text format
 information for each element. Must be repeated to match placeholders in \code{strings}.}
 
-<<<<<<< HEAD
-\item{row_info}{data.frame.   Data.frame  with  row-information
-necessary for pagination as returned by make_row_df.}
-
-\item{colpaths}{listOrNULL. NULL, or a list of paths to each leaf column,
-for use during horizontal pagination.}
-=======
 \item{row_info}{(\code{data.frame})\cr data frame with row-information necessary for pagination (see
 \code{\link[=basic_pagdf]{basic_pagdf()}} for more details).}
->>>>>>> main
 
 \item{line_grouping}{(\code{integer})\cr sequence of integers indicating how print lines correspond
 to semantic rows in the object. Typically this should not be set manually unless
@@ -111,39 +103,13 @@ equal to \code{ncol(strings)}.}
 \item{indent_size}{(\code{numeric(1)})\cr number of spaces to be used per level of indent (if supported by
 the relevant method). Defaults to 2.}
 
-\item{fontspec}{font_spec. A font_spec object
-specifying the font information to use for
-calculating string widths and heights, as
-returned by \code{\link[=font_spec]{font_spec()}}}
-
-\item{rep_cols}{numeric(1). Number of columns to be repeated as context during horizontal pagination.}
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 }
 \value{
 An object of class \code{MatrixPrintForm}. Currently this is implemented as an S3 class inheriting
 from list with the following elements:
 \describe{
-<<<<<<< HEAD
-\item{\code{strings}}{see argument}
-\item{\code{spans}}{see argument}
-\item{\code{aligns}}{see argument}
-\item{\code{display}}{logical matrix of same dimension as \code{strings}
-that specifies whether an element in \code{strings} will be displayed
-when the table is rendered}
-\item{\code{formats}}{see argument}
-\item{\code{row_info}}{see argument}
-\item{\code{col_info}}{see argument}
-\item{\code{line_grouping}}{see argument}
-\item{\code{ref_footnotes}}{see argument}
-\item{\code{main_title}}{see argument}
-\item{\code{subtitles}}{see argument}
-\item{\code{page_titles}}{see argument}
-\item{\code{main_footer}}{see argument}
-\item{\code{prov_footer}}{see argument}
-\item{\code{header_section_div}}{see argument}
-\item{\code{horizontal_sep}}{see argument}
-\item{\code{col_gap}}{see argument}
-\item{\code{table_inset}}{see argument}
-=======
 \item{\code{strings}}{see argument.}
 \item{\code{spans}}{see argument.}
 \item{\code{aligns}}{see argument.}
@@ -162,7 +128,6 @@ in \code{strings} will be displayed when the table is rendered.}
 \item{\code{horizontal_sep}}{see argument.}
 \item{\code{col_gap}}{see argument.}
 \item{\code{table_inset}}{see argument.}
->>>>>>> main
 }
 
 as well as the following attributes:

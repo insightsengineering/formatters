@@ -63,20 +63,13 @@ in this summary. Defaults to \code{TRUE}. May not be supported by all methods.}
 
 \item{nsibs}{(\code{integer(1)})\cr internal detail, do not set manually.}
 
-<<<<<<< HEAD
-\item{max_width}{numeric(1) or NULL. Maximum width for title/footer
-materials.}
-
-\item{fontspec}{font_spec. A font_spec object
-specifying the font information to use for
-calculating string widths and heights, as
-returned by \code{\link[=font_spec]{font_spec()}}}
-
-\item{col_gap}{numeric(1). The gap to be assumed between columns,
-in number of spaces with font specified by \code{fontspec}}
-=======
 \item{max_width}{(\code{numeric(1)} or \code{NULL})\cr maximum width for title/footer materials.}
->>>>>>> main
+
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
+
+\item{col_gap}{(\code{numeric(1)})\cr the gap to be assumed between columns, in number of spaces with
+font specified by \code{fontspec}.}
 }
 \value{
 A \code{data.frame} of row/column-structure information used by the pagination machinery.

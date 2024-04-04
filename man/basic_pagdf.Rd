@@ -25,18 +25,11 @@ basic_pagdf(
 
 \item{rclass}{(\code{character})\cr class(es) for the rows. Defaults to \code{"NA"}.}
 
-<<<<<<< HEAD
-\item{parent_path}{character. parent path that all rows should be "children of",
-defaults to \code{"root"}, and generally should not matter to end users.}
-
-\item{fontspec}{font_spec. A font_spec object
-specifying the font information to use for
-calculating string widths and heights, as
-returned by \code{\link[=font_spec]{font_spec()}}}
-=======
 \item{parent_path}{(\code{string})\cr parent path that all rows should be "children of".
 Defaults to \code{"root"}, and generally should not matter to end users.}
->>>>>>> main
+
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 }
 \value{
 A \code{data.frame} suitable for use in both the \code{MatrixPrintForm} constructor and the pagination machinery.
