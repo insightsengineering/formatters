@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">formatters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5.9017</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5.9018</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,28 +27,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.4-rc1">v0.5.4-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3-rc2">v0.5.3-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3-rc1">v0.5.3-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.2-rc1">v0.5.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1-rc1">v0.5.1-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0-rc1">v0.5.0-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.5">v0.5.5</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3">v0.5.3</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.2">v0.5.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1">v0.5.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0">v0.5.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.1">v0.4.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.0">v0.4.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.3.3">v0.3.3</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -87,34 +65,34 @@
     
 
 
-<p>Pagination  is performed independently in  the vertical  and horizontal
-directions based solely on a <em>pagination data.frame</em>, which includes the
-following information for each row/column:</p><ul><li><p>number of  lines/characters rendering the row  will take <strong>after
+<p>Pagination is performed independently in the vertical and horizontal
+directions based solely on a <em>pagination data frame</em>, which includes the
+following information for each row/column:</p><ul><li><p>Number of lines/characters rendering the row will take <strong>after
 word-wrapping</strong> (<code>self_extent</code>)</p></li>
-<li><p>the indices (<code>reprint_inds</code>)  and number of lines (<code>par_extent</code>)
+<li><p>The indices (<code>reprint_inds</code>) and number of lines (<code>par_extent</code>)
 of the rows which act as <strong>context</strong> for the row</p></li>
-<li><p>the row's number of siblings and position within its siblings</p></li>
-</ul><p>Given <code>lpp</code>  (<code>cpp</code>) already  adjusted for rendered  elements which
-are  not rows/columns  and a  dataframe of  pagination information,
-pagination is  performed via  the following  algorithm, and  with a
-<code>start = 1</code>:</p>
-<p>Core Pagination Algorithm:</p><ol><li><p>Initial guess for pagination point is <code>start + lpp</code> (<code>start + cpp</code>)</p></li>
-<li><p>While the guess is not a valid pagination position, and <code>guess &gt; start</code>, decrement guess and repeat</p></li>
-</ol><ul><li><p>an error is thrown if all possible pagination positions between
-<code>start</code> and <code>start + lpp</code> (<code>start + cpp</code>) would ever be <code>&lt; start</code>
+<li><p>The row's number of siblings and position within its siblings</p></li>
+</ul><p>Given <code>lpp</code> (<code>cpp</code>) is already adjusted for rendered elements which
+are not rows/columns and a data frame of pagination information,
+pagination is performed via the following algorithm with <code>start = 1</code>.</p>
+<p>Core Pagination Algorithm:</p><ol><li><p>Initial guess for pagination position is <code>start + lpp</code> (<code>start + cpp</code>)</p></li>
+<li><p>While the guess is not a valid pagination position, and <code>guess &gt; start</code>,
+decrement guess and repeat.</p><ul><li><p>An error is thrown if all possible pagination positions between
+<code>start</code> and <code>start + lpp</code> (<code>start + cpp</code>) would be <code>&lt; start</code>
 after decrementing</p></li>
-</ul><ol><li><p>Retain pagination index</p></li>
-<li><p>if pagination  point was less than  <code>NROW(tt)</code> (<code>ncol(tt)</code>), set
+</ul></li>
+<li><p>Retain pagination index</p></li>
+<li><p>If pagination point was less than <code>NROW(tt)</code> (<code>ncol(tt)</code>), set
 <code>start</code> to <code>pos + 1</code>, and repeat steps (1) - (4).</p></li>
-</ol><p>Validating pagination position:</p>
-<p>Given an (already adjusted) <code>lpp</code> or <code>cpp</code> value, a pagination is invalid if:</p><ul><li><p>The rows/columns on the page would take  more than (adjusted) <code>lpp</code> lines/<code>cpp</code>
-characters to render <strong>including</strong></p><ul><li><p>word-wrapping</p></li>
+</ol><p>Validating Pagination Position:</p>
+<p>Given an (already adjusted) <code>lpp</code> or <code>cpp</code> value, a pagination is invalid if:</p><ul><li><p>The rows/columns on the page would take more than (adjusted) <code>lpp</code> lines/<code>cpp</code>
+characters to render <strong>including</strong>:</p><ul><li><p>word-wrapping</p></li>
 <li><p>(vertical only) context repetition</p></li>
 </ul></li>
-<li><p>(vertical only) footnote messages  and or section divider lines
+<li><p>(vertical only) footnote messages and/or section divider lines
 take up too many lines after rendering rows</p></li>
 <li><p>(vertical only) row is a label or content (row-group summary) row</p></li>
-<li><p>(vertical only)  row at the pagination point  has siblings, and
+<li><p>(vertical only) row at the pagination point has siblings, and
 it has less than <code>min_siblings</code> preceding or following siblings</p></li>
 <li><p>pagination would occur within a sub-table listed in <code>nosplitin</code></p></li>
 </ul></div>

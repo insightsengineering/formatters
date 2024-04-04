@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">formatters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5.9017</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5.9018</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,28 +27,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.4-rc1">v0.5.4-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3-rc2">v0.5.3-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3-rc1">v0.5.3-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.2-rc1">v0.5.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1-rc1">v0.5.1-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0-rc1">v0.5.0-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.5">v0.5.5</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3">v0.5.3</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.2">v0.5.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1">v0.5.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0">v0.5.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.1">v0.4.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.0">v0.4.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.3.3">v0.3.3</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -89,31 +67,30 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>font_family</dt>
-<dd><p>character(1). Name of a font family. An error
-will be thrown if the family named is not monospaced. Defaults
-to Courier.</p></dd>
+<dd><p>(<code>string</code>)<br> name of a font family. An error will be thrown
+if the family named is not monospaced. Defaults to <code>"Courier"</code>.</p></dd>
 
 
 <dt>font_size</dt>
-<dd><p>numeric(1). Font size, defaults to 12.</p></dd>
+<dd><p>(<code>numeric(1)</code>)<br> font size. Defaults to <code>12</code>.</p></dd>
 
 
 <dt>lineheight</dt>
-<dd><p>numeric(1). Line height, defaults to 1.</p></dd>
+<dd><p>(<code>numeric(1)</code>)<br> line height. Defaults to <code>1</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>named list with <code>cpi</code> and <code>lpi</code>, the characters and lines per
+<p>A named list with <code>cpi</code> and <code>lpi</code>, the characters and lines per
 inch, respectively.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>This function creates opens pdf graphics device  writing to an temporary file,
-then utilizes <code><a href="https://rdrr.io/r/grid/grid-defunct.html" class="external-link">grid::convertWidth()</a></code> and <code><a href="https://rdrr.io/r/grid/grid-defunct.html" class="external-link">grid::convertHeight()</a></code> to calculate
-lines per inch and characters per inch for the specified font family, size, and
+    <p>This function opens a PDF graphics device, writes to a temporary file, then
+utilizes <code><a href="https://rdrr.io/r/grid/grid-defunct.html" class="external-link">grid::convertWidth()</a></code> and <code><a href="https://rdrr.io/r/grid/grid-defunct.html" class="external-link">grid::convertHeight()</a></code> to calculate lines
+per inch and characters per inch for the specified font family, size, and
 line height.</p>
 <p>An error is thrown if the font is not monospaced (determined by comparing
 the effective widths of the <code>M</code> and <code>.</code> glyphs).</p>
@@ -144,6 +121,7 @@ the effective widths of the <code>M</code> and <code>.</code> glyphs).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $lpi</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8.181818</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

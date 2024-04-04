@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">formatters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5.9017</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5.9018</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,28 +27,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.4-rc1">v0.5.4-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3-rc2">v0.5.3-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3-rc1">v0.5.3-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.2-rc1">v0.5.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1-rc1">v0.5.1-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0-rc1">v0.5.0-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.5">v0.5.5</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3">v0.5.3</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.2">v0.5.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1">v0.5.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0">v0.5.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.1">v0.4.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.0">v0.4.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.3.3">v0.3.3</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -72,13 +50,13 @@
 </nav><div class="container template-reference-topic">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Determine lines per page (<code>LPP</code>) and characters per page (<code>CPP</code>) based on font and page type</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Determine lines per page (LPP) and characters per page (CPP) based on font and page type</h1>
       <small class="dont-index">Source: <a href="https://github.com/insightsengineering/formatters/blob/HEAD/R/page_size.R" class="external-link"><code>R/page_size.R</code></a></small>
       <div class="d-none name"><code>page_lcpp.Rd</code></div>
     </div>
 
     <div class="ref-description section level2">
-    <p>Determine lines per page (<code>LPP</code>) and characters per page (<code>CPP</code>) based on font and page type</p>
+    <p>Determine lines per page (LPP) and characters per page (CPP) based on font and page type</p>
     </div>
 
     <div class="section level2">
@@ -98,51 +76,48 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>page_type</dt>
-<dd><p>character(1).   Name   of  a  page  type.   See
-<code>page_types</code>.   Ignored when  <code>pg_width</code> and  <code>pg_height</code>
-are set directly.</p></dd>
+<dd><p>(<code>string</code>)<br> name of a page type. See <code><a href="page_types.html">page_types</a></code>. Ignored
+when <code>pg_width</code> and <code>pg_height</code> are set directly.</p></dd>
 
 
 <dt>landscape</dt>
-<dd><p>logical(1). Should the  dimensions of <code>page_type</code>
-be inverted  for landscape?  Defaults to  <code>FALSE</code>, ignored when
-<code>pg_width</code> and <code>pg_height</code> are set directly.</p></dd>
+<dd><p>(<code>flag</code>)<br> whether the dimensions of <code>page_type</code> should be
+inverted for landscape orientation. Defaults to <code>FALSE</code>, ignored when <code>pg_width</code> and
+<code>pg_height</code> are set directly.</p></dd>
 
 
 <dt>font_family</dt>
-<dd><p>character(1). Name of a font family. An error
-will be thrown if the family named is not monospaced. Defaults
-to Courier.</p></dd>
+<dd><p>(<code>string</code>)<br> name of a font family. An error will be thrown
+if the family named is not monospaced. Defaults to <code>"Courier"</code>.</p></dd>
 
 
 <dt>font_size</dt>
-<dd><p>numeric(1). Font size, defaults to 12.</p></dd>
+<dd><p>(<code>numeric(1)</code>)<br> font size. Defaults to <code>12</code>.</p></dd>
 
 
 <dt>lineheight</dt>
-<dd><p>numeric(1). Line height, defaults to 1.</p></dd>
+<dd><p>(<code>numeric(1)</code>)<br> line height. Defaults to <code>1</code>.</p></dd>
 
 
 <dt>margins</dt>
-<dd><p>numeric(4). Named numeric vector containing <code>'bottom'</code>,
-<code>'left'</code>, <code>'top'</code>, and <code>'right'</code> margins in inches. Defaults
-to <code>.5</code> inches for both vertical margins and <code>.75</code> for both
-horizontal margins.</p></dd>
+<dd><p>(<code>numeric(4)</code>)<br> named numeric vector containing <code>"bottom"</code>, <code>"left"</code>,
+<code>"top"</code>, and <code>"right"</code> margins in inches. Defaults to <code>.5</code> inches for both vertical
+margins and <code>.75</code> for both horizontal margins.</p></dd>
 
 
 <dt>pg_width</dt>
-<dd><p>numeric(1). Page width in inches.</p></dd>
+<dd><p>(<code>numeric(1)</code>)<br> page width in inches.</p></dd>
 
 
 <dt>pg_height</dt>
-<dd><p>numeric(1). Page height in inches.</p></dd>
+<dd><p>(<code>numeric(1)</code>)<br> page height in inches.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>a named list containing <code>LPP</code> (lines per page) and <code>CPP</code> (characters per page)
+<p>A named list containing LPP (lines per page) and CPP (characters per page)
 elements suitable for use by the pagination machinery.</p>
     </div>
 
@@ -184,6 +159,7 @@ elements suitable for use by the pagination machinery.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $lpp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 126</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
