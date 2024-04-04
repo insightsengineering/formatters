@@ -1,40 +1,42 @@
 #' Return an object with a label attribute
 #'
-#' @param x an object
-#' @param label label attribute to to attached to  \code{x}
+#' @param x (`ANY`)\cr an object.
+#' @param label (`string`)\cr label attribute to attach to `x`.
 #'
-#' @export
-#' @return \code{x} labeled by \code{label}. Note: the exact mechanism of labeling should be
-#' considered an internal implementation detail, but the label will always be retrieved via \code{obj_label}.
+#' @return `x` labeled by `label`. Note that the exact mechanism of labeling should be considered
+#'   an internal implementation detail, but the label can always be retrieved via `obj_label`.
+#'
 #' @examples
 #' x <- with_label(c(1, 2, 3), label = "Test")
 #' obj_label(x)
+#'
+#' @export
 with_label <- function(x, label) {
   obj_label(x) <- label
   x
 }
 
-
-#' Get Label Attributes of Variables in a \code{data.frame}
+#' Get label attributes of variables in a `data.frame`
 #'
-#' Variable labels can be stored as a \code{label} attribute for each variable.
+#' Variable labels can be stored as a `label` attribute for each variable.
 #' This functions returns a named character vector with the variable labels
-#' (empty sting if not specified)
+#' (or empty strings if not specified).
 #'
-#' @param x a \code{data.frame} object
-#' @param fill boolean in case the \code{label} attribute does not exist if
-#'   \code{TRUE} the variable names is returned, otherwise \code{NA}
+#' @param x (`data.frame`)\cr a data frame object.
+#' @param fill (`flag`)\cr whether variable names should be returned for variables for
+#'   which the `label` attribute does not exist. If `FALSE`, these variables are filled with
+#'   `NA`s instead.
 #'
-#' @return a named character vector with the variable labels, the names
-#'   correspond to the variable names
-#'
-#' @export
+#' @return a named character vector of variable labels from `x`, with names corresponding
+#'   to variable names.
 #'
 #' @examples
 #' x <- iris
 #' var_labels(x)
 #' var_labels(x) <- paste("label for", names(iris))
 #' var_labels(x)
+#'
+#' @export
 var_labels <- function(x, fill = FALSE) {
   stopifnot(is.data.frame(x))
   if (NCOL(x) == 0) {
@@ -67,18 +69,16 @@ var_labels <- function(x, fill = FALSE) {
   labels
 }
 
-
-#' Set Label Attributes of All Variables in a \code{data.frame}
+#' Set label attributes of all variables in a `data.frame`
 #'
-#' Variable labels can be stored as a \code{label} attribute for each variable.
-#' This functions sets all non-missing (non-NA) variable labels in a \code{data.frame}
+#' Variable labels can be stored as the `label` attribute for each variable.
+#' This functions sets all non-missing (non-`NA`) variable labels in a `data.frame`.
 #'
 #' @inheritParams var_labels
-#' @param value new variable labels, \code{NA} removes the variable label
+#' @param value (`character`)\cr a vector of new variable labels. If any values are `NA`,
+#'   the label for that variable is removed.
 #'
-#' @return modifies the variable labels of \code{x}
-#'
-#' @export
+#' @return `x` with modified variable labels.
 #'
 #' @examples
 #' x <- iris
@@ -89,6 +89,8 @@ var_labels <- function(x, fill = FALSE) {
 #' if (interactive()) {
 #'   View(x) # in RStudio data viewer labels are displayed
 #' }
+#'
+#' @export
 `var_labels<-` <- function(x, value) {
   stopifnot(
     is.data.frame(x),
@@ -109,23 +111,21 @@ var_labels <- function(x, fill = FALSE) {
   x
 }
 
-
-#' Copy and Change Variable Labels of a \code{data.frame}
+#' Copy and change variable labels of a `data.frame`
 #'
-#' Relabel a subset of the variables
+#' Relabel a subset of the variables.
 #'
 #' @inheritParams var_labels<-
-#' @param ... name-value pairs, where name corresponds to a variable name in
-#'   \code{x} and the value to the new variable label
+#' @param ... name-value pairs, where each name corresponds to a variable name in
+#'   `x` and the value to the new variable label.
 #'
-#' @return a copy of \code{x} with changed labels according to \code{...}
-#'
-#' @export
+#' @return A copy of `x` with labels modified according to `...`
 #'
 #' @examples
 #' x <- var_relabel(iris, Sepal.Length = "Sepal Length of iris flower")
 #' var_labels(x)
 #'
+#' @export
 var_relabel <- function(x, ...) {
   # todo: make this function more readable / code easier
   stopifnot(is.data.frame(x))
@@ -153,19 +153,18 @@ var_relabel <- function(x, ...) {
   x
 }
 
-
-#' Remove Variable Labels of a \code{data.frame}
+#' Remove variable labels of a `data.frame`
 #'
-#' Removing labels attributes from a variables in a data frame
+#' Remove `label` attribute from all variables in a data frame.
 #'
-#' @param x a \code{data.frame} object
+#' @param x (`data.frame`)\cr a `data.frame` object.
 #'
-#' @return the same data frame as \code{x} stripped of variable labels
-#'
-#' @export
+#' @return `x` with its variable labels stripped.
 #'
 #' @examples
 #' x <- var_labels_remove(iris)
+#'
+#' @export
 var_labels_remove <- function(x) {
   stopifnot(is.data.frame(x))
 

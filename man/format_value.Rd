@@ -7,17 +7,17 @@
 format_value(x, format = NULL, output = c("ascii", "html"), na_str = "NA")
 }
 \arguments{
-\item{x}{ANY. The value to be formatted}
+\item{x}{(\code{ANY})\cr the value to be formatted.}
 
-\item{format}{character(1) or function. The format label (string) or \code{formatter} function to apply to \code{x}.}
+\item{format}{(\code{string} or \code{function})\cr the format label (string) or formatter function to
+apply to \code{x}.}
 
-\item{output}{character(1). output type}
+\item{output}{(\code{string})\cr output type.}
 
-\item{na_str}{character(1). String that should be displayed when the value of \code{x} is missing.
-Defaults to \code{"NA"}.}
+\item{na_str}{(\code{string})\cr string to display when the value of \code{x} is missing. Defaults to \code{"NA"}.}
 }
 \value{
-formatted text representing the cell \code{x}.
+Formatted text representing the cell \code{x}.
 }
 \description{
 Converts a (possibly compound) value into a string using the \code{format} information

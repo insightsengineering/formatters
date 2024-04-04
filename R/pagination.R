@@ -37,82 +37,82 @@
 ##       lines_long = floor(lgl_len * lpi_vert))
 ## }
 
-#' @name pagination_algo
-#' @rdname pagination_algo
-#' @title Pagination
+#' Pagination
+#'
 #' @section Pagination Algorithm:
 #'
-#' Pagination  is performed independently in  the vertical  and horizontal
-#' directions based solely on a *pagination data.frame*, which includes the
+#' Pagination is performed independently in the vertical and horizontal
+#' directions based solely on a *pagination data frame*, which includes the
 #' following information for each row/column:
 #'
-#'  - number of  lines/characters rendering the row  will take **after
-#'    word-wrapping** (`self_extent`)
-#'  - the indices (`reprint_inds`)  and number of lines (`par_extent`)
-#'    of the rows which act as **context** for the row
-#'  - the row's number of siblings and position within its siblings
+#'   - Number of lines/characters rendering the row will take **after
+#'     word-wrapping** (`self_extent`)
+#'   - The indices (`reprint_inds`) and number of lines (`par_extent`)
+#'     of the rows which act as **context** for the row
+#'   - The row's number of siblings and position within its siblings
 #'
-#' Given `lpp`  (`cpp`) already  adjusted for rendered  elements which
-#' are  not rows/columns  and a  dataframe of  pagination information,
-#' pagination is  performed via  the following  algorithm, and  with a
-#' `start = 1`:
+#' Given `lpp` (`cpp`) is already adjusted for rendered elements which
+#' are not rows/columns and a data frame of pagination information,
+#' pagination is performed via the following algorithm with `start = 1`.
 #'
 #' Core Pagination Algorithm:
-#' 1. Initial guess for pagination point is `start + lpp` (`start + cpp`)
 #'
-#' 2. While the guess is not a valid pagination position, and `guess >
-#'    start`, decrement guess and repeat
-#'   - an error is thrown if all possible pagination positions between
-#'     `start` and `start + lpp` (`start + cpp`) would ever be `< start`
-#'     after decrementing
+#' 1. Initial guess for pagination position is `start + lpp` (`start + cpp`)
+#' 2. While the guess is not a valid pagination position, and `guess > start`,
+#'    decrement guess and repeat.
+#'      - An error is thrown if all possible pagination positions between
+#'        `start` and `start + lpp` (`start + cpp`) would be `< start`
+#'        after decrementing
 #' 3. Retain pagination index
-#' 4. if pagination  point was less than  `NROW(tt)` (`ncol(tt)`), set
+#' 4. If pagination point was less than `NROW(tt)` (`ncol(tt)`), set
 #'    `start` to `pos + 1`, and repeat steps (1) - (4).
 #'
-#' Validating pagination position:
+#' Validating Pagination Position:
 #'
 #' Given an (already adjusted) `lpp` or `cpp` value, a pagination is invalid if:
 #'
-#'   - The rows/columns on the page would take  more than (adjusted) `lpp` lines/`cpp`
-#'     characters to render **including**
-#'     - word-wrapping
-#'     - (vertical only) context repetition
-#'   - (vertical only) footnote messages  and or section divider lines
+#'   - The rows/columns on the page would take more than (adjusted) `lpp` lines/`cpp`
+#'     characters to render **including**:
+#'       - word-wrapping
+#'       - (vertical only) context repetition
+#'   - (vertical only) footnote messages and/or section divider lines
 #'     take up too many lines after rendering rows
 #'   - (vertical only) row is a label or content (row-group summary) row
-#'   - (vertical only)  row at the pagination point  has siblings, and
+#'   - (vertical only) row at the pagination point has siblings, and
 #'     it has less than `min_siblings` preceding or following siblings
 #'   - pagination would occur within a sub-table listed in `nosplitin`
 #'
+#' @name pagination_algo
 NULL
 
-#' Create row of pagination data frame
-#' @param nm character(1). Name
-#' @param lab character(1). Label
-#' @param rnum numeric(1). Absolute row number
-#' @param pth character or NULL. Path within larger table
-#' @param sibpos integer(1). Position among sibling rows
-#' @param nsibs integer(1). Number of siblings (including self).
-#' @param extent numeric(1). Number of lines required to print the row
-#' @param colwidths numeric. Column widths
-#' @param repext integer(1). Number of lines required to reprint all context for this row if it appears directly
-#'   after pagination.
-#' @param repind integer. Vector of row numbers to be reprinted if this row appears directly after pagination.
-#' @param indent integer. Indent
-#' @param rclass character(1). Class of row object.
-#' @param nrowrefs integer(1). Number of row referential footnotes for this row
-#' @param ncellrefs integer(1). Number of cell referential footnotes for the cells in this row
-#' @param nreflines integer(1). Total number of lines required by all referential footnotes
-#' @param force_page logical(1). Currently Ignored.
-#' @param page_title logical(1). Currently Ignored.
-#' @param trailing_sep character(1). The string to used as a separator below this row during printing (or
-#' `NA_character_` for no separator).
-#' @param row ANY. Object representing the row, which is used for default values of \code{nm}, \code{lab},
-#' \code{extent} and \code{rclass} if provided. Must have methods for \code{obj_name}, \code{obj_label},
-#' and \code{nlines}, respectively, for default values of \code{nm}, \code{lab} and \code{extent} to
-#' be retrieved, respectively.
+#' Create a row of a pagination data frame
 #'
-#' @return a single row data.frame with the columns appropriate for a pagination info data frame.
+#' @param nm (`string`)\cr name.
+#' @param lab (`string`)\cr label.
+#' @param rnum (`numeric(1)`)\cr absolute row number.
+#' @param pth (`character` or `NULL`)\cr path within larger table.
+#' @param sibpos (`integer(1)`)\cr position among sibling rows.
+#' @param nsibs (`integer(1)`)\cr number of siblings (including self).
+#' @param extent (`numeric(1)`)\cr number of lines required to print the row.
+#' @param colwidths (`numeric`)\cr column widths.
+#' @param repext (`integer(1)`)\cr number of lines required to reprint all context for this row if it appears directly
+#'   after pagination.
+#' @param repind (`integer`)\cr vector of row numbers to be reprinted if this row appears directly after pagination.
+#' @param indent (`integer`)\cr indent.
+#' @param rclass (`string`)\cr class of row object.
+#' @param nrowrefs (`integer(1)`)\cr number of row referential footnotes for this row.
+#' @param ncellrefs (`integer(1)`)\cr number of cell referential footnotes for the cells in this row.
+#' @param nreflines (`integer(1)`)\cr total number of lines required by all referential footnotes.
+#' @param force_page (`flag`)\cr currently ignored.
+#' @param page_title (`flag`)\cr currently ignored.
+#' @param trailing_sep (`string`)\cr the string to use as a separator below this row during printing.
+#'   If `NA_character_`, no separator is used.
+#' @param row (`ANY`)\cr object representing the row, which is used for default values of `nm`, `lab`,
+#'   `extent`, and `rclass` if provided. Must have methods for `obj_name`, `obj_label`, and `nlines`, to retrieve
+#'   default values of `nm`, `lab`, and `extent`, respectively.
+#'
+#' @return A single row `data.frame` with the appropriate columns for a pagination info data frame.
+#'
 #' @export
 pagdfrow <- function(row,
                      nm = obj_name(row),
@@ -160,7 +160,6 @@ pagdfrow <- function(row,
   )
 }
 
-
 calc_ref_nlines_df <- function(pagdf) {
   ## XXX XXX XXX this is dangerous and wrong!!!
   if (is.null(pagdf$ref_info_df) && sum(pagdf$nreflines) == 0) {
@@ -173,7 +172,6 @@ calc_ref_nlines_df <- function(pagdf) {
   unqsyms <- !duplicated(refdf$symbol)
   refdf[unqsyms, , drop = FALSE]
 }
-
 
 build_fail_msg <- function(row, lines, raw_rowlines,
                            allowed_lines, lpp, decoration_lines,
@@ -366,7 +364,6 @@ valid_pag <- function(pagdf,
   TRUE
 }
 
-
 find_pag <- function(pagdf,
                      current_page,
                      start,
@@ -438,44 +435,43 @@ find_pag <- function(pagdf,
   guess
 }
 
-
-#' Find Pagination Indices From Pagination Info Dataframe
+#' Find pagination indices from pagination info data frame
 #'
 #' Pagination methods should typically call the `make_row_df` method
 #' for their object and then call this function on the resulting
-#' pagination info data.frame.
+#' pagination info `data.frame`.
 #'
-#' @details `pab_indices_inner` implements the Core Pagination Algorithm
-#' for a single direction (vertical if `row = TRUE`, the default, horizontal otherwise)
-#' based on the pagination dataframe and (already adjusted for non-body rows/columns)
+#' @param pagdf (`data.frame`)\cr a pagination info `data.frame` as created by
+#'   either `make_rows_df` or `make_cols_df`.
+#' @param rlpp (`numeric`)\cr maximum number of *row* lines per page (not including header materials), including
+#'   (re)printed header and context rows.
+#' @param lpp_or_cpp (`numeric`)\cr total maximum number of *row* lines or content (column-wise characters) per page
+#'   (including header materials and context rows). This is only for informative results with `verbose = TRUE`.
+#'   It will print `NA` if not specified by the pagination machinery.
+#' @param context_lpp_or_cpp (`numeric`)\cr total number of context *row* lines or content (column-wise characters)
+#'   per page (including header materials). Uses `NA` if not specified by the pagination machinery and is only
+#'   for informative results with `verbose = TRUE`.
+#' @param min_siblings (`numeric`)\cr minimum sibling rows which must appear on either side of pagination row for a
+#'   mid-subtable split to be valid. Defaults to 2 for tables. It is automatically turned off (set to 0) for listings.
+#' @param nosplitin (`character`)\cr list of names of subtables where page breaks are not allowed, regardless of other
+#'   considerations. Defaults to none.
+#' @param verbose (`flag`)\cr whether additional informative messages about the search for
+#'   pagination breaks should be shown. Defaults to `FALSE`.
+#' @param row (`flag`)\cr whether pagination is happening in row space (`TRUE`, the default) or column
+#'   space (`FALSE`).
+#' @param have_col_fnotes (`flag`)\cr whether the table-like object being rendered has column-associated
+#'   referential footnotes.
+#' @param div_height (`numeric(1)`)\cr the height of the divider line when the associated object is rendered.
+#'   Defaults to `1`.
+#'
+#' @details `pab_indices_inner` implements the core pagination algorithm (see below)
+#' for a single direction (vertical if `row = TRUE` (the default), horizontal otherwise)
+#' based on the pagination data frame and (already adjusted for non-body rows/columns)
 #' lines (or characters) per page.
 #'
 #' @inheritSection pagination_algo Pagination Algorithm
-#' @param pagdf data.frame. A pagination info data.frame as created by
-#'   either `make_rows_df` or `make_cols_df`.
-#' @param rlpp numeric. Maximum number of \emph{row} lines per page (not including header materials), including
-#'   (re)printed header and context rows
-#' @param lpp_or_cpp numeric. Total maximum number of \emph{row} lines or content (column-wise characters) per page
-#'   (including header materials and context rows). This is only for informative results with `verbose = TRUE`.
-#'   It will print `NA` if not specified by the pagination machinery.
-#' @param context_lpp_or_cpp numeric. Total number of context \emph{row} lines or content (column-wise characters)
-#'   per page (including header materials). Uses `NA` if not specified by the pagination machinery and is only
-#'   for informative results with `verbose = TRUE`.
-#' @param min_siblings  numeric. Minimum sibling rows which must appear on either side of pagination row for a
-#'   mid-subtable split to be valid. Defaults to 2 for tables. It is automatically turned off
-#'   (by using only 0) for listings.
-#' @param nosplitin character. List of names of sub-tables where page-breaks are not allowed, regardless of other
-#'   considerations. Defaults to none.
-#' @param verbose logical(1). Should additional informative messages about the search for
-#'   pagination breaks be shown. Defaults to \code{FALSE}.
-#' @param row logical(1). Is pagination happening in row
-#'   space (`TRUE`, the default) or column space (`FALSE`)
-#' @param have_col_fnotes logical(1). Does the table-like object being rendered have
-#'   column-associated referential footnotes.
-#' @param div_height numeric(1). The height of the divider line when the
-#'   associated object is rendered. Defaults to `1`.
 #'
-#' @return A list containing the vector of row numbers, broken up by page
+#' @return A `list` containing a vector of row numbers, broken up by page.
 #'
 #' @examples
 #' mypgdf <- basic_pagdf(row.names(mtcars))
@@ -528,23 +524,22 @@ pag_indices_inner <- function(pagdf,
   ret
 }
 
-#' Find Column Indices for Vertical Pagination
-#' @param  obj   ANY.  object   to   be  paginated.   Must  have   a
-#'     \code{\link{matrix_form}} method.
-#' @param cpp numeric(1). Number of characters per page (width)
-#' @param colwidths numeric vector.  Column widths (in characters) for
-#'     use with vertical pagination.
-#' @param rep_cols numeric(1). Number of \emph{columns} (not including
-#'     row labels) to be repeated on every page. Defaults to 0
-#' @inheritParams pag_indices_inner
+#' Find column indices for vertical pagination
 #'
-#' @return A list partitioning the vector of column indices
-#' into subsets for 1 or more horizontally paginated pages.
+#' @inheritParams pag_indices_inner
+#' @param obj (`ANY`)\cr object to be paginated. Must have a [matrix_form()] method.
+#' @param cpp (`numeric(1)`)\cr number of characters per page (width).
+#' @param colwidths (`numeric`)\cr vector of column widths (in characters) for use in vertical pagination.
+#' @param rep_cols (`numeric(1)`)\cr number of *columns* (not including row labels) to be repeated on every page.
+#'   Defaults to 0.
+#'
+#' @return A `list` partitioning the vector of column indices into subsets for 1 or more horizontally paginated pages.
 #'
 #' @examples
 #' mf <- basic_matrix_form(df = mtcars)
 #' colpaginds <- vert_pag_indices(mf)
 #' lapply(colpaginds, function(j) mtcars[, j, drop = FALSE])
+#'
 #' @export
 vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, rep_cols = 0L) {
   mf <- matrix_form(obj, TRUE)
@@ -616,21 +611,22 @@ mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf)) {
   mf
 }
 
-
-#' Basic/spoof pagination info dataframe
+#' Basic/spoof pagination info data frame
 #'
-#' Returns a minimal pagination info data.frame (with no sibling/footnote/etc info).
+#' Returns a minimal pagination info `data.frame` (with no info on siblings, footnotes, etc.).
+#'
 #' @inheritParams test_matrix_form
-#' @param rnames character. Vector of row names
-#' @param labs character. Vector of row labels (defaults to names)
-#' @param rnums integer. Vector of row numbers. Defaults to `seq_along(rnames)`.
-#' @param extents integer. Number of lines each row will take to print, defaults to 1 for all rows
-#' @param rclass character. Class(es) for the rows. Defaults to "NA"
+#' @param rnames (`character`)\cr vector of row names.
+#' @param labs (`character`)\cr vector of row labels. Defaults to `rnames`.
+#' @param rnums (`integer`)\cr vector of row numbers. Defaults to `seq_along(rnames)`.
+#' @param extents (`integer`)\cr number of lines each row requires to print. Defaults to 1 for all rows.
+#' @param rclass (`character`)\cr class(es) for the rows. Defaults to `"NA"`.
 #'
-#' @return A data.frame suitable for use in both the `MatrixPrintForm` constructor and the pagination machinery
+#' @return A `data.frame` suitable for use in both the `MatrixPrintForm` constructor and the pagination machinery.
 #'
 #' @examples
 #' basic_pagdf(c("hi", "there"))
+#'
 #' @export
 basic_pagdf <- function(rnames, labs = rnames, rnums = seq_along(rnames),
                         extents = 1L,
@@ -647,11 +643,7 @@ basic_pagdf <- function(rnames, labs = rnames, rnums = seq_along(rnames),
   res
 }
 
-
-
-
 ## write paginate() which operates **solely** on a MatrixPrintForm obj
-
 
 page_size_spec <- function(lpp, cpp, max_width) {
   structure(list(
@@ -661,9 +653,7 @@ page_size_spec <- function(lpp, cpp, max_width) {
   ), class = "page_size_spec")
 }
 
-
 non_null_na <- function(x) !is.null(x) && is.na(x)
-
 
 calc_lcpp <- function(page_type = NULL,
                       landscape = FALSE,
@@ -703,7 +693,6 @@ calc_lcpp <- function(page_type = NULL,
 
   page_size_spec(lpp = lpp, cpp = cpp, max_width = max_width)
 }
-
 
 calc_rlpp <- function(pg_size_spec, mf, colwidths, tf_wrap, verbose) {
   lpp <- pg_size_spec$lpp
@@ -782,13 +771,11 @@ calc_rlpp <- function(pg_size_spec, mf, colwidths, tf_wrap, verbose) {
   ret
 }
 
-
 calc_rcpp <- function(pg_size_spec, mf, colwidths) {
   cpp <- pg_size_spec$cpp
 
   cpp - table_inset(mf) - colwidths[1] - mf_colgap(mf)
 }
-
 
 splice_idx_lists <- function(lsts) {
   list(
@@ -797,82 +784,61 @@ splice_idx_lists <- function(lsts) {
   )
 }
 
-
-
-#' @title Paginate a table-like object for rendering
+#' Paginate a table-like object for rendering
 #'
-#' @description
-#' These functions perform or diagnose bi-directional pagination on
-#' an object.
+#' These functions perform or diagnose bi-directional pagination on an object.
 #'
-#' `paginate_to_mpfs` renders `obj` into the `MatrixPrintForm` (`MPF`)
-#' intermediate representation, and then paginates that `MPF` into
-#' component `MPF`s each corresponding to an individual page and
-#' returns those in a list.
+#' `paginate_indices` renders `obj` into a `MatrixPrintForm` (MPF), then uses that representation to
+#' calculate the rows and columns of `obj` corresponding to each page of the pagination of `obj`, but
+#' simply returns these indices rather than paginating `obj` itself (see Details for an important caveat).
 #'
-#' `paginate_indices` renders `obj` into an `MPF`, then uses
-#' that representation to calculate the rows and columns of
-#' `obj` corresponding to each page of the pagination of `obj`,
-#' but simply returns these indices rather than paginating
-#' \code{obj} itself (see details for an important caveat).
+#' `paginate_to_mpfs` renders `obj` into its MPF intermediate representation, then paginates that MPF into
+#' component MPFs each corresponding to an individual page and returns those in a `list`.
 #'
-#' `diagnose_pagination` attempts pagination via `paginate_to_mpfs`
-#' and then returns diagnostic information which explains why page
-#' breaks were positioned where they were, or alternatively why
-#' no valid paginations could be found.
+#' `diagnose_pagination` attempts pagination via `paginate_to_mpfs`, then returns diagnostic information
+#' which explains why page breaks were positioned where they were, or alternatively why no valid pagination
+#' could be found.
 #'
 #' @details
+#' All three of these functions generally support all classes which have a corresponding [matrix_form()]
+#' method which returns a valid `MatrixPrintForm` object (including `MatrixPrintForm` objects themselves).
 #'
-#' All three of these functions generally support all classes which have
-#' a corresponding `matrix_form` method which returns a valid `MatrixPrintForm`
-#' object (including `MatrixPrintForm` objects themselves).
+#' `paginate_indices` is directly called by `paginate_to_mpfs` (and thus `diagnose_pagination`). For most
+#' classes, and most tables represented by supported classes, calling `paginate_to_mpfs` is equivalent to a
+#' manual `paginate_indices -> subset obj into pages -> matrix_form` workflow.
 #'
-#' `paginate_indices` is directly called by `paginate_to_mpfs` (and thus
-#' `diagnose_pagination`). For most classes, and most tables represented
-#' by supported classes, calling `paginate_to_mpfs` is equivalent to a
-#' manual `paginate_indices -> subset obj into pages -> matrix_form`
-#' workflow.
+#' The exception to this equivalence is objects which support "forced pagination", or pagination logic which
+#' is built into the object itself rather than being a function of space on a page. Forced pagination
+#' generally involves the creation of, e.g., page-specific titles which apply to these forced paginations.
+#' `paginate_to_mpfs` and `diagnose_pagination` support forced pagination by automatically calling the
+#' [do_forced_paginate()] generic on the object and then paginating each object returned by that generic
+#' separately. The assumption here, then, is that page-specific titles and such are handled by the class'
+#' [do_forced_paginate()] method.
 #'
-#' The exception to this equivalence is objects which support 'forced pagination',
-#' or pagination logic which built into the object itself rather than being a
-#' function of space on a page. Forced pagination generally involves the creation
-#' of, e.g., page-specific titles which apply to these forced paginations.
-#' `paginate_to_mpfs` and `diagnose_pagination` support forced pagination by
-#' automatically calling the `do_forced_pagination` generic on the object
-#' and then paginating each object returned by that generic separately. The
-#' assumption here, then, is that page-specific titles and such are
-#' handled by the class' `do_forced_pagination` method.
-#'
-#' `paginate_indices`, on the other hand, \emph{does not support forced pagination},
-#' because it returns only a set of  indices for row and column subsetting for each page,
-#' and thus cannot retain any changes, e.g., to titles, done within `do_forced_paginate`.
-#' `paginate_indices` does call `do_forced_paginate`, but instead of continuing, it
-#' throws an error in the case that the result is more than a single "page".
+#' `paginate_indices`, on the other hand, *does not support forced pagination*, because it returns only a
+#' set of indices for row and column subsetting for each page, and thus cannot retain any changes, e.g.,
+#' to titles, done within [do_forced_paginate()]. `paginate_indices` does call [do_forced_paginate()], but
+#' instead of continuing it throws an error in the case that the result is larger than a single "page".
 #'
 #' @inheritParams vert_pag_indices
 #' @inheritParams pag_indices_inner
 #' @inheritParams page_lcpp
 #' @inheritParams toString
 #' @inheritParams propose_column_widths
-#' @param lpp numeric(1) or NULL. Lines per page. if NA (the default,
-#'     this is calculated automatically based on the specified page
-#'     size). `NULL` indicates no vertical pagination should occur.
-#' @param cpp numeric(1) or NULL. Width in characters per page. if NA (the default,
-#'     this is calculated automatically based on the specified page
-#'     size). `NULL` indicates no horizontal pagination should occur.
-#' @param pg_size_spec page_size_spec. A pre-calculated page
-#'     size specification. Typically this is not set in end user code.
-#' @param col_gap numeric(1). Currently unused.
-#' @param page_num character(1). Placeholder string for page numbers. Check
-#'     [default_page_number] for more information. Defaults to `NULL`.
+#' @param lpp (`numeric(1)` or `NULL`)\cr lines per page. If `NA` (the default), this is calculated automatically
+#'   based on the specified page size). `NULL` indicates no vertical pagination should occur.
+#' @param cpp (`numeric(1)` or `NULL`)\cr width (in characters) per page. If `NA` (the default), this is calculated
+#'   automatically based on the specified page size). `NULL` indicates no horizontal pagination should occur.
+#' @param pg_size_spec (`page_size_spec`)\cr. a pre-calculated page size specification. Typically this is not set by
+#'   end users.
+#' @param col_gap (`numeric(1)`)\cr currently ignored.
+#' @param page_num (`string`)\cr placeholder string for page numbers. See [default_page_number] for more
+#'   information. Defaults to `NULL`.
 #'
-#' @return for `paginate_indices` a list with two elements of the same
-#'     length:   `pag_row_indices`,    and   `pag_col_indices`.    For
-#'     `paginate_to_mpfs`,   a  list   of  `MatrixPrintForm` objects
-#'     representing each individual page after pagination (including
-#'     forced pagination if necessary).
-#'
-#' @aliases paginate pagination
+#' @return
+#' * `paginate_indices` returns a `list` with two elements of the same length: `pag_row_indices` and `pag_col_indices`.
+#' * `paginate_to_mpfs` returns a `list` of  `MatrixPrintForm` objects representing each individual page after
+#'   pagination (including forced pagination if necessary).
 #'
 #' @examples
 #' mpf <- basic_matrix_form(mtcars)
@@ -881,6 +847,7 @@ splice_idx_lists <- function(lsts) {
 #'
 #' paginate_to_mpfs(mpf, pg_width = 5, pg_height = 3)
 #'
+#' @aliases paginate pagination
 #' @export
 paginate_indices <- function(obj,
                              page_type = "letter",
@@ -922,7 +889,6 @@ paginate_indices <- function(obj,
     )
   }
 
-
   ## I'm not sure this is worth doing.
   ## ## We can't support forced pagination here, but we can support calls to,
   ## ## e.g., paginate_indices(do_forced_pag(tt))
@@ -959,7 +925,6 @@ paginate_indices <- function(obj,
   if (NROW(mf_cinfo(mpf)) == 0) {
     mpf <- mpf_infer_cinfo(mpf, colwidths, rep_cols)
   }
-
 
   if (is.null(pg_size_spec)) {
     pg_size_spec <- calc_lcpp(
@@ -1195,7 +1160,6 @@ paginate_to_mpfs <- function(obj,
     obj <- fpags[[1]]
   }
 
-
   ## we run into forced pagination, but life is short and this should work fine.
   mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size)
   if (is.null(colwidths)) {
@@ -1288,49 +1252,42 @@ paginate_to_mpfs <- function(obj,
 
 #' @importFrom utils capture.output
 #' @details
+#' `diagnose_pagination` attempts pagination and then, regardless of success or failure, returns diagnostic
+#' information about pagination attempts (if any) after each row and column.
 #'
-#' `diagnose_pagination` attempts pagination and then, regardless of success
-#' or failure, returns diagnostic information about pagination
-#' attempts (if any) after each row and column.
+#' The diagnostics data reflects the final time the pagination algorithm evaluated a page break at the
+#' specified location, regardless of how many times the position was assessed in total.
 #'
-#' The diagnostics data reflects the final time the pagination algorithm
-#' evaluated a page break at the specified location, regardless of how
-#' many times the position was assessed total.
+#' To get information about intermediate attempts, perform pagination with `verbose = TRUE` and inspect
+#' the messages in order.
 #'
-#' To get information about intermediate attempts, perform pagination
-#' with `verbose = TRUE` and inspect the messages in order.
+#' @importFrom utils capture.output
 #'
-#' @return For `diagnose_pagination` a list containing:
+#' @return
+#' * `diagnose_pagination` returns a `list` containing:
 #'
-#' \describe{
-#' \item{`lpp_diagnostics`}{diagnostic information regarding lines per page}
-#' \item{`row_diagnostics`}{basic information about rows, whether pagination was attempted
-#'   after each row, and the final result of such an attempt, if made}
-#' \item{`cpp_diagnostics}{diagnostic information regarding columns per page}
-#' \item{`col_diagnostics`}{(very) basic information about leaf columns, whether pagination
-#'   was attempted after each leaf column, ad the final result of such attempts, if made}
-#' }
+#'   \describe{
+#'     \item{`lpp_diagnostics`}{Diagnostic information regarding lines per page.}
+#'     \item{`row_diagnostics`}{Basic information about rows, whether pagination was attempted
+#'       after each row, and the final result of such an attempt, if made.}
+#'     \item{`cpp_diagnostics`}{Diagnostic information regarding columns per page.}
+#'     \item{`col_diagnostics`}{Very basic information about leaf columns, whether pagination
+#'       was attempted after each leaf column, ad the final result of such attempts, if made.}
+#'   }
 #'
-#' @note  For  `diagnose_pagination`,   the  column  labels  are  not
-#'     displayed  in  the  `col_diagnostics` element  due  to  certain
-#'     internal  implementation details;  rather  the diagnostics  are
-#'     reported in terms of absolute (leaf) column position. This is a
-#'     known  limitation,  and  may  eventually be  changed,  but  the
-#'     information remains useful as it is currently reported.
+#' @note
+#' For `diagnose_pagination`, the column labels are not displayed in the `col_diagnostics` element
+#' due to certain internal implementation details; rather the diagnostics are reported in terms of
+#' absolute (leaf) column position. This is a known limitation, and may eventually be changed, but the
+#' information remains useful as it is currently reported.
 #'
-#' @note `diagnose_pagination` is intended for interactive debugging
-#' use and \emph{should not be programmed against}, as the exact
-#' content and form of the  verbose messages it captures and
-#' returns is subject to change.
+#' `diagnose_pagination` is intended for interactive debugging use and *should not be programmed against*,
+#' as the exact content and form of the verbose messages it captures and returns is subject to change.
 #'
-#' @note because `diagnose_pagination` relies on `capture.output(type = "message")`,
-#' it cannot be used within the `testthat` (and likely other) testing frameworks,
-#' and likely cannot be used within `knitr`/`rmarkdown` contexts either,
-#' as this clashes with those systems' capture of messages.
+#' Because `diagnose_pagination` relies on `capture.output(type = "message")`, it cannot be used within the
+#' `testthat` (and likely other) testing frameworks, and likely cannot be used within `knitr`/`rmarkdown`
+#' contexts either, as this clashes with those systems' capture of messages.
 #'
-#' @export
-#'
-#' @rdname paginate_indices
 #' @examples
 #' diagnose_pagination(mpf, pg_width = 5, pg_height = 3)
 #' clws <- propose_column_widths(mpf)
@@ -1338,6 +1295,8 @@ paginate_to_mpfs <- function(obj,
 #' dgnost <- diagnose_pagination(mpf, pg_width = 5, pg_height = 3, colwidths = clws)
 #' try(diagnose_pagination(mpf, pg_width = 1)) # fails
 #'
+#' @rdname paginate_indices
+#' @export
 diagnose_pagination <- function(obj,
                                 page_type = "letter",
                                 font_family = "Courier",
