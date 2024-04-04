@@ -20,17 +20,17 @@ options as the default horizontal separator. Must be a single character. Use
 \code{getOption("formatters_default_hsep")} to get its current value (\code{NULL} if not set).}
 }
 \value{
-\code{unicode} 2014 (long dash for generating solid horizontal line)
-if in a locale that uses a UTF character set, otherwise an ASCII hyphen
-with a once-per-session warning.
+unicode 2014 (long dash for generating solid horizontal line) if in a
+locale that uses a UTF character set, otherwise an ASCII hyphen with a
+once-per-session warning.
 
 unicode 2014 (long dash for generating solid horizontal line) if in a
 locale that uses a UTF character set, otherwise an ASCII hyphen with a
 once-per-session warning.
 }
 \description{
-The default horizontal separator character which can be
-displayed in the current \code{charset} for use in rendering table-likes.
+The default horizontal separator character which can be displayed in the current
+charset for use in rendering table-like objects.
 
 The default horizontal separator character which can be displayed in the current
 charset for use in rendering table-like objects.

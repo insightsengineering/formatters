@@ -24,7 +24,7 @@
 #' @param colwidths (`numeric`)\cr internal detail, do not set manually.
 #' @param path (`character`)\cr path to the (sub)table represented by `tt`. Defaults to `character()`.
 #' @param max_width (`numeric(1)` or `NULL`)\cr maximum width for title/footer materials.
-#' @param col_gap (`numeric(1)`)\cr the gap to be assumed between columns, in number of spaces with 
+#' @param col_gap (`numeric(1)`)\cr the gap to be assumed between columns, in number of spaces with
 #'   font specified by `fontspec`.
 #'
 #' @import methods
@@ -131,10 +131,12 @@ setMethod("matrix_form", "MatrixPrintForm", function(obj,
                                                      indent_size = 2,
                                                      fontspec = NULL,
                                                      col_gap = NULL) {
-  if(!is.null(fontspec))
+  if (!is.null(fontspec)) {
     mf_fontspec(obj) <- fontspec
-  if(!is.null(col_gap) && !isTRUE(all.equal(col_gap, mf_colgap(obj))))
+  }
+  if (!is.null(col_gap) && !isTRUE(all.equal(col_gap, mf_colgap(obj)))) {
     mf_colgap(obj) <- col_gap
+  }
   obj
 })
 
@@ -183,9 +185,9 @@ setMethod(
 #'
 #' @export
 setGeneric(
-    "nlines",
-    ## XXX TODO come back and add fontspec default value once not having
-    ## it has found all the disconnection breakages
+  "nlines",
+  ## XXX TODO come back and add fontspec default value once not having
+  ## it has found all the disconnection breakages
   function(x, colwidths = NULL, max_width = NULL, fontspec, col_gap) standardGeneric("nlines")
 )
 
@@ -210,7 +212,7 @@ setMethod("nlines", "NULL", function(x, colwidths, max_width, fontspec, col_gap 
 #' @export
 #' @rdname nlines
 setMethod("nlines", "character", function(x, colwidths, max_width, fontspec, col_gap = NULL) {
-  splstr <- strsplit(x, "\n", fixed =TRUE)
+  splstr <- strsplit(x, "\n", fixed = TRUE)
   if (length(x) == 0) {
     return(0L)
   } ## else if(is.null(colwidths) && is.null(max_width)) { ## don't need wrapping
@@ -678,11 +680,11 @@ setMethod("num_rep_cols", "MatrixPrintForm", function(obj) {
 #' @rdname num_rep_cols
 setMethod("num_rep_cols", "MatrixPrintForm", function(obj) obj$num_rep_cols)
 
-
 #' @export
 #' @param value numeric(1). The new number of columns to repeat.
 #' @rdname num_rep_cols
 setGeneric("num_rep_cols<-", function(obj, value) standardGeneric("num_rep_cols<-"))
+
 #' @export
 #' @rdname num_rep_cols
 setMethod("num_rep_cols<-", "ANY", function(obj, value) stop("No num_rep_cols<- method for class ", class(obj)))
@@ -690,11 +692,9 @@ setMethod("num_rep_cols<-", "ANY", function(obj, value) stop("No num_rep_cols<- 
 #' @export
 #' @rdname num_rep_cols
 setMethod("num_rep_cols<-", "MatrixPrintForm", function(obj, value) {
-    obj <- mf_update_cinfo(obj, colwidths = NULL, rep_cols = value)
-    obj
+  obj <- mf_update_cinfo(obj, colwidths = NULL, rep_cols = value)
+  obj
 })
-
-
 
 # header_section_div -----------------------------------------------------------
 

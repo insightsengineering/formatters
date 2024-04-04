@@ -44,14 +44,21 @@ mform_handle_newlines <- function(matform) {
   # because we don't care about wrapping here we're counting lines
   # TODO probably better if we had a nlines_nowrap fun to be more explicit
 
-  row_nlines <- apply(strmat,
-                      1,
-                      function(x) max(vapply(x,
-                                             nlines,
-                                             colwidths = NULL,
-                                             max_width = NULL,
-                                             fontspec = NULL, 1L),
-                                      1L))
+  row_nlines <- apply(
+    strmat,
+    1,
+    function(x) {
+      max(
+        vapply(x,
+          nlines,
+          colwidths = NULL,
+          max_width = NULL,
+          fontspec = NULL, 1L
+        ),
+        1L
+      )
+    }
+  )
 
 
   # Correction for the case where there are more lines for topleft material than for cols
@@ -180,9 +187,10 @@ disp_from_spans <- function(spans) {
 }
 
 .fixup_cinfo <- function(col_df) {
-  if(is.null(col_df$par_extent))
+  if (is.null(col_df$par_extent)) {
     col_df$par_extent <- 0L
-  if(is.null(col_df$node_class)) {
+  }
+  if (is.null(col_df$node_class)) {
     col_df$node_class <- "Column"
   }
   col_df
@@ -349,28 +357,27 @@ MatrixPrintForm <- function(strings = NULL,
   mf_col_widths(ret) <- colwidths
   ret <- mform_build_refdf(ret)
   ret <- mpf_infer_cinfo(ret, colpaths = colpaths, fontspec = fontspec)
-  
+
   ret
 }
 
 mf_update_cinfo <- function(mf, colwidths = NULL, rep_cols = NULL) {
-    
   need_update <- FALSE
-  if(!is.null(colwidths)) {
+  if (!is.null(colwidths)) {
     mf$col_widths <- colwidths
-    need_update <- TRUE  
+    need_update <- TRUE
   }
 
-  if(!is.null(rep_cols)) {
+  if (!is.null(rep_cols)) {
     mf$num_rep_cols <- rep_cols
     need_update <- TRUE
   }
 
-  if(need_update && !is.null(mf_cinfo(mf))) {
+  if (need_update && !is.null(mf_cinfo(mf))) {
     cinfo <- mf_cinfo(mf)
     r_colwidths <- mf_col_widths(mf)
     has_rlabs <- mf_has_rlabels(mf)
-    if(has_rlabs) {
+    if (has_rlabs) {
       r_colwidths <- r_colwidths[-1] ## row label widths
     }
     cinfo$self_extent <- r_colwidths
@@ -573,8 +580,8 @@ mf_fontspec <- function(mf) mf$fontspec
 #' @export
 #' @rdname mpf_accessors
 `mf_fontspec<-` <- function(mf, value) {
-    mf$fontspec <- value
-    mf
+  mf$fontspec <- value
+  mf
 }
 
 ## XXX should this be exported? not sure if there's a point
@@ -1137,8 +1144,9 @@ reconstruct_basic_fnote_list <- function(mf) {
   mf_aligns(mf) <- mf_aligns(mf)[i_mat, j_mat, drop = FALSE]
   if (!row) {
     mf_ncol(mf) <- length(i)
-    if(!is.null(mf_cinfo(mf))) 
-      mf_cinfo(mf) <- mf_cinfo(mf)[i,]  
+    if (!is.null(mf_cinfo(mf))) {
+      mf_cinfo(mf) <- mf_cinfo(mf)[i, ]
+    }
     if (!is.null(mf_col_widths(mf))) {
       mf_col_widths(mf) <- mf_col_widths(mf)[j_mat]
     }

@@ -57,7 +57,7 @@ export_as_txt <- function(x,
                           rep_cols = NULL,
                           verbose = FALSE,
                           page_break = "\\s\\n",
-                          page_num = default_page_number(), 
+                          page_num = default_page_number(),
                           fontspec = font_spec(font_family, font_size, lineheight)) {
   # Processing lists of tables or listings
   if (.is_list_of_tables_or_listings(x)) {
@@ -69,7 +69,7 @@ export_as_txt <- function(x,
     }
     paginate <- TRUE
   }
-                         
+
   if (paginate) {
     pages <- paginate_to_mpfs(
       x,
@@ -224,7 +224,7 @@ mpf_to_rtf <- function(mpf,
   if (!requireNamespace("r2rtf")) {
     stop("RTF export requires the 'r2rtf' package, please install it.")
   }
-  if(fontspec$family != "Courier") {
+  if (fontspec$family != "Courier") {
     stop("Experimental RTF export does not currently support fonts other than Courier")
   }
   mpf <- matrix_form(mpf, indent_rownames = TRUE, fontspec = fontspec)
@@ -396,7 +396,7 @@ mpf_to_rtf <- function(mpf,
 #' @export
 export_as_rtf <- function(x,
                           file = NULL,
-                          # colwidths = propose_column_widths(matrix_form(x, TRUE, fontspec = fontspec), fontspec = fontspec),
+                          # colwidths = propose_column_widths(matrix_form(x, TRUE, fontspec = fontspec), fontspec = fontspec), # nolint
                           colwidths = NULL,
                           page_type = "letter",
                           pg_width = page_dim(page_type)[if (landscape) 2 else 1],
@@ -422,7 +422,7 @@ export_as_rtf <- function(x,
   if (!requireNamespace("r2rtf")) {
     stop("RTF export requires the r2rtf package, please install it.")
   }
-  if(fontspec$family != "Courier") {
+  if (fontspec$family != "Courier") {
     stop("Experimental RTF export does not currently support fonts other than Courier")
   }
 
@@ -549,7 +549,7 @@ export_as_pdf <- function(x,
                           max_width = NULL,
                           colwidths = NULL,
                           fontspec = font_spec(font_family, font_size, lineheight),
-                          #colwidths = propose_column_widths(x, indent_size = indent_size, fontspec = fontspec),
+                          # colwidths = propose_column_widths(x, indent_size = indent_size, fontspec = fontspec),
                           ttype_ok = FALSE) {
   ## this has to happen at the very beginning before the first use of fontspec
   ## which happens in the default value of colwidths. yay lazy evaluation...
@@ -588,7 +588,7 @@ export_as_pdf <- function(x,
   cur_gpar <- grid::get.gpar()
   if (is.null(lpp)) {
     lpp <- floor(grid::convertHeight(grid::unit(1, "npc"), "lines", valueOnly = TRUE) /
-        (cur_gpar$cex * cur_gpar$lineheight)) ##- sum(margins[c(1, 3)]) # bottom, top # nolint
+      (cur_gpar$cex * cur_gpar$lineheight)) ## - sum(margins[c(1, 3)]) # bottom, top # nolint
   }
   if (is.null(cpp)) {
     cpp <- floor(grid::convertWidth(grid::unit(1, "npc"), "inches", valueOnly = TRUE) *

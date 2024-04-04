@@ -9,6 +9,7 @@ MPF
 MPFs
 RTF
 Rua
+Truetype
 charset
 de
 decrementing
@@ -17,10 +18,13 @@ funder
 getters
 glyphs
 mandatorily
+monospace
 paginations
 pathing
 pre
 repo
 subtable
 subtables
+truetype
 unicode
+unrounded

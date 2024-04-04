@@ -1,17 +1,15 @@
-
 #' @import grid
 #' @import grDevices
 NULL
 ## https://www.ietf.org/rfc/rfc0678.txt
 
-
 times_font_name <- function() {
-    plat <- .Platform$OS.type
-    switch(plat,
-           "unix"  = "Times",
-           "windows" = "Times New Roman")
+  plat <- .Platform$OS.type
+  switch(plat,
+    "unix" = "Times",
+    "windows" = "Times New Roman"
+  )
 }
-
 
 #' Font size specification
 #'
@@ -50,13 +48,17 @@ times_font_name <- function() {
 font_spec <- function(font_family = "Courier",
                       font_size = 8,
                       lineheight = 1) {
-    if(font_family %in% c("Times New Roman", "Times", "serif"))
-        font_family <- times_font_name()
-    structure(list(family = font_family,
-         size = font_size,
-         lineheight = lineheight),
-         class = c("font_spec", "list"))
-
+  if (font_family %in% c("Times New Roman", "Times", "serif")) {
+    font_family <- times_font_name()
+  }
+  structure(
+    list(
+      family = font_family,
+      size = font_size,
+      lineheight = lineheight
+    ),
+    class = c("font_spec", "list")
+  )
 }
 std_cpi <- 10L
 std_lpi <- 6L
@@ -151,10 +153,14 @@ ascii_chars <- vapply(33:126, function(n) rawToChar(as.raw(n)), "")
 #' font_lcpi(font_size = 8, lineheight = 1.1)
 #'
 #' @keywords internal
-font_lcpi <- function(font_family = "Courier", font_size = 8, lineheight = 1, fontspec = font_spec(font_family, font_size, lineheight)) {
+font_lcpi <- function(font_family = "Courier",
+                      font_size = 8,
+                      lineheight = 1,
+                      fontspec = font_spec(font_family, font_size, lineheight)) {
   new_dev <- open_font_dev(fontspec)
-  if(new_dev)
-      on.exit(close_font_dev())
+  if (new_dev) {
+    on.exit(close_font_dev())
+  }
   list(
     cpi = 1 / convertWidth(unit(1, "strwidth", " "), "inches", valueOnly = TRUE),
     lpi = convertHeight(unit(1, "inches"), "lines", valueOnly = TRUE)
@@ -231,30 +237,33 @@ page_lcpp <- function(page_type = page_types(),
   )
 }
 
-
-
 .open_fdev_is_monospace <- function() {
-  if(!font_dev_state$open)
-    stop(".open_fdev_is_monospace called when font dev state is not open. This shouldn't happen, please contact the maintainers.")
+  if (!font_dev_state$open) {
+    stop(
+      ".open_fdev_is_monospace called when font dev state is not open. ",
+      "This shouldn't happen, please contact the maintainers."
+    )
+  }
   font_dev_state$ismonospace
 }
-
-
-
 
 ## safe wrapper around .open_fdev_is_monospace
 is_monospace <- function(font_family = "Courier",
                          font_size = 8,
                          lineheight = 1,
-                         fontspec = font_spec(font_family,
-                                              font_size,
-                                              lineheight)) {
-    if(is.null(fontspec))
-      return(TRUE)
-    new_dev <- open_font_dev(fontspec)
-    if(new_dev)
-      on.exit(close_font_dev())
-    .open_fdev_is_monospace()
+                         fontspec = font_spec(
+                           font_family,
+                           font_size,
+                           lineheight
+                         )) {
+  if (is.null(fontspec)) {
+    return(TRUE)
+  }
+  new_dev <- open_font_dev(fontspec)
+  if (new_dev) {
+    on.exit(close_font_dev())
+  }
+  .open_fdev_is_monospace()
 }
 
 ## pg_types <- list(

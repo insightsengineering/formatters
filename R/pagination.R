@@ -264,10 +264,10 @@ valid_pag <- function(pagdf,
   rowlines <- raw_rowlines + reflines ## sum(pagdf[start:guess, "self_extent"]) - reflines
   ## self extent includes reflines
   ## self extent does ***not*** currently include trailing sep for rows
-  ## self extent does ***not*** currently include col_gap for columns  
-    ## we don't include the trailing_sep for guess because if we paginate here it won't be printed
-  ncols <- 0L  
-  if(row) {
+  ## self extent does ***not*** currently include col_gap for columns
+  ## we don't include the trailing_sep for guess because if we paginate here it won't be printed
+  ncols <- 0L
+  if (row) {
     sectlines <- if (start == guess) 0L else sum(!is.na(pagdf[start:(guess - 1), "trailing_sep"]))
   } else { ## columns
     ncols <- guess - start + 1 + length(pagdf$reprint_inds[[start]]) ## +1 because its incluive, 5-6 is 2 columns
@@ -480,7 +480,7 @@ find_pag <- function(pagdf,
 #'   referential footnotes.
 #' @param div_height (`numeric(1)`)\cr the height of the divider line when the associated object is rendered.
 #'   Defaults to `1`.
-#' @param col_gap (`numeric(1)`)\cr width of gap between columns, in same units as extent in `pagdf` (spaces 
+#' @param col_gap (`numeric(1)`)\cr width of gap between columns, in same units as extent in `pagdf` (spaces
 #'   under a particular font specification).
 #' @param has_rowlabels (`logical(1)`)\cr whether the object being paginated has row labels.
 #'
@@ -566,9 +566,16 @@ pag_indices_inner <- function(pagdf,
 #' lapply(colpaginds, function(j) mtcars[, j, drop = FALSE])
 #'
 #' @export
-vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, rep_cols = 0L, fontspec, nosplitin = character()) {
-  if(is.list(nosplitin))
-    nosplitin <- nosplitin[["cols"]]      
+vert_pag_indices <- function(obj,
+                             cpp = 40,
+                             colwidths = NULL,
+                             verbose = FALSE,
+                             rep_cols = 0L,
+                             fontspec,
+                             nosplitin = character()) {
+  if (is.list(nosplitin)) {
+    nosplitin <- nosplitin[["cols"]]
+  }
   mf <- matrix_form(obj, indent_rownames = TRUE, fontspec = fontspec)
   clwds <- colwidths %||% propose_column_widths(mf, fontspec = fontspec)
   if (is.null(mf_cinfo(mf))) { ## like always, ugh.
@@ -605,12 +612,13 @@ vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, r
 }
 
 mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf), fontspec, colpaths = NULL) {
-  if(!is.null(mf_cinfo(mf))) {
+  if (!is.null(mf_cinfo(mf))) {
     return(mf_update_cinfo(mf, colwidths = colwidths))
   }
   new_dev <- open_font_dev(fontspec)
-  if(new_dev)
+  if (new_dev) {
     on.exit(close_font_dev())
+  }
   if (!is(rep_cols, "numeric") || is.na(rep_cols) || rep_cols < 0) {
     stop("got invalid number of columns to be repeated: ", rep_cols)
   }
@@ -620,14 +628,15 @@ mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf), f
   rlab_extent <- if (has_rlabs) clwds[1] else 0L
   sqstart <- rlabs_flag + 1L # rep_cols + 1L
 
-
   pdfrows <- lapply(
     (sqstart):ncol(mf$strings),
     function(i) {
       rownum <- i - rlabs_flag
       rep_inds <- seq_len(rep_cols)[seq_len(rep_cols) < rownum]
-      rep_extent_i <- sum(0L,
-                          clwds[rlabs_flag + rep_inds]) ## colwidths
+      rep_extent_i <- sum(
+        0L,
+        clwds[rlabs_flag + rep_inds]
+      ) ## colwidths
       pagdfrow(
         row = NA,
         nm = rownum,
@@ -648,13 +657,16 @@ mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf), f
 
   refdf <- mf_fnote_df(mf)
   pdf <- splice_fnote_info_in(pdf, refdf, row = FALSE)
-  if(!is.null(colpaths)) {
-    if(length(colpaths) != NROW(pdf))
-        stop("Got non-null colpaths with length not equal to number of columns (",
-             length(colpaths),
-             "!=",
-             NROW(pdf),
-             ") during MatrixPrintForm construction. Please contact the maintainers.")
+  if (!is.null(colpaths)) {
+    if (length(colpaths) != NROW(pdf)) {
+      stop(
+        "Got non-null colpaths with length not equal to number of columns (",
+        length(colpaths),
+        "!=",
+        NROW(pdf),
+        ") during MatrixPrintForm construction. Please contact the maintainers."
+      )
+    }
     pdf[["path"]] <- colpaths
   }
   mf_cinfo(mf) <- pdf
@@ -702,9 +714,11 @@ page_size_spec <- function(lpp, cpp, max_width,
                            font_family,
                            font_size,
                            lineheight,
-                           fontspec = font_spec(font_family = font_family,
-                                                font_size = font_size,
-                                                lineheight = lineheight)) {
+                           fontspec = font_spec(
+                             font_family = font_family,
+                             font_size = font_size,
+                             lineheight = lineheight
+                           )) {
   structure(list(
     lpp = lpp,
     cpp = cpp,
@@ -714,9 +728,10 @@ page_size_spec <- function(lpp, cpp, max_width,
 }
 
 get_font_spec <- function(obj) {
-    if(!is(obj, "page_size_spec"))
-        stop("get_font_spec is only currently defined for page_size_spec objects")
-    obj$font_spec
+  if (!is(obj, "page_size_spec")) {
+    stop("get_font_spec is only currently defined for page_size_spec objects")
+  }
+  obj$font_spec
 }
 
 non_null_na <- function(x) !is.null(x) && is.na(x)
@@ -725,7 +740,7 @@ calc_lcpp <- function(page_type = NULL,
                       landscape = FALSE,
                       pg_width = page_dim(page_type)[if (landscape) 2 else 1],
                       pg_height = page_dim(page_type)[if (landscape) 1 else 2],
-                      fontspec, 
+                      fontspec,
                       ## font_family = "Courier",
                       ## font_size = 8, # grid parameters
                       cpp = NA_integer_,
@@ -759,11 +774,13 @@ calc_lcpp <- function(page_type = NULL,
 
   max_width <- .handle_max_width(tf_wrap, max_width, cpp, colwidths, col_gap, inset)
 
-  page_size_spec(lpp = lpp, cpp = cpp, max_width = max_width,
-                 ## font_family = font_family,
-                 ## font_size = font_size,
-                 ## lineheight = lineheight
-                 fontspec = fontspec)
+  page_size_spec(
+    lpp = lpp, cpp = cpp, max_width = max_width,
+    ## font_family = font_family,
+    ## font_size = font_size,
+    ## lineheight = lineheight
+    fontspec = fontspec
+  )
 }
 
 calc_rlpp <- function(pg_size_spec, mf, colwidths, tf_wrap, verbose) {
@@ -936,8 +953,10 @@ paginate_indices <- function(obj,
                              lpp = NA_integer_,
                              cpp = NA_integer_,
                              min_siblings = 2,
-                             nosplitin = list(rows = character(),
-                                              cols = character()),
+                             nosplitin = list(
+                               rows = character(),
+                               cols = character()
+                             ),
                              colwidths = NULL,
                              tf_wrap = FALSE,
                              max_width = NULL,
@@ -948,14 +967,17 @@ paginate_indices <- function(obj,
                              fontspec = font_spec(font_family, font_size, lineheight),
                              verbose = FALSE) {
   ## this preserves backwards compatibility
-  ## could start deprecation cycle of char input  
-  if(is.character(nosplitin)) {
-    nosplitin <- list(rows = nosplitin,
-                      cols = character())
+  ## could start deprecation cycle of char input
+  if (is.character(nosplitin)) {
+    nosplitin <- list(
+      rows = nosplitin,
+      cols = character()
+    )
   }
   newdev <- open_font_dev(fontspec)
-  if(newdev)
+  if (newdev) {
     on.exit(close_font_dev())
+  }
   ## this MUST alsways return a list, inluding list(obj) when
   ## no forced pagination is needed! otherwise stuff breaks for things
   ## based on s3 classes that are lists underneath!!!
@@ -1120,7 +1142,7 @@ paginate_to_mpfs <- function(obj,
                              fontspec = font_spec(font_family, font_size, lineheight),
                              verbose = FALSE) {
   newdev <- open_font_dev(fontspec)
-  if(newdev) {
+  if (newdev) {
     on.exit(close_font_dev())
   }
 
@@ -1398,13 +1420,16 @@ diagnose_pagination <- function(obj,
                                 rep_cols = num_rep_cols(obj),
                                 col_gap = 3,
                                 verbose = FALSE,
-                                fontspec = font_spec(font_family,
-                                                     font_size,
-                                                     lineheight),
+                                fontspec = font_spec(
+                                  font_family,
+                                  font_size,
+                                  lineheight
+                                ),
                                 ...) {
   new_dev <- open_font_dev(fontspec)
-  if(new_dev)
+  if (new_dev) {
     on.exit(close_font_dev())
+  }
   fpag <- do_forced_paginate(obj)
   if (length(fpag) > 1) {
     return(lapply(
@@ -1461,7 +1486,11 @@ diagnose_pagination <- function(obj,
   lpp_diagnostic <- grep("^(Determining lines|Lines per page available).*$", msgres, value = TRUE)
   cpp_diagnostic <- unique(grep("^Adjusted characters per page.*$", msgres, value = TRUE))
 
-  mpf <- do_cell_fnotes_wrap(mpf, widths = colwidths, max_width = max_width, tf_wrap = tf_wrap, fontspec = font_spec(font_family, font_size, lineheight))
+  mpf <- do_cell_fnotes_wrap(
+    mpf,
+    widths = colwidths, max_width = max_width, tf_wrap = tf_wrap,
+    fontspec = font_spec(font_family, font_size, lineheight)
+  )
   mpf <- mpf_infer_cinfo(mpf, colwidths = colwidths, fontspec = fontspec)
 
   rownls <- grep("Checking pagination after row", msgres, fixed = TRUE)

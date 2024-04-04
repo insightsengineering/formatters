@@ -407,11 +407,15 @@ test_that("colgap is applied correctly during pagination with and without row la
 
   test <- basic_matrix_form(df, ignore_rownames = TRUE)
   res <- paginate_to_mpfs(test, cpp = 10, col_gap = 50)
-  expect_equal(length(res),
-               ncol(test))
+  expect_equal(
+    length(res),
+    ncol(test)
+  )
   test2 <- basic_matrix_form(df, ignore_rownames = FALSE)
-  expect_error(paginate_to_mpfs(test2, cpp = 50, col_gap = 50),
-               ".*Unable to find any valid pagination split for page 1.*")
+  expect_error(
+    paginate_to_mpfs(test2, cpp = 50, col_gap = 50),
+    ".*Unable to find any valid pagination split for page 1.*"
+  )
 })
 
 test_that("colwidths and num_rep_cols work when using lists of tables and listings", {
