@@ -36,6 +36,29 @@ tables into ASCII. In this context a "value" is the raw content that to
 appear in a single table cell. Most commonly this is a numeric vector of
 length 1, 2 or – occasionally – 3.
 
+## Installation
+
+`formatters` is available on CRAN and you can install the latest released
+version with:
+
+``` r
+install.packages("formatters")
+```
+
+or you can install the latest development version directly from GitHub
+with:
+
+``` r
+remotes::install_github("insightsengineering/formatters")
+```
+
+Note you might need to set your `GITHUB_PAT` environment variable in
+order to be able to install from GitHub.
+
+Packaged releases (both those on CRAN and those between official CRAN
+releases) can be found in the [releases
+list](https://github.com/insightsengineering/rtables/releases).
+
 ## Format labels
 
 `formatters` ships with a large number of pre-defined formats
