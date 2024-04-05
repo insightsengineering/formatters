@@ -57,7 +57,7 @@ order to be able to install from GitHub.
 
 Packaged releases (both those on CRAN and those between official CRAN
 releases) can be found in the [releases
-list](https://github.com/insightsengineering/rtables/releases).
+list](https://github.com/insightsengineering/formatters/releases).
 
 ## Format labels
 
