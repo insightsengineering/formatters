@@ -52,7 +52,7 @@ with:
 remotes::install_github("insightsengineering/formatters")
 ```
 
-Note you might need to set your `GITHUB_PAT` environment variable in
+Note that you might need to set your `GITHUB_PAT` environment variable in
 order to be able to install from GitHub.
 
 Packaged releases (both those on CRAN and those between official CRAN
