@@ -13,27 +13,25 @@ num_rep_cols(obj)
 \S4method{num_rep_cols}{MatrixPrintForm}(obj)
 }
 \arguments{
-\item{obj}{ANY. A table-like object.}
+\item{obj}{(\code{ANY})\cr a table-like object.}
 }
 \value{
-an integer.
+An integer.
 }
 \description{
-When called on a table-like object using the formatters framework,
-this method should return the number of columns which are mandatorily
-repeated after each horizontal pagination.
+When called on a table-like object using the formatters framework, this method returns the
+number of columns which are mandatorily repeated after each horizontal pagination.
 }
 \details{
-Absent a class-specific method, this function returns 0, indicating
-no always-repeated columns.
+Absent a class-specific method, this function returns 0, indicating no always-repeated columns.
 }
 \note{
-This number \emph{does not include row labels}, the repetition
-of which is handled separately.
+This number \emph{does not} include row labels, the repetition of which is handled separately.
 }
 \examples{
 mpf <- basic_matrix_form(mtcars)
 num_rep_cols(mpf)
 lmpf <- basic_listing_mf(mtcars)
 num_rep_cols(lmpf)
+
 }

@@ -24,11 +24,9 @@ test_that("exporters work", {
   ## covered below
   ## fil <- tempfile(fileext = ".rtf")
 
-
   ## myrtf <- mpf_to_rtf(dfmf)
   ## r2rtf::write_rtf(myrtf, fil)
   ## expect_true(file.exists(fil))
-
 
   fil2 <- tempfile(fileext = ".txt")
 
@@ -47,8 +45,6 @@ test_that("exporters work", {
 
   ## 4 on first page, incl the message, 2 on second page incl message
   expect_identical(length(grep("{*}", exptlines, fixed = TRUE)), 6L)
-
-
 
   exp_h_pags <- 3L
   exp_v_pags <- 2L
@@ -71,12 +67,10 @@ test_that("exporters work", {
 
   expect_true(msg_1_pos < min(msg_asterisk_pos))
 
-
   expect_identical(
     length(grep("~", exptlines, fixed = TRUE)),
     exp_h_pags * exp_v_pags - 1L
   )
-
 
   ## export_as_rtf rudimentary coverage
   if (requireNamespace("r2rtf")) {
@@ -137,7 +131,6 @@ test_that("mpf_subset_rows works when there are newlines/wrapping in column labe
   )
 })
 
-
 test_that("export_as_txt maintains repeated columns when paginate is TRUE", {
   dfmf <- basic_matrix_form(mtcars)
 
@@ -157,7 +150,6 @@ test_that("export_as_txt maintains horizontal separator from table", {
   out <- strsplit(export_as_txt(dfmf), "\n")[[1]][2]
   expect_equal(out, paste0(rep("=", nchar(out)), collapse = ""))
 })
-
 
 test_that("export_as_pdf works", {
   # Enhancing coverage -> modified copy from rtables

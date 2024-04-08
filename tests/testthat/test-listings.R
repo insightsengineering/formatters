@@ -117,7 +117,6 @@ test_that("listings are correctly paginated when a wrapping happens on non-domin
     )
   )
 
-
   # Test 2 with double wrapping
   tmp_fct <- factor(iris2$Petal.Width)
   levels(tmp_fct) <- paste0("Very long level name ", levels(tmp_fct))
