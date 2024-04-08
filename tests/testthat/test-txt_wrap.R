@@ -1,6 +1,6 @@
 context("table_inset and titles and footers word wrapping")
 
-test_that("tf_wordwrap and table inset work (including together)", {
+test_that("tf_wrap and table inset work (including together)", {
   tit <- paste0(rep(paste0(rep("t", 5), collapse = ""), 3), collapse = " ")
   subtit <- paste0(rep(paste0(rep("s", 5), collapse = ""), 3), collapse = " ")
   mn_ft <- paste0(rep(paste0(rep("f", 5), collapse = ""), 3), collapse = " ")
@@ -63,7 +63,7 @@ test_that(paste(
   expect_silent(toString(bmf, tf_wrap = TRUE))
 })
 
-test_that("works with words that are too big (no warning)", {
+test_that("wrapping works with words that are too big (no warning)", {
   bmf <- basic_matrix_form(mtcars[1:2, 1:2])
   main_title(bmf) <- "TITLE"
   subtitles(bmf) <- "SUB TITLE IS"
@@ -96,7 +96,7 @@ test_that("works with words that are too big (no warning)", {
   expect_identical(res_vec, exp_vec)
 })
 
-test_that("auto works with inset and col_gap", {
+test_that("auto wrapping works with inset and col_gap", {
   bmf <- basic_matrix_form(mtcars[1:2, 1:2])
   table_inset(bmf) <- 1
   main_title(bmf) <- strrep("a", 30)

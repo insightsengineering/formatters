@@ -855,12 +855,20 @@ mf_has_rlabels <- function(mf) ncol(mf$strings) > mf_ncol(mf)
 #'
 #' @name test_matrix_form
 #' @export
-basic_matrix_form <- function(df, parent_path = "root", ignore_rownames = FALSE,
+basic_matrix_form <- function(df,
+                              indent_rownames = FALSE,
+                              parent_path = "root",
+                              ignore_rownames = FALSE,
                               add_decoration = FALSE) {
   checkmate::assert_data_frame(df)
   checkmate::assert_character(parent_path)
   checkmate::assert_flag(ignore_rownames)
   checkmate::assert_flag(add_decoration)
+  checkmate::assert_flag(indent_rownames)
+
+  if (indent_rownames) {
+    ignore_rownames <- FALSE
+  }
 
   fmts <- lapply(df, function(x) if (is.null(obj_format(x))) "xx" else obj_format(x))
 
@@ -873,6 +881,10 @@ basic_matrix_form <- function(df, parent_path = "root", ignore_rownames = FALSE,
     if (is.null(rnms)) {
       rnms <- as.character(seq_len(NROW(df)))
     }
+    if(indent_rownames) {
+      what_to_indent <- seq(2, NROW(df), by = 2)
+      rnms[what_to_indent] <- paste0("  ", rnms[what_to_indent])
+    }
   }
 
   cnms <- names(df)
@@ -882,6 +894,7 @@ basic_matrix_form <- function(df, parent_path = "root", ignore_rownames = FALSE,
   if (!ignore_rownames) {
     strings <- cbind("rnms" = c("", rnms), strings)
   }
+  # colnames(strings) <- NULL # to add after fixing basic_mf for listings
 
   fnr <- nrow(strings)
   fnc <- ncol(strings)
@@ -960,6 +973,7 @@ basic_listing_mf <- function(df,
 
   dfmf <- basic_matrix_form(
     df = df,
+    indent_rownames = FALSE,
     ignore_rownames = TRUE,
     add_decoration = add_decoration
   )
