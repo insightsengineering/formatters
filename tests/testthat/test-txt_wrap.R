@@ -14,20 +14,50 @@ test_that("tf_wrap and table inset work (including together)", {
   prov_footer(matform) <- prv_ft
 
   printform <- toString(matform, tf_wrap = TRUE, max_width = "auto", hsep = "-")
-  expected <- paste0(
-    "ttttt ttttt\nttttt\nsssss sssss\nsssss\n\n--------------\n ",
-    "      all_obs\n--------------\nmean   3      \n--------------\n",
-    "\nfffff fffff\nfffff\n",
-    "\nppppp ppppp\nppppp\n"
+  printform <- strsplit(printform, "\n")[[1]]
+  expected <- c(
+    "ttttt ttttt",
+    "ttttt",
+    "sssss sssss",
+    "sssss",
+    "",
+    "--------------",
+    "       all_obs",
+    "--------------",
+    "mean      3   ",
+    "--------------",
+    "",
+    "fffff fffff",
+    "fffff",
+    "",
+    "ppppp ppppp",
+    "ppppp"
   )
   expect_identical(printform, expected)
 
   printform2 <- toString(matform, tf_wrap = TRUE, max_width = 10, hsep = "-")
-  expected2 <- paste0(
-    "ttttt\nttttt\nttttt\nsssss\nsssss\nsssss\n\n--------------\n ",
-    "      all_obs\n--------------\nmean   3      \n--------------\n",
-    "\nfffff\nfffff\nfffff\n",
-    "\nppppp\nppppp\nppppp\n"
+  printform2 <- strsplit(printform2, "\n")[[1]]
+  expected2 <- c(
+    "ttttt",
+    "ttttt",
+    "ttttt",
+    "sssss",
+    "sssss",
+    "sssss",
+    "",
+    "--------------",
+    "       all_obs",
+    "--------------",
+    "mean      3   ",
+    "--------------",
+    "",
+    "fffff",
+    "fffff",
+    "fffff",
+    "",
+    "ppppp",
+    "ppppp",
+    "ppppp"
   )
   expect_identical(printform2, expected2)
 
@@ -36,11 +66,29 @@ test_that("tf_wrap and table inset work (including together)", {
   matform2$ref_footnotes <- c("ref ftnote")
   ## make sure interaction with inset works
   printform3 <- toString(matform2, tf_wrap = TRUE, max_width = 11, hsep = "-")
-  expected3 <- paste0(
-    "ttttt ttttt\nttttt\nsssss sssss\nsssss\n\n  --------------\n ",
-    "        all_obs\n  --------------\n  mean   3      \n  --------------\n",
-    "\n  ref\n  ftnote\n  --------------\n\n  fffff\n  fffff\n  fffff\n",
-    "\nppppp ppppp\nppppp\n"
+  printform3 <- strsplit(printform3, "\n")[[1]]
+  expected3 <- c(
+    "ttttt ttttt",
+    "ttttt",
+    "sssss sssss",
+    "sssss",
+    "",
+    "  --------------",
+    "         all_obs",
+    "  --------------",
+    "  mean      3   ",
+    "  --------------",
+    "",
+    "  ref",
+    "  ftnote",
+    "  --------------",
+    "",
+    "  fffff",
+    "  fffff",
+    "  fffff",
+    "",
+    "ppppp ppppp",
+    "ppppp"
   )
   expect_identical(printform3, expected3)
 
@@ -81,8 +129,8 @@ test_that("wrapping works with words that are too big (no warning)", {
     "-------------------------",
     "                mpg   cyl",
     "-------------------------",
-    "Mazda RX4       21    6  ",
-    "Mazda RX4 Wag   21    6  ",
+    "Mazda RX4       21     6 ",
+    "Mazda RX4 Wag   21     6 ",
     "-------------------------",
     "",
     "REFE", "RENC", "E",
@@ -119,8 +167,8 @@ test_that("auto wrapping works with inset and col_gap", {
     " =========================",
     "                 mpg   cyl",
     " =========================",
-    " Mazda RX4       21    6  ",
-    " Mazda RX4 Wag   21    6  ",
+    " Mazda RX4       21     6 ",
+    " Mazda RX4 Wag   21     6 ",
     " =========================",
     "",
     " fffffffffffffffffffffffff",
@@ -166,9 +214,9 @@ test_that("row label wrapping has identical indentation", {
     "                   all_o",
     "                    bs  ",
     " -----------------------",
-    "    Something to   3    ",
+    "    Something to     3  ",
     "   wrap                 ",
-    "       Also here   4    ",
+    "       Also here     4  ",
     "     it is              "
   )
   expect_identical(res_vec, exp_vec)
@@ -250,14 +298,14 @@ test_that("toString wrapping avoid trimming whitespaces", {
     c(
       "                   Sepal.Length   Sepal.Width",
       "---------------------------------------------",
-      "   A pretty long   1              3.5        ",
+      "   A pretty long        1             3.5    ",
       "  line                                       ",
-      "Barbars            0              3          ",
-      "    Continuously   2              3.2        ",
+      "Barbars                 0              3     ",
+      "    Continuously        2             3.2    ",
       "    long line                                ",
-      "                   0              3.1        ",
+      "                        0             3.1    ",
       "D                                            ",
-      "Oltragious         0              3.6        "
+      "Oltragious              0             3.6    "
     ),
     res
   )
@@ -271,19 +319,19 @@ test_that("toString wrapping avoid trimming whitespaces", {
     c(
       "            Sepal.Length   Sepal.Width",
       "--------------------------------------",
-      "   A        1              3.5        ",
+      "   A             1             3.5    ",
       "  pretty                              ",
       "  long                                ",
       "  line                                ",
-      "Barbars     0              3          ",
-      "    Conti   2              3.2        ",
+      "Barbars          0              3     ",
+      "    Conti        2             3.2    ",
       "    nuous                             ",
       "    ly                                ",
       "    long                              ",
       "    line                              ",
-      "            0              3.1        ",
+      "                 0             3.1    ",
       "D                                     ",
-      "Oltragiou   0              3.6        ",
+      "Oltragiou        0             3.6    ",
       "s                                     "
     ),
     res

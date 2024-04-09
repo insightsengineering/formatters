@@ -945,7 +945,6 @@ basic_matrix_form <- function(df,
     exts <- rep(1L, NROW(df))
   }
   # Constructing path roughly
-  paths <- rnms
   if (!is.null(split_labels)) {
     paths <- lapply(
       seq_along(rnms),
@@ -962,15 +961,20 @@ basic_matrix_form <- function(df,
         }
       }
     )
+  } else {
+    rnms <- row.names(df)
+    if (is.null(rnms)) {
+      rnms <- as.character(seq_len(NROW(df)))
+    }
+    paths <- lapply(rnms, function(x) c(parent_path, x))
   }
   rowdf <- basic_pagdf(
     rnames = rnms,
     extents = exts,
     rclass = row_classes,
-    parent_path = NULL,
+    parent_path = NULL, # Overloaded by above parent_path lapply
     paths = paths
   )
-  rownames(rowdf) <- NULL
 
   # Indentation happens last so to be sure we have all ready (only strings and formats change)
   if (indent_rownames && !is.null(split_labels)) {
