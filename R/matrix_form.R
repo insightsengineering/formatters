@@ -788,97 +788,209 @@ mf_has_rlabels <- function(mf) ncol(mf$strings) > mf_ncol(mf)
 #' more sophisticated custom `matrix_form` methods.
 #'
 #' @param df (`data.frame`)\cr a data frame.
+#' @param indent_rownames (`flag`)\cr whether row names should be indented. Being this
+#'   used for testing purposes, it defaults to `FALSE`. If `TRUE`, it assigns label rows
+#'   on even lines (also format is `"-"` and value strings are `""`). Indentation works
+#'   only if split labels are used (see parameters `split_labels` and `data_labels`).
 #' @param parent_path (`string`)\cr parent path that all rows should be "children of".
-#'   Defaults to `"root"`, and generally should not matter to end users.
-#' @param ignore_rownames (`flag`)\cr whether rownames should be ignored.
+#'   Defaults to `NULL`, as usually this is not needed. It may be necessary to use `"root"`,
+#'   for some specific scenarios.
+#' @param ignore_rownames (`flag`)\cr whether row names should be ignored.
 #' @param add_decoration (`flag`)\cr whether adds title and footer decorations should
 #'   be added to the matrix form.
+#' @param split_labels (`string`)\cr indicates which column to use as split labels. If
+#'   `NULL`, no split labels are used.
+#' @param data_labels (`string`)\cr indicates which column to use as data labels. It is
+#'   ignored if no `split_labels` is present and is automatically assigned to
+#'   `"Analysis method"` when `split_labels` is present, but `data_labels` is `NULL`.
+#'   Its direct column name is used as node name in `"DataRow"` pathing. See [mf_rinfo()]
+#'   for more information.
 #'
-#' @return A valid `MatrixPrintForm` object representing `df` that is ready for ASCII rendering.
+#' @return A valid `MatrixPrintForm` object representing `df` that is ready for
+#'   ASCII rendering.
+#'
+#' @details
+#' If some of the column has a [obj_format] assigned, it will be respected for all column
+#' values except for label rows, if present (see parameter `split_labels`).
 #'
 #' @examples
 #' mform <- basic_matrix_form(mtcars)
 #' cat(toString(mform))
 #'
+#' # Advanced test case with label rows
+#' library(dplyr)
+#' iris_output <- iris %>%
+#'   group_by(Species) %>%
+#'   summarize("all obs" = round(mean(Petal.Length), 2)) %>%
+#'   mutate("DataRow_label" = "Mean")
+#' mf <- basic_matrix_form(iris_output,
+#'   indent_rownames = TRUE,
+#'   split_labels = "Species", data_labels = "DataRow_label"
+#' )
+#' cat(toString(mf))
+#'
 #' @name test_matrix_form
 #' @export
 basic_matrix_form <- function(df,
                               indent_rownames = FALSE,
-                              parent_path = "root",
+                              parent_path = NULL,
                               ignore_rownames = FALSE,
-                              add_decoration = FALSE) {
+                              add_decoration = FALSE,
+                              split_labels = NULL,
+                              data_labels = NULL) {
   checkmate::assert_data_frame(df)
-  checkmate::assert_character(parent_path)
+  checkmate::assert_flag(indent_rownames)
+  checkmate::assert_character(parent_path, null.ok = TRUE)
   checkmate::assert_flag(ignore_rownames)
   checkmate::assert_flag(add_decoration)
-  checkmate::assert_flag(indent_rownames)
+  checkmate::assert_character(split_labels, null.ok = TRUE)
+  checkmate::assert_character(data_labels, null.ok = TRUE)
 
-  if (indent_rownames) {
+  # Some defaults
+  row_classes <- "DataRow" # Default for all rows
+  data_row_format <- "xx" # Default if no labels are used
+  indent_size <- 2
+  indent_space <- paste0(rep(" ", indent_size), collapse = "")
+
+  # Pre-processing the fake split
+  if (!is.null(split_labels)) {
+    checkmate::assert_choice(split_labels, colnames(df))
+    label_rows <- as.character(df[[split_labels]])
+    if (is.null(data_labels)) {
+      data_rows <- rep("Analysis Method", nrow(df))
+      data_labels <- "Analyzed Variable"
+    } else {
+      checkmate::assert_choice(data_labels, colnames(df))
+      data_rows <- as.character(df[[data_labels]])
+    }
+    rnms_special <- c(rbind(label_rows, data_rows))
+    row_classes <- c(rbind(
+      rep("LabelRow", length(label_rows)),
+      rep("DataRow", length(data_rows))
+    ))
+    data_colnm <- setdiff(colnames(df), c(split_labels, data_labels))
+    tmp_df <- NULL
+    for (col_i in seq_along(data_colnm)) {
+      lbl_and_dt <- c(rbind(rep("", length(label_rows)), df[[data_colnm[col_i]]]))
+      tmp_df <- cbind(tmp_df, lbl_and_dt)
+    }
+    colnames(tmp_df) <- data_colnm
+    rownames(tmp_df) <- NULL
+    df <- as.data.frame(tmp_df)
     ignore_rownames <- FALSE
   }
 
-  fmts <- lapply(df, function(x) if (is.null(obj_format(x))) "xx" else obj_format(x))
+  # Formats
+  fmts <- lapply(df, function(x) {
+    if (is.null(obj_format(x))) {
+      fmt_tmp <- data_row_format
+    } else {
+      fmt_tmp <- obj_format(x) # Can be assigned for each column
+    }
+    out <- rep(fmt_tmp, NROW(df))
+    if (!is.null(split_labels)) {
+      out[row_classes == "LabelRow"] <- "-"
+    }
+    out
+  })
 
-  bodystrs <- mapply(function(x, fmt) {
-    sapply(x, format_value, format = fmt)
-  }, x = df, fmt = fmts)
+  formats <- rbind("", data.frame(fmts))
+  if (!ignore_rownames) {
+    formats <- cbind("rnms" = "", formats)
+  }
+
+  # Strings
+  bodystrs <- mapply(function(x, coli_fmt) {
+    coli_fmt[coli_fmt == "-"] <- "xx"
+    sapply(seq_along(x), function(y) {
+      format_value(x[y], format = coli_fmt[y])
+    })
+  }, x = df, coli_fmt = fmts)
 
   if (!ignore_rownames) {
     rnms <- row.names(df)
-    if (is.null(rnms)) {
+    if (!is.null(split_labels)) {
+      # This overload is done because identical rownames not allowed (e.g. Mean.1 Mean.2)
+      rnms <- rnms_special
+    } else if (is.null(rnms)) {
       rnms <- as.character(seq_len(NROW(df)))
-    }
-    if(indent_rownames) {
-      what_to_indent <- seq(2, NROW(df), by = 2)
-      rnms[what_to_indent] <- paste0("  ", rnms[what_to_indent])
     }
   }
 
-  cnms <- names(df)
-
-  strings <- rbind(cnms, bodystrs)
+  strings <- rbind(colnames(df), bodystrs)
   rownames(strings) <- NULL
   if (!ignore_rownames) {
     strings <- cbind("rnms" = c("", rnms), strings)
   }
   # colnames(strings) <- NULL # to add after fixing basic_mf for listings
 
-  fnr <- nrow(strings)
-  fnc <- ncol(strings)
+  # Spans
+  spans <- matrix(1, nrow = nrow(strings), ncol = ncol(strings))
 
-  ## center alignment for column labels, left alignment for everything else
-  aligns <- rbind(
-    "center",
-    matrix("left", nrow = NROW(df), ncol = fnc)
+  # Aligns
+  # Default alignment is left for rownames column and center for the rest
+  aligns <- matrix("center",
+    nrow = NROW(strings),
+    ncol = NCOL(strings) - as.numeric(!ignore_rownames)
   )
+  if (!ignore_rownames) {
+    aligns <- cbind("left", aligns)
+  }
 
-  ## build up fake pagination df
+  # Row Info: build up fake pagination df
   charcols <- which(sapply(df, is.character))
   if (length(charcols) > 0) {
     exts <- apply(df[, charcols, drop = FALSE], 1, function(x) max(vapply(x, nlines, 1L)))
   } else {
     exts <- rep(1L, NROW(df))
   }
-  rowdf <- basic_pagdf(row.names(df),
+  # Constructing path roughly
+  paths <- rnms
+  if (!is.null(split_labels)) {
+    paths <- lapply(
+      seq_along(rnms),
+      function(row_path_i) {
+        if (row_classes[row_path_i] == "DataRow") {
+          c(
+            split_labels,
+            rnms[row_path_i - 1], # LabelRow before
+            data_labels,
+            rnms[row_path_i]
+          )
+        } else {
+          c(split_labels, rnms[row_path_i])
+        }
+      }
+    )
+  }
+  rowdf <- basic_pagdf(
+    rnames = rnms,
     extents = exts,
-    parent_path = parent_path
+    rclass = row_classes,
+    parent_path = NULL,
+    paths = paths
   )
+  rownames(rowdf) <- NULL
 
-  formats <- rbind("", matrix("xx", nrow = nrow(df), ncol = ncol(df)))
-  if (!ignore_rownames) {
-    formats <- cbind("", formats)
+  # Indentation happens last so to be sure we have all ready (only strings and formats change)
+  if (indent_rownames && !is.null(split_labels)) {
+    where_to_indent <- which(row_classes == "DataRow") + 1 # +1 because of colnames
+    strings[where_to_indent, 1] <- paste0(indent_space, strings[where_to_indent, 1])
+    formats[where_to_indent, 1] <- paste0(indent_space, formats[where_to_indent, 1]) # Needs fixing
+    rowdf$indent[where_to_indent - 1] <- 1 # -1 because only rows
   }
 
   ret <- MatrixPrintForm(
     strings = strings,
     aligns = aligns,
-    spans = matrix(1, nrow = fnr, ncol = fnc),
+    spans = spans,
     formats = formats, ## matrix("xx", nrow = fnr, ncol = fnc),
     row_info = rowdf,
     has_topleft = FALSE,
     nlines_header = 1,
     nrow_header = 1,
-    has_rowlabs = isFALSE(ignore_rownames)
+    has_rowlabs = isFALSE(ignore_rownames),
+    indent_size = indent_size,
   )
 
   # Check for ncols
