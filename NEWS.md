@@ -5,6 +5,7 @@
  * Fixed mismatch between pagination and exports regarding the value assigned to parameter `max_width`. Introduced general handler `.handle_max_width` for pagination, exports, and `toString`.
  * Fixed bug in `format_value` causing a warning for vectors containing both NA and non-NA values.
  * Fixed issue with `var_label` assignment that needed to be of non-named strings.
+ * Included indentation and split rows with their `LabelRow` assignment in `basic_matrix_form`.
  * Allow tables with content rows in the end be exported.
  * Moved new line expansion for decorations from `rtables`' `matrix_form` to `formatters`' constructor `MatrixPrintForm` so to cover also `rlistings`.
  * Improved relevant information feedback during pagination.

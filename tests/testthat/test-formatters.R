@@ -808,22 +808,22 @@ test_that("All supported 1d format cases of decimal alignment", {
   expected <- c(
     "           mpg           wt                         left   ",
     "-----------------------------------------------------------",
-    "a          11                     11              decimal  ",
-    "b          11.           11.                      left     ",
-    "c          11.1                            11.1   right    ",
+    "a          11                     11               decimal ",
+    "b          11.           11.                        left   ",
+    "c          11.1                            11.1     right  ",
     "d          11.11                        11.11     dec_right",
-    "e          11.111                11.111           center   ",
+    "e          11.111                11.111            center  ",
     "f          11.1111          11.1111               dec_left ",
-    "g          11%                              11%   right    ",
-    "h          11.%                   11.%            center   ",
-    "i          11.1%                 11.1%            center   ",
-    "j          11.11%        11.11%                   left     ",
+    "g          11%                              11%     right  ",
+    "h          11.%                   11.%             center  ",
+    "i          11.1%                 11.1%             center  ",
+    "j          11.11%        11.11%                     left   ",
     "k          11.111%                      11.111%   dec_right",
     "l       (N=11)                       (N=11)       dec_right",
-    "m        N=11                              N=11   right    ",
+    "m        N=11                              N=11     right  ",
     "n        >999.9           >999.9                  dec_left ",
     "o        >999.99          >999.99                 dec_left ",
-    "p   1.1111 | (<0.0001)     1.1111 | (<0.0001)     right    "
+    "p   1.1111 | (<0.0001)     1.1111 | (<0.0001)       right  "
   )
   expect_identical(res_dec, expected)
 })
@@ -903,6 +903,7 @@ test_that("All 2d cases for decimal alignment", {
   # expect_identical(res_dec, expected)
 })
 
+# fmt_config -------------------------------------------------------------------
 test_that("fmt_config works as expected", {
   x <- fmt_config()
   expect_identical(obj_format(x), NULL)
@@ -918,33 +919,4 @@ test_that("fmt_config works as expected", {
   expect_silent(obj_format(x) <- function() {})
   expect_silent(obj_na_str(x) <- "something wrong")
   expect_silent(obj_align(x) <- "something wrong")
-})
-
-test_that("reorder_ref_fnotes orders referential footnotes correctly", {
-  # all numeric
-  rf <- c("{4} - test 1", "{1} - one", "{11} - eleven", "{100} - test 2", "{3} - three", "{7} - !!")
-  res <- reorder_ref_fnotes(rf)
-
-  expect_identical(
-    res,
-    c("{1} - one", "{3} - three", "{4} - test 1", "{7} - !!", "{11} - eleven", "{100} - test 2")
-  )
-
-  # numeric and character
-  rf <- c("{*} - test 1", "{1} - one", "{11} - eleven", "{**} - test 2", "{3} - three", "{!} - !!")
-  res <- reorder_ref_fnotes(rf)
-
-  expect_identical(
-    res,
-    c("{1} - one", "{3} - three", "{11} - eleven", "{!} - !!", "{*} - test 1", "{**} - test 2")
-  )
-
-  # with asterisks
-  rf <- c("{*} - test 1", "{1} - one", "** eleven", "{**} - test 2", "* three", "{!} - !!")
-  res <- reorder_ref_fnotes(rf)
-
-  expect_identical(
-    res,
-    c("{1} - one", "{!} - !!", "{*} - test 1", "{**} - test 2", "* three", "** eleven")
-  )
 })

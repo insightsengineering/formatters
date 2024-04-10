@@ -161,7 +161,6 @@ test_that("export_as_pdf works", {
     "width of page 1 exceeds the available space"
   )
   expect_true(file.exists(tmpf))
-  file.remove(tmpf)
   expect_warning(
     export_as_pdf(bmf, file = tmpf, height = 3, paginate = FALSE),
     "height of page 1 exceeds the available space"
@@ -172,6 +171,7 @@ test_that("export_as_pdf works", {
   set_default_page_number(NULL)
 
   expect_equal(res$npages, 2)
+  file.remove(tmpf)
 })
 
 test_that("exporting lists of tables and listings works", {
