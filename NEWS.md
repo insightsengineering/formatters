@@ -11,6 +11,7 @@
  * Fixed bug in `format_value` causing a warning for vectors containing both NA and non-NA values.
  * Fixed issue with `var_label` assignment that needed to be of non-named strings.
  * Updated `export_as_txt` to allow lists of tables/listings as input. This enables listing pagination with pages by parameter.
+ * Included indentation and split rows with their `LabelRow` assignment in `basic_matrix_form`.
 
 ## formatters 0.5.5
  * Applied `styler` and resolved package lint. Changed default indentation from 4 spaces to 2.

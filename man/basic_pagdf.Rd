@@ -9,8 +9,9 @@ basic_pagdf(
   labs = rnames,
   rnums = seq_along(rnames),
   extents = 1L,
-  rclass = "NA",
-  parent_path = "root"
+  rclass = "DataRow",
+  parent_path = NULL,
+  paths = lapply(rnames, function(x) c(parent_path, x))
 )
 }
 \arguments{
@@ -22,10 +23,13 @@ basic_pagdf(
 
 \item{extents}{(\code{integer})\cr number of lines each row requires to print. Defaults to 1 for all rows.}
 
-\item{rclass}{(\code{character})\cr class(es) for the rows. Defaults to \code{"NA"}.}
+\item{rclass}{(\code{character})\cr class(es) for the rows. Defaults to \code{"DataRow"}.}
 
 \item{parent_path}{(\code{string})\cr parent path that all rows should be "children of".
-Defaults to \code{"root"}, and generally should not matter to end users.}
+Defaults to \code{NULL}, as usually this is not needed. It may be necessary to use \code{"root"},
+for some specific scenarios.}
+
+\item{paths}{(\code{list})\cr list of paths to the rows. Defaults to \code{lapply(rnames, function(x) c(parent_path, x))}.}
 }
 \value{
 A \code{data.frame} suitable for use in both the \code{MatrixPrintForm} constructor and the pagination machinery.
