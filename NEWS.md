@@ -6,7 +6,7 @@
  * Fixed bug in `format_value` causing a warning for vectors containing both NA and non-NA values.
  * Fixed issue with `var_label` assignment that needed to be of non-named strings.
  * Included indentation and split rows with their `LabelRow` assignment in `basic_matrix_form`.
- * Allow tables with content rows in the end be exported.
+ * Allowed tables with content rows in the end be exported.
  * Moved new line expansion for decorations from `rtables`' `matrix_form` to `formatters`' constructor `MatrixPrintForm` so to cover also `rlistings`.
  * Improved relevant information feedback during pagination.
  * Updated `export_as_txt` to allow lists of tables/listings as input. This enables listing pagination with pages by parameter.
