@@ -12,7 +12,7 @@ more sophisticated custom matrix_form methods."><meta property="og:image" conten
     
     <a class="navbar-brand me-2" href="../index.html">formatters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5.9019</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5.9020</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,28 +29,6 @@ more sophisticated custom matrix_form methods."><meta property="og:image" conten
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.4-rc1">v0.5.4-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3-rc2">v0.5.3-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3-rc1">v0.5.3-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.2-rc1">v0.5.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1-rc1">v0.5.1-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0-rc1">v0.5.0-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.5">v0.5.5</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3">v0.5.3</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.2">v0.5.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1">v0.5.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0">v0.5.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.1">v0.4.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.0">v0.4.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.3.3">v0.3.3</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -88,9 +66,12 @@ more sophisticated custom <code>matrix_form</code> methods.</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">basic_matrix_form</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
-<span>  parent_path <span class="op">=</span> <span class="st">"root"</span>,</span>
+<span>  indent_rownames <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  parent_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ignore_rownames <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  add_decoration <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  add_decoration <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  split_labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  data_labels <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">basic_listing_mf</span><span class="op">(</span><span class="va">df</span>, keycols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, add_decoration <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
@@ -102,18 +83,39 @@ more sophisticated custom <code>matrix_form</code> methods.</p>
 <dd><p>(<code>data.frame</code>)<br> a data frame.</p></dd>
 
 
+<dt>indent_rownames</dt>
+<dd><p>(<code>flag</code>)<br> whether row names should be indented. Being this
+used for testing purposes, it defaults to <code>FALSE</code>. If <code>TRUE</code>, it assigns label rows
+on even lines (also format is <code>"-"</code> and value strings are <code>""</code>). Indentation works
+only if split labels are used (see parameters <code>split_labels</code> and <code>data_labels</code>).</p></dd>
+
+
 <dt>parent_path</dt>
 <dd><p>(<code>string</code>)<br> parent path that all rows should be "children of".
-Defaults to <code>"root"</code>, and generally should not matter to end users.</p></dd>
+Defaults to <code>NULL</code>, as usually this is not needed. It may be necessary to use <code>"root"</code>,
+for some specific scenarios.</p></dd>
 
 
 <dt>ignore_rownames</dt>
-<dd><p>(<code>flag</code>)<br> whether rownames should be ignored.</p></dd>
+<dd><p>(<code>flag</code>)<br> whether row names should be ignored.</p></dd>
 
 
 <dt>add_decoration</dt>
 <dd><p>(<code>flag</code>)<br> whether adds title and footer decorations should
 be added to the matrix form.</p></dd>
+
+
+<dt>split_labels</dt>
+<dd><p>(<code>string</code>)<br> indicates which column to use as split labels. If
+<code>NULL</code>, no split labels are used.</p></dd>
+
+
+<dt>data_labels</dt>
+<dd><p>(<code>string</code>)<br> indicates which column to use as data labels. It is
+ignored if no <code>split_labels</code> is present and is automatically assigned to
+<code>"Analysis method"</code> when <code>split_labels</code> is present, but <code>data_labels</code> is <code>NULL</code>.
+Its direct column name is used as node name in <code>"DataRow"</code> pathing. See <code><a href="mpf_accessors.html">mf_rinfo()</a></code>
+for more information.</p></dd>
 
 
 <dt>keycols</dt>
@@ -125,11 +127,17 @@ repeated values are assigned <code>""</code>. This format is characteristic of a
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A valid <code>MatrixPrintForm</code> object representing <code>df</code> that is ready for ASCII rendering.</p>
+<p>A valid <code>MatrixPrintForm</code> object representing <code>df</code> that is ready for
+ASCII rendering.</p>
 
 
 <p>A valid <code>MatrixPrintForm</code> object representing <code>df</code> as a listing that is ready for ASCII
 rendering.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>If some of the column has a <a href="lab_name.html">obj_format</a> assigned, it will be respected for all column
+values except for label rows, if present (see parameter <code>split_labels</code>).</p>
     </div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
@@ -144,38 +152,69 @@ respects the default formats for a listing object.</p></li>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="tostring.html">toString</a></span><span class="op">(</span><span class="va">mform</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                       mpg    cyl   disp    hp    drat    wt     qsec    vs   am   gear   carb</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Mazda RX4             21     6     160     110   3.9    2.62    16.46   0    1    4      4   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Mazda RX4 Wag         21     6     160     110   3.9    2.875   17.02   0    1    4      4   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Datsun 710            22.8   4     108     93    3.85   2.32    18.61   1    1    4      1   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hornet 4 Drive        21.4   6     258     110   3.08   3.215   19.44   1    0    3      1   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hornet Sportabout     18.7   8     360     175   3.15   3.44    17.02   0    0    3      2   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Valiant               18.1   6     225     105   2.76   3.46    20.22   1    0    3      1   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Duster 360            14.3   8     360     245   3.21   3.57    15.84   0    0    3      4   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Merc 240D             24.4   4     146.7   62    3.69   3.19    20      1    0    4      2   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Merc 230              22.8   4     140.8   95    3.92   3.15    22.9    1    0    4      2   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Merc 280              19.2   6     167.6   123   3.92   3.44    18.3    1    0    4      4   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Merc 280C             17.8   6     167.6   123   3.92   3.44    18.9    1    0    4      4   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Merc 450SE            16.4   8     275.8   180   3.07   4.07    17.4    0    0    3      3   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Merc 450SL            17.3   8     275.8   180   3.07   3.73    17.6    0    0    3      3   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Merc 450SLC           15.2   8     275.8   180   3.07   3.78    18      0    0    3      3   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Cadillac Fleetwood    10.4   8     472     205   2.93   5.25    17.98   0    0    3      4   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Lincoln Continental   10.4   8     460     215   3      5.424   17.82   0    0    3      4   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chrysler Imperial     14.7   8     440     230   3.23   5.345   17.42   0    0    3      4   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Fiat 128              32.4   4     78.7    66    4.08   2.2     19.47   1    1    4      1   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Honda Civic           30.4   4     75.7    52    4.93   1.615   18.52   1    1    4      2   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Toyota Corolla        33.9   4     71.1    65    4.22   1.835   19.9    1    1    4      1   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Toyota Corona         21.5   4     120.1   97    3.7    2.465   20.01   1    0    3      1   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Dodge Challenger      15.5   8     318     150   2.76   3.52    16.87   0    0    3      2   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AMC Javelin           15.2   8     304     150   3.15   3.435   17.3    0    0    3      2   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Camaro Z28            13.3   8     350     245   3.73   3.84    15.41   0    0    3      4   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Pontiac Firebird      19.2   8     400     175   3.08   3.845   17.05   0    0    3      2   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Fiat X1-9             27.3   4     79      66    4.08   1.935   18.9    1    1    4      1   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Porsche 914-2         26     4     120.3   91    4.43   2.14    16.7    0    1    5      2   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Lotus Europa          30.4   4     95.1    113   3.77   1.513   16.9    1    1    5      2   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Ford Pantera L        15.8   8     351     264   4.22   3.17    14.5    0    1    5      4   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Ferrari Dino          19.7   6     145     175   3.62   2.77    15.5    0    1    5      6   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Maserati Bora         15     8     301     335   3.54   3.57    14.6    0    1    5      8   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Volvo 142E            21.4   4     121     109   4.11   2.78    18.6    1    1    4      2   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Mazda RX4              21     6     160    110   3.9    2.62    16.46   0    1     4      4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Mazda RX4 Wag          21     6     160    110   3.9    2.875   17.02   0    1     4      4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Datsun 710            22.8    4     108    93    3.85   2.32    18.61   1    1     4      1  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Hornet 4 Drive        21.4    6     258    110   3.08   3.215   19.44   1    0     3      1  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Hornet Sportabout     18.7    8     360    175   3.15   3.44    17.02   0    0     3      2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Valiant               18.1    6     225    105   2.76   3.46    20.22   1    0     3      1  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Duster 360            14.3    8     360    245   3.21   3.57    15.84   0    0     3      4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Merc 240D             24.4    4    146.7   62    3.69   3.19     20     1    0     4      2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Merc 230              22.8    4    140.8   95    3.92   3.15    22.9    1    0     4      2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Merc 280              19.2    6    167.6   123   3.92   3.44    18.3    1    0     4      4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Merc 280C             17.8    6    167.6   123   3.92   3.44    18.9    1    0     4      4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Merc 450SE            16.4    8    275.8   180   3.07   4.07    17.4    0    0     3      3  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Merc 450SL            17.3    8    275.8   180   3.07   3.73    17.6    0    0     3      3  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Merc 450SLC           15.2    8    275.8   180   3.07   3.78     18     0    0     3      3  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Cadillac Fleetwood    10.4    8     472    205   2.93   5.25    17.98   0    0     3      4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Lincoln Continental   10.4    8     460    215    3     5.424   17.82   0    0     3      4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chrysler Imperial     14.7    8     440    230   3.23   5.345   17.42   0    0     3      4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Fiat 128              32.4    4    78.7    66    4.08    2.2    19.47   1    1     4      1  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Honda Civic           30.4    4    75.7    52    4.93   1.615   18.52   1    1     4      2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Toyota Corolla        33.9    4    71.1    65    4.22   1.835   19.9    1    1     4      1  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Toyota Corona         21.5    4    120.1   97    3.7    2.465   20.01   1    0     3      1  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Dodge Challenger      15.5    8     318    150   2.76   3.52    16.87   0    0     3      2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> AMC Javelin           15.2    8     304    150   3.15   3.435   17.3    0    0     3      2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Camaro Z28            13.3    8     350    245   3.73   3.84    15.41   0    0     3      4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Pontiac Firebird      19.2    8     400    175   3.08   3.845   17.05   0    0     3      2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Fiat X1-9             27.3    4     79     66    4.08   1.935   18.9    1    1     4      1  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Porsche 914-2          26     4    120.3   91    4.43   2.14    16.7    0    1     5      2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Lotus Europa          30.4    4    95.1    113   3.77   1.513   16.9    1    1     5      2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ford Pantera L        15.8    8     351    264   4.22   3.17    14.5    0    1     5      4  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ferrari Dino          19.7    6     145    175   3.62   2.77    15.5    0    1     5      6  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Maserati Bora          15     8     301    335   3.54   3.57    14.6    0    1     5      8  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Volvo 142E            21.4    4     121    109   4.11   2.78    18.6    1    1     4      2  </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Advanced test case with label rows</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘dplyr’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:testthat’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     matches</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:stats’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     filter, lag</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     intersect, setdiff, setequal, union</span>
+<span class="r-in"><span><span class="va">iris_output</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span><span class="st">"all obs"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">Petal.Length</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="st">"DataRow_label"</span> <span class="op">=</span> <span class="st">"Mean"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mf</span> <span class="op">&lt;-</span> <span class="fu">basic_matrix_form</span><span class="op">(</span><span class="va">iris_output</span>,</span></span>
+<span class="r-in"><span>  indent_rownames <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  split_labels <span class="op">=</span> <span class="st">"Species"</span>, data_labels <span class="op">=</span> <span class="st">"DataRow_label"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="tostring.html">toString</a></span><span class="op">(</span><span class="va">mf</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              all obs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> oooooooooooooooooooo</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> setosa              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean        1.46  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> versicolor          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean        4.26  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> virginica           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean        5.55  </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mform</span> <span class="op">&lt;-</span> <span class="fu">basic_listing_mf</span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="tostring.html">toString</a></span><span class="op">(</span><span class="va">mform</span><span class="op">)</span><span class="op">)</span></span></span>

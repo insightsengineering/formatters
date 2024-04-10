@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">formatters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5.9019</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5.9020</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,28 +27,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.4-rc1">v0.5.4-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3-rc2">v0.5.3-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3-rc1">v0.5.3-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.2-rc1">v0.5.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1-rc1">v0.5.1-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0-rc1">v0.5.0-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.5">v0.5.5</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3">v0.5.3</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.2">v0.5.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1">v0.5.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0">v0.5.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.1">v0.4.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.0">v0.4.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.3.3">v0.3.3</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -88,8 +66,9 @@
 <span>  labs <span class="op">=</span> <span class="va">rnames</span>,</span>
 <span>  rnums <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">rnames</span><span class="op">)</span>,</span>
 <span>  extents <span class="op">=</span> <span class="fl">1L</span>,</span>
-<span>  rclass <span class="op">=</span> <span class="st">"NA"</span>,</span>
-<span>  parent_path <span class="op">=</span> <span class="st">"root"</span></span>
+<span>  rclass <span class="op">=</span> <span class="st">"DataRow"</span>,</span>
+<span>  parent_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  paths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">rnames</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">parent_path</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -112,12 +91,17 @@
 
 
 <dt>rclass</dt>
-<dd><p>(<code>character</code>)<br> class(es) for the rows. Defaults to <code>"NA"</code>.</p></dd>
+<dd><p>(<code>character</code>)<br> class(es) for the rows. Defaults to <code>"DataRow"</code>.</p></dd>
 
 
 <dt>parent_path</dt>
 <dd><p>(<code>string</code>)<br> parent path that all rows should be "children of".
-Defaults to <code>"root"</code>, and generally should not matter to end users.</p></dd>
+Defaults to <code>NULL</code>, as usually this is not needed. It may be necessary to use <code>"root"</code>,
+for some specific scenarios.</p></dd>
+
+
+<dt>paths</dt>
+<dd><p>(<code>list</code>)<br> list of paths to the rows. Defaults to <code>lapply(rnames, function(x) c(parent_path, x))</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -130,15 +114,15 @@ Defaults to <code>"root"</code>, and generally should not matter to end users.</
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">basic_pagdf</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hi"</span>, <span class="st">"there"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       label  name abs_rownumber        path pos_in_siblings n_siblings</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hi       hi    hi             1    root, hi               1          2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> there there there             2 root, there               2          2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       self_extent par_extent reprint_inds node_class indent nrowrefs ncellrefs</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hi              1          0                      NA      0        0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> there           1          0                      NA      0        0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       nreflines force_page page_title trailing_sep</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hi            0      FALSE       &lt;NA&gt;         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> there         0      FALSE       &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       label  name abs_rownumber  path pos_in_siblings n_siblings self_extent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hi       hi    hi             1    hi               1          2           1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> there there there             2 there               2          2           1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       par_extent reprint_inds node_class indent nrowrefs ncellrefs nreflines</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hi             0                 DataRow      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> there          0                 DataRow      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       force_page page_title trailing_sep</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hi         FALSE       &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> there      FALSE       &lt;NA&gt;         &lt;NA&gt;</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
