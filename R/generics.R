@@ -3,7 +3,6 @@
 ### sufficient for hooking that class up to the `formatters` pagination and rendering
 ### machinery.
 
-## nocov start
 #' Make row layout summary data frames for use during pagination
 #'
 #' All relevant information about table rows (e.g. indentations) is summarized in a `data.frame`.
@@ -83,7 +82,6 @@ setMethod("make_row_df", "MatrixPrintForm", function(tt, colwidths = NULL, visib
   )
   stop(msg)
 })
-## nocov end
 
 #' Transform `rtable` to a list of matrices which can be used for outputting
 #'
@@ -226,7 +224,7 @@ setMethod("nlines", "character", function(x, colwidths, max_width) {
 setGeneric("toString", function(x, ...) standardGeneric("toString"))
 
 ## preserve S3 behavior
-setMethod("toString", "ANY", base::toString) ## nocov
+setMethod("toString", "ANY", base::toString)
 
 #' Print
 #'
@@ -235,7 +233,7 @@ setMethod("toString", "ANY", base::toString) ## nocov
 #' @inheritParams base::print
 #'
 #' @rdname basemethods
-setMethod("print", "ANY", base::print) ## nocov
+setMethod("print", "ANY", base::print)
 
 # General/"universal" property getter and setter generics and stubs --------------------------------------
 
@@ -254,14 +252,11 @@ setMethod("print", "ANY", base::print) ## nocov
 
 # obj_name ---------------------------------------------------------------
 
-## no exported methods so we do nocov
-# nocov start
 setGeneric("obj_name", function(obj) standardGeneric("obj_name"))
 
 #' @rdname lab_name
 #' @export
 setGeneric("obj_name<-", function(obj, value) standardGeneric("obj_name<-"))
-# nocov end
 
 # obj_label ---------------------------------------------------------------
 
@@ -426,7 +421,7 @@ setMethod(
 
 #' @export
 #' @rdname title_footer
-setGeneric("subtitles", function(obj) standardGeneric("subtitles")) ## nocov
+setGeneric("subtitles", function(obj) standardGeneric("subtitles"))
 
 #' @export
 #' @rdname title_footer
@@ -437,7 +432,7 @@ setMethod(
 
 ##' @rdname title_footer
 ##' @export
-setGeneric("subtitles<-", function(obj, value) standardGeneric("subtitles<-")) ## nocov
+setGeneric("subtitles<-", function(obj, value) standardGeneric("subtitles<-"))
 
 ##' @rdname title_footer
 ##' @export
