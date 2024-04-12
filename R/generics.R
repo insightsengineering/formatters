@@ -46,6 +46,11 @@
 #'   both `make_row_df` and `make_col_df` (see [rtables::make_col_df()]), as it is simply the
 #'   row/column structure of `tt` and thus not useful for pathing or pagination.
 #'
+#' @examples
+#' # Expected error with matrix_form. For real case examples consult {rtables} documentation
+#' mf <- basic_matrix_form(iris)
+#' # make_row_df(mf) # Use table obj instead
+#'
 #' @export
 #' @name make_row_df
 setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
@@ -72,10 +77,11 @@ setMethod("make_row_df", "MatrixPrintForm", function(tt, colwidths = NULL, visib
                                                      sibpos = NA_integer_,
                                                      nsibs = NA_integer_,
                                                      max_width = NULL) {
-  stop(
+  msg <- paste0(
     "make_row_df can be used only on {rtables} table objects, and not on `matrix_form`-",
     "generated objects (MatrixPrintForm)."
   )
+  stop(msg)
 })
 ## nocov end
 
