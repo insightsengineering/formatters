@@ -683,7 +683,8 @@ mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf), f
 #' @param labs (`character`)\cr vector of row labels. Defaults to `rnames`.
 #' @param rnums (`integer`)\cr vector of row numbers. Defaults to `seq_along(rnames)`.
 #' @param extents (`integer`)\cr number of lines each row requires to print. Defaults to 1 for all rows.
-#' @param rclass (`character`)\cr class(es) for the rows. Defaults to `"NA"`.
+#' @param rclass (`character`)\cr class(es) for the rows. Defaults to `"DataRow"`.
+#' @param paths (`list`)\cr list of paths to the rows. Defaults to `lapply(rnames, function(x) c(parent_path, x))`.
 #'
 #' @return A `data.frame` suitable for use in both the `MatrixPrintForm` constructor and the pagination machinery.
 #'
@@ -691,20 +692,33 @@ mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf), f
 #' basic_pagdf(c("hi", "there"))
 #'
 #' @export
-basic_pagdf <- function(rnames, labs = rnames, rnums = seq_along(rnames),
+basic_pagdf <- function(rnames,
+                        labs = rnames,
+                        rnums = seq_along(rnames),
                         extents = 1L,
-                        rclass = "NA",
-                        parent_path = "root",
+                        rclass = "DataRow",
+                        parent_path = NULL,
+                        paths = lapply(rnames, function(x) c(parent_path, x)),
                         fontspec = font_spec()) {
   rws <- mapply(pagdfrow,
     nm = rnames, lab = labs, extent = extents,
-    rclass = rclass, rnum = rnums, pth = lapply(rnames, function(x) c(parent_path, x)),
+    rclass = rclass, rnum = rnums, pth = paths,
     MoreArgs = list(fontspec = fontspec),
     SIMPLIFY = FALSE, nsibs = 1, sibpos = 1
   )
   res <- do.call(rbind.data.frame, rws)
   res$n_siblings <- nrow(res)
   res$pos_in_siblings <- seq_along(res$n_siblings)
+
+  if (!all(rclass == "DataRow")) {
+    # These things are used in the simple case of a split, hence having labels.
+    # To improve and extend to other cases
+    res$pos_in_siblings <- NA
+    res$pos_in_siblings[rclass == "DataRow"] <- 1
+    res$par_extent[rclass == "DataRow"] <- 1 # the rest is 0
+    res$n_siblings <- res$pos_in_siblings
+    res$reprint_inds[which(rclass == "DataRow")] <- res$abs_rownumber[which(rclass == "DataRow") - 1]
+  }
   res
 }
 
