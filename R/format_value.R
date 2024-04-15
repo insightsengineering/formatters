@@ -295,7 +295,7 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
         format, " are of different length"
       )
     }
-    if (length(na_str) < length(x)) {
+    if ((length(na_str) < length(x)) & length(na_str) == 1) {
       na_str <- rep(na_str, length.out = length(x))
     }
     if (length(na_str) < sum(is.na(x))) {
