@@ -4,6 +4,9 @@
     <loc>https://insightsengineering.github.io/formatters/404.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/formatters/CODE_OF_CONDUCT.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/formatters/CONTRIBUTING.html</loc>
   </url>
   <url>
@@ -37,9 +40,6 @@
     <loc>https://insightsengineering.github.io/formatters/reference/basemethods.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/formatters/reference/basic_matrix_form.html</loc>
-  </url>
-  <url>
     <loc>https://insightsengineering.github.io/formatters/reference/basic_pagdf.html</loc>
   </url>
   <url>
@@ -53,6 +53,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/formatters/reference/default_horizontal_sep.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/formatters/reference/default_page_number.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/formatters/reference/divider_height.html</loc>
@@ -155,6 +158,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/formatters/reference/table_inset.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/formatters/reference/test_matrix_form.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/formatters/reference/title_footer.html</loc>
