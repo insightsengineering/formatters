@@ -54,6 +54,7 @@ Collate:
     'format_value.R'
     'matrix_form.R'
     'generics.R'
+    'jjcsformats.R'
     'labels.R'
     'mpf_exporters.R'
     'package.R'

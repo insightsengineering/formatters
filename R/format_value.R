@@ -272,7 +272,10 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
   } else if (is.null(format)) {
     toString(x)
   } else if (is.function(format)) {
-    format(x, output = output)
+    format_args <- names(formals(format))
+    if ("na_str" %in% format_args){
+      format(x, output = output,na_str=na_str)
+    } else format(x, output = output)
   } else if (is.character(format)) {
     l <- if (format %in% formats_1d) {
       1
@@ -291,6 +294,9 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
         "cell <", paste(x), "> and format ",
         format, " are of different length"
       )
+    }
+    if (length(na_str) < length(x)) {
+      na_str <- rep(na_str, length.out = length(x))
     }
     if (length(na_str) < sum(is.na(x))) {
       na_str <- rep(na_str, length.out = sum(is.na(x)))
