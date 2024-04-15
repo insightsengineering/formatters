@@ -165,117 +165,99 @@ jjcsformat_xx <- jjcsformat_xx_SAS
 #' \cr See also: {tern::format_count_fraction_fixed_dp()}
 #'
 #' @inheritParams jjcs_format_xx_fct
-#' @param x `numeric`\cr with elements `num` and `fraction` or `num`, `denom` and `fraction`.
-#' @param d numeric(1). Number of digits to round fraction to (default=1)
-#' @return A string in the format `count / denom (ratio %)`. If `count` is 0, the format is `0`. If fraction is >0.99, the format is `count / denom (>99.9%)`
+#' @param type One of count_fraction or count_denom_fraction
 #' @family JJCS formats
 #' @name Count_fraction
 #' @export
 #'
 #' @examples
+#' jjcsformat_count_fraction <- jjcsformat_count_fraction_fct("SAS","count_fraction")
+#' jjcsformat_count_denom_fraction <- jjcsformat_count_fraction_fct("SAS","count_denom_fraction")
+
 #' jjcsformat_count_fraction(c(7,0.7))
 #' jjcsformat_count_fraction(c(70000,0.9999999))
 #' jjcsformat_count_fraction(c(70000,1))
 #'
+#' jjcsformat_count_fraction_fct("SAS","count_denom_fraction")(c(3,2000,3/2000))
+#' jjcsformat_count_fraction_fct("R","count_denom_fraction")(c(3,2000,3/2000))
 
-jjcsformat_count_fraction <- function (x,d=1, roundmethod=c("SAS","R"),...)
-{
+jjcsformat_count_fraction_fct <- function(roundmethod=c("SAS","R"),type=c("count_fraction","count_denom_fraction")){
+
   roundmethod <- match.arg(roundmethod)
-  attr(x, "label") <- NULL
-  if (any(is.na(x))) {
-    return("-")
-  }
+  type <- match.arg(type)
 
-  checkmate::assert_vector(x)
-  checkmate::assert_integerish(x[1])
-  tern:::assert_proportion_value(x[2], include_boundaries = TRUE)
-
-  fraction <- x[2]
+  if (roundmethod == "SAS"){roundfun <- roundSAS}
+  if (roundmethod == "R"){roundfun <- round}
 
 
-  if (isTRUE(all.equal(fraction,1))) fraction <- 1
+  #' @param x `numeric`\cr with elements `num` and `fraction` or `num`, `denom` and `fraction`.
+  #' @param d numeric(1). Number of digits to round fraction to (default=1)
+  #' @return A string in the format `count / denom (ratio %)`. If `count` is 0, the format is `0`. If fraction is >0.99, the format is `count / denom (>99.9%)`
 
-  if (roundmethod == "SAS"){
-    fmtpct <- format(roundSAS(fraction * 100, d),nsmall=d)
-  } else {
-    fmtpct <- format(round(fraction * 100, d),nsmall=d)
-  }
+  fun <- function(x,d=1){
+    checkmate::assert_vector(x)
 
-  result <-if (x[1] == 0) {
-    "0"
+    count <- x[1]
+    checkmate::assert_integerish(count)
+
+    if (type == "count_fraction"){
+      denom <- NULL
+      fraction <- x[2]
+      fdenom <- NULL
+
+      checkmate::assert_vector(x,min.len=2,max.len=2)
+    }
+    if (type == "count_denom_fraction"){
+      denom <- x[2]
+      fraction <- x[3]
+      fdenom <- paste0("/",denom)
+      checkmate::assert_vector(x,min.len=3,max.len=3)
+    }
+
+    attr(x, "label") <- NULL
+    if (any(is.na(x))) {
+      return("-")
+    }
+
+    tern:::assert_proportion_value(fraction, include_boundaries = TRUE)
+
+    fmtpct <- format(roundfun(fraction * 100, d),nsmall=d)
+
+    # fraction is the result of a division, so in some cases it is not exactly equal 1, even coming from x/x
+    # if it is nearly equal to 1, set it to 1
+    if (isTRUE(all.equal(fraction,1))) fraction <- 1
+
+
+    result <- if (count == 0) {
+      "0"
+    }
+    ## per conventions report 100.0 as 100
+    else if (fraction == 1) {
+      paste0(count, fdenom," (100 %)")
+    }
+    ### <0.1% (even if fmtpct == 0.1, but the actual value of pct <0.1)
+    ### example pct = 0.09999
+    # else if (100*x[2] < 10**(-d)) {
+    else if (fmtpct == format(0,nsmall=d)) {
+      paste0(count,fdenom, " (<",10**(-d),"%)")
+    }
+    ### >99.9% (even if fmtpct == 99.9, but the actual value of pct >99.9)
+    ### example pct = 99.90001
+    #else if (100*x[2] > 100-10**(-d)) {
+    else if (fmtpct == format(100,nsmall=d)) {
+      paste0(count,fdenom, " (>",100-10**(-d),"%)")
+    }
+    else {
+      paste0(count,fdenom, " (", fmtpct, "%)")
+    }
+    return(result)
+
   }
-  ## per conventions still report as 100.0%
-  else if (fraction == 1) {
-    paste0(x[1], " (100.0%)")
-  }
-  ### <0.1% (even if fmtpct == 0.1, but the actual value of pct <0.1)
-  ### example pct = 0.09999
-  # else if (100*x[2] < 10**(-d)) {
-  else if (fmtpct == format(0,nsmall=d)) {
-    paste0(x[1], " (<",10**(-d),"%)")
-  }
-  ### >99.9% (even if fmtpct == 99.9, but the actual value of pct >99.9)
-  ### example pct = 99.90001
-  #else if (100*x[2] > 100-10**(-d)) {
-  else if (fmtpct == format(100,nsmall=d)) {
-    paste0(x[1], " (>",100-10**(-d),"%)")
-  }
-  else {
-    paste0(x[1], " (", fmtpct, "%)")
-  }
-  return(result)
+  return(fun)
 }
 
-#' Title: Formatting count, denominator and fraction values
-#'
-#' @inherit Count_fraction
-#' @export
-#' @rdname Count_fraction
-#' @examples
-#' jjcsformat_count_denom_fraction(c(7,10,0.7))
-#' jjcsformat_count_denom_fraction(c(70000,70001,70000/70001))
-#' jjcsformat_count_denom_fraction(c(235,235,235/235))
-jjcsformat_count_denom_fraction <- function (x, d=1,roundmethod=c("SAS","R"),...)
-{
-  roundmethod <- match.arg(roundmethod)
-  attr(x, "label") <- NULL
-  if (any(is.na(x))) {
-    return("-")
-  }
-  checkmate::assert_vector(x)
-  checkmate::assert_integerish(x[1])
-  tern:::assert_proportion_value(x[3], include_boundaries = TRUE)
 
-  fraction <- x[3]
-  if (x[2] == x[1]) fraction <- 1
+jjcsformat_count_fraction <- jjcsformat_count_fraction_fct("SAS","count_fraction")
+jjcsformat_count_denom_fraction <- jjcsformat_count_fraction_fct("SAS","count_denom_fraction")
 
 
-  fmt_x12 <- paste0(x[1], "/",x[2])
-
-  if (roundmethod == "SAS"){
-    fmtpct <- format(roundSAS(fraction * 100, d),nsmall=d)
-  } else {
-    fmtpct <- format(round(fraction * 100, d),nsmall=d)
-  }
-
-  result <- if (x[1] == 0) {
-    "0"
-  }
-  else if (100*fraction == 100) {
-    paste0(fmt_x12, " (100.0%)")
-  }
-  ### <0.1% (even if fmtpct == 0.1, but the actual value of pct <0.1)
-  ### example pct = 0.09999
-  else if (100*fraction < 10**(-d)) {
-    paste0(fmt_x12, " (<",10**(-d),"%)")
-  }
-  ### >99.9% (even if fmtpct == 99.9, but the actual value of pct >99.9)
-  ### example pct = 99.90001
-  else if (100*fraction > 100-10**(-d)) {
-    paste0(fmt_x12, " (>",100-10**(-d),"%)")
-  }
-  else {
-    paste0(fmt_x12," (", fmtpct, "%)")
-  }
-  return(result)
-}

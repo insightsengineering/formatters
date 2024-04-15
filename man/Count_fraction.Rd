@@ -2,25 +2,27 @@
 % Please edit documentation in R/jjcsformats.R
 \name{Count_fraction}
 \alias{Count_fraction}
-\alias{jjcsformat_count_fraction}
-\alias{jjcsformat_count_denom_fraction}
+\alias{jjcsformat_count_fraction_fct}
 \title{Title: Formatting count and fraction values}
 \usage{
-jjcsformat_count_fraction(x, d = 1, roundmethod = c("SAS", "R"), ...)
-
-jjcsformat_count_denom_fraction(x, d = 1, roundmethod = c("SAS", "R"), ...)
+jjcsformat_count_fraction_fct(
+  roundmethod = c("SAS", "R"),
+  type = c("count_fraction", "count_denom_fraction")
+)
 }
 \arguments{
-\item{x}{\code{numeric}\cr with elements \code{num} and \code{fraction} or \code{num}, \code{denom} and \code{fraction}.}
-
-\item{d}{numeric(1). Number of digits to round fraction to (default=1)}
-
 \item{roundmethod}{(\code{string})\cr choice of rounding methods. Options are:
 \itemize{
 \item \code{SAS}: the underlying rounding method is \code{tidytlg::roundSAS}, where \cr
 roundSAS comes from this Stack Overflow post https://stackoverflow.com/questions/12688717/round-up-from-5
 \item \code{R}: the underlying rounding method is \code{round}
 }}
+
+\item{type}{One of count_fraction or count_denom_fraction}
+
+\item{x}{\code{numeric}\cr with elements \code{num} and \code{fraction} or \code{num}, \code{denom} and \code{fraction}.}
+
+\item{d}{numeric(1). Number of digits to round fraction to (default=1)}
 }
 \value{
 A string in the format \verb{count / denom (ratio \%)}. If \code{count} is 0, the format is \code{0}. If fraction is >0.99, the format is \verb{count / denom (>99.9\%)}
@@ -30,13 +32,14 @@ Formats a count together with fraction (and/or denominator) with special conside
 \cr See also: {tern::format_count_fraction_fixed_dp()}
 }
 \examples{
+jjcsformat_count_fraction <- jjcsformat_count_fraction_fct("SAS","count_fraction")
+jjcsformat_count_denom_fraction <- jjcsformat_count_fraction_fct("SAS","count_denom_fraction")
 jjcsformat_count_fraction(c(7,0.7))
 jjcsformat_count_fraction(c(70000,0.9999999))
 jjcsformat_count_fraction(c(70000,1))
 
-jjcsformat_count_denom_fraction(c(7,10,0.7))
-jjcsformat_count_denom_fraction(c(70000,70001,70000/70001))
-jjcsformat_count_denom_fraction(c(235,235,235/235))
+jjcsformat_count_fraction_fct("SAS","count_denom_fraction")(c(3,2000,3/2000))
+jjcsformat_count_fraction_fct("R","count_denom_fraction")(c(3,2000,3/2000))
 }
 \seealso{
 Other JJCS formats: 
