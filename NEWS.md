@@ -1,17 +1,17 @@
-## formatters 0.5.5.9021
+## formatters 0.5.6
  * Added "N=xx" format and unit test for it.
- * Allow tables with content rows in the end be exported.
- * Removed redundant references to `matrix_print_form` constructor (now only `MatrixPrintForm`).
- * Moved new line expansion for decorations from `rtables`' `matrix_form` to `formatters`' constructor `MatrixPrintForm` so to cover also `rlistings`.
- * Fixed pagination unexpected counts for `rlistings`' pagination by removing the manual subsetting workaround and fixing [`insightsengineering/rlistings#155`](https://github.com/insightsengineering/rlistings/issues/155).
- * Improved relevant information feedback during pagination.
- * Removed the possibility to set `min_siblings > 0` when dealing with listings. This allows smooth pagination when having only 2 lines.
  * Added error catch for `\r` recursive special character.
+ * Fixed pagination unexpected counts for `rlistings`' pagination by removing the manual subsetting workaround and fixing [`insightsengineering/rlistings#155`](https://github.com/insightsengineering/rlistings/issues/155).
  * Fixed mismatch between pagination and exports regarding the value assigned to parameter `max_width`. Introduced general handler `.handle_max_width` for pagination, exports, and `toString`.
  * Fixed bug in `format_value` causing a warning for vectors containing both NA and non-NA values.
  * Fixed issue with `var_label` assignment that needed to be of non-named strings.
- * Updated `export_as_txt` to allow lists of tables/listings as input. This enables listing pagination with pages by parameter.
  * Included indentation and split rows with their `LabelRow` assignment in `basic_matrix_form`.
+ * Allowed tables with content rows in the end be exported.
+ * Moved new line expansion for decorations from `rtables`' `matrix_form` to `formatters`' constructor `MatrixPrintForm` so to cover also `rlistings`.
+ * Improved relevant information feedback during pagination.
+ * Updated `export_as_txt` to allow lists of tables/listings as input. This enables listing pagination with pages by parameter.
+ * Removed the possibility of setting `min_siblings > 0` when dealing with listings. This allows smooth pagination when there are only 2 lines.
+ * Removed redundant references to `matrix_print_form` constructor (now only `MatrixPrintForm`).
 
 ## formatters 0.5.5
  * Applied `styler` and resolved package lint. Changed default indentation from 4 spaces to 2.
