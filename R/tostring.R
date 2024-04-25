@@ -8,6 +8,7 @@ font_dev_state$fontspec <- list()
 font_dev_state$spacewidth <- NA_real_
 font_dev_state$ismonospace <- NA
 font_dev_state$max_ratio <- NA_real_
+font_dev_state$dev_num <- NA_integer_
 
 
 cwidth_inches_unsafe <- function(x) {
@@ -19,6 +20,8 @@ cwidth_inches_unsafe <- function(x) {
 #'
 #' @param fontspec (`font_spec`)\cr a font_spec object specifying the font information to use for
 #'   calculating string widths and heights, as returned by [font_spec()].
+#' @param silent (`logical(1)`)\cr If `FALSE`, the default, a warning will be
+#'   emitted if this function switches away from an active graphics device.
 #'
 #' @details The font device state is an environment with
 #' four variables guaranteed to be set:
@@ -50,7 +53,7 @@ cwidth_inches_unsafe <- function(x) {
 #' close_font_dev()
 #'
 #' @export
-open_font_dev <- function(fontspec) {
+open_font_dev <- function(fontspec, silent = FALSE) {
   ## XXX to remove for debugging only
   ## if(identical(fontspec, font_spec()))
   ##     stop()
@@ -58,11 +61,21 @@ open_font_dev <- function(fontspec) {
     return(invisible(FALSE))
   } else if (font_dev_state$open) {
     if (identical(font_dev_state$fontspec, fontspec)) {
+      if (!silent && dev.cur() != font_dev_state$dev_num) {
+        warning(
+          "formatters is switching to the font state graphics device ",
+          "to perform string width calculations. You may need to switch ",
+          "to your currently open graphics device, depending on whether ",
+          "the font device is closed and what other devices you have open."
+        )
+        dev.set(font_dev_state$dev_num)
+      }
       return(invisible(FALSE))
     } else {
       close_font_dev()
     }
   } else if (FALSE && !font_dev_state$open) { ## remove 'FALSE &&' to get debugging info to helplocate places which aren't receiving/using the state properly # nolint
+    # start nocov
     ## dump the call stack any time we have cache misses
     ## and have to open a completely new font state device
     scalls <- sys.calls()
@@ -79,7 +92,7 @@ open_font_dev <- function(fontspec) {
     cat("\n***** START font dev debugging dump *****\n")
     cat(paste(msg, collapse = " -> "), "\n")
     print(fontspec)
-  }
+  } #end nocov
   tmppdf <- tempfile(fileext = ".pdf")
   pdf(tmppdf)
   grid.newpage()
@@ -99,6 +112,9 @@ open_font_dev <- function(fontspec) {
   assign("maxratio", max(mwidth, wwidth) / spcwidth,
     envir = font_dev_state
   )
+  assign("dev_num", dev.cur(),
+    envir = font_dev_state
+  )
   invisible(TRUE)
 }
 
@@ -106,12 +122,13 @@ open_font_dev <- function(fontspec) {
 #' @export
 close_font_dev <- function() {
   if (font_dev_state$open) {
-    dev.off()
+    dev.off(font_dev_state$dev_num)
     assign("open", FALSE, envir = font_dev_state)
     assign("fontspec", list(), envir = font_dev_state)
     assign("spacewidth", NA_real_, envir = font_dev_state)
     assign("ismonospace", NA, envir = font_dev_state)
     assign("maxratio", NA_real_, envir = font_dev_state)
+    assign("dev_num", NA_integer_, envir = font_dev_state)
   }
   invisible(NULL)
 }
@@ -173,6 +190,8 @@ gpar_from_fspec <- function(fontspec) {
     lineheight = fontspec$lineheight
   )
 }
+
+font_dev_is_open <- function() font_dev_state$open
 
 #' Default horizontal separator
 #'

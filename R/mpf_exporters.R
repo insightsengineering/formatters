@@ -581,7 +581,8 @@ export_as_pdf <- function(x,
   }
 
   pdf(file = file, width = pg_width, height = pg_height)
-  on.exit(dev.off())
+  out_dev_num <- dev.cur()
+  on.exit(dev.off(out_dev_num), add = TRUE)
   grid::grid.newpage()
   grid::pushViewport(grid::plotViewport(margins = margins, gp = gp_plot))
 
@@ -597,6 +598,11 @@ export_as_pdf <- function(x,
   if (tf_wrap && is.null(max_width)) {
     max_width <- cpp
   }
+
+  newdev <- open_font_dev(fontspec, silent = TRUE) ## cause we know there's another dev open...
+  if (newdev)
+    on.exit(close_font_dev(), add = TRUE)
+
   if (paginate) {
     tbls <- paginate_to_mpfs(
       x,
@@ -633,14 +639,21 @@ export_as_pdf <- function(x,
     )
   }
 
-  gtbls <- lapply(tbls, function(txt) {
+  tbl_txts <- lapply(tbls, function(tbli) {
+    toString(
+      tbli,
+      widths =  tbli$col_widths + 1,
+      hsep = hsep,
+      tf_wrap = tf_wrap,
+      max_width = max_width,
+      fontspec = fontspec,
+      ttype_ok = ttype_ok
+    )
+  })
+  dev.set(out_dev_num)
+  gtbls <- lapply(tbl_txts, function(txt) {
     grid::textGrob(
-      label = toString(txt,
-        widths = txt$col_widths + 1, hsep = hsep,
-        tf_wrap = tf_wrap, max_width = max_width,
-        fontspec = fontspec,
-        ttype_ok = ttype_ok
-      ),
+      txt,
       x = grid::unit(0, "npc"), y = grid::unit(1, "npc"),
       just = c("left", "top")
     )

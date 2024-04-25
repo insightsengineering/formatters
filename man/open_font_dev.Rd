@@ -5,13 +5,16 @@
 \alias{close_font_dev}
 \title{Activate font state}
 \usage{
-open_font_dev(fontspec)
+open_font_dev(fontspec, silent = FALSE)
 
 close_font_dev()
 }
 \arguments{
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
 calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
+
+\item{silent}{(\code{logical(1)})\cr If \code{FALSE}, the default, a warning will be
+emitted if this function switches away from an active graphics device.}
 }
 \value{
 \itemize{

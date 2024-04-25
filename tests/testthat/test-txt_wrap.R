@@ -420,3 +420,23 @@ test_that("wrapping works with truetype font", {
   expect_true(all(head(nctt2a, -1) > 15) && ## none of the wraps are too small
     all(nctt2a <= 20)) ## all wraps are good in the end # nolint
 })
+
+
+test_that("font device plays nice(ish) with other graphics devices", {
+  fspec <- font_spec("Times", 8, 1.2)
+  expect_silent(open_font_dev(fspec))
+  expect_silent(close_font_dev())
+
+  open_font_dev(fspec)
+  ## a challenger approaches!!
+  filpdf <- tempfile("ohnoes", fileext = ".pdf")
+  pdf(filpdf)
+  my_pdf_dev <- dev.cur()
+  expect_warning(open_font_dev(fspec),
+                 "formatters is switching to the font state graphics device ")
+  expect_silent(open_font_dev(fspec))
+  expect_true(my_pdf_dev %in% dev.list())
+  close_font_dev()
+  expect_true(my_pdf_dev %in% dev.list())
+  dev.off(my_pdf_dev)
+})
