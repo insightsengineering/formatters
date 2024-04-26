@@ -20,3 +20,5 @@
 ~$
 pkgdown
 ^pkgdown$
+^revdeprefs\.yaml$
+^revdep$
