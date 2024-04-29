@@ -30,3 +30,5 @@ complexmodel.R
 *.R#
 [^/]*.R
 
+tests/testthat/_snaps/**/*.new.md
+tests/testthat/_snaps/**/*.new.svg
