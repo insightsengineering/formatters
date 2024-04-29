@@ -272,7 +272,10 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
   } else if (is.null(format)) {
     toString(x)
   } else if (is.function(format)) {
-    format(x, output = output)
+    format_args <- names(formals(format))
+    if ("na_str" %in% format_args){
+      format(x, output = output,na_str=na_str)
+    } else format(x, output = output)
   } else if (is.character(format)) {
     l <- if (format %in% formats_1d) {
       1
@@ -292,7 +295,18 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
         format, " are of different length"
       )
     }
-    if (length(na_str) < sum(is.na(x))) {
+    if (format != "xx" && (length(na_str) < length(x)) & length(na_str) == 1) {
+      na_str <- rep(na_str, length.out = length(x))
+    }
+    if (format %in% c(formats_2d,formats_3d) && length(na_str) != 1 && length(na_str) != length(x) ) {
+      stop(
+        "format ",
+        format, " and na_str ",
+        paste0("c(",toString(sprintf("'%s'", na_str)),")")
+        ," are of different length"
+      )
+    }
+    if (format != "xx" && length(na_str) < sum(is.na(x))) {
       na_str <- rep(na_str, length.out = sum(is.na(x)))
     }
     switch(format,

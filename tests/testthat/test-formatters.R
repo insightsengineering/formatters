@@ -338,6 +338,36 @@ test_that("formats work", {
     c("1", "NA")
   )
 
+  expect_identical(
+    format_value(c(1.2, NA, NA), "xx.x (xx.x - xx.x)", na_str = "NA"),
+    c("1.2 (NA - NA)")
+  )
+
+  expect_identical(
+    format_value(c(1.2, NA, NA), "xx.x (xx.x - xx.x)", na_str = "x"),
+    c("1.2 (x - x)")
+  )
+
+  expect_identical(
+    format_value(c(NA, NA, NA), "xx.x (xx.x - xx.x)", na_str = "x"),
+    c("x")
+  )
+
+  # expect_identical(
+  #   format_value(c(1.2, NA, NA), "xx.x (xx.x - xx.x)", na_str = c("x","y")),
+  #   c("1.2 (x - y)")
+  # )
+
+  expect_error(
+      format_value(c(1.2, NA, NA), "xx.x (xx.x - xx.x)", na_str = c("x","y")),
+      "are of different length"
+    )
+
+  expect_identical(
+    format_value(c(1, NA), "xx"),
+    c("1","NA")
+  )
+
   ## trailing 0s are correct
   expect_identical(format_value(0, "xx."), "0")
   expect_identical(format_value(0, "xx.x"), "0.0")

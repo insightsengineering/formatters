@@ -11,7 +11,7 @@ nlines(x, colwidths = NULL, max_width = NULL)
 
 \S4method{nlines}{list}(x, colwidths = NULL, max_width = NULL)
 
-\S4method{nlines}{NULL}(x, colwidths = NULL, max_width = NULL)
+\S4method{nlines}{`NULL`}(x, colwidths = NULL, max_width = NULL)
 
 \S4method{nlines}{character}(x, colwidths = NULL, max_width = NULL)
 }

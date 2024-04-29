@@ -1,0 +1,230 @@
+#' Title: Function factory for xx style formatting
+#'
+#' @description A function factory to generate formatting functions for value
+#' formatting that support the xx style format and control the rounding method
+#' @importFrom tidytlg roundSAS
+#' @param roundmethod (`string`)\cr choice of rounding methods. Options are:
+#'   * `SAS`: the underlying rounding method is `tidytlg::roundSAS`, where \cr
+#'   roundSAS comes from this Stack Overflow post https://stackoverflow.com/questions/12688717/round-up-from-5
+#'   * `R`: the underlying rounding method is `round`
+#'
+#' @return `jjcs_format_xx_fct()` format function that can be used in rtables formatting calls
+#' @export
+#'
+#' @family JJCS formats
+#' @examples
+#' jjcsformat_xx_SAS <- jjcs_format_xx_fct(roundmethod="SAS")
+#' jjcsformat_xx <- jjcsformat_xx_SAS
+#' format_value(c(1.453),jjcsformat_xx("xx.xx"))
+#' format_value(c(1.453,2.45638),jjcsformat_xx("xx.xx (xx.xxx)"))
+#'
+jjcs_format_xx_fct <- function (roundmethod=c("SAS","R"))
+{
+  roundmethod = match.arg(roundmethod)
+
+  if (roundmethod == "SAS") {
+    roundfunc <- tidytlg::roundSAS
+  }
+  if (roundmethod == "R") {
+    roundfunc <- round
+  }
+
+  fnct <- function(str){
+
+    if (stringr::str_detect(str,stringr::fixed("xxx."))) {
+      stop("Error: jjcs_format_xx: do not use xxx. in input str, replace by xx. instead")
+    }
+    if (!stringr::str_detect(str,stringr::fixed("xx"))) {
+      stop("Error: jjcs_format_xx: input str should contain xx")
+    }
+    positions <- gregexpr(pattern = "xx\\.?x*", text = str,
+                          perl = TRUE)
+    x_positions <- regmatches(x = str, m = positions)[[1]]
+    ### str is splitted into pieces as xx. xx xx.xxx
+    ### xx is no rounding
+    ### xx. rounding to integer
+    ### xx.x rounding to 1 decimal, etc
+
+
+    no_round <- function(x,na_str="NA"){
+      if (is.na(x)) return(na_str) else
+        return(x)
+    }
+
+    roundings <- lapply(X = x_positions, function(x) {
+      y <- strsplit(split = "\\.", x = x)[[1]]
+      ### "xx.x" will result in c("xx","x")
+      ### "xx." will result in "xx"
+      ### "xx" will remain "xx"
+
+      if (x == "xx") rounding <- no_round
+      else rounding <- function(x,na_str="NA") {
+        if (is.na(x)) return(na_str)
+        format(roundfunc(x, digits = ifelse(length(y) >
+                                              1, nchar(y[2]), 0)),nsmall = ifelse(length(y) >
+                                                                                    1, nchar(y[2]), 0))
+      }
+      return(rounding)
+    })
+    rtable_format <- function(x, output,na_str="NA") {
+
+      if (!length(positions[[1]])==length(x)) {
+        stop("Error: input str in call to jjcs_format_xx should contain same number of xx as the number of stats")
+      }
+
+      if ((length(na_str) == 1) & length(x) > 1) na_str <- rep(na_str,length(x))
+      if ((length(na_str) > 1) & length(x) != length(na_str)) {
+        stop(
+          "input and na_str ",
+          paste0("c(",toString(sprintf("'%s'", na_str)),")")
+          ," are of different length"
+        )
+      }
+
+      #values <- Map(y = x, fun = roundings, function(y, fun) fun(y))
+      values2 <- list()
+      for (i in 1:length(x)){
+        values2[[i]] <- roundings[[i]](x[[i]],na_str=na_str[[i]])
+      }
+
+      regmatches(x = str, m = positions)[[1]] <- values2
+      return(str)
+    }
+    return(rtable_format)
+  }
+  return(fnct)
+}
+
+
+jjcsformat_xx_SAS <- jjcs_format_xx_fct(roundmethod="SAS")
+jjcsformat_xx_R <- jjcs_format_xx_fct(roundmethod="R")
+
+
+### if we ever decide to switch rounding method, we just have to update jjcsformat_xx here
+
+jjcsformat_xx <- jjcsformat_xx_SAS
+
+#' Title: Formatting count and fraction values
+#'
+#' @description
+#'
+#' jjcsformat_count_fraction_fct: Formatting function to construct formats for presenting a count together with fraction (and/or denominator) with special consideration when count is 0, or fraction is 1.
+#' \cr See also: {tern::format_count_fraction_fixed_dp()}
+#'
+#' @inheritParams jjcs_format_xx_fct
+#' @importFrom tidytlg roundSAS
+#' @param type One of count_fraction or count_denom_fraction
+#' @family JJCS formats
+#' @rdname Count_fraction
+#' @name Count_fraction
+#' @export
+#'
+#' @examples
+#' jjcsformat_count_fraction <- jjcsformat_count_fraction_fct("SAS","count_fraction")
+#' jjcsformat_count_denom_fraction <- jjcsformat_count_fraction_fct("SAS","count_denom_fraction")
+
+#' jjcsformat_count_fraction(c(7,0.7))
+#' jjcsformat_count_fraction(c(70000,0.9999999))
+#' jjcsformat_count_fraction(c(70000,1))
+#'
+#' jjcsformat_count_fraction_fct("SAS","count_denom_fraction")(c(3,2000,3/2000))
+#' jjcsformat_count_fraction_fct("R","count_denom_fraction")(c(3,2000,3/2000))
+
+jjcsformat_count_fraction_fct <- function(roundmethod=c("SAS","R"),type=c("count_fraction","count_denom_fraction")){
+
+  roundmethod <- match.arg(roundmethod)
+  type <- match.arg(type)
+
+  if (roundmethod == "SAS"){roundfun <- tidytlg::roundSAS}
+  if (roundmethod == "R"){roundfun <- round}
+
+
+  #' @param x `numeric`\cr with elements `num` and `fraction` or `num`, `denom` and `fraction`.
+  #' @param d numeric(1). Number of digits to round fraction to (default=1)
+  #' @return A string in the format `count / denom (ratio %)`. If `count` is 0, the format is `0`. If fraction is >0.99, the format is `count / denom (>99.9%)`
+
+  fun <- function(x,output,d=1){
+    checkmate::assert_vector(x)
+
+    count <- x[1]
+    checkmate::assert_integerish(count)
+
+    if (type == "count_fraction"){
+      denom <- NULL
+      fraction <- x[2]
+      fdenom <- NULL
+
+      checkmate::assert_vector(x,min.len=2,max.len=2)
+    }
+    if (type == "count_denom_fraction"){
+      denom <- x[2]
+      fraction <- x[3]
+      fdenom <- paste0("/",denom)
+      checkmate::assert_vector(x,min.len=3,max.len=3)
+    }
+
+    attr(x, "label") <- NULL
+    if (any(is.na(x))) {
+      return("-")
+    }
+
+    tern:::assert_proportion_value(fraction, include_boundaries = TRUE)
+
+    fmtpct <- format(roundfun(fraction * 100, d),nsmall=d)
+
+    # fraction is the result of a division, so in some cases it is not exactly equal 1, even coming from x/x
+    # if it is nearly equal to 1, set it to 1
+    if (isTRUE(all.equal(fraction,1))) fraction <- 1
+
+
+    result <- if (count == 0) {
+      "0"
+    }
+    ## per conventions report 100.0 as 100
+    else if (fraction == 1) {
+      paste0(count, fdenom," (100%)")
+    }
+    ### <0.1% (even if fmtpct == 0.1, but the actual value of pct <0.1)
+    ### example pct = 0.09999
+    # else if (100*x[2] < 10**(-d)) {
+    else if (fmtpct == format(0,nsmall=d)) {
+      paste0(count,fdenom, " (<",10**(-d),"%)")
+    }
+    ### >99.9% (even if fmtpct == 99.9, but the actual value of pct >99.9)
+    ### example pct = 99.90001
+    #else if (100*x[2] > 100-10**(-d)) {
+    else if (fmtpct == format(100,nsmall=d)) {
+      paste0(count,fdenom, " (>",100-10**(-d),"%)")
+    }
+    else {
+      paste0(count,fdenom, " (", fmtpct, "%)")
+    }
+    return(result)
+
+  }
+  return(fun)
+}
+
+#' jjcsformat_count_fraction
+#' @param x `numeric`\cr with elements `num` and `fraction` or `num`, `denom` and `fraction`.
+#' @param d numeric(1). Number of digits to round fraction to (default=1)
+#' @param output output type
+#' @rdname Count_fraction
+#' @export
+#' @description
+#'
+#' jjcsformat_count_fraction: Formatting function for presenting a count together with fraction with special consideration when count is 0, or fraction is 1.
+
+
+jjcsformat_count_fraction <- jjcsformat_count_fraction_fct("SAS","count_fraction")
+
+#' jjcsformat_count_denom_fraction
+#' @inheritParams  jjcsformat_count_fraction
+#' @rdname Count_fraction
+#' @export
+#' @description
+#'
+#' jjcsformat_count_denom_fraction: Formatting function for presenting a count together with fraction and denominator with special consideration when count is 0, or fraction is 1.
+
+jjcsformat_count_denom_fraction <- jjcsformat_count_fraction_fct("SAS","count_denom_fraction")
+

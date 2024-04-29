@@ -25,7 +25,8 @@ Depends:
 Imports:
     checkmate (>= 2.1.0),
     grid,
-    htmltools (>= 0.5.3)
+    htmltools (>= 0.5.3),
+    tidytlg (>= 0.1.4)
 Suggests:
     dplyr (>= 1.0.9),
     gt (>= 0.7.0),
@@ -35,6 +36,8 @@ Suggests:
     r2rtf (>= 0.3.2),
     rmarkdown (>= 2.19),
     stringi (>= 1.6),
+    stringr (>= 1.5.0),
+    tern (>= 0.9.3),
     testthat (>= 3.0.4),
     withr (>= 2.0.0)
 VignetteBuilder:
@@ -54,6 +57,7 @@ Collate:
     'format_value.R'
     'matrix_form.R'
     'generics.R'
+    'jjcsformats.R'
     'labels.R'
     'mpf_exporters.R'
     'package.R'
