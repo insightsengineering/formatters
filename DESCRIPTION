@@ -25,7 +25,8 @@ Depends:
 Imports:
     checkmate (>= 2.1.0),
     grid,
-    htmltools (>= 0.5.3)
+    htmltools (>= 0.5.3),
+    tidytlg (>= 0.1.4)
 Suggests:
     dplyr (>= 1.0.9),
     gt (>= 0.7.0),
@@ -36,7 +37,9 @@ Suggests:
     rmarkdown (>= 2.19),
     stringi (>= 1.6),
     testthat (>= 3.0.4),
-    withr (>= 2.0.0)
+    withr (>= 2.0.0),
+    stringr (>= 1.5.0),
+    tern (>= 0.9.3)
 VignetteBuilder:
     knitr
 Config/Needs/verdepcheck: mllg/checkmate, rstudio/htmltools,
@@ -48,7 +51,7 @@ Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.2.3
 Collate:
     'data.R'
     'format_value.R'

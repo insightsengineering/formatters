@@ -24,8 +24,8 @@ formatting that support the xx style format and control the rounding method
 \examples{
 jjcsformat_xx_SAS <- jjcs_format_xx_fct(roundmethod="SAS")
 jjcsformat_xx <- jjcsformat_xx_SAS
-rtables::rcell(c(1.453),jjcsformat_xx("xx.xx"))
-rtables::rcell(c(1.453,2.45638),jjcsformat_xx("xx.xx (xx.xxx)"))
+format_value(c(1.453),jjcsformat_xx("xx.xx"))
+format_value(c(1.453,2.45638),jjcsformat_xx("xx.xx (xx.xxx)"))
 
 }
 \seealso{

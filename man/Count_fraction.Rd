@@ -3,12 +3,18 @@
 \name{Count_fraction}
 \alias{Count_fraction}
 \alias{jjcsformat_count_fraction_fct}
+\alias{jjcsformat_count_fraction}
+\alias{jjcsformat_count_denom_fraction}
 \title{Title: Formatting count and fraction values}
 \usage{
 jjcsformat_count_fraction_fct(
   roundmethod = c("SAS", "R"),
   type = c("count_fraction", "count_denom_fraction")
 )
+
+jjcsformat_count_fraction(x, output, d = 1)
+
+jjcsformat_count_denom_fraction(x, output, d = 1)
 }
 \arguments{
 \item{roundmethod}{(\code{string})\cr choice of rounding methods. Options are:
@@ -22,14 +28,20 @@ roundSAS comes from this Stack Overflow post https://stackoverflow.com/questions
 
 \item{x}{\code{numeric}\cr with elements \code{num} and \code{fraction} or \code{num}, \code{denom} and \code{fraction}.}
 
+\item{output}{output type}
+
 \item{d}{numeric(1). Number of digits to round fraction to (default=1)}
 }
 \value{
 A string in the format \verb{count / denom (ratio \%)}. If \code{count} is 0, the format is \code{0}. If fraction is >0.99, the format is \verb{count / denom (>99.9\%)}
 }
 \description{
-Formats a count together with fraction (and/or denominator) with special consideration when count is 0, or fraction is 1.
+jjcsformat_count_fraction_fct: Formatting function to construct formats for presenting a count together with fraction (and/or denominator) with special consideration when count is 0, or fraction is 1.
 \cr See also: {tern::format_count_fraction_fixed_dp()}
+
+jjcsformat_count_fraction: Formatting function for presenting a count together with fraction with special consideration when count is 0, or fraction is 1.
+
+jjcsformat_count_denom_fraction: Formatting function for presenting a count together with fraction and denominator with special consideration when count is 0, or fraction is 1.
 }
 \examples{
 jjcsformat_count_fraction <- jjcsformat_count_fraction_fct("SAS","count_fraction")

@@ -1,67 +1,8 @@
-#' SAS rounding in R
-#'
-#' roundSAS is an alternative rounding function, ensuring that decimals equal or
-#' bigger than 5 are rounded upwards to the nearest number and returned as
-#' character vector.
-#'
-#' At the midpoint of a decimal place (e.g. 0.5, 1.5), the round function in R
-#' rounds to the nearest even number (i.e. 0.5 is rounded to 0; 1.5 is rounded
-#' to 2), whereas SAS rounds to the nearest number (i.e. 0.5 is rounded to 1;
-#' 1.5 is rounded to 2). The roundSAS function is an alternative rounding
-#' function for R that ensures rounding to the nearest number, as done in SAS.
-#' roundSAS comes from this Stack Overflow post https://stackoverflow.com/questions/12688717/round-up-from-5
-#'
-#' Copied from tidytlg roundSAS
-#'
-#' @param x Numeric vector.
-#' @param digits An integer specifying the number of decimal places to be
-#'   displayed after rounding. Default is 0.
-#' @param as_char logical value indicating conversion of rounded numerical
-#'   vector to character vector; default is FALSE
-#' @param na_char A character string indicating missing value; if not specified,
-#'   "NA" is created
-#'
-#' @return character vector of rounded values
-#' @export
-#'
-#' @examples
-#' ### input data vector with midpoint decimals
-#' x <- c(-2.5, -1.5, -0.5, 0.5, 1.5, 2.5)
-#'
-#' ### rounds to integer
-#' roundSAS(x, digits = 0)
-#'
-#' ### input data vector with a missing value
-#' y <- c(8.65, 8.75, NA, 9.85, 9.95)
-#'
-#' ### rounds to tenths and label the missing value with "NE"
-#' roundSAS(y, digits = 1, as_char = TRUE, na_char = "NE")
-#'
-roundSAS <- function (x, digits = 0, as_char = FALSE, na_char = NULL)
-{
-  posneg <- sign(x)
-  z <- abs(x) * 10^digits
-  z <- z + 0.5 + sqrt(.Machine$double.eps)
-  z <- trunc(z)
-  z <- z/10^digits
-  z <- z * posneg
-  if (as_char & is.null(na_char)) {
-    formatC(z, format = "f", digits = digits)
-  }
-  else if (as_char & !is.null(na_char)) {
-    formatC(z, format = "f", digits = digits) %>% str_replace(" *(NA|NaN|NULL)",
-                                                              na_char)
-  }
-  else {
-    z
-  }
-}
-
 #' Title: Function factory for xx style formatting
 #'
 #' @description A function factory to generate formatting functions for value
 #' formatting that support the xx style format and control the rounding method
-#'
+#' @importFrom tidytlg roundSAS
 #' @param roundmethod (`string`)\cr choice of rounding methods. Options are:
 #'   * `SAS`: the underlying rounding method is `tidytlg::roundSAS`, where \cr
 #'   roundSAS comes from this Stack Overflow post https://stackoverflow.com/questions/12688717/round-up-from-5
@@ -74,15 +15,15 @@ roundSAS <- function (x, digits = 0, as_char = FALSE, na_char = NULL)
 #' @examples
 #' jjcsformat_xx_SAS <- jjcs_format_xx_fct(roundmethod="SAS")
 #' jjcsformat_xx <- jjcsformat_xx_SAS
-#' rtables::rcell(c(1.453),jjcsformat_xx("xx.xx"))
-#' rtables::rcell(c(1.453,2.45638),jjcsformat_xx("xx.xx (xx.xxx)"))
+#' format_value(c(1.453),jjcsformat_xx("xx.xx"))
+#' format_value(c(1.453,2.45638),jjcsformat_xx("xx.xx (xx.xxx)"))
 #'
 jjcs_format_xx_fct <- function (roundmethod=c("SAS","R"))
 {
   roundmethod = match.arg(roundmethod)
 
   if (roundmethod == "SAS") {
-    roundfunc <- roundSAS
+    roundfunc <- tidytlg::roundSAS
   }
   if (roundmethod == "R") {
     roundfunc <- round
@@ -132,7 +73,13 @@ jjcs_format_xx_fct <- function (roundmethod=c("SAS","R"))
       }
 
       if ((length(na_str) == 1) & length(x) > 1) na_str <- rep(na_str,length(x))
-      if ((length(na_str) > 1) & length(x) != length(na_str)) na_str <- rep(na_str,length(x))
+      if ((length(na_str) > 1) & length(x) != length(na_str)) {
+        stop(
+          "input and na_str ",
+          paste0("c(",toString(sprintf("'%s'", na_str)),")")
+          ," are of different length"
+        )
+      }
 
       #values <- Map(y = x, fun = roundings, function(y, fun) fun(y))
       values2 <- list()
@@ -161,12 +108,14 @@ jjcsformat_xx <- jjcsformat_xx_SAS
 #'
 #' @description
 #'
-#' Formats a count together with fraction (and/or denominator) with special consideration when count is 0, or fraction is 1.
+#' jjcsformat_count_fraction_fct: Formatting function to construct formats for presenting a count together with fraction (and/or denominator) with special consideration when count is 0, or fraction is 1.
 #' \cr See also: {tern::format_count_fraction_fixed_dp()}
 #'
 #' @inheritParams jjcs_format_xx_fct
+#' @importFrom tidytlg roundSAS
 #' @param type One of count_fraction or count_denom_fraction
 #' @family JJCS formats
+#' @rdname Count_fraction
 #' @name Count_fraction
 #' @export
 #'
@@ -186,7 +135,7 @@ jjcsformat_count_fraction_fct <- function(roundmethod=c("SAS","R"),type=c("count
   roundmethod <- match.arg(roundmethod)
   type <- match.arg(type)
 
-  if (roundmethod == "SAS"){roundfun <- roundSAS}
+  if (roundmethod == "SAS"){roundfun <- tidytlg::roundSAS}
   if (roundmethod == "R"){roundfun <- round}
 
 
@@ -194,7 +143,7 @@ jjcsformat_count_fraction_fct <- function(roundmethod=c("SAS","R"),type=c("count
   #' @param d numeric(1). Number of digits to round fraction to (default=1)
   #' @return A string in the format `count / denom (ratio %)`. If `count` is 0, the format is `0`. If fraction is >0.99, the format is `count / denom (>99.9%)`
 
-  fun <- function(x,d=1){
+  fun <- function(x,output,d=1){
     checkmate::assert_vector(x)
 
     count <- x[1]
@@ -233,7 +182,7 @@ jjcsformat_count_fraction_fct <- function(roundmethod=c("SAS","R"),type=c("count
     }
     ## per conventions report 100.0 as 100
     else if (fraction == 1) {
-      paste0(count, fdenom," (100 %)")
+      paste0(count, fdenom," (100%)")
     }
     ### <0.1% (even if fmtpct == 0.1, but the actual value of pct <0.1)
     ### example pct = 0.09999
@@ -256,8 +205,26 @@ jjcsformat_count_fraction_fct <- function(roundmethod=c("SAS","R"),type=c("count
   return(fun)
 }
 
+#' jjcsformat_count_fraction
+#' @param x `numeric`\cr with elements `num` and `fraction` or `num`, `denom` and `fraction`.
+#' @param d numeric(1). Number of digits to round fraction to (default=1)
+#' @param output output type
+#' @rdname Count_fraction
+#' @export
+#' @description
+#'
+#' jjcsformat_count_fraction: Formatting function for presenting a count together with fraction with special consideration when count is 0, or fraction is 1.
+
 
 jjcsformat_count_fraction <- jjcsformat_count_fraction_fct("SAS","count_fraction")
-jjcsformat_count_denom_fraction <- jjcsformat_count_fraction_fct("SAS","count_denom_fraction")
 
+#' jjcsformat_count_denom_fraction
+#' @inheritParams  jjcsformat_count_fraction
+#' @rdname Count_fraction
+#' @export
+#' @description
+#'
+#' jjcsformat_count_denom_fraction: Formatting function for presenting a count together with fraction and denominator with special consideration when count is 0, or fraction is 1.
+
+jjcsformat_count_denom_fraction <- jjcsformat_count_fraction_fct("SAS","count_denom_fraction")
 
