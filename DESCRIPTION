@@ -1,6 +1,6 @@
 Package: formatters
 Title: ASCII Formatting for Values and Tables
-Version: 0.5.6.9002
+Version: 0.5.6.9003
 Date: 2024-04-29
 Authors@R: c(
     person("Gabriel", "Becker", , "gabembecker@gmail.com", role = "aut",
@@ -36,10 +36,10 @@ Suggests:
     r2rtf (>= 0.3.2),
     rmarkdown (>= 2.19),
     stringi (>= 1.6),
-    testthat (>= 3.0.4),
-    withr (>= 2.0.0),
     stringr (>= 1.5.0),
-    tern (>= 0.9.3)
+    tern (>= 0.9.3),
+    testthat (>= 3.0.4),
+    withr (>= 2.0.0)
 VignetteBuilder:
     knitr
 Config/Needs/verdepcheck: mllg/checkmate, rstudio/htmltools,
