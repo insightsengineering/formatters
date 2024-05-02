@@ -83,7 +83,7 @@ setMethod("make_row_df", "MatrixPrintForm", function(tt, colwidths = NULL, visib
                                                      max_width = NULL,
                                                      fontspec = font_spec(),
                                                      col_gap = mf_colgap(tt) %||% 3L) {
-  stop(
+  msg <- paste0(
     "make_row_df can be used only on {rtables} table objects, and not on `matrix_form`-",
     "generated objects (MatrixPrintForm)."
   )
@@ -192,7 +192,7 @@ setGeneric(
   "nlines",
   ## XXX TODO come back and add fontspec default value once not having
   ## it has found all the disconnection breakages
-  function(x, colwidths = NULL, max_width = NULL, fontspec, col_gap) standardGeneric("nlines")
+  function(x, colwidths = NULL, max_width = NULL, fontspec, col_gap = NULL) standardGeneric("nlines")
 )
 
 ## XXX beware. I think it is dangerous

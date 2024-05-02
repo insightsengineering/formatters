@@ -58,7 +58,8 @@ export_as_txt <- function(x,
                           verbose = FALSE,
                           page_break = "\\s\\n",
                           page_num = default_page_number(),
-                          fontspec = font_spec(font_family, font_size, lineheight)) {
+                          fontspec = font_spec(font_family, font_size, lineheight),
+                          col_gap = 3) {
   # Processing lists of tables or listings
   if (.is_list_of_tables_or_listings(x)) {
     if (isFALSE(paginate)) {
@@ -92,10 +93,11 @@ export_as_txt <- function(x,
       verbose = verbose,
       rep_cols = rep_cols,
       page_num = page_num,
-      fontspec = fontspec
+      fontspec = fontspec,
+      col_gap = col_gap
     )
   } else {
-    mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec)
+    mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec, col_gap = col_gap)
     mf_col_widths(mf) <- colwidths %||% propose_column_widths(mf, fontspec = fontspec)
     pages <- list(mf)
   }
@@ -114,7 +116,7 @@ export_as_txt <- function(x,
   strings <- vapply(
     pages, toString, "",
     widths = NULL,
-    hsep = hsep, tf_wrap = tf_wrap, max_width = max_width
+    hsep = hsep, tf_wrap = tf_wrap, max_width = max_width, col_gap = col_gap
   )
 
   res <- paste(strings, collapse = page_break)

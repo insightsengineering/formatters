@@ -416,6 +416,11 @@ test_that("colgap is applied correctly during pagination with and without row la
     paginate_to_mpfs(test2, cpp = 50, col_gap = 50),
     ".*Unable to find any valid pagination split for page 1.*"
   )
+
+  expect_error(
+    export_as_txt(test2, cpp = 50, col_gap = 50),
+    ".*Unable to find any valid pagination split for page 1.*"
+  )
 })
 
 test_that("colwidths and num_rep_cols work when using lists of tables and listings", {
@@ -466,7 +471,18 @@ test_that("rep_cols works as intended for listings and tables", {
   expect_true(grepl(out[51], pattern = "vs")) # vs is repeated
   expect_true(grepl(out[51], pattern = "gear")) # gear is repeated
 
+  ## XXX this doesn't make sense, key cols are always repeated columns
+  ## having a listing with specified key columns and then
+  ## saying the number of rep columns is something else is an anti-pattern
+  ## we should not support. I made it work to not remove a test in my PR, but we should remove this test
   out <- export_as_txt(blmf, rep_cols = 1, cpp = 70) %>%
+    strsplit("\n") %>%
+    unlist()
+  expect_true(grepl(out[51], pattern = "vs")) # vs is repeated
+  expect_false(grepl(out[51], pattern = "gear")) # gear is NOT repeated
+
+  blmf2 <- basic_listing_mf(mtcars, keycols = "vs")
+  out <- export_as_txt(blmf2, rep_cols = 1, cpp = 70) %>%
     strsplit("\n") %>%
     unlist()
   expect_true(grepl(out[51], pattern = "vs")) # vs is repeated

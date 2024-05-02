@@ -14,7 +14,8 @@ basic_matrix_form(
   add_decoration = FALSE,
   fontspec = font_spec(),
   split_labels = NULL,
-  data_labels = NULL
+  data_labels = NULL,
+  num_rep_cols = 0L
 )
 
 basic_listing_mf(df, keycols = names(df)[1], add_decoration = TRUE)
@@ -47,6 +48,10 @@ ignored if no \code{split_labels} is present and is automatically assigned to
 \code{"Analysis method"} when \code{split_labels} is present, but \code{data_labels} is \code{NULL}.
 Its direct column name is used as node name in \code{"DataRow"} pathing. See \code{\link[=mf_rinfo]{mf_rinfo()}}
 for more information.}
+
+\item{num_rep_cols}{(\code{numeric(1)})\cr Number of columns to be treated as repeating columns.
+Defaults to \code{0} for \code{basic_matrix_form} and \code{length(keycols)} for
+\code{basic_listing_mf}. Note repeating columns are separate from row labels if present.}
 
 \item{keycols}{(\code{character})\cr a vector of \code{df} column names that are printed first and for which
 repeated values are assigned \code{""}. This format is characteristic of a listing matrix form.}

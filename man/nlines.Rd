@@ -7,7 +7,7 @@
 \alias{nlines,character-method}
 \title{Number of lines required to print a value}
 \usage{
-nlines(x, colwidths = NULL, max_width = NULL, fontspec, col_gap)
+nlines(x, colwidths = NULL, max_width = NULL, fontspec, col_gap = NULL)
 
 \S4method{nlines}{list}(x, colwidths = NULL, max_width = NULL, fontspec, col_gap = NULL)
 

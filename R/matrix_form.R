@@ -889,6 +889,9 @@ mf_has_rlabels <- function(mf) ncol(mf$strings) > mf_ncol(mf)
 #'   `"Analysis method"` when `split_labels` is present, but `data_labels` is `NULL`.
 #'   Its direct column name is used as node name in `"DataRow"` pathing. See [mf_rinfo()]
 #'   for more information.
+#' @param num_rep_cols (`numeric(1)`)\cr Number of columns to be treated as repeating columns.
+#'   Defaults to `0` for `basic_matrix_form` and `length(keycols)` for
+#'   `basic_listing_mf`. Note repeating columns are separate from row labels if present.
 #'
 #' @return A valid `MatrixPrintForm` object representing `df` that is ready for
 #'   ASCII rendering.
@@ -922,7 +925,8 @@ basic_matrix_form <- function(df,
                               add_decoration = FALSE,
                               fontspec = font_spec(),
                               split_labels = NULL,
-                              data_labels = NULL) {
+                              data_labels = NULL,
+                              num_rep_cols = 0L) {
   checkmate::assert_data_frame(df)
   checkmate::assert_flag(indent_rownames)
   checkmate::assert_character(parent_path, null.ok = TRUE)
@@ -1084,6 +1088,7 @@ basic_matrix_form <- function(df,
     fontspec = fontspec,
     col_gap = 3,
     indent_size = indent_size,
+    rep_cols = num_rep_cols
   )
 
   # Check for ncols
@@ -1125,7 +1130,8 @@ basic_listing_mf <- function(df,
     df = df,
     indent_rownames = FALSE,
     ignore_rownames = TRUE,
-    add_decoration = add_decoration
+    add_decoration = add_decoration,
+    num_rep_cols = length(keycols)
   )
 
   # keycols addition to MatrixPrintForm (should happen in the constructor)

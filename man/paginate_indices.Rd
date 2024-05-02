@@ -54,7 +54,7 @@ paginate_to_mpfs(
   pg_size_spec = NULL,
   page_num = default_page_number(),
   rep_cols = NULL,
-  col_gap = 2,
+  col_gap = 3,
   fontspec = font_spec(font_family, font_size, lineheight),
   verbose = FALSE
 )
@@ -140,7 +140,8 @@ end users.}
 \item{rep_cols}{(\code{numeric(1)})\cr number of \emph{columns} (not including row labels) to be repeated on every page.
 Defaults to 0.}
 
-\item{col_gap}{(\code{numeric(1)})\cr currently ignored.}
+\item{col_gap}{(\code{numeric(1)})\cr The number of spaces to be placed between columns
+in the rendered table (and assumed for horizontal pagination).}
 
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
 calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}

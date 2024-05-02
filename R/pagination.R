@@ -937,7 +937,8 @@ splice_idx_lists <- function(lsts) {
 #'   automatically based on the specified page size). `NULL` indicates no horizontal pagination should occur.
 #' @param pg_size_spec (`page_size_spec`)\cr. a pre-calculated page size specification. Typically this is not set by
 #'   end users.
-#' @param col_gap (`numeric(1)`)\cr currently ignored.
+#' @param col_gap (`numeric(1)`)\cr The number of spaces to be placed between columns
+#'   in the rendered table (and assumed for horizontal pagination).
 #' @param page_num (`string`)\cr placeholder string for page numbers. See [default_page_number] for more
 #'   information. Defaults to `NULL`.
 #'
@@ -1020,6 +1021,9 @@ paginate_indices <- function(obj,
   }
 
   mf_colgap(mpf) <- col_gap
+  if (!is.null(rep_cols) && rep_cols != num_rep_cols(obj)) {
+    num_rep_cols(mpf) <- rep_cols
+  }
   if (NROW(mf_cinfo(mpf)) == 0) {
     mpf <- mpf_infer_cinfo(mpf, colwidths, rep_cols, fontspec = fontspec)
   }
@@ -1152,7 +1156,7 @@ paginate_to_mpfs <- function(obj,
                              rep_cols = NULL,
                              # rep_cols = num_rep_cols(obj),
                              # col_gap = 3, # this could be change in default - breaking change
-                             col_gap = 2,
+                             col_gap = 3,
                              fontspec = font_spec(font_family, font_size, lineheight),
                              verbose = FALSE) {
   newdev <- open_font_dev(fontspec)
@@ -1195,6 +1199,11 @@ paginate_to_mpfs <- function(obj,
   }
 
   mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec)
+  # For listings, keycols are mandatory rep_num_cols
+  if (is.null(rep_cols)) {
+    rep_cols <- num_rep_cols(obj)
+  }
+  num_rep_cols(mpf) <- rep_cols
 
   # Turning off min_siblings for listings
   if (.is_listing_mf(mpf)) {
@@ -1216,11 +1225,6 @@ paginate_to_mpfs <- function(obj,
       )
     }
     mf_col_widths(mpf) <- colwidths
-  }
-
-  # For listings, keycols are mandatory rep_num_cols
-  if (is.null(rep_cols)) {
-    rep_cols <- num_rep_cols(obj)
   }
 
   if (NROW(mf_cinfo(mpf)) == 0) {
@@ -1266,7 +1270,8 @@ paginate_to_mpfs <- function(obj,
       min_siblings = min_siblings,
       nosplitin = nosplitin,
       fontspec = fontspec,
-      verbose = verbose
+      verbose = verbose,
+      rep_cols = rep_cols
     )
     return(unlist(deep_pag, recursive = FALSE))
   } else if (has_page_title(fpags[[1]])) {
@@ -1275,6 +1280,7 @@ paginate_to_mpfs <- function(obj,
 
   ## we run into forced pagination, but life is short and this should work fine.
   mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec)
+  num_rep_cols(mpf) <- rep_cols
   if (is.null(colwidths)) {
     colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf, fontspec = fontspec)
   }
