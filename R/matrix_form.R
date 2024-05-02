@@ -1122,7 +1122,8 @@ basic_matrix_form <- function(df,
 #' @export
 basic_listing_mf <- function(df,
                              keycols = names(df)[1],
-                             add_decoration = TRUE) {
+                             add_decoration = TRUE,
+                             fontspec = font_spec()) {
   checkmate::assert_data_frame(df)
   checkmate::assert_subset(keycols, colnames(df))
 
@@ -1131,7 +1132,8 @@ basic_listing_mf <- function(df,
     indent_rownames = FALSE,
     ignore_rownames = TRUE,
     add_decoration = add_decoration,
-    num_rep_cols = length(keycols)
+    num_rep_cols = length(keycols),
+    fontspec = fontspec
   )
 
   # keycols addition to MatrixPrintForm (should happen in the constructor)

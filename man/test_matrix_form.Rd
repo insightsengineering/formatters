@@ -18,7 +18,12 @@ basic_matrix_form(
   num_rep_cols = 0L
 )
 
-basic_listing_mf(df, keycols = names(df)[1], add_decoration = TRUE)
+basic_listing_mf(
+  df,
+  keycols = names(df)[1],
+  add_decoration = TRUE,
+  fontspec = font_spec()
+)
 }
 \arguments{
 \item{df}{(\code{data.frame})\cr a data frame.}
