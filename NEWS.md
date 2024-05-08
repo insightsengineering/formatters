@@ -1,7 +1,7 @@
 ## formatters 0.5.6.9003
 
 * Deprecate `width`, `height` and `fontsize` arguments of `export_as_pdf()` using `lifecycle` package.
-* Add lifecycle badges for pkgdown documentation.
+* Add `lifecycle` badge files for documentation.
 
 ## formatters 0.5.6
  * Added "N=xx" format and unit test for it.
