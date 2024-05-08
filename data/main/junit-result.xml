@@ -1,79 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="exporters" timestamp="2024-04-29T16:48:25Z" hostname="8607e68e94e2" tests="29" skipped="0" failures="0" errors="0" time="4.541">
-    <testcase time="0.498" classname="exporters" name="exporters_work"/>
-    <testcase time="0.0150000000000001" classname="exporters" name="exporters_work"/>
-    <testcase time="0.0129999999999999" classname="exporters" name="exporters_work"/>
-    <testcase time="0.00100000000000011" classname="exporters" name="exporters_work"/>
-    <testcase time="0.348" classname="exporters" name="exporters_work"/>
-    <testcase time="0.00199999999999978" classname="exporters" name="exporters_work"/>
-    <testcase time="0.00500000000000012" classname="exporters" name="exporters_work"/>
+  <testsuite name="exporters" timestamp="2024-05-08T14:27:14Z" hostname="39cdddfb50f4" tests="29" skipped="0" failures="0" errors="0" time="5.049">
+    <testcase time="0.545" classname="exporters" name="exporters_work"/>
+    <testcase time="0.016" classname="exporters" name="exporters_work"/>
+    <testcase time="0.018" classname="exporters" name="exporters_work"/>
     <testcase time="0.00099999999999989" classname="exporters" name="exporters_work"/>
-    <testcase time="0.348" classname="exporters" name="exporters_work"/>
-    <testcase time="0.016" classname="exporters" name="mpf_subset_rows_works_when_there_are_newlines_wrapping_in_column_labels"/>
-    <testcase time="0.00700000000000012" classname="exporters" name="mpf_subset_rows_works_when_there_are_newlines_wrapping_in_column_labels"/>
-    <testcase time="0.311" classname="exporters" name="export_as_txt_maintains_repeated_columns_when_paginate_is_TRUE"/>
+    <testcase time="0.372" classname="exporters" name="exporters_work"/>
+    <testcase time="0.00100000000000011" classname="exporters" name="exporters_work"/>
+    <testcase time="0.00299999999999989" classname="exporters" name="exporters_work"/>
+    <testcase time="0.00100000000000011" classname="exporters" name="exporters_work"/>
+    <testcase time="0.378" classname="exporters" name="exporters_work"/>
+    <testcase time="0.0169999999999999" classname="exporters" name="mpf_subset_rows_works_when_there_are_newlines_wrapping_in_column_labels"/>
+    <testcase time="0.0140000000000002" classname="exporters" name="mpf_subset_rows_works_when_there_are_newlines_wrapping_in_column_labels"/>
+    <testcase time="0.35" classname="exporters" name="export_as_txt_maintains_repeated_columns_when_paginate_is_TRUE"/>
     <testcase time="0.00099999999999989" classname="exporters" name="export_as_txt_maintains_repeated_columns_when_paginate_is_TRUE"/>
-    <testcase time="0.00099999999999989" classname="exporters" name="export_as_txt_maintains_repeated_columns_when_paginate_is_TRUE"/>
-    <testcase time="0.269" classname="exporters" name="export_as_txt_maintains_horizontal_separator_from_table"/>
-    <testcase time="0.149" classname="exporters" name="export_as_pdf_works"/>
-    <testcase time="0.00600000000000023" classname="exporters" name="export_as_pdf_works"/>
-    <testcase time="0.0669999999999997" classname="exporters" name="export_as_pdf_works"/>
-    <testcase time="0.233" classname="exporters" name="export_as_pdf_works"/>
+    <testcase time="0.00199999999999978" classname="exporters" name="export_as_txt_maintains_repeated_columns_when_paginate_is_TRUE"/>
+    <testcase time="0.286" classname="exporters" name="export_as_txt_maintains_horizontal_separator_from_table"/>
+    <testcase time="0.217" classname="exporters" name="export_as_pdf_works"/>
+    <testcase time="0.00300000000000011" classname="exporters" name="export_as_pdf_works"/>
+    <testcase time="0.125" classname="exporters" name="export_as_pdf_works"/>
+    <testcase time="0.277" classname="exporters" name="export_as_pdf_works"/>
     <testcase time="0.00199999999999978" classname="exporters" name="export_as_pdf_works"/>
-    <testcase time="0.621" classname="exporters" name="exporting_lists_of_tables_and_listings_works"/>
-    <testcase time="0.00099999999999989" classname="exporters" name="exporting_lists_of_tables_and_listings_works"/>
-    <testcase time="0.36" classname="exporters" name="exporting_lists_of_tables_and_listings_works"/>
-    <testcase time="0.241" classname="exporters" name="exporting_lists_of_tables_and_listings_works"/>
-    <testcase time="0.406" classname="exporters" name="exporting_lists_of_tables_and_listings_works"/>
-    <testcase time="0.00200000000000067" classname="exporters" name="exporting_lists_of_tables_and_listings_works"/>
-    <testcase time="0.276999999999999" classname="exporters" name="exporting_lists_of_tables_and_listings_works"/>
-    <testcase time="0.337000000000001" classname="exporters" name="exporting_lists_of_tables_and_listings_works"/>
-    <testcase time="0.00300000000000011" classname="exporters" name="exporting_lists_of_tables_and_listings_works"/>
+    <testcase time="0.693000000000001" classname="exporters" name="exporting_lists_of_tables_and_listings_works"/>
+    <testcase time="0.00299999999999923" classname="exporters" name="exporting_lists_of_tables_and_listings_works"/>
+    <testcase time="0.491000000000001" classname="exporters" name="exporting_lists_of_tables_and_listings_works"/>
+    <testcase time="0.229" classname="exporters" name="exporting_lists_of_tables_and_listings_works"/>
+    <testcase time="0.367" classname="exporters" name="exporting_lists_of_tables_and_listings_works"/>
+    <testcase time="0.00400000000000045" classname="exporters" name="exporting_lists_of_tables_and_listings_works"/>
+    <testcase time="0.287" classname="exporters" name="exporting_lists_of_tables_and_listings_works"/>
+    <testcase time="0.34" classname="exporters" name="exporting_lists_of_tables_and_listings_works"/>
+    <testcase time="0.00600000000000023" classname="exporters" name="exporting_lists_of_tables_and_listings_works"/>
   </testsuite>
-  <testsuite name="formatters" timestamp="2024-04-29T16:48:30Z" hostname="8607e68e94e2" tests="156" skipped="0" failures="0" errors="0" time="1.079">
-    <testcase time="0.0149999999999997" classname="formatters" name="Default_horizontal_separator_works"/>
-    <testcase time="0.00900000000000034" classname="formatters" name="Default_horizontal_separator_works"/>
+  <testsuite name="formatters" timestamp="2024-05-08T14:27:19Z" hostname="39cdddfb50f4" tests="156" skipped="0" failures="0" errors="0" time="1.152">
+    <testcase time="0.016" classname="formatters" name="Default_horizontal_separator_works"/>
+    <testcase time="0.00499999999999989" classname="formatters" name="Default_horizontal_separator_works"/>
     <testcase time="0.00199999999999978" classname="formatters" name="Default_horizontal_separator_works"/>
-    <testcase time="0.000999999999999446" classname="formatters" name="Default_horizontal_separator_works"/>
     <testcase time="0.00100000000000033" classname="formatters" name="Default_horizontal_separator_works"/>
+    <testcase time="0.000999999999999446" classname="formatters" name="Default_horizontal_separator_works"/>
     <testcase time="0.00300000000000011" classname="formatters" name="Default_horizontal_separator_works"/>
-    <testcase time="0.00399999999999956" classname="formatters" name="Default_horizontal_separator_works"/>
+    <testcase time="0.00400000000000045" classname="formatters" name="Default_horizontal_separator_works"/>
+    <testcase time="0.00300000000000011" classname="formatters" name="Default_horizontal_separator_works"/>
+    <testcase time="0.000999999999999446" classname="formatters" name="Default_horizontal_separator_works"/>
     <testcase time="0.00200000000000067" classname="formatters" name="Default_horizontal_separator_works"/>
     <testcase time="0.00199999999999978" classname="formatters" name="Default_horizontal_separator_works"/>
-    <testcase time="0.00100000000000033" classname="formatters" name="Default_horizontal_separator_works"/>
-    <testcase time="0.000999999999999446" classname="formatters" name="Default_horizontal_separator_works"/>
-    <testcase time="0.00300000000000011" classname="formatters" name="Default_horizontal_separator_works"/>
-    <testcase time="0.261" classname="formatters" name="make_row_df_produces_custom_error_message_if_used_on_MatrixPrintForm"/>
-    <testcase time="0.00600000000000023" classname="formatters" name="formats_work"/>
-    <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
-    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
-    <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
-    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
-    <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
-    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
-    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
-    <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
-    <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
-    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
-    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
-    <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
-    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
-    <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
-    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
-    <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
-    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
-    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
-    <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
-    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
-    <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
-    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
-    <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
-    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
-    <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
-    <testcase time="0.00200000000000067" classname="formatters" name="formats_work"/>
-    <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
-    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
+    <testcase time="0.00199999999999978" classname="formatters" name="Default_horizontal_separator_works"/>
+    <testcase time="0.288" classname="formatters" name="make_row_df_produces_custom_error_message_if_used_on_MatrixPrintForm"/>
+    <testcase time="0.00800000000000001" classname="formatters" name="formats_work"/>
     <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
     <testcase time="0.00200000000000067" classname="formatters" name="formats_work"/>
     <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
@@ -82,18 +54,38 @@
     <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
     <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
     <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
-    <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
-    <testcase time="0.00400000000000045" classname="formatters" name="formats_work"/>
-    <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
-    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
-    <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
     <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
     <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
     <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
     <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
+    <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
+    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
+    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
+    <testcase time="0.00599999999999934" classname="formatters" name="formats_work"/>
+    <testcase time="0.00200000000000067" classname="formatters" name="formats_work"/>
+    <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
     <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
     <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
     <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
+    <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
+    <testcase time="0.00200000000000067" classname="formatters" name="formats_work"/>
+    <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
+    <testcase time="0.00200000000000067" classname="formatters" name="formats_work"/>
+    <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
+    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
+    <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
+    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
+    <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
+    <testcase time="0.00200000000000067" classname="formatters" name="formats_work"/>
+    <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
+    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
+    <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
+    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
+    <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
+    <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
+    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
+    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
+    <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
     <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
     <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
     <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
@@ -104,251 +96,276 @@
     <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
     <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
     <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
-    <testcase time="0.00399999999999956" classname="formatters" name="formats_work"/>
+    <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
+    <testcase time="0.00200000000000067" classname="formatters" name="formats_work"/>
+    <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
+    <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
+    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
+    <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
+    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
+    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
+    <testcase time="0.00599999999999934" classname="formatters" name="formats_work"/>
     <testcase time="0.00499999999999989" classname="formatters" name="formats_work"/>
-    <testcase time="0.00400000000000045" classname="formatters" name="formats_work"/>
+    <testcase time="0.00500000000000078" classname="formatters" name="formats_work"/>
     <testcase time="0.00300000000000011" classname="formatters" name="formats_work"/>
     <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
     <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
+    <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
+    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
+    <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
+    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
+    <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
+    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
     <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
     <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
     <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
-    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
-    <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
-    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
-    <testcase time="0.000999999999999446" classname="formatters" name="formats_work"/>
     <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
     <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
     <testcase time="0.00199999999999978" classname="formatters" name="formats_work"/>
-    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
-    <testcase time="0.00100000000000033" classname="formatters" name="formats_work"/>
-    <testcase time="0.00499999999999989" classname="formatters" name="sprintf_formats_work"/>
-    <testcase time="0.000999999999999446" classname="formatters" name="sprintf_formats_work"/>
-    <testcase time="0.00499999999999989" classname="formatters" name="labels_and_miscellany"/>
-    <testcase time="0.00200000000000067" classname="formatters" name="labels_and_miscellany"/>
-    <testcase time="0.00499999999999989" classname="formatters" name="labels_and_miscellany"/>
+    <testcase time="0.00900000000000034" classname="formatters" name="sprintf_formats_work"/>
+    <testcase time="0.00199999999999978" classname="formatters" name="sprintf_formats_work"/>
+    <testcase time="0.00600000000000023" classname="formatters" name="labels_and_miscellany"/>
+    <testcase time="0.00199999999999978" classname="formatters" name="labels_and_miscellany"/>
+    <testcase time="0.00300000000000011" classname="formatters" name="labels_and_miscellany"/>
     <testcase time="0.00199999999999978" classname="formatters" name="labels_and_miscellany"/>
     <testcase time="0.00100000000000033" classname="formatters" name="labels_and_miscellany"/>
     <testcase time="0.00199999999999978" classname="formatters" name="labels_and_miscellany"/>
     <testcase time="0.00199999999999978" classname="formatters" name="labels_and_miscellany"/>
-    <testcase time="0.00300000000000011" classname="formatters" name="labels_and_miscellany"/>
-    <testcase time="0.00399999999999956" classname="formatters" name="var_labels_works_in_self_assignment_with_named_values"/>
-    <testcase time="0.00500000000000078" classname="formatters" name="all_valid_format_labels_can_be_applied_without_error"/>
+    <testcase time="0.00400000000000045" classname="formatters" name="labels_and_miscellany"/>
+    <testcase time="0.00300000000000011" classname="formatters" name="var_labels_works_in_self_assignment_with_named_values"/>
+    <testcase time="0.00599999999999934" classname="formatters" name="all_valid_format_labels_can_be_applied_without_error"/>
+    <testcase time="0.00400000000000045" classname="formatters" name="all_valid_format_labels_can_be_applied_without_error"/>
     <testcase time="0.00399999999999956" classname="formatters" name="all_valid_format_labels_can_be_applied_without_error"/>
-    <testcase time="0.00300000000000011" classname="formatters" name="all_valid_format_labels_can_be_applied_without_error"/>
     <testcase time="0.00100000000000033" classname="formatters" name="all_valid_format_labels_can_be_applied_without_error"/>
-    <testcase time="0.00299999999999923" classname="formatters" name="_unnamed_"/>
-    <testcase time="0.00200000000000067" classname="formatters" name="_unnamed_"/>
-    <testcase time="0.000999999999999446" classname="formatters" name="_unnamed_"/>
+    <testcase time="0.00300000000000011" classname="formatters" name="_unnamed_"/>
+    <testcase time="0.00199999999999978" classname="formatters" name="_unnamed_"/>
     <testcase time="0.00100000000000033" classname="formatters" name="_unnamed_"/>
+    <testcase time="0.00199999999999978" classname="formatters" name="_unnamed_"/>
     <testcase time="0.00399999999999956" classname="formatters" name="_unnamed_"/>
     <testcase time="0.00400000000000045" classname="formatters" name="_unnamed_"/>
-    <testcase time="0.00199999999999978" classname="formatters" name="_unnamed_"/>
     <testcase time="0.00100000000000033" classname="formatters" name="_unnamed_"/>
+    <testcase time="0.00199999999999978" classname="formatters" name="_unnamed_"/>
     <testcase time="0.00399999999999956" classname="formatters" name="_unnamed_"/>
     <testcase time="0.00200000000000067" classname="formatters" name="_unnamed_"/>
     <testcase time="0.00199999999999978" classname="formatters" name="_unnamed_"/>
-    <testcase time="0.000999999999999446" classname="formatters" name="_unnamed_"/>
-    <testcase time="0.00200000000000067" classname="formatters" name="_unnamed_"/>
-    <testcase time="0.000999999999999446" classname="formatters" name="_unnamed_"/>
-    <testcase time="0.0710000000000006" classname="formatters" name="_unnamed_"/>
     <testcase time="0.00199999999999978" classname="formatters" name="_unnamed_"/>
+    <testcase time="0.00100000000000033" classname="formatters" name="_unnamed_"/>
+    <testcase time="0.00199999999999978" classname="formatters" name="_unnamed_"/>
+    <testcase time="0.0730000000000004" classname="formatters" name="_unnamed_"/>
+    <testcase time="0.000999999999999446" classname="formatters" name="_unnamed_"/>
     <testcase time="0.00499999999999989" classname="formatters" name="_unnamed_"/>
-    <testcase time="0.00999999999999979" classname="formatters" name="_unnamed_"/>
-    <testcase time="0.0899999999999999" classname="formatters" name="error_when_widths_are_than_decimal_aligned_values"/>
-    <testcase time="0.0280000000000005" classname="formatters" name="padstr_works_with_dec_left"/>
-    <testcase time="0.000999999999999446" classname="formatters" name="padstr_works_with_dec_left"/>
-    <testcase time="0.024" classname="formatters" name="padstr_works_with_dec_right"/>
-    <testcase time="0.0200000000000005" classname="formatters" name="padstr_works_with_decimal"/>
-    <testcase time="0.0190000000000001" classname="formatters" name="decimal_alignments_work_when_there_are_numbers_but_no_decimal_places"/>
-    <testcase time="0.00899999999999945" classname="formatters" name="decimal_alignments_work_when_there_are_numbers_but_no_decimal_places"/>
-    <testcase time="0.00900000000000034" classname="formatters" name="decimal_alignments_work_when_there_are_numbers_but_no_decimal_places"/>
-    <testcase time="0.0270000000000001" classname="formatters" name="behavior_of_decimal_alignments_on_non_numbers"/>
-    <testcase time="0.0110000000000001" classname="formatters" name="behavior_of_decimal_alignments_on_non_numbers"/>
-    <testcase time="0.0110000000000001" classname="formatters" name="behavior_of_decimal_alignments_on_non_numbers"/>
+    <testcase time="0.00900000000000034" classname="formatters" name="_unnamed_"/>
+    <testcase time="0.0949999999999998" classname="formatters" name="error_when_widths_are_than_decimal_aligned_values"/>
+    <testcase time="0.032" classname="formatters" name="padstr_works_with_dec_left"/>
+    <testcase time="0.00199999999999978" classname="formatters" name="padstr_works_with_dec_left"/>
+    <testcase time="0.0209999999999999" classname="formatters" name="padstr_works_with_dec_right"/>
+    <testcase time="0.0210000000000008" classname="formatters" name="padstr_works_with_decimal"/>
+    <testcase time="0.0189999999999992" classname="formatters" name="decimal_alignments_work_when_there_are_numbers_but_no_decimal_places"/>
+    <testcase time="0.0100000000000007" classname="formatters" name="decimal_alignments_work_when_there_are_numbers_but_no_decimal_places"/>
+    <testcase time="0.0139999999999993" classname="formatters" name="decimal_alignments_work_when_there_are_numbers_but_no_decimal_places"/>
+    <testcase time="0.0260000000000007" classname="formatters" name="behavior_of_decimal_alignments_on_non_numbers"/>
     <testcase time="0.0119999999999996" classname="formatters" name="behavior_of_decimal_alignments_on_non_numbers"/>
+    <testcase time="0.0120000000000005" classname="formatters" name="behavior_of_decimal_alignments_on_non_numbers"/>
+    <testcase time="0.0129999999999999" classname="formatters" name="behavior_of_decimal_alignments_on_non_numbers"/>
     <testcase time="0.0190000000000001" classname="formatters" name="Decimal_alignment_a_specific_case_with_larger_widths"/>
-    <testcase time="0.00600000000000023" classname="formatters" name="Decimal_alignment_a_specific_case_with_larger_widths"/>
-    <testcase time="0.0110000000000001" classname="formatters" name="Decimal_alignment_a_specific_case_with_larger_widths"/>
-    <testcase time="0.00899999999999945" classname="formatters" name="Decimal_alignment_a_specific_case_with_larger_widths"/>
+    <testcase time="0.00599999999999934" classname="formatters" name="Decimal_alignment_a_specific_case_with_larger_widths"/>
+    <testcase time="0.0129999999999999" classname="formatters" name="Decimal_alignment_a_specific_case_with_larger_widths"/>
     <testcase time="0.00900000000000034" classname="formatters" name="Decimal_alignment_a_specific_case_with_larger_widths"/>
-    <testcase time="0.00800000000000001" classname="formatters" name="Decimal_alignment_a_specific_case_with_larger_widths"/>
-    <testcase time="0.0379999999999994" classname="formatters" name="All_supported_1d_format_cases_of_decimal_alignment"/>
-    <testcase time="0.0220000000000002" classname="formatters" name="All_supported_1d_format_cases_of_decimal_alignment"/>
-    <testcase time="0.0170000000000003" classname="formatters" name="decimal_alignment_disallows_scientific_notation"/>
-    <testcase time="0.00699999999999967" classname="formatters" name="decimal_alignment_disallows_scientific_notation"/>
-    <testcase time="0.00600000000000023" classname="formatters" name="decimal_alignment_disallows_scientific_notation"/>
-    <testcase time="0.0599999999999996" classname="formatters" name="All_2d_cases_for_decimal_alignment"/>
+    <testcase time="0.00900000000000034" classname="formatters" name="Decimal_alignment_a_specific_case_with_larger_widths"/>
+    <testcase time="0.00899999999999945" classname="formatters" name="Decimal_alignment_a_specific_case_with_larger_widths"/>
+    <testcase time="0.0380000000000003" classname="formatters" name="All_supported_1d_format_cases_of_decimal_alignment"/>
+    <testcase time="0.024" classname="formatters" name="All_supported_1d_format_cases_of_decimal_alignment"/>
+    <testcase time="0.0179999999999998" classname="formatters" name="decimal_alignment_disallows_scientific_notation"/>
+    <testcase time="0.00800000000000001" classname="formatters" name="decimal_alignment_disallows_scientific_notation"/>
+    <testcase time="0.00800000000000001" classname="formatters" name="decimal_alignment_disallows_scientific_notation"/>
+    <testcase time="0.0609999999999999" classname="formatters" name="All_2d_cases_for_decimal_alignment"/>
     <testcase time="0.00600000000000023" classname="formatters" name="fmt_config_works_as_expected"/>
-    <testcase time="0.00100000000000033" classname="formatters" name="fmt_config_works_as_expected"/>
-    <testcase time="0.00199999999999978" classname="formatters" name="fmt_config_works_as_expected"/>
-    <testcase time="0.00199999999999978" classname="formatters" name="fmt_config_works_as_expected"/>
     <testcase time="0.00199999999999978" classname="formatters" name="fmt_config_works_as_expected"/>
     <testcase time="0.00100000000000033" classname="formatters" name="fmt_config_works_as_expected"/>
-    <testcase time="0.00199999999999978" classname="formatters" name="fmt_config_works_as_expected"/>
+    <testcase time="0.00300000000000011" classname="formatters" name="fmt_config_works_as_expected"/>
+    <testcase time="0.000999999999999446" classname="formatters" name="fmt_config_works_as_expected"/>
     <testcase time="0.00200000000000067" classname="formatters" name="fmt_config_works_as_expected"/>
     <testcase time="0.00199999999999978" classname="formatters" name="fmt_config_works_as_expected"/>
+    <testcase time="0.00199999999999978" classname="formatters" name="fmt_config_works_as_expected"/>
+    <testcase time="0.00199999999999978" classname="formatters" name="fmt_config_works_as_expected"/>
   </testsuite>
-  <testsuite name="listings" timestamp="2024-04-29T16:48:31Z" hostname="8607e68e94e2" tests="26" skipped="0" failures="0" errors="0" time="0.542">
-    <testcase time="0.0999999999999996" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
-    <testcase time="0.00100000000000033" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
-    <testcase time="0.00100000000000033" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
+  <testsuite name="listings" timestamp="2024-05-08T14:27:20Z" hostname="39cdddfb50f4" tests="26" skipped="0" failures="1" errors="0" time="0.598">
+    <testcase time="0.11" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
+    <testcase time="0.00199999999999978" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
+    <testcase time="0.00200000000000067" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
     <testcase time="0.000999999999999446" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
-    <testcase time="0.00100000000000033" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
-    <testcase time="0.00300000000000011" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
-    <testcase time="0.00300000000000011" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
     <testcase time="0.00199999999999978" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
     <testcase time="0.00300000000000011" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
-    <testcase time="0.00199999999999978" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
-    <testcase time="0.00300000000000011" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
-    <testcase time="0.00199999999999978" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
-    <testcase time="0.00100000000000033" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
-    <testcase time="0.0119999999999996" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
     <testcase time="0.00400000000000045" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
-    <testcase time="0.0199999999999996" classname="listings" name="regression_test_for_oneline_listing_pagination"/>
-    <testcase time="0.0529999999999999" classname="listings" name="regression_test_for_oneline_listing_pagination"/>
-    <testcase time="0.0250000000000004" classname="listings" name="listings_are_correctly_paginated_when_a_wrapping_happens_on_non_dominant_keycol"/>
-    <testcase time="0.0259999999999998" classname="listings" name="listings_are_correctly_paginated_when_a_wrapping_happens_on_non_dominant_keycol"/>
-    <testcase time="0.077" classname="listings" name="listings_are_correctly_paginated_when_a_wrapping_happens_on_non_dominant_keycol"/>
+    <testcase time="0.00300000000000011" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
+    <testcase time="0.00300000000000011" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
+    <testcase time="0.00399999999999956" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
+    <testcase time="0.00300000000000011" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
+    <testcase time="0.00399999999999956" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
+    <testcase time="0.00100000000000033" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
+    <testcase time="0.0149999999999997" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form"/>
+    <testcase time="0.0100000000000007" classname="listings" name="basic_listing_mf_respect_core_modifications_from_table_matrix_form">
+      <failure type="failure" message="strsplit(toString(lmf), &quot;\n&quot;)[[1]] not identical to `print_out`. ('test-listings.R:49:3')">strsplit(toString(lmf), "\n")[[1]] not identical to `print_out`.
+3/15 mismatches
+x[5]: "-------------------------------"
+y[5]: "\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\
+y[5]: u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2
+y[5]: 014\u2014\u2014\u2014\u2014\u2014\u2014"
+
+x[7]: "-------------------------------"
+y[7]: "\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\
+y[7]: u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2
+y[7]: 014\u2014\u2014\u2014\u2014\u2014\u2014"
+
+x[10]: "-------------------------------"
+y[10]: "\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\
+y[10]: u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2
+y[10]: 014\u2014\u2014\u2014\u2014\u2014\u2014"</failure>
+    </testcase>
+    <testcase time="0.0429999999999993" classname="listings" name="regression_test_for_oneline_listing_pagination"/>
+    <testcase time="0.0510000000000002" classname="listings" name="regression_test_for_oneline_listing_pagination"/>
+    <testcase time="0.0310000000000006" classname="listings" name="listings_are_correctly_paginated_when_a_wrapping_happens_on_non_dominant_keycol"/>
+    <testcase time="0.0229999999999997" classname="listings" name="listings_are_correctly_paginated_when_a_wrapping_happens_on_non_dominant_keycol"/>
+    <testcase time="0.0789999999999997" classname="listings" name="listings_are_correctly_paginated_when_a_wrapping_happens_on_non_dominant_keycol"/>
+    <testcase time="0.0230000000000006" classname="listings" name="listings_are_correctly_paginated_when_a_wrapping_happens_on_non_dominant_keycol"/>
     <testcase time="0.0209999999999999" classname="listings" name="listings_are_correctly_paginated_when_a_wrapping_happens_on_non_dominant_keycol"/>
-    <testcase time="0.0190000000000001" classname="listings" name="listings_are_correctly_paginated_when_a_wrapping_happens_on_non_dominant_keycol"/>
-    <testcase time="0.0279999999999996" classname="listings" name="listings_are_correctly_paginated_when_a_wrapping_happens_on_non_dominant_keycol"/>
+    <testcase time="0.0289999999999999" classname="listings" name="listings_are_correctly_paginated_when_a_wrapping_happens_on_non_dominant_keycol"/>
     <testcase time="0.032" classname="listings" name="listings_are_correctly_paginated_when_a_wrapping_happens_on_non_dominant_keycol"/>
-    <testcase time="0.0840000000000005" classname="listings" name="listings_are_correctly_paginated_when_a_wrapping_happens_on_non_dominant_keycol"/>
-    <testcase time="0.0179999999999998" classname="listings" name="listings_are_correctly_paginated_when_a_wrapping_happens_on_non_dominant_keycol"/>
+    <testcase time="0.0830000000000002" classname="listings" name="listings_are_correctly_paginated_when_a_wrapping_happens_on_non_dominant_keycol"/>
+    <testcase time="0.016" classname="listings" name="listings_are_correctly_paginated_when_a_wrapping_happens_on_non_dominant_keycol"/>
   </testsuite>
-  <testsuite name="matrix_form" timestamp="2024-04-29T16:48:31Z" hostname="8607e68e94e2" tests="9" skipped="0" failures="0" errors="0" time="0.054">
-    <testcase time="0.0430000000000001" classname="matrix_form" name="matrix_form_works_with_and_without_indentation"/>
-    <testcase time="0.00100000000000033" classname="matrix_form" name="matrix_form_works_with_and_without_indentation"/>
+  <testsuite name="matrix_form" timestamp="2024-05-08T14:27:21Z" hostname="39cdddfb50f4" tests="9" skipped="0" failures="0" errors="0" time="0.055">
+    <testcase time="0.04" classname="matrix_form" name="matrix_form_works_with_and_without_indentation"/>
+    <testcase time="0.000999999999999446" classname="matrix_form" name="matrix_form_works_with_and_without_indentation"/>
+    <testcase time="0.00499999999999989" classname="matrix_form" name="matrix_form_works_with_and_without_indentation"/>
+    <testcase time="0.00199999999999978" classname="matrix_form" name="matrix_form_works_with_and_without_indentation"/>
+    <testcase time="0.00200000000000067" classname="matrix_form" name="matrix_form_works_with_and_without_indentation"/>
+    <testcase time="0.000999999999999446" classname="matrix_form" name="matrix_form_works_with_and_without_indentation"/>
+    <testcase time="0.00200000000000067" classname="matrix_form" name="matrix_form_works_with_and_without_indentation"/>
     <testcase time="0.000999999999999446" classname="matrix_form" name="matrix_form_works_with_and_without_indentation"/>
     <testcase time="0.00100000000000033" classname="matrix_form" name="matrix_form_works_with_and_without_indentation"/>
-    <testcase time="0.00199999999999978" classname="matrix_form" name="matrix_form_works_with_and_without_indentation"/>
-    <testcase time="0.00100000000000033" classname="matrix_form" name="matrix_form_works_with_and_without_indentation"/>
-    <testcase time="0.00199999999999978" classname="matrix_form" name="matrix_form_works_with_and_without_indentation"/>
-    <testcase time="0.00199999999999978" classname="matrix_form" name="matrix_form_works_with_and_without_indentation"/>
-    <testcase time="0.00100000000000033" classname="matrix_form" name="matrix_form_works_with_and_without_indentation"/>
   </testsuite>
-  <testsuite name="pagination" timestamp="2024-04-29T16:48:31Z" hostname="8607e68e94e2" tests="75" skipped="0" failures="0" errors="0" time="7.37">
-    <testcase time="0.0819999999999999" classname="pagination" name="pagination_works"/>
-    <testcase time="0.00199999999999978" classname="pagination" name="pagination_works"/>
-    <testcase time="0.00700000000000056" classname="pagination" name="pagination_works"/>
-    <testcase time="0.0299999999999994" classname="pagination" name="pagination_works"/>
-    <testcase time="0.171" classname="pagination" name="pagination_works"/>
+  <testsuite name="pagination" timestamp="2024-05-08T14:27:21Z" hostname="39cdddfb50f4" tests="75" skipped="0" failures="0" errors="0" time="7.65">
+    <testcase time="0.0800000000000001" classname="pagination" name="pagination_works"/>
+    <testcase time="0.000999999999999446" classname="pagination" name="pagination_works"/>
+    <testcase time="0.00800000000000001" classname="pagination" name="pagination_works"/>
+    <testcase time="0.0289999999999999" classname="pagination" name="pagination_works"/>
+    <testcase time="0.168" classname="pagination" name="pagination_works"/>
     <testcase time="0.00600000000000023" classname="pagination" name="pagination_works"/>
-    <testcase time="0.0270000000000001" classname="pagination" name="pagination_works"/>
-    <testcase time="0.157" classname="pagination" name="pagination_works"/>
-    <testcase time="0.0259999999999998" classname="pagination" name="pagination_works"/>
-    <testcase time="0.0599999999999996" classname="pagination" name="pagination_works"/>
-    <testcase time="0.0620000000000003" classname="pagination" name="pagination_works"/>
-    <testcase time="0.111" classname="pagination" name="pagination_works"/>
-    <testcase time="0.303" classname="pagination" name="pagination_works"/>
+    <testcase time="0.0309999999999997" classname="pagination" name="pagination_works"/>
+    <testcase time="0.168000000000001" classname="pagination" name="pagination_works"/>
+    <testcase time="0.036999999999999" classname="pagination" name="pagination_works"/>
+    <testcase time="0.0640000000000001" classname="pagination" name="pagination_works"/>
+    <testcase time="0.0590000000000011" classname="pagination" name="pagination_works"/>
+    <testcase time="0.119" classname="pagination" name="pagination_works"/>
+    <testcase time="0.290999999999999" classname="pagination" name="pagination_works"/>
     <testcase time="0.277000000000001" classname="pagination" name="pagination_works"/>
-    <testcase time="0.312999999999999" classname="pagination" name="pagination_works"/>
-    <testcase time="0.108000000000001" classname="pagination" name="pagination_works"/>
+    <testcase time="0.336" classname="pagination" name="pagination_works"/>
+    <testcase time="0.103999999999999" classname="pagination" name="pagination_works"/>
+    <testcase time="0.00100000000000122" classname="pagination" name="pagination_works"/>
+    <testcase time="0.00199999999999889" classname="pagination" name="pagination_works"/>
+    <testcase time="0.000999999999999446" classname="pagination" name="pagination_works"/>
+    <testcase time="0.0210000000000008" classname="pagination" name="pagination_works"/>
+    <testcase time="0.00300000000000011" classname="pagination" name="pagination_works"/>
     <testcase time="0.00200000000000067" classname="pagination" name="pagination_works"/>
-    <testcase time="0.000999999999999446" classname="pagination" name="pagination_works"/>
-    <testcase time="0.000999999999999446" classname="pagination" name="pagination_works"/>
-    <testcase time="0.0220000000000002" classname="pagination" name="pagination_works"/>
-    <testcase time="0.00200000000000067" classname="pagination" name="pagination_works"/>
-    <testcase time="0.000999999999999446" classname="pagination" name="pagination_works"/>
-    <testcase time="0.00400000000000134" classname="pagination" name="pagination_works"/>
-    <testcase time="0.00699999999999967" classname="pagination" name="pagination_works"/>
-    <testcase time="0.00499999999999901" classname="pagination" name="pagination_works"/>
-    <testcase time="0.00200000000000067" classname="pagination" name="pagination_works"/>
-    <testcase time="0.000999999999999446" classname="pagination" name="pagination_works"/>
+    <testcase time="0.00399999999999956" classname="pagination" name="pagination_works"/>
+    <testcase time="0.00799999999999912" classname="pagination" name="pagination_works"/>
+    <testcase time="0.00999999999999979" classname="pagination" name="pagination_works"/>
+    <testcase time="0.00100000000000122" classname="pagination" name="pagination_works"/>
+    <testcase time="0.00199999999999889" classname="pagination" name="pagination_works"/>
     <testcase time="0.00100000000000122" classname="pagination" name="pagination_works"/>
     <testcase time="0.000999999999999446" classname="pagination" name="pagination_works"/>
     <testcase time="0.000999999999999446" classname="pagination" name="pagination_works"/>
     <testcase time="0.00200000000000067" classname="pagination" name="pagination_works"/>
     <testcase time="0.000999999999999446" classname="pagination" name="pagination_works"/>
-    <testcase time="0.197000000000001" classname="pagination" name="pagination_works"/>
-    <testcase time="0.0949999999999989" classname="pagination" name="pagination_works"/>
-    <testcase time="0.534000000000001" classname="pagination" name="pagination_works"/>
+    <testcase time="0.188000000000001" classname="pagination" name="pagination_works"/>
+    <testcase time="0.0939999999999994" classname="pagination" name="pagination_works"/>
+    <testcase time="0.566000000000001" classname="pagination" name="pagination_works"/>
     <testcase time="0.000999999999999446" classname="pagination" name="pagination_works"/>
     <testcase time="0.00300000000000011" classname="pagination" name="pagination_works"/>
     <testcase time="0.00300000000000011" classname="pagination" name="pagination_works"/>
-    <testcase time="0.00200000000000067" classname="pagination" name="pagination_works"/>
-    <testcase time="0.138999999999999" classname="pagination" name="pagination_works"/>
-    <testcase time="0.000999999999999446" classname="pagination" name="pagination_works"/>
+    <testcase time="0.00300000000000011" classname="pagination" name="pagination_works"/>
+    <testcase time="0.143000000000001" classname="pagination" name="pagination_works"/>
+    <testcase time="0.00199999999999889" classname="pagination" name="pagination_works"/>
     <testcase time="0.0240000000000009" classname="pagination" name="pagination_works"/>
-    <testcase time="0.285" classname="pagination" name="pagination_works"/>
-    <testcase time="0.24" classname="pagination" name="pagination_works"/>
-    <testcase time="0.407" classname="pagination" name="pagination_works"/>
-    <testcase time="0.167" classname="pagination" name="pagination_works"/>
-    <testcase time="0.00499999999999901" classname="pagination" name="page_to_lcpp_stuff_works"/>
-    <testcase time="0.00300000000000011" classname="pagination" name="page_to_lcpp_stuff_works"/>
-    <testcase time="0.0129999999999999" classname="pagination" name="non_monospaced_fonts_are_caught"/>
+    <testcase time="0.279" classname="pagination" name="pagination_works"/>
+    <testcase time="0.232999999999999" classname="pagination" name="pagination_works"/>
+    <testcase time="0.422000000000001" classname="pagination" name="pagination_works"/>
+    <testcase time="0.169" classname="pagination" name="pagination_works"/>
+    <testcase time="0.00999999999999979" classname="pagination" name="page_to_lcpp_stuff_works"/>
+    <testcase time="0.00399999999999956" classname="pagination" name="page_to_lcpp_stuff_works"/>
+    <testcase time="0.00900000000000034" classname="pagination" name="non_monospaced_fonts_are_caught"/>
     <testcase time="0.00399999999999956" classname="pagination" name="non_monospaced_fonts_are_caught"/>
-    <testcase time="0.120000000000001" classname="pagination" name="spans_and_string_matrix_match_after_pagination_when_table_has_single_column"/>
-    <testcase time="0.263999999999999" classname="pagination" name="pag_num_works_in_paginate_to_mpfs_and_export_as_txt"/>
-    <testcase time="0.35" classname="pagination" name="pag_num_works_in_paginate_to_mpfs_and_export_as_txt"/>
+    <testcase time="0.117000000000001" classname="pagination" name="spans_and_string_matrix_match_after_pagination_when_table_has_single_column"/>
+    <testcase time="0.279999999999999" classname="pagination" name="pag_num_works_in_paginate_to_mpfs_and_export_as_txt"/>
+    <testcase time="0.382" classname="pagination" name="pag_num_works_in_paginate_to_mpfs_and_export_as_txt"/>
     <testcase time="0.00300000000000011" classname="pagination" name="pag_num_works_in_paginate_to_mpfs_and_export_as_txt"/>
-    <testcase time="0.00100000000000122" classname="pagination" name="pag_num_works_in_paginate_to_mpfs_and_export_as_txt"/>
     <testcase time="0.000999999999999446" classname="pagination" name="pag_num_works_in_paginate_to_mpfs_and_export_as_txt"/>
-    <testcase time="0.495000000000001" classname="pagination" name="pag_num_works_in_paginate_to_mpfs_and_export_as_txt"/>
-    <testcase time="0.363" classname="pagination" name="pag_num_works_in_paginate_to_mpfs_and_export_as_txt"/>
-    <testcase time="0.157" classname="pagination" name="colwidths_and_num_rep_cols_work_when_using_lists_of_tables_and_listings"/>
+    <testcase time="0.00199999999999889" classname="pagination" name="pag_num_works_in_paginate_to_mpfs_and_export_as_txt"/>
+    <testcase time="0.475000000000001" classname="pagination" name="pag_num_works_in_paginate_to_mpfs_and_export_as_txt"/>
+    <testcase time="0.395" classname="pagination" name="pag_num_works_in_paginate_to_mpfs_and_export_as_txt"/>
+    <testcase time="0.154999999999999" classname="pagination" name="colwidths_and_num_rep_cols_work_when_using_lists_of_tables_and_listings"/>
+    <testcase time="0.00500000000000078" classname="pagination" name="colwidths_and_num_rep_cols_work_when_using_lists_of_tables_and_listings"/>
+    <testcase time="0.449999999999999" classname="pagination" name="colwidths_and_num_rep_cols_work_when_using_lists_of_tables_and_listings"/>
     <testcase time="0.00300000000000011" classname="pagination" name="colwidths_and_num_rep_cols_work_when_using_lists_of_tables_and_listings"/>
-    <testcase time="0.498999999999999" classname="pagination" name="colwidths_and_num_rep_cols_work_when_using_lists_of_tables_and_listings"/>
-    <testcase time="0.00300000000000011" classname="pagination" name="colwidths_and_num_rep_cols_work_when_using_lists_of_tables_and_listings"/>
-    <testcase time="0.00100000000000122" classname="pagination" name="colwidths_and_num_rep_cols_work_when_using_lists_of_tables_and_listings"/>
-    <testcase time="0.00199999999999889" classname="pagination" name="colwidths_and_num_rep_cols_work_when_using_lists_of_tables_and_listings"/>
-    <testcase time="0.00100000000000122" classname="pagination" name="colwidths_and_num_rep_cols_work_when_using_lists_of_tables_and_listings"/>
+    <testcase time="0.000999999999999446" classname="pagination" name="colwidths_and_num_rep_cols_work_when_using_lists_of_tables_and_listings"/>
+    <testcase time="0.00200000000000067" classname="pagination" name="colwidths_and_num_rep_cols_work_when_using_lists_of_tables_and_listings"/>
+    <testcase time="0.00200000000000067" classname="pagination" name="colwidths_and_num_rep_cols_work_when_using_lists_of_tables_and_listings"/>
     <testcase time="0.00799999999999912" classname="pagination" name="colwidths_and_num_rep_cols_work_when_using_lists_of_tables_and_listings"/>
-    <testcase time="0.403" classname="pagination" name="colwidths_and_num_rep_cols_work_when_using_lists_of_tables_and_listings"/>
-    <testcase time="0.144" classname="pagination" name="rep_cols_works_as_intended_for_listings_and_tables"/>
-    <testcase time="0.000999999999999446" classname="pagination" name="rep_cols_works_as_intended_for_listings_and_tables"/>
-    <testcase time="0.223000000000001" classname="pagination" name="rep_cols_works_as_intended_for_listings_and_tables"/>
+    <testcase time="0.483000000000001" classname="pagination" name="colwidths_and_num_rep_cols_work_when_using_lists_of_tables_and_listings"/>
+    <testcase time="0.159000000000001" classname="pagination" name="rep_cols_works_as_intended_for_listings_and_tables"/>
     <testcase time="0.00199999999999889" classname="pagination" name="rep_cols_works_as_intended_for_listings_and_tables"/>
-    <testcase time="0.196" classname="pagination" name="rep_cols_works_as_intended_for_listings_and_tables"/>
-    <testcase time="0.00300000000000011" classname="pagination" name="rep_cols_works_as_intended_for_listings_and_tables"/>
-    <testcase time="0.205" classname="pagination" name="rep_cols_works_as_intended_for_listings_and_tables"/>
+    <testcase time="0.248000000000001" classname="pagination" name="rep_cols_works_as_intended_for_listings_and_tables"/>
+    <testcase time="0.00299999999999834" classname="pagination" name="rep_cols_works_as_intended_for_listings_and_tables"/>
+    <testcase time="0.215000000000002" classname="pagination" name="rep_cols_works_as_intended_for_listings_and_tables"/>
+    <testcase time="0.00399999999999956" classname="pagination" name="rep_cols_works_as_intended_for_listings_and_tables"/>
+    <testcase time="0.256" classname="pagination" name="rep_cols_works_as_intended_for_listings_and_tables"/>
     <testcase time="0.00300000000000011" classname="pagination" name="rep_cols_works_as_intended_for_listings_and_tables"/>
   </testsuite>
-  <testsuite name="print" timestamp="2024-04-29T16:48:39Z" hostname="8607e68e94e2" tests="4" skipped="0" failures="0" errors="0" time="0.088">
-    <testcase time="0.0620000000000012" classname="print" name="toString_works_with_and_without_indentation"/>
-    <testcase time="0.00499999999999901" classname="print" name="toString_works_with_and_without_indentation"/>
-    <testcase time="0.00699999999999967" classname="print" name="toString_works_with_and_without_indentation"/>
-    <testcase time="0.0140000000000011" classname="print" name="toString_works_with_and_without_indentation"/>
+  <testsuite name="print" timestamp="2024-05-08T14:27:29Z" hostname="39cdddfb50f4" tests="4" skipped="0" failures="0" errors="0" time="0.097">
+    <testcase time="0.0689999999999991" classname="print" name="toString_works_with_and_without_indentation"/>
+    <testcase time="0.00500000000000078" classname="print" name="toString_works_with_and_without_indentation"/>
+    <testcase time="0.0080000000000009" classname="print" name="toString_works_with_and_without_indentation"/>
+    <testcase time="0.0149999999999988" classname="print" name="toString_works_with_and_without_indentation"/>
   </testsuite>
-  <testsuite name="ref_fnotes" timestamp="2024-04-29T16:48:39Z" hostname="8607e68e94e2" tests="3" skipped="0" failures="0" errors="0" time="0.008">
-    <testcase time="0.00499999999999901" classname="ref_fnotes" name="reorder_ref_fnotes_orders_referential_footnotes_correctly"/>
-    <testcase time="0.00200000000000067" classname="ref_fnotes" name="reorder_ref_fnotes_orders_referential_footnotes_correctly"/>
+  <testsuite name="ref_fnotes" timestamp="2024-05-08T14:27:29Z" hostname="39cdddfb50f4" tests="3" skipped="0" failures="0" errors="0" time="0.008">
+    <testcase time="0.00600000000000023" classname="ref_fnotes" name="reorder_ref_fnotes_orders_referential_footnotes_correctly"/>
     <testcase time="0.000999999999999446" classname="ref_fnotes" name="reorder_ref_fnotes_orders_referential_footnotes_correctly"/>
+    <testcase time="0.00100000000000122" classname="ref_fnotes" name="reorder_ref_fnotes_orders_referential_footnotes_correctly"/>
   </testsuite>
-  <testsuite name="table_inset and titles and footers word wrapping" timestamp="2024-04-29T16:48:39Z" hostname="8607e68e94e2" tests="33" skipped="0" failures="0" errors="0" time="0.779">
-    <testcase time="0.0199999999999996" classname="table_inset_and_titles_and_footers_word_wrapping" name="tf_wrap_and_table_inset_work_including_together_"/>
-    <testcase time="0.00400000000000134" classname="table_inset_and_titles_and_footers_word_wrapping" name="tf_wrap_and_table_inset_work_including_together_"/>
+  <testsuite name="table_inset and titles and footers word wrapping" timestamp="2024-05-08T14:27:29Z" hostname="39cdddfb50f4" tests="33" skipped="0" failures="0" errors="0" time="0.882">
+    <testcase time="0.0169999999999995" classname="table_inset_and_titles_and_footers_word_wrapping" name="tf_wrap_and_table_inset_work_including_together_"/>
     <testcase time="0.00399999999999956" classname="table_inset_and_titles_and_footers_word_wrapping" name="tf_wrap_and_table_inset_work_including_together_"/>
-    <testcase time="0.000999999999999446" classname="table_inset_and_titles_and_footers_word_wrapping" name="tf_wrap_and_table_inset_work_including_together_"/>
-    <testcase time="0.422000000000001" classname="table_inset_and_titles_and_footers_word_wrapping" name="toString_is_silent_when_newline_is_in_decorations_footnotes_titles_as_matrix_form_constructor_expands_all_newlines"/>
-    <testcase time="0.16" classname="table_inset_and_titles_and_footers_word_wrapping" name="toString_is_silent_when_newline_is_in_decorations_footnotes_titles_as_matrix_form_constructor_expands_all_newlines"/>
-    <testcase time="0.0199999999999996" classname="table_inset_and_titles_and_footers_word_wrapping" name="wrapping_works_with_words_that_are_too_big_no_warning_"/>
-    <testcase time="0.016" classname="table_inset_and_titles_and_footers_word_wrapping" name="auto_wrapping_works_with_inset_and_col_gap"/>
-    <testcase time="0.00300000000000011" classname="table_inset_and_titles_and_footers_word_wrapping" name="regression_tests_for_rtables_empty_title_underlying_issue"/>
-    <testcase time="0.000999999999999446" classname="table_inset_and_titles_and_footers_word_wrapping" name="regression_tests_for_rtables_empty_title_underlying_issue"/>
-    <testcase time="0.0150000000000006" classname="table_inset_and_titles_and_footers_word_wrapping" name="row_label_wrapping_has_identical_indentation"/>
-    <testcase time="0.00500000000000078" classname="table_inset_and_titles_and_footers_word_wrapping" name="row_label_wrapping_has_identical_indentation"/>
-    <testcase time="0.00399999999999956" classname="table_inset_and_titles_and_footers_word_wrapping" name="wrap_strings_work"/>
-    <testcase time="0.00300000000000011" classname="table_inset_and_titles_and_footers_word_wrapping" name="wrap_strings_work"/>
-    <testcase time="0.00300000000000011" classname="table_inset_and_titles_and_footers_word_wrapping" name="wrap_strings_work"/>
+    <testcase time="0.00500000000000078" classname="table_inset_and_titles_and_footers_word_wrapping" name="tf_wrap_and_table_inset_work_including_together_"/>
+    <testcase time="0.0860000000000003" classname="table_inset_and_titles_and_footers_word_wrapping" name="tf_wrap_and_table_inset_work_including_together_"/>
+    <testcase time="0.404999999999999" classname="table_inset_and_titles_and_footers_word_wrapping" name="toString_is_silent_when_newline_is_in_decorations_footnotes_titles_as_matrix_form_constructor_expands_all_newlines"/>
+    <testcase time="0.165000000000001" classname="table_inset_and_titles_and_footers_word_wrapping" name="toString_is_silent_when_newline_is_in_decorations_footnotes_titles_as_matrix_form_constructor_expands_all_newlines"/>
+    <testcase time="0.0219999999999985" classname="table_inset_and_titles_and_footers_word_wrapping" name="wrapping_works_with_words_that_are_too_big_no_warning_"/>
+    <testcase time="0.027000000000001" classname="table_inset_and_titles_and_footers_word_wrapping" name="auto_wrapping_works_with_inset_and_col_gap"/>
+    <testcase time="0.00400000000000134" classname="table_inset_and_titles_and_footers_word_wrapping" name="regression_tests_for_rtables_empty_title_underlying_issue"/>
+    <testcase time="0.000999999999997669" classname="table_inset_and_titles_and_footers_word_wrapping" name="regression_tests_for_rtables_empty_title_underlying_issue"/>
+    <testcase time="0.0190000000000019" classname="table_inset_and_titles_and_footers_word_wrapping" name="row_label_wrapping_has_identical_indentation"/>
+    <testcase time="0.0069999999999979" classname="table_inset_and_titles_and_footers_word_wrapping" name="row_label_wrapping_has_identical_indentation"/>
+    <testcase time="0.00600000000000023" classname="table_inset_and_titles_and_footers_word_wrapping" name="wrap_strings_work"/>
+    <testcase time="0.00400000000000134" classname="table_inset_and_titles_and_footers_word_wrapping" name="wrap_strings_work"/>
+    <testcase time="0.00399999999999778" classname="table_inset_and_titles_and_footers_word_wrapping" name="wrap_strings_work"/>
+    <testcase time="0.00200000000000244" classname="table_inset_and_titles_and_footers_word_wrapping" name="wrap_strings_work"/>
     <testcase time="0.00199999999999889" classname="table_inset_and_titles_and_footers_word_wrapping" name="wrap_strings_work"/>
-    <testcase time="0.00100000000000122" classname="table_inset_and_titles_and_footers_word_wrapping" name="wrap_strings_work"/>
-    <testcase time="0.00300000000000011" classname="table_inset_and_titles_and_footers_word_wrapping" name="wrap_strings_work"/>
+    <testcase time="0.00400000000000134" classname="table_inset_and_titles_and_footers_word_wrapping" name="wrap_strings_work"/>
     <testcase time="0.00199999999999889" classname="table_inset_and_titles_and_footers_word_wrapping" name="wrap_strings_work"/>
-    <testcase time="0.00200000000000067" classname="table_inset_and_titles_and_footers_word_wrapping" name="wrap_strings_work"/>
-    <testcase time="0.0199999999999996" classname="table_inset_and_titles_and_footers_word_wrapping" name="toString_wrapping_avoid_trimming_whitespaces"/>
-    <testcase time="0.00699999999999967" classname="table_inset_and_titles_and_footers_word_wrapping" name="toString_wrapping_avoid_trimming_whitespaces"/>
+    <testcase time="0.00300000000000011" classname="table_inset_and_titles_and_footers_word_wrapping" name="wrap_strings_work"/>
+    <testcase time="0.0189999999999984" classname="table_inset_and_titles_and_footers_word_wrapping" name="toString_wrapping_avoid_trimming_whitespaces"/>
     <testcase time="0.00900000000000034" classname="table_inset_and_titles_and_footers_word_wrapping" name="toString_wrapping_avoid_trimming_whitespaces"/>
-    <testcase time="0.0250000000000004" classname="table_inset_and_titles_and_footers_word_wrapping" name="toString_and_wrapping_cooperates_well_with_separator_divisors"/>
-    <testcase time="0.00399999999999956" classname="table_inset_and_titles_and_footers_word_wrapping" name="max_width_is_handled_correctly_as_expected"/>
-    <testcase time="0.00200000000000067" classname="table_inset_and_titles_and_footers_word_wrapping" name="max_width_is_handled_correctly_as_expected"/>
+    <testcase time="0.00900000000000034" classname="table_inset_and_titles_and_footers_word_wrapping" name="toString_wrapping_avoid_trimming_whitespaces"/>
+    <testcase time="0.0300000000000011" classname="table_inset_and_titles_and_footers_word_wrapping" name="toString_and_wrapping_cooperates_well_with_separator_divisors"/>
+    <testcase time="0.00400000000000134" classname="table_inset_and_titles_and_footers_word_wrapping" name="max_width_is_handled_correctly_as_expected"/>
+    <testcase time="0.00299999999999656" classname="table_inset_and_titles_and_footers_word_wrapping" name="max_width_is_handled_correctly_as_expected"/>
     <testcase time="0.00300000000000011" classname="table_inset_and_titles_and_footers_word_wrapping" name="max_width_is_handled_correctly_as_expected"/>
+    <testcase time="0.00100000000000122" classname="table_inset_and_titles_and_footers_word_wrapping" name="max_width_is_handled_correctly_as_expected"/>
     <testcase time="0.00199999999999889" classname="table_inset_and_titles_and_footers_word_wrapping" name="max_width_is_handled_correctly_as_expected"/>
-    <testcase time="0.00399999999999956" classname="table_inset_and_titles_and_footers_word_wrapping" name="max_width_is_handled_correctly_as_expected"/>
-    <testcase time="0.00200000000000067" classname="table_inset_and_titles_and_footers_word_wrapping" name="max_width_is_handled_correctly_as_expected"/>
-    <testcase time="0.00399999999999956" classname="table_inset_and_titles_and_footers_word_wrapping" name="max_width_is_handled_correctly_as_expected"/>
-    <testcase time="0.00500000000000078" classname="table_inset_and_titles_and_footers_word_wrapping" name="max_width_is_handled_correctly_as_expected"/>
-    <testcase time="0.000999999999999446" classname="table_inset_and_titles_and_footers_word_wrapping" name="max_width_is_handled_correctly_as_expected"/>
+    <testcase time="0.00100000000000122" classname="table_inset_and_titles_and_footers_word_wrapping" name="max_width_is_handled_correctly_as_expected"/>
+    <testcase time="0.00499999999999901" classname="table_inset_and_titles_and_footers_word_wrapping" name="max_width_is_handled_correctly_as_expected"/>
+    <testcase time="0.00500000000000256" classname="table_inset_and_titles_and_footers_word_wrapping" name="max_width_is_handled_correctly_as_expected"/>
+    <testcase time="0.00199999999999889" classname="table_inset_and_titles_and_footers_word_wrapping" name="max_width_is_handled_correctly_as_expected"/>
   </testsuite>
 </testsuites>
