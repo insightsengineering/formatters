@@ -25,13 +25,13 @@ Depends:
 Imports:
     checkmate (>= 2.1.0),
     grid,
-    htmltools (>= 0.5.3)
+    htmltools (>= 0.5.3),
+    lifecycle (>= 0.2.0)
 Suggests:
     dplyr (>= 1.0.9),
     gt (>= 0.7.0),
     huxtable (>= 2.0.0),
     knitr (>= 1.42),
-    lifecycle (>= 0.2.0),
     r2rtf (>= 0.3.2),
     rmarkdown (>= 2.19),
     stringi (>= 1.6),
@@ -39,9 +39,9 @@ Suggests:
     withr (>= 2.0.0)
 VignetteBuilder:
     knitr
-Config/Needs/verdepcheck: mllg/checkmate, rstudio/htmltools,
+Config/Needs/verdepcheck: mllg/checkmate, rstudio/htmltools, r-lib/lifecycle,
     tidyverse/dplyr, rstudio/gt, hughjonesd/huxtable, yihui/knitr,
-    r-lib/lifecycle, Merck/r2rtf, rstudio/rmarkdown, gagolews/stringi,
+    Merck/r2rtf, rstudio/rmarkdown, gagolews/stringi,
     r-lib/testthat, r-lib/withr
 Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8

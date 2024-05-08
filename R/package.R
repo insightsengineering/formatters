@@ -2,10 +2,12 @@
 #'
 #' Package to format tables and listings in a flexible way.
 #'
+#' @keywords internal
 "_PACKAGE"
 
+#' @importFrom htmltools tags tagList
+#' @importFrom lifecycle deprecated
 #' @importFrom stats na.omit
 #' @importFrom utils head tail localeToCharset
-#' @importFrom htmltools tags tagList
 #' @import checkmate
 NULL
