@@ -532,8 +532,8 @@ export_as_pdf <- function(x,
                           landscape = FALSE,
                           pg_width = page_dim(page_type)[if (landscape) 2 else 1],
                           pg_height = page_dim(page_type)[if (landscape) 1 else 2],
-                          width = NULL,
-                          height = NULL, # passed to pdf()
+                          width = lifecycle::deprecated(),
+                          height = lifecycle::deprecated(),
                           margins = c(4, 4, 4, 4),
                           min_siblings = 2,
                           font_family = "Courier",
@@ -574,13 +574,16 @@ export_as_pdf <- function(x,
 
   gp_plot <- gpar_from_fspec(fontspec)
 
-  if (!is.null(height)) {
+  if (lifecycle::is_present(width)) {
+    lifecycle::deprecate_warn("0.5.5", "export_as_pdf(width)", "export_as_pdf(pg_width)")
+    pg_width <- width
+  }
+  if (lifecycle::is_present(height)) {
+    lifecycle::deprecate_warn("0.5.5", "export_as_pdf(height)", "export_as_pdf(pg_height)")
     pg_height <- height
   }
 
-  if (!is.null(width)) {
-    pg_width <- width
-  }
+  gp_plot <- grid::gpar(fontsize = font_size, fontfamily = font_family)
 
   pdf(file = file, width = pg_width, height = pg_height)
   out_dev_num <- dev.cur()
