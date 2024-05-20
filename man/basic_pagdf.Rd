@@ -2,37 +2,42 @@
 % Please edit documentation in R/pagination.R
 \name{basic_pagdf}
 \alias{basic_pagdf}
-\title{Basic/spoof pagination info dataframe}
+\title{Basic/spoof pagination info data frame}
 \usage{
 basic_pagdf(
   rnames,
   labs = rnames,
   rnums = seq_along(rnames),
   extents = 1L,
-  rclass = "NA",
-  parent_path = "root"
+  rclass = "DataRow",
+  parent_path = NULL,
+  paths = lapply(rnames, function(x) c(parent_path, x))
 )
 }
 \arguments{
-\item{rnames}{character. Vector of row names}
+\item{rnames}{(\code{character})\cr vector of row names.}
 
-\item{labs}{character. Vector of row labels (defaults to names)}
+\item{labs}{(\code{character})\cr vector of row labels. Defaults to \code{rnames}.}
 
-\item{rnums}{integer. Vector of row numbers. Defaults to \code{seq_along(rnames)}.}
+\item{rnums}{(\code{integer})\cr vector of row numbers. Defaults to \code{seq_along(rnames)}.}
 
-\item{extents}{integer. Number of lines each row will take to print, defaults to 1 for all rows}
+\item{extents}{(\code{integer})\cr number of lines each row requires to print. Defaults to 1 for all rows.}
 
-\item{rclass}{character. Class(es) for the rows. Defaults to "NA"}
+\item{rclass}{(\code{character})\cr class(es) for the rows. Defaults to \code{"DataRow"}.}
 
-\item{parent_path}{character. parent path that all rows should be "children of",
-defaults to \code{"root"}, and generally should not matter to end users.}
+\item{parent_path}{(\code{string})\cr parent path that all rows should be "children of".
+Defaults to \code{NULL}, as usually this is not needed. It may be necessary to use \code{"root"},
+for some specific scenarios.}
+
+\item{paths}{(\code{list})\cr list of paths to the rows. Defaults to \code{lapply(rnames, function(x) c(parent_path, x))}.}
 }
 \value{
-A data.frame suitable for use in both the \code{MatrixPrintForm} constructor and the pagination machinery
+A \code{data.frame} suitable for use in both the \code{MatrixPrintForm} constructor and the pagination machinery.
 }
 \description{
-Returns a minimal pagination info data.frame (with no sibling/footnote/etc info).
+Returns a minimal pagination info \code{data.frame} (with no info on siblings, footnotes, etc.).
 }
 \examples{
 basic_pagdf(c("hi", "there"))
+
 }

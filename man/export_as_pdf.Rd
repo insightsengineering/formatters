@@ -11,113 +11,101 @@ export_as_pdf(
   landscape = FALSE,
   pg_width = page_dim(page_type)[if (landscape) 2 else 1],
   pg_height = page_dim(page_type)[if (landscape) 1 else 2],
-  width = NULL,
-  height = NULL,
+  width = lifecycle::deprecated(),
+  height = lifecycle::deprecated(),
   margins = c(4, 4, 4, 4),
   min_siblings = 2,
   font_family = "Courier",
   font_size = 8,
-  fontsize = font_size,
+  fontsize = lifecycle::deprecated(),
   paginate = TRUE,
   page_num = default_page_number(),
   lpp = NULL,
   cpp = NULL,
   hsep = "-",
   indent_size = 2,
+  rep_cols = NULL,
   tf_wrap = TRUE,
   max_width = NULL,
-  colwidths = propose_column_widths(x)
+  colwidths = NULL
 )
 }
 \arguments{
-\item{x}{ANY.  The  table-like object  to  export.  Must have  an
-applicable \code{matrix_form} method.}
+\item{x}{(\code{ANY})\cr a table-like object to export. Must have an applicable \code{matrix_form} method.}
 
-\item{file}{file to write, must have \code{.pdf} extension}
+\item{file}{(\code{string})\cr file to write to, must have \code{.pdf} extension.}
 
-\item{page_type}{character(1).   Name   of  a  page  type.   See
-\code{page_types}.   Ignored when  \code{pg_width} and  \code{pg_height}
-are set directly.}
+\item{page_type}{(\code{string})\cr name of a page type. See \code{\link{page_types}}. Ignored
+when \code{pg_width} and \code{pg_height} are set directly.}
 
-\item{landscape}{logical(1). Should the  dimensions of \code{page_type}
-be inverted  for landscape?  Defaults to  \code{FALSE}, ignored when
-\code{pg_width} and \code{pg_height} are set directly.}
+\item{landscape}{(\code{flag})\cr whether the dimensions of \code{page_type} should be
+inverted for landscape orientation. Defaults to \code{FALSE}, ignored when \code{pg_width} and
+\code{pg_height} are set directly.}
 
-\item{pg_width}{numeric(1). Page width in inches.}
+\item{pg_width}{(\code{numeric(1)})\cr page width in inches.}
 
-\item{pg_height}{numeric(1). Page height in inches.}
+\item{pg_height}{(\code{numeric(1)})\cr page height in inches.}
 
-\item{width}{Deprecated, please use \code{pg_width} or specify
-\code{page_type}. The width of the graphics region in inches}
+\item{width}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{pg_width} argument or specify
+\code{page_type} instead.}
 
-\item{height}{Deprecated, please use \code{pg_height} or specify
-\code{page_type}. The height of the graphics region in inches}
+\item{height}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{pg_height} argument or
+specify \code{page_type} instead.}
 
-\item{margins}{numeric(4). The number of lines/characters of margin on the
-bottom, left, top, and right sides of the page.}
+\item{margins}{(\code{numeric(4)})\cr the number of lines/characters of the margin on the bottom,
+left, top, and right sides of the page, respectively.}
 
-\item{min_siblings}{numeric. Minimum sibling rows which must appear on either side of pagination row for a
-mid-subtable split to be valid. Defaults to 2 for tables. It is automatically turned off
-(by using only 0) for listings.}
+\item{min_siblings}{(\code{numeric})\cr minimum sibling rows which must appear on either side of pagination row for a
+mid-subtable split to be valid. Defaults to 2 for tables. It is automatically turned off (set to 0) for listings.}
 
-\item{font_family}{character(1). Name of a font family. An error
-will be thrown if the family named is not monospaced. Defaults
-to Courier.}
+\item{font_family}{(\code{string})\cr name of a font family. An error will be thrown
+if the family named is not monospaced. Defaults to \code{"Courier"}.}
 
-\item{font_size}{numeric(1). Font size, defaults to 12.}
+\item{font_size}{(\code{numeric(1)})\cr font size. Defaults to \code{12}.}
 
-\item{fontsize}{Deprecated, please use \code{font_size}. The size of
-text (in points)}
+\item{fontsize}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{font_size} argument instead.}
 
-\item{paginate}{logical(1). Whether pagination should be performed,
-defaults to \code{TRUE} if page size is specified (including
-the default).}
+\item{paginate}{(\code{flag})\cr whether pagination should be performed. Defaults to \code{TRUE}
+if page size is specified (including the default).}
 
-\item{page_num}{character(1). Placeholder string for page numbers. Check
-\link{default_page_number} for more information. Defaults to \code{NULL}.}
+\item{page_num}{(\code{string})\cr placeholder string for page numbers. See \link{default_page_number} for more
+information. Defaults to \code{NULL}.}
 
-\item{lpp}{numeric(1) or NULL. Lines per page. if NA (the default,
-this is calculated automatically based on the specified page
-size). \code{NULL} indicates no vertical pagination should occur.}
+\item{lpp}{(\code{numeric(1)} or \code{NULL})\cr lines per page. If \code{NA} (the default), this is calculated automatically
+based on the specified page size). \code{NULL} indicates no vertical pagination should occur.}
 
-\item{cpp}{numeric(1) or NULL. Width in characters per page. if NA (the default,
-this is calculated automatically based on the specified page
-size). \code{NULL} indicates no horizontal pagination should occur.}
+\item{cpp}{(\code{numeric(1)} or \code{NULL})\cr width (in characters) per page. If \code{NA} (the default), this is calculated
+automatically based on the specified page size). \code{NULL} indicates no horizontal pagination should occur.}
 
-\item{hsep}{character(1). Characters to repeat to create
-header/body separator line. If \code{NULL}, the object value will be
-used. If \code{" "}, an empty separator will be printed. Check \code{\link[=default_hsep]{default_hsep()}}
-for more information.}
+\item{hsep}{(\code{string})\cr character to repeat to create header/body separator line. If
+\code{NULL}, the object value will be used. If \code{" "}, an empty separator will be printed. See
+\code{\link[=default_hsep]{default_hsep()}} for more information.}
 
-\item{indent_size}{numeric(1). Indent size in characters. Ignored
-when \code{x} is already a \code{MatrixPrintForm} object in favor of information
-there.}
+\item{indent_size}{(\code{numeric(1)})\cr indent size, in characters. Ignored when \code{x} is already
+a \code{MatrixPrintForm} object in favor of information there.}
 
-\item{tf_wrap}{logical(1). Should  the texts for  title, subtitle,
-and footnotes be wrapped?}
+\item{rep_cols}{(\code{numeric(1)})\cr number of \emph{columns} (not including row labels) to be repeated on every page.
+Defaults to 0.}
 
-\item{max_width}{integer(1), character(1) or \code{NULL}. Width that title
-and   footer   (including   footnotes)  materials   should   be
-word-wrapped to. If \code{NULL}, it is  set to the current print width
-of the  session (\code{getOption("width")}). If set to \code{"auto"},
-the width of the table (plus any table inset) is used. Ignored
-completely if \code{tf_wrap} is \code{FALSE}.}
+\item{tf_wrap}{(\code{flag})\cr whether the text for title, subtitles, and footnotes should be wrapped.}
 
-\item{colwidths}{numeric vector.  Column widths (in characters) for
-use with vertical pagination.}
+\item{max_width}{(\code{integer(1)}, \code{string} or \code{NULL})\cr width that title and footer (including
+footnotes) materials should be word-wrapped to. If \code{NULL}, it is set to the current print width of the
+session (\code{getOption("width")}). If set to \code{"auto"}, the width of the table (plus any table inset) is
+used. Parameter is ignored if \code{tf_wrap = FALSE}.}
+
+\item{colwidths}{(\code{numeric})\cr vector of column widths (in characters) for use in vertical pagination.}
 }
 \description{
-The PDF output is based on the ASCII output created with \code{\link[=toString]{toString()}}
+The PDF output from this function is based on the ASCII output created with \code{\link[=toString]{toString()}}.
 }
 \details{
-By default, pagination is performed with default
-\code{cpp} and \code{lpp} defined by specified page dimensions and margins.
-User-specified \code{lpp} and \code{cpp} values override this, and should
+By default, pagination is performed with default \code{cpp} and \code{lpp} defined by specified page
+dimensions and margins. User-specified \code{lpp} and \code{cpp} values override this, and should
 be used with caution.
 
-Title and footer materials are also word-wrapped by default
-(unlike when printed to the terminal), with \code{cpp}, as
-defined above, as the default \code{max_width}.
+Title and footer materials are also word-wrapped by default (unlike when printed to the
+terminal), with \code{cpp} (as defined above) as the default \code{max_width}.
 }
 \examples{
 \dontrun{
@@ -127,6 +115,7 @@ export_as_pdf(basic_matrix_form(mtcars), file = tf, pg_height = 4)
 tf <- tempfile(fileext = ".pdf")
 export_as_pdf(basic_matrix_form(mtcars), file = tf, lpp = 8)
 }
+
 }
 \seealso{
 \code{\link[=export_as_txt]{export_as_txt()}}

@@ -2,21 +2,21 @@
 % Please edit documentation in R/labels.R
 \name{var_relabel}
 \alias{var_relabel}
-\title{Copy and Change Variable Labels of a \code{data.frame}}
+\title{Copy and change variable labels of a \code{data.frame}}
 \usage{
 var_relabel(x, ...)
 }
 \arguments{
-\item{x}{a \code{data.frame} object}
+\item{x}{(\code{data.frame})\cr a data frame object.}
 
-\item{...}{name-value pairs, where name corresponds to a variable name in
-\code{x} and the value to the new variable label}
+\item{...}{name-value pairs, where each name corresponds to a variable name in
+\code{x} and the value to the new variable label.}
 }
 \value{
-a copy of \code{x} with changed labels according to \code{...}
+A copy of \code{x} with labels modified according to \code{...}
 }
 \description{
-Relabel a subset of the variables
+Relabel a subset of the variables.
 }
 \examples{
 x <- var_relabel(iris, Sepal.Length = "Sepal Length of iris flower")

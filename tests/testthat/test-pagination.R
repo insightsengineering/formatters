@@ -9,7 +9,6 @@ test_that("pagination works", {
     ftmsg
   )
 
-
   ## min_siblings following siblings test
   pagindices <- pag_indices_inner(
     mf_rinfo(dfmf),
@@ -85,16 +84,12 @@ test_that("pagination works", {
     matrix(c("", "tleft mats", "m", "pg"), nrow = 2, ncol = 2)
   )
 
-
   ## https://github.com/insightsengineering/formatters/issues/77
 
   dfmf3 <- dfmf
   mf_rinfo(dfmf3)$trailing_sep[31] <- "-"
   str <- toString(dfmf3)
   expect_true(grepl("Volvo 142E", str))
-
-
-
 
   strout <- toString(dfmf)
   expect_true(any(grepl(ftmsg, strout)))
@@ -126,7 +121,6 @@ test_that("pagination works", {
     verbose = TRUE
   )
   expect_true(all(sapply(hpagmpfs, function(x) max(mf_lgrouping(x)) - mf_nrheader(x)) == 2L))
-
 
   ## vpaginds <- vert_pag_indices(df2mf, cpp = 40, verbose = TRUE)
 
@@ -180,7 +174,6 @@ test_that("pagination works", {
     rep(1L, 5)
   )
 
-
   ## they all appear
   expect_equal(
     sort(unique(unlist(vpaginds3))),
@@ -210,7 +203,6 @@ test_that("pagination works", {
   expect_false(grepl("1[[:space:]]*1", strout))
   expect_true(grepl("3[[:space:]]*3", strout))
 
-
   expect_identical(
     spread_integer(7, 3),
     c(3, 2, 2)
@@ -236,8 +228,6 @@ test_that("pagination works", {
   expect_identical(prov_footer(df3mf), "file: myfile.txt")
   expect_identical(nlines(NULL), 0L)
   expect_identical(nlines("hi\nthere"), 2L)
-
-
 
   ## coverage for handling of ref footnotes in pagination machinery
   ## also covered partially in closely related export test
@@ -284,7 +274,6 @@ test_that("pagination works", {
 
   expect_identical(page_lcpp(pg_width = 4, pg_height = 4, margins = rep(0, 4)), list(cpp = 60, lpp = 36))
 
-
   ## first vertical pagination is "forced" after row 1,
   ## 2 additional vertical paginations within second "forced page" (3 total)
   ## 3 horizontal paginations
@@ -325,6 +314,7 @@ test_that("pagination works", {
     TRUE
   })
 })
+
 test_that("page to lcpp stuff works", {
   expect_identical(
     page_lcpp(margins = c(
@@ -339,7 +329,6 @@ test_that("page to lcpp stuff works", {
     calc_lcpp(page_type = "letter")
   )
 })
-
 
 test_that("non-monospaced fonts are caught", {
   ## non-monospaced fonts
@@ -364,7 +353,6 @@ test_that("spans and string matrix match after pagination when table has single 
     dim(pag_test[[1]]$strings)
   )
 })
-
 
 test_that("pag_num works in paginate_to_mpfs and export_as_txt", {
   tst <- basic_matrix_form(mtcars, add_decoration = TRUE)
@@ -401,7 +389,7 @@ test_that("pag_num works in paginate_to_mpfs and export_as_txt", {
       lpp = 20,
       page_num = "This is too long, it is breaking"
     ),
-    "Page numbering string \\(page_num\\) is too wide to fit the desired page \\(inserted cpp\\)."
+    "Page numbering string \\(page_num\\) is too wide to fit the desired page size width \\(cpp\\)."
   )
 
   # Very stringent test with export_as_txt
@@ -412,4 +400,60 @@ test_that("pag_num works in paginate_to_mpfs and export_as_txt", {
   )
   pages_tst_exp <- lapply(strsplit(pg_tst_exp, "OoOoO")[[1]], function(x) strsplit(x, "\n")[[1]])
   expect_equal(pages_tst_exp, print_pg_tst)
+})
+
+
+test_that("colwidths and num_rep_cols work when using lists of tables and listings", {
+  bmf <- basic_matrix_form(mtcars, ignore_rownames = TRUE)
+  blmf <- basic_listing_mf(mtcars, keycols = c("vs", "gear"))
+  expect_equal(num_rep_cols(bmf), 0L)
+  expect_equal(num_rep_cols(blmf), 2L)
+
+  l_mf <- list(bmf, blmf)
+
+  output <- export_as_txt(l_mf, page_num = "page {i} of {n}", cpp = 90, colwidths = rep(8, 11))
+  nchar_lines <- sapply(strsplit(output, "\n")[[1]], nchar)
+
+  expect_equal(max(nchar_lines), 90)
+  expect_true(grepl(names(nchar_lines)[length(nchar_lines)], pattern = "page 4 of 4"))
+  expect_equal(unname(nchar_lines[length(nchar_lines)]), 90) # last line is full (page number)
+
+  sorted_tnl <- sort(table(nchar_lines), decreasing = TRUE)
+
+  expect_equal(unname(sorted_tnl[names(sorted_tnl) == "90"]), 4) # there are 4 pages (with page number)
+  expect_equal(names(sorted_tnl[c(1, 2)]), c("85", "52"))
+
+  expect_error(
+    export_as_txt(l_mf, colwidths = rep(8, 10)),
+    "non-null colwidths argument must have length ncol"
+  )
+
+  expect_silent(
+    output <- export_as_txt(l_mf, page_num = "page {i} of {n}", cpp = 90, colwidths = rep(8, 11), num_rep_cols = 2)
+  )
+})
+
+test_that("rep_cols works as intended for listings and tables", {
+  bmf <- basic_matrix_form(mtcars, ignore_rownames = FALSE)
+  blmf <- basic_listing_mf(mtcars, keycols = c("vs", "gear"))
+  expect_equal(num_rep_cols(bmf), 0L) # repeated rowlabels are excluded from num_rep_cols
+  expect_equal(num_rep_cols(blmf), 2L)
+
+  out <- export_as_txt(bmf, rep_cols = 2, cpp = 90) %>%
+    strsplit("\n") %>%
+    unlist()
+  expect_true(grepl(out[35], pattern = "mpg")) # mpg is repeated
+  expect_true(grepl(out[35], pattern = "cyl")) # cyl is repeated
+
+  out <- export_as_txt(blmf, cpp = 70) %>%
+    strsplit("\n") %>%
+    unlist()
+  expect_true(grepl(out[51], pattern = "vs")) # vs is repeated
+  expect_true(grepl(out[51], pattern = "gear")) # gear is repeated
+
+  out <- export_as_txt(blmf, rep_cols = 1, cpp = 70) %>%
+    strsplit("\n") %>%
+    unlist()
+  expect_true(grepl(out[51], pattern = "vs")) # vs is repeated
+  expect_false(grepl(out[51], pattern = "gear")) # gear is NOT repeated
 })

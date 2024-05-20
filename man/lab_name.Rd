@@ -26,7 +26,7 @@
 \alias{obj_align<-}
 \alias{obj_align<-,ANY-method}
 \alias{obj_align<-,fmt_config-method}
-\title{Label, Name and Format accessor generics}
+\title{Label, name, and format accessor generics}
 \usage{
 obj_name(obj)
 
@@ -77,17 +77,15 @@ obj_align(obj) <- value
 \S4method{obj_align}{fmt_config}(obj) <- value
 }
 \arguments{
-\item{obj}{ANY. The object.}
+\item{obj}{(\code{ANY})\cr the object.}
 
 \item{value}{character(1). The new label}
 }
 \value{
-the name, format or label of \code{obj} for \code{getters}, or \code{obj} after modification
-for setters.
+The name, format, or label of \code{obj} for getters, or \code{obj} after modification for setters.
 }
 \description{
-\code{Getters} and \code{setters} for basic, relatively universal attributes
-of "table-like" objects"
+Getters and setters for basic, relatively universal attributes of "table-like" objects.
 }
 \seealso{
 with_label

@@ -1,15 +1,22 @@
-## formatters 0.5.5.9016
+## formatters 0.5.6.9004
+
+* Deprecate `width`, `height` and `fontsize` arguments of `export_as_pdf()` using `lifecycle` package.
+* Add `lifecycle` badge files for documentation.
+
+## formatters 0.5.6
  * Added "N=xx" format and unit test for it.
- * Allow tables with content rows in the end be exported.
- * Removed redundant references to `matrix_print_form` constructor (now only `MatrixPrintForm`).
- * Moved new line expansion for decorations from `rtables`' `matrix_form` to `formatters`' constructor `MatrixPrintForm` so to cover also `rlistings`.
- * Fixed pagination unexpected counts for `rlistings`' pagination by removing the manual subsetting workaround and fixing [`insightsengineering/rlistings#155`](https://github.com/insightsengineering/rlistings/issues/155).
- * Improved relevant information feedback during pagination.
- * Removed the possibility to set `min_siblings > 0` when dealing with listings. This allows smooth pagination when having only 2 lines.
  * Added error catch for `\r` recursive special character.
+ * Fixed pagination unexpected counts for `rlistings`' pagination by removing the manual subsetting workaround and fixing [`insightsengineering/rlistings#155`](https://github.com/insightsengineering/rlistings/issues/155).
  * Fixed mismatch between pagination and exports regarding the value assigned to parameter `max_width`. Introduced general handler `.handle_max_width` for pagination, exports, and `toString`.
  * Fixed bug in `format_value` causing a warning for vectors containing both NA and non-NA values.
  * Fixed issue with `var_label` assignment that needed to be of non-named strings.
+ * Included indentation and split rows with their `LabelRow` assignment in `basic_matrix_form`.
+ * Allowed tables with content rows in the end be exported.
+ * Moved new line expansion for decorations from `rtables`' `matrix_form` to `formatters`' constructor `MatrixPrintForm` so to cover also `rlistings`.
+ * Improved relevant information feedback during pagination.
+ * Updated `export_as_txt` to allow lists of tables/listings as input. This enables listing pagination with pages by parameter.
+ * Removed the possibility of setting `min_siblings > 0` when dealing with listings. This allows smooth pagination when there are only 2 lines.
+ * Removed redundant references to `matrix_print_form` constructor (now only `MatrixPrintForm`).
 
 ## formatters 0.5.5
  * Applied `styler` and resolved package lint. Changed default indentation from 4 spaces to 2.
@@ -46,7 +53,7 @@
  * Reduced the amount of spelling issues.
  * New generic `getter` and `setter` for `align` (`obj_align` and `obj_align<-`).
  * New `fmt_config` class to bundle together `format`, `na_str`, and `align` instructions.
- * Reverting default for alignment (from `NULL` to `center`) and `na_str` 
+ * Reverting default for alignment (from `NULL` to `center`) and `na_str`
    from `NULL` to `"NA"`. This affects only `rlistings`, where the new default takes effect.
 
 ## formatters 0.5.0
@@ -62,7 +69,7 @@
  * `MatrixPrintForm` objects now pay closer attention to referential footnote information than they did in the past.
  * `MatrixPrintForm` objects infer detailed referential footnote information from their `strings` element for backward compatibility.
  * Fix to test that failed on old Windows CRAN machine due to imperfect UTF support there.
- * If `lpp` and `cpp` in pagination or exporter functions are assigned to `NULL`, no pagination in the vertical or horizontal direction happens, respectively. 
+ * If `lpp` and `cpp` in pagination or exporter functions are assigned to `NULL`, no pagination in the vertical or horizontal direction happens, respectively.
  * The new default of `NA_integer_` for `lpp` and `cpp` now means those values should be inferred from page size.
  * Added `hexSticker` logo.
 
@@ -107,10 +114,10 @@
  * adding wrapping of titles, subtitles, and footers.
  * `page_lcpp` function now provided to map page size and font combinations to lines
    and characters per page.
- * `getters` and `setters` for the components of `MatrixPrintForm` objects are now exported 
+ * `getters` and `setters` for the components of `MatrixPrintForm` objects are now exported
    (i.e., `mf_spans` and friends).
  * `na_str` can now be length >1, and is matched in position to NAs in that case.
- * `format_value` now returns solely the `na_str` value when all-NA values are formatted with certain formats 
+ * `format_value` now returns solely the `na_str` value when all-NA values are formatted with certain formats
     (currently`"(N=xx)"`, `">999.9"`, `">999.99"`, `"x.xxxx | (<0.0001)"`)
 
 ## formatters 0.3.3
@@ -143,7 +150,7 @@
 ## formatters 0.3.0
  * add exported `default_hsep` function for use her and in reverse-dependencies (incl `rtables`)
  * format_value now respects `na_str` even when format is `xx` (previously it returned `"NA"` always)
- * rename `linesep` argument to `hsep` in `toString` generic signature 
+ * rename `linesep` argument to `hsep` in `toString` generic signature
  * add `indent_size` argument to `matrix_form` generic signature
  * add a number of `"__ (__)"` (no pct) formats in response to #23
  * Switch to `testthat` as testing framework

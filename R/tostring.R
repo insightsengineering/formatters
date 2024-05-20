@@ -26,7 +26,6 @@
   cell_widths_mat
 }
 
-
 # Main function that does the wrapping
 do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
   col_gap <- mf_colgap(mat)
@@ -150,6 +149,7 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
     ) # nocov
   }
 }
+
 # Helper function that takes out or adds the proper indentation
 .modify_indentation <- function(mat, cell_widths_mat, do_what = c("remove", "add")) {
   # Extract info
@@ -189,7 +189,6 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
   return(list("mfs" = mfs, "cell_widths_mat" = cell_widths_mat))
 }
 
-
 ## take a character vector and return whether the value is
 ## a string version of a number or not
 is_number_str <- function(vec) {
@@ -208,30 +207,30 @@ is_dec_align <- function(vec) {
 
 any_dec_align <- function(vec) any(is_dec_align(vec))
 
-#' Decimal Alignment
+#' Decimal alignment
 #'
-#' @description Aligning decimal values of string matrix. Allowed alignments are: `dec_left`,
-#'  `dec_right` and `decimal`.
+#' Aligning decimal values of string matrix. Allowed alignments are: `dec_left`, `dec_right`,
+#' and `decimal`.
 #'
-#' @param string_mat character matrix. String matrix component of matrix print form object.
-#' @param align_mat character matrix. Aligns matrix component of matrix print form object.
-#'  Should contain either `dec_left`, `dec_right` or `decimal` for values to be decimal aligned.
+#' @param string_mat (`character matrix`)\cr "string" matrix component of `MatrixPrintForm` object.
+#' @param align_mat (`character matrix`)\cr "aligns" matrix component of `MatrixPrintForm` object.
+#'   Should contain either `dec_left`, `dec_right`, or `decimal` for values to be decimal aligned.
 #'
-#' @details Decimal alignment left and right (`dec_left` and `dec_right`) are different to
-#'  center decimal alignment `decimal` only in the case some padding is present. This may
-#'  happen if column widths are wider by setting parameters `widths` in `toString` or
-#'  `colwidths` in `paginate_*` accordingly. It will be also the case (more common) of
-#'  wider column names. Decimal alignment is not supported along with cell wrapping.
+#' @details Left and right decimal alignment (`dec_left` and `dec_right`) differ from center decimal
+#'   alignment (`decimal`) only when there is padding present. This may occur if column widths are
+#'   set wider via parameters `widths` in `toString` or `colwidths` in `paginate_*`. More commonly,
+#'   it also occurs when column names are wider. Cell wrapping is not supported when decimal
+#'   alignment is used.
+#'
+#' @return A processed string matrix of class `MatrixPrintForm` with decimal-aligned values.
+#'
+#' @seealso [toString()], [MatrixPrintForm()]
 #'
 #' @examples
 #' dfmf <- basic_matrix_form(mtcars[1:5, ])
 #' aligns <- mf_aligns(dfmf)
 #' aligns[, -c(1)] <- "dec_left"
 #' decimal_align(mf_strings(dfmf), aligns)
-#'
-#' @return Processed string matrix of matrix print form with decimal aligned values.
-#'
-#' @seealso [toString] and [MatrixPrintForm]
 #'
 #' @export
 decimal_align <- function(string_mat, align_mat) {
@@ -329,52 +328,40 @@ decimal_align <- function(string_mat, align_mat) {
   string_mat
 }
 
-# toString ---------------------------------------------------------------------
-# main printing code for MatrixPrintForm
-#
+## toString ---------------------------------------------------------------------
+## main printing method for MatrixPrintForm
 
-#' @title Main printing system: `toString`
-#'
 #' @description
-#' All objects that are printed to console pass by `toString`. This function allows
-#' fundamental formatting specifications for the final output, like column widths and
-#' relative wrapping (`width`), title and footer wrapping (`tf_wrap = TRUE` and
-#' `max_width`), or horizontal separator character (e.g. `hsep = "+"`).
+#' All objects that are printed to console pass via `toString`. This function allows
+#' fundamental formatting specifications to be applied to final output, like column widths
+#' and relative wrapping (`width`), title and footer wrapping (`tf_wrap = TRUE` and
+#' `max_width`), and horizontal separator character (e.g. `hsep = "+"`).
 #'
 #' @inheritParams MatrixPrintForm
-#' @param widths numeric (or  `NULL`). (proposed) widths for the columns
-#'     of \code{x}. The expected length  of this numeric vector can be
-#'     retrieved with  `ncol() + 1`  as the  column of row  names must
-#'     also be considered.
-#' @param hsep character(1). Characters to repeat to create
-#'     header/body separator line. If `NULL`, the object value will be
-#'     used. If `" "`, an empty separator will be printed. Check [default_hsep()]
-#'     for more information.
-#' @param tf_wrap logical(1). Should  the texts for  title, subtitle,
-#'     and footnotes be wrapped?
-#' @param max_width integer(1), character(1) or `NULL`. Width that title
-#'     and   footer   (including   footnotes)  materials   should   be
-#'     word-wrapped to. If `NULL`, it is  set to the current print width
-#'     of the  session (`getOption("width")`). If set to `"auto"`,
-#'     the width of the table (plus any table inset) is used. Ignored
-#'     completely if `tf_wrap` is `FALSE`.
+#' @param widths (`numeric` or  `NULL`)\cr Proposed widths for the columns of `x`. The expected
+#'   length of this numeric vector can be retrieved with `ncol(x) + 1` as the column of row names
+#'   must also be considered.
+#' @param hsep (`string`)\cr character to repeat to create header/body separator line. If
+#'   `NULL`, the object value will be used. If `" "`, an empty separator will be printed. See
+#'   [default_hsep()] for more information.
+#' @param tf_wrap (`flag`)\cr whether the text for title, subtitles, and footnotes should be wrapped.
+#' @param max_width (`integer(1)`, `string` or `NULL`)\cr width that title and footer (including
+#'   footnotes) materials should be word-wrapped to. If `NULL`, it is set to the current print width of the
+#'   session (`getOption("width")`). If set to `"auto"`, the width of the table (plus any table inset) is
+#'   used. Parameter is ignored if `tf_wrap = FALSE`.
 #'
 #' @details
+#' Manual insertion of newlines is not supported when `tf_wrap = TRUE` and will result in a warning and
+#' undefined wrapping behavior. Passing vectors of already split strings remains supported, however in this
+#' case each string is word-wrapped separately with the behavior described above.
 #'
-#' Manual insertion of newlines is not supported when `tf_wrap` is on
-#' and will result in a warning and undefined wrapping behavior. Passing
-#' vectors of already split strings remains supported, however in this
-#' case each string is word-wrapped separately with the behavior
-#' described above.
+#' @return A character string containing the ASCII rendering of the table-like object represented by `x`.
 #'
 #' @seealso [wrap_string()]
 #'
 #' @examples
 #' mform <- basic_matrix_form(mtcars)
 #' cat(toString(mform))
-#'
-#' @return A character string containing the ASCII rendering
-#' of the table-like object represented by `x`
 #'
 #' @rdname tostring
 #' @exportMethod toString
@@ -705,32 +692,25 @@ new_line_warning <- function(str_v) {
   }
 }
 
-
-#' Wrap a string to within a precise width
+#' Wrap a string to a precise width
 #'
-#' @description
-#' Core wrapping functionality that preserve white spaces. Only `"\n"` is not supported
-#' by core functionality [stringi::stri_wrap()]. This is usually solved before hand by
-#' [matrix_form()]. If the width is smaller than any large word, these will be truncated
-#' after `width` characters. If the split leaves trailing groups of empty spaces,
-#' they will be dropped.
+#' Core wrapping functionality that preserves whitespace. Newline character `"\n"` is not supported
+#' by core functionality [stringi::stri_wrap()]. This is usually solved beforehand by [matrix_form()].
+#' If the width is smaller than any large word, these will be truncated after `width` characters. If
+#' the split leaves trailing groups of empty spaces, they will be dropped.
 #'
-#' @param str character. String to be wrapped. If it is a character vector or
-#'   a list, it will be looped as a list and returned with `unlist(use.names = FALSE)`.
-#' @param width numeric(1). Width, in characters, that the
-#'   text should be wrapped at.
-#' @param collapse character(1) or `NULL`. If the words that have been split should
-#'   be pasted together with the collapse character. This is usually done internally
-#'   with `"\n"` to have the wrapping updated along with other internal values.
+#' @param str (`string`, `character`, or `list`)\cr string to be wrapped. If it is a `vector` or
+#'   a `list`, it will be looped as a `list` and returned with `unlist(use.names = FALSE)`.
+#' @param width (`numeric(1)`)\cr width, in characters, that the text should be wrapped to.
+#' @param collapse (`string` or `NULL`)\cr collapse character used to separate segments of words that
+#'   have been split and should be pasted together. This is usually done internally with `"\n"` to update
+#'   the wrapping along with other internal values.
 #'
-#' @details Word wrapping happens as with [stringi::stri_wrap()]
-#'   with the following exception: individual words which are longer
-#'   than `max_width` are broken up in a way that fits with the rest of the
-#'   word wrapping.
+#' @details Word wrapping happens similarly to [stringi::stri_wrap()] with the following difference: individual
+#'   words which are longer than `max_width` are broken up in a way that fits with other word wrapping.
 #'
-#' @return A string if `str` is one element and if `collapse = NULL`. Otherwise, is
-#'   a list of elements (if `length(str) > 1`) that can contain strings or vector of
-#'   characters (if `collapse = NULL`).
+#' @return A string if `str` is one element and if `collapse = NULL`. Otherwise, a list of elements
+#'   (if `length(str) > 1`) that can contain strings or vectors of characters (if `collapse = NULL`).
 #'
 #' @examples
 #' str <- list(
@@ -739,7 +719,6 @@ new_line_warning <- function(str_v) {
 #' )
 #' wrap_string(str, 5, collapse = "\n")
 #'
-#' @name wrap_string
 #' @export
 wrap_string <- function(str, width, collapse = NULL) {
   if (length(str) > 1) {
@@ -871,8 +850,8 @@ split_words_by <- function(wrd, width) {
   }, character(1), USE.NAMES = FALSE)
 }
 
-#' @describeIn wrap_string function that flattens the list of wrapped strings with
-#'   `unist(str, use.names = FALSE)`. This is deprecated, use [wrap_string()] instead.
+#' @describeIn wrap_string Deprecated function. Please use [wrap_string()] instead.
+#'
 #' @examples
 #' wrap_txt(str, 5, collapse = NULL)
 #'
@@ -901,7 +880,6 @@ rep_vec_to_len <- function(vec, len, ...) {
   )
 }
 
-
 safe_strsplit <- function(x, split, ...) {
   ret <- strsplit(x, split, ...)
   lapply(ret, function(reti) if (length(reti) == 0) "" else reti)
@@ -927,32 +905,32 @@ expand_mat_rows <- function(mat, row_nlines = apply(mat, 1, nlines), expfun = pa
   do.call(rbind, exprows)
 }
 
-
-#' Transform vectors of spans (with duplication) to Visibility vector
+#' Transform a vector of spans (with duplication) into a visibility vector
 #'
-#' @param spans numeric. A vector of spans, with each span value repeated
-#' for the cells it covers.
+#' @param spans (`numeric`)\cr a vector of spans, with each span value repeated
+#'   for the cells it covers.
 #'
 #' @details
+#' The values of `spans` are assumed to be repeated such that each individual position covered by the
+#' span has the repeated value.
 #'
-#' The values of \code{spans} are assumed to be repeated to such that
-#' each individual position covered by the span has the repeated value.
+#' This means that each block of values in `spans` must be of a length at least equal to its value
+#' (i.e. two 2s, three 3s, etc).
 #'
-#' This means that each block of values in \code{span} must be of a length
-#' at least equal to its value (i.e. two 2s, three 3s, etc).
+#' This function correctly handles cases where two spans of the same size are next to each other;
+#' i.e., a block of four 2s represents two large cells each of which spans two individual cells.
 #'
-#' This function correctly handles cases where two spans of the same size
-#' are next to each other; i.e., a block of four 2s represents two large
-#' cells each of which span two individual cells.
-#' @export
+#' @return A logical vector the same length as `spans` indicating whether the contents of a string vector
+#'   with those spans is valid.
+#'
 #' @note
+#' Currently no checking or enforcement is done to verify that the vector of spans is valid according to
+#' the specifications described in the Details section above.
 #'
-#' Currently no  checking or  enforcement is done  that the  vector of
-#' spans is valid in the sense described in the Details section above.
 #' @examples
 #' spans_to_viscell(c(2, 2, 2, 2, 1, 3, 3, 3))
-#' @return a logical vector the same length as `spans` indicating
-#' whether the contents of a string vector with those spans
+#'
+#' @export
 spans_to_viscell <- function(spans) {
   if (!is.vector(spans)) {
     spans <- as.vector(spans)
@@ -971,40 +949,21 @@ spans_to_viscell <- function(spans) {
   )
 }
 
-
-#' Propose Column Widths based on an object's `MatrixPrintForm` form
+#' Propose column widths based on the `MatrixPrintForm` of an object
 #'
-#' The row names are also considered a column for the output
+#' Row names are also considered a column for the output.
 #'
-#' @param x `MatrixPrintForm` object, or an object with a `matrix_form`
-#' method.
-#' @param indent_size numeric(1). Indent size in characters. Ignored
-#' when `x` is already a `MatrixPrintForm` object in favor of information
-#' there.
+#' @param x (`ANY`)\cr a `MatrixPrintForm` object, or an object with a `matrix_form` method.
+#' @param indent_size (`numeric(1)`)\cr indent size, in characters. Ignored when `x` is already
+#'   a `MatrixPrintForm` object in favor of information there.
+#'
+#' @return A vector of column widths based on the content of `x` for use in printing and pagination.
 #'
 #' @examples
 #' mf <- basic_matrix_form(mtcars)
 #' propose_column_widths(mf)
 #'
 #' @export
-#' @return a vector of column widths based on the content of \code{x}
-#' for use in printing and pagination.
-## ' @examples
-## ' library(dplyr)
-## ' library(rtables)
-## ' iris2 <- iris %>%
-## '   group_by(Species) %>%
-## '   mutate(group = as.factor(rep_len(c("a", "b"), length.out = n()))) %>%
-## '   ungroup()
-## '
-## ' l <- basic_table() %>%
-## '   split_cols_by("Species") %>%
-## '   split_cols_by("group") %>%
-## '   analyze(c("Sepal.Length", "Petal.Width"), afun = list_wrap_x(summary) , format = "xx.xx")
-## '
-## ' tbl <- build_table(l, iris2)
-## ' mf <- matrix_form(tbl)
-## ' propose_column_widths(mf)
 propose_column_widths <- function(x, indent_size = 2) {
   if (!is(x, "MatrixPrintForm")) {
     x <- matrix_form(x, indent_rownames = TRUE, indent_size = indent_size)
@@ -1057,21 +1016,15 @@ propose_column_widths <- function(x, indent_size = 2) {
   widths
 }
 
-
-
-
 #' Pad a string and align within string
 #'
-#' @param x string
-#' @param n number  of  character  of the  output  string,  if `n  <
-#'     nchar(x)` an error is thrown
-#' @param just  character(1).   Text  alignment   justification  to
-#'     use. Defaults to `center`. Must be `center`, `right`, `left`,
-#'     `dec_right`, `dec_left` or `decimal`.
+#' @param x (`string`)\cr a string.
+#' @param n (`integer(1)`)\cr number of characters in the output string. If `n < nchar(x)`, an error is thrown.
+#' @param just (`string`)\cr text alignment justification to use. Defaults to `"center"`. Must be one of
+#'   `"center"`, `"right"`, `"left"`, `"dec_right"`, `"dec_left"`, or `"decimal"`.
 #'
-#' @return `x`, padded to be a string of `n` characters
+#' @return `x`, padded to be a string of length `n`.
 #'
-#' @export
 #' @examples
 #' padstr("abc", 3)
 #' padstr("abc", 4)
@@ -1080,9 +1033,11 @@ propose_column_widths <- function(x, indent_size = 2) {
 #' padstr("abc", 5, "right")
 #'
 #' \dontrun{
-#'   # Expect error: "abc" has more than 1 characters
-#'   padstr("abc", 1)
+#' # Expect error: "abc" has more than 1 characters
+#' padstr("abc", 1)
 #' }
+#'
+#' @export
 padstr <- function(x, n, just = list_valid_aligns()) {
   just <- match.arg(just)
 
@@ -1115,20 +1070,18 @@ spaces <- function(n) {
   strrep(" ", n)
 }
 
-
 .paste_no_na <- function(x, ...) {
   paste(na.omit(x), ...)
 }
 
-
-#' spread `x` into `len` elements
+#' Spread an integer to a given length
 #'
-#' @param x numeric(1). The number to spread
-#' @param len numeric(1). The number of times to repeat \code{x}
+#' @param x (`integer(1)`)\cr number to spread.
+#' @param len (`integer(1)`)\cr number of times to repeat `x`.
 #'
-#' @export
-#' @return if \code{x} is a scalar "whole number" value (see \code{\link{is.wholenumber}}),
-#' the value \code{x} repeated \code{len} times. If not, an error is thrown.
+#' @return If `x` is a scalar whole number value (see [is.wholenumber()]), the value `x` is repeated `len` times.
+#'   Otherwise, an error is thrown.
+#'
 #' @examples
 #' spread_integer(3, 1)
 #' spread_integer(0, 3)
@@ -1139,13 +1092,14 @@ spaces <- function(n) {
 #' spread_integer(5, 3)
 #' spread_integer(6, 3)
 #' spread_integer(7, 3)
+#'
+#' @export
 spread_integer <- function(x, len) {
   stopifnot(
     is.wholenumber(x), length(x) == 1, x >= 0,
     is.wholenumber(len), length(len) == 1, len >= 0,
     !(len == 0 && x > 0)
   )
-
 
   if (len == 0) {
     integer(0)
@@ -1164,22 +1118,19 @@ spread_integer <- function(x, len) {
   }
 }
 
-
-
-#' `is.wholenumber`
+#' Check if a value is a whole number
 #'
-#' @param x numeric(1). A numeric value
-#' @param tol numeric(1). A precision tolerance.
+#' @param x (`numeric(1)`)\cr a numeric value.
+#' @param tol (`numeric(1)`)\cr a precision tolerance.
 #'
-#' @return \code{TRUE} if \code{x} is within \code{tol} of zero,
-#' \code{FALSE} otherwise.
+#' @return `TRUE` if `x` is within `tol` of zero, `FALSE` otherwise.
 #'
-#' @export
 #' @examples
 #' is.wholenumber(5)
 #' is.wholenumber(5.00000000000000001)
 #' is.wholenumber(.5)
 #'
+#' @export
 is.wholenumber <- function(x, tol = .Machine$double.eps^0.5) {
   abs(x - round(x)) < tol
 }

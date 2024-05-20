@@ -1,14 +1,13 @@
 ## until we do it for real
 
-#' @title Matrix Print Form - Intermediate Representation for ASCII Table Printing
+#' Class for Matrix Print Form
+#'
+#' The `MatrixPrintForm` class, an intermediate representation for ASCII table printing.
 #'
 #' @name MatrixPrintForm-class
-#'
 #' @rdname MatrixPrintForm_class
-#' @aliases MatrixPrintForm-class
 #' @exportClass MatrixPrintForm
 setOldClass(c("MatrixPrintForm", "list"))
-
 
 mform_handle_newlines <- function(matform) {
   # Retrieving relevant information
@@ -168,107 +167,91 @@ disp_from_spans <- function(spans) {
   display
 }
 
-## constructor
-#' @title Matrix Print Form - Intermediate Representation for ASCII Table Printing
+#' Constructor for Matrix Print Form
+#'
+#' Constructor for `MatrixPrintForm`, an intermediate representation for ASCII table printing.
+#'
+#' @param strings (`character matrix`)\cr matrix of formatted, ready-to-display strings
+#'   organized as they will be positioned when rendered. Elements that span more than one
+#'   column must be followed by the correct number of placeholders (typically either empty
+#'   strings or repeats of the value).
+#' @param spans (`numeric matrix`)\cr matrix of same dimension as `strings` giving the
+#'   spanning information for each element. Must be repeated to match placeholders in `strings`.
+#' @param aligns (`character matrix`)\cr matrix of same dimension as `strings` giving the text
+#'   alignment information for each element. Must be repeated to match placeholders in `strings`.
+#'   Must be a supported text alignment. See [decimal_align] for allowed values.
+#' @param formats (`matrix`)\cr matrix of same dimension as `strings` giving the text format
+#'   information for each element. Must be repeated to match placeholders in `strings`.
+#' @param row_info (`data.frame`)\cr data frame with row-information necessary for pagination (see
+#'   [basic_pagdf()] for more details).
+#' @param line_grouping (`integer`)\cr sequence of integers indicating how print lines correspond
+#'   to semantic rows in the object. Typically this should not be set manually unless
+#'   `expand_newlines` is set to `FALSE`.
+#' @param ref_fnotes (`list`)\cr referential footnote information, if applicable.
+#' @param nlines_header (`numeric(1)`)\cr number of lines taken up by the values of the header
+#'   (i.e. not including the divider).
+#' @param nrow_header (`numeric(1)`)\cr number of *rows* corresponding to the header.
+#' @param has_topleft (`flag`)\cr does the corresponding table have "top left information"
+#'   which should be treated differently when expanding newlines. Ignored if `expand_newlines`
+#'   is `FALSE`.
+#' @param has_rowlabs (`flag`)\cr do the matrices (`strings`, `spans`, `aligns`) each contain a
+#'   column that corresponds with row labels (rather than with table cell values). Defaults to `TRUE`.
+#' @param main_title (`string`)\cr main title as a string.
+#' @param subtitles (`character`)\cr subtitles, as a character vector.
+#' @param page_titles (`character`)\cr page-specific titles, as a character vector.
+#' @param main_footer (`character`)\cr main footer, as a character vector.
+#' @param prov_footer (`character`)\cr provenance footer information, as a character vector.
+#' @param listing_keycols (`character`)\cr. if matrix form of a listing, this contains
+#'   the key columns as a character vector.
+#' @param header_section_div (`string`)\cr divider to be used between header and body sections.
+#' @param horizontal_sep (`string`)\cr horizontal separator to be used for printing divisors
+#'   between header and table body and between different footers.
+#' @param expand_newlines (`flag`)\cr whether the matrix form generated should expand rows whose
+#'   values contain newlines into multiple 'physical' rows (as they will appear when rendered into
+#'   ASCII). Defaults to `TRUE`.
+#' @param col_gap (`numeric(1)`)\cr space (in characters) between columns.
+#' @param table_inset (`numeric(1)`)\cr table inset. See [table_inset()].
+#' @param colwidths (`numeric` or `NULL`)\cr column rendering widths. If non-`NULL`, must have length
+#'   equal to `ncol(strings)`.
+#' @param indent_size (`numeric(1)`)\cr number of spaces to be used per level of indent (if supported by
+#'   the relevant method). Defaults to 2.
+#'
+#' @return An object of class `MatrixPrintForm`. Currently this is implemented as an S3 class inheriting
+#'   from list with the following elements:
+#'   \describe{
+#'     \item{`strings`}{see argument.}
+#'     \item{`spans`}{see argument.}
+#'     \item{`aligns`}{see argument.}
+#'     \item{`display`}{logical matrix of same dimension as `strings` that specifies whether an element
+#'       in `strings` will be displayed when the table is rendered.}
+#'     \item{`formats`}{see argument.}
+#'     \item{`row_info`}{see argument.}
+#'     \item{`line_grouping`}{see argument.}
+#'     \item{`ref_footnotes`}{see argument.}
+#'     \item{`main_title`}{see argument.}
+#'     \item{`subtitles`}{see argument.}
+#'     \item{`page_titles`}{see argument.}
+#'     \item{`main_footer`}{see argument.}
+#'     \item{`prov_footer`}{see argument.}
+#'     \item{`header_section_div`}{see argument.}
+#'     \item{`horizontal_sep`}{see argument.}
+#'     \item{`col_gap`}{see argument.}
+#'     \item{`table_inset`}{see argument.}
+#'   }
+#'
+#'   as well as the following attributes:
+#'
+#'   \describe{
+#'     \item{`nlines_header`}{see argument.}
+#'     \item{`nrow_header`}{see argument.}
+#'     \item{`ncols`}{number of columns *of the table*, not including any row names/row labels}
+#'   }
 #'
 #' @note The bare constructor for the `MatrixPrintForm` should generally
-#' only be called by `matrix_form` custom methods, and almost never from other code.
-#'
-#' @param  strings character  matrix.  Matrix  of formatted,  ready to
-#'     display  strings  organized as  they  will  be positioned  when
-#'     rendered.   Elements that  span more  than one  column must  be
-#'     followed  by  the  correct number  of  placeholders  (typically
-#'     either empty strings or repeats of the value).
-#' @param  spans  numeric  matrix.    Matrix  of  same  dimension  as
-#'     \code{strings}  giving   the  spanning  information   for  each
-#'     element.    Must  be   repeated   to   match  placeholders   in
-#'     \code{strings}.
-#' @param  aligns character  matrix.   Matrix  of same  dimension  as
-#'     \code{strings} giving  the text alignment information  for each
-#'     element. Must  be   repeated   to   match  placeholders   in
-#'     \code{strings}. Must be a supported text alignment. See
-#'     [decimal_align] allowed values.
-#' @param formats  matrix. Matrix  of same dimension
-#'     as  \code{strings} giving  the text  format information  for
-#'     each  element.   Must  be  repeated to  match  placeholders  in
-#'     \code{strings}.
-#' @param  row_info   data.frame.   Data.frame  with  row-information
-#'     necessary for pagination (XXX document exactly what that is).
-#' @param  line_grouping integer. Sequence of  integers indicating how
-#'     print  lines  correspond  to   semantic  rows  in  the  object.
-#'     Typically   this   should   not    be   set   manually   unless
-#'     `expact_newlines` is set to \code{FALSE}.
-#' @param  ref_fnotes  list.   Referential  footnote  information  if
-#'     applicable.
-#' @param  nlines_header numeric(1). Number  of lines taken up  by the
-#'     values of the header (i.e. not including the divider).
-#' @param nrow_header numeric(1).  Number of \emph{rows} corresponding
-#'     to the header.
-#' @param  has_topleft logical(1).  Does the  corresponding table have
-#'     'top left information' which should be treated differently when
-#'     expanding  newlines.   Ignored   if  \code{expand_newlines}  is
-#'     \code{FALSE}.
-#' @param has_rowlabs  logical(1). Do  the matrices  (\code{strings},
-#'     \code{spans},  \code{aligns})   each  contain  a   column  that
-#'     corresponds  with  row  labels  (Rather than  with  table  cell
-#'     values).  Defaults to \code{TRUE}.
-#' @param main_title character(1). Main title as a string.
-#' @param subtitles character. Subtitles, as a character vector.
-#' @param page_titles character.  Page-specific titles, as a character
-#'     vector.
-#' @param main_footer character(1). Main footer as a string.
-#' @param prov_footer character. Provenance footer information as a
-#'     character vector.
-#' @param header_section_div character(1). Divider to be used between header
-#'     and body sections.
-#' @param horizontal_sep character(1). Horizontal separator to be used for printing
-#'     divisors between header and table body and between different footers.
-#' @param expand_newlines logical(1). Should the matrix form generated
-#'     expand  rows  whose  values   contain  newlines  into  multiple
-#'     'physical'  rows  (as  they  will  appear  when  rendered  into
-#'     ASCII). Defaults to \code{TRUE}
-#' @param col_gap numeric(1). Space (in characters) between columns
-#' @param table_inset numeric(1). Table inset. See
-#' \code{\link{table_inset}}
-#' @param colwidths numeric. NULL, or a vector of column rendering widths.
-#'     if non-NULL, must have length equal to `ncol(strings)`
-#' @param indent_size numeric(1). Number of spaces to be used per level of indent (if supported by
-#' the relevant method). Defaults to 2.
-#' @return An object of class `MatrixPrintForm`. Currently this is
-#' implemented as an S3 class inheriting from list with the following
-#' elements:
-#' \describe{
-#' \item{\code{strings}}{see argument}
-#' \item{\code{spans}}{see argument}
-#' \item{\code{aligns}}{see argument}
-#' \item{\code{display}}{logical matrix of same dimension as `strings`
-#' that specifies whether an element in `strings` will be displayed
-#' when the table is rendered}
-#' \item{\code{formats}}{see argument}
-#' \item{\code{row_info}}{see argument}
-#' \item{\code{line_grouping}}{see argument}
-#' \item{\code{ref_footnotes}}{see argument}
-#' \item{\code{main_title}}{see argument}
-#' \item{\code{subtitles}}{see argument}
-#' \item{\code{page_titles}}{see argument}
-#' \item{\code{main_footer}}{see argument}
-#' \item{\code{prov_footer}}{see argument}
-#' \item{\code{header_section_div}}{see argument}
-#' \item{\code{horizontal_sep}}{see argument}
-#' \item{\code{col_gap}}{see argument}
-#' \item{\code{table_inset}}{see argument}
-#' }
-#'
-#' as well as the following attributes:
-#' \describe{
-#' \item{\code{nlines_header}}{see argument}
-#' \item{\code{nrow_header}}{see argument}
-#' \item{\code{ncols}}{number of columns \emph{of the table}, not including
-#' any row names/row labels}
-#' }
+#'   only be called by `matrix_form` custom methods, and almost never from other code.
 #'
 #' @examples
-#' basic_matrix_form(iris) # calls matrix_form that calls this constructor
+#' basic_matrix_form(iris) # calls matrix_form which calls this constructor
 #'
 #' @export
 MatrixPrintForm <- function(strings = NULL,
@@ -286,6 +269,7 @@ MatrixPrintForm <- function(strings = NULL,
                             main_title = "",
                             subtitles = character(),
                             page_titles = character(),
+                            listing_keycols = NULL,
                             main_footer = "",
                             prov_footer = character(),
                             header_section_div = NA_character_,
@@ -315,6 +299,7 @@ MatrixPrintForm <- function(strings = NULL,
       header_section_div = header_section_div,
       horizontal_sep = horizontal_sep,
       col_gap = col_gap,
+      listing_keycols = listing_keycols,
       table_inset = as.integer(table_inset),
       has_topleft = has_topleft,
       indent_size = indent_size,
@@ -330,7 +315,6 @@ MatrixPrintForm <- function(strings = NULL,
     ret <- mform_handle_newlines(ret)
   }
 
-
   ##  ret <- shove_refdf_into_rowinfo(ret)
   if (is.null(colwidths)) {
     colwidths <- propose_column_widths(ret)
@@ -340,22 +324,22 @@ MatrixPrintForm <- function(strings = NULL,
   ret
 }
 
-
-#' Create a row for a referential footnote information dataframe
+#' Create a row for a referential footnote information data frame
 #'
 #' @inheritParams nlines
-#' @param row_path character. row path (`NA_character_` for none)
-#' @param col_path character. column path (`NA_character_` for none)
-#' @param row integer(1). Integer position of the row.
-#' @param col integer(1). Integer position of the column.
-#' @param symbol character(1). Symbol for the reference. `NA_character_` to use the `ref_index` automatically.
-#' @param ref_index integer(1). The index of the footnote, used for ordering even when symbol is not NA
-#' @param msg character(1). The string message, not including the symbol portion (`{symbol} - `)
+#' @param row_path (`character`)\cr row path (or `NA_character_` for none).
+#' @param col_path (`character`)\cr column path (or `NA_character_` for none).
+#' @param row (`integer(1)`)\cr integer position of the row.
+#' @param col (`integer(1)`)\cr integer position of the column.
+#' @param symbol (`string`)\cr symbol for the reference. `NA_character_` to use the
+#'   `ref_index` automatically.
+#' @param ref_index (`integer(1)`)\cr index of the footnote, used for ordering even when
+#'   symbol is not `NA`.
+#' @param msg (`string`)\cr the string message, not including the symbol portion (`{symbol} - `)
 #'
-#' @return a single row data.frame with the appropriate columns.
+#' @return A single row data frame with the appropriate columns.
 #'
 #' @export
-#'
 ref_df_row <- function(row_path = NA_character_,
                        col_path = NA_character_,
                        row = NA_integer_,
@@ -378,7 +362,6 @@ ref_df_row <- function(row_path = NA_character_,
   )
 }
 
-
 ## this entire thing is a hatchetjob of a hack which should not be necessary.
 ## mf_rinfo(mform) should have the relevant info in it and
 ## mf_cinfo(mform) should be non-null (!!!) and have the info in it
@@ -389,7 +372,6 @@ infer_ref_info <- function(mform, colspace_only) {
   } else {
     idx <- seq_len(nrow(mf_strings(mform)))
   }
-
 
   hasrlbs <- mf_has_rlabels(mform)
 
@@ -411,17 +393,12 @@ infer_ref_info <- function(mform, colspace_only) {
   refs_spl <- strsplit(refs_inorder[keepem], ", ", fixed = TRUE)
   runvec <- vapply(refs_spl, length, 1L)
 
-
-
   row_index <- as.vector(
     t(do.call(cbind, replicate(ncol(strs), list(mf_lgrouping(mform)[idx] - mf_nlheader(mform)))))
   )[keepem]
   row_index[row_index < 1] <- NA_integer_
   c_torep <- if (hasrlbs) c(NA_integer_, seq(1, ncol(strs) - 1)) else seq_len(ncol(strs))
   col_index <- rep(c_torep, nrow(strs))[keepem]
-
-
-
 
   ret <- data.frame(
     symbol = unlist(refs_spl),
@@ -433,7 +410,6 @@ infer_ref_info <- function(mform, colspace_only) {
     fullmsg <- unique(grep(paste0("{", sym, "}"), fixed = TRUE, mf_rfnotes(mform), value = TRUE))
     gsub("^[{][^}]+[}] - ", "", fullmsg)
   }, "")
-
 
   col_pths <- mf_col_paths(mform)
   ret$col_path <- replicate(nrow(ret), list(NA_character_))
@@ -462,24 +438,19 @@ mform_build_refdf <- function(mform) {
   update_mf_nlines(mform, colwidths = mf_col_widths(mform), max_width = NULL)
 }
 
-
-
-
-
-
-
-
 ## hide the implementation behind abstraction in case we decide we want a real class someday
-#' `Setters` and `getters` for aspects of `MatrixPrintForm` Objects
+#' Getters and setters for aspects of `MatrixPrintForm` objects
 #'
-#' Most of these functions, particularly the `settters`, are intended
-#' almost exclusively for internal use in, e.g., `matrix_form` methods,
-#' and should generally not be called by end users.
+#' Most of these functions, particularly the setters, are intended almost exclusively for
+#' internal use in, e.g., [`matrix_form`] methods, and should generally not be called by end users.
 #'
-#' @param mf `MatrixPrintForm(1)`. A `MatrixPrintForm` object
-#' @param value ANY. The new value for the component in question.
-#' @return The element of the `MatrixPrintForm` associated with the `getter`, or
-#' the modified `MatrixPrintForm` object in the case of a `setter`.
+#' @param mf (`MatrixPrintForm`)\cr a `MatrixPrintForm` object.
+#' @param value (`ANY`)\cr the new value for the component in question.
+#'
+#' @return
+#' * Getters return the associated element of `mf`.
+#' * Setters return the modified `mf` object.
+#'
 #' @export
 #' @rdname mpf_accessors
 mf_strings <- function(mf) mf$strings
@@ -530,13 +501,9 @@ mf_nlheader <- function(mf) sum(mf_lgrouping(mf) <= mf_nrheader(mf))
 #' @rdname mpf_accessors
 mf_nrheader <- function(mf) attr(mf, "nrow_header", exact = TRUE)
 
-
 #' @export
 #' @rdname mpf_accessors
 mf_colgap <- function(mf) mf$col_gap
-
-
-
 
 ## XXX should this be exported? not sure if there's a point
 mf_col_paths <- function(mf) {
@@ -546,7 +513,6 @@ mf_col_paths <- function(mf) {
     as.list(paste0("col", seq_len(nrow(mf_strings(mf)) - mf_has_topleft(mf))))
   }
 }
-
 
 mf_col_widths <- function(mf) {
   mf$col_widths
@@ -573,7 +539,6 @@ mf_fnote_df <- function(mf) {
   mf
 }
 
-
 splice_fnote_info_in <- function(df, refdf, row = TRUE) {
   if (NROW(df) == 0) {
     return(df)
@@ -587,7 +552,6 @@ splice_fnote_info_in <- function(df, refdf, row = TRUE) {
   df$ref_info_df[as.integer(names(refdf_spl))] <- refdf_spl
   df
 }
-
 
 shove_refdf_into_rowinfo <- function(mform) {
   refdf <- mf_fnote_df(mform)
@@ -631,7 +595,6 @@ update_mf_rinfo_extents <- function(mform) {
   )
   stopifnot(all(mapdf$row_num == rinfo$abs_rownumber))
 
-
   new_par_exts <- vapply(rinfo$reprint_inds, function(idx) {
     sum(0L, mapdf$raw_extent[mapdf$row_num %in% idx])
   }, 1L)
@@ -659,8 +622,6 @@ update_mf_ref_nlines <- function(mform, max_width) {
   shove_refdf_into_rowinfo(mform)
 }
 
-
-
 #' @export
 #' @rdname mpf_accessors
 `mf_strings<-` <- function(mf, value) {
@@ -683,7 +644,6 @@ update_mf_ref_nlines <- function(mform, max_width) {
   mf
 }
 
-
 #' @export
 #' @rdname mpf_accessors
 `mf_spans<-` <- function(mf, value) {
@@ -698,7 +658,6 @@ update_mf_ref_nlines <- function(mform, max_width) {
   .chkdim_and_replace(mf, value, component = "aligns")
 }
 
-
 #' @export
 #' @rdname mpf_accessors
 `mf_display<-` <- function(mf, value) {
@@ -711,7 +670,6 @@ update_mf_ref_nlines <- function(mform, max_width) {
 `mf_formats<-` <- function(mf, value) {
   .chkdim_and_replace(mf, value, component = "formats")
 }
-
 
 ## NB NROW(v) == length(v) for atomic vectors so this is ok for lgrouping as wellas rinfo
 .chknrow_and_replace <- function(mf, value, component, noheader = FALSE) {
@@ -762,13 +720,11 @@ update_mf_ref_nlines <- function(mform, max_width) {
   mf
 }
 
-
 #' @export
 #' @rdname mpf_accessors
 `mf_lgrouping<-` <- function(mf, value) {
   .chknrow_and_replace(mf, value, component = "line_grouping")
 }
-
 
 #' @export
 #' @rdname mpf_accessors
@@ -776,8 +732,6 @@ update_mf_ref_nlines <- function(mform, max_width) {
   mf$ref_footnotes <- value
   mf
 }
-
-
 
 #' @export
 #' @rdname mpf_accessors
@@ -800,8 +754,6 @@ mf_ncol <- function(mf) attr(mf, "ncols", exact = TRUE)
 #' @export
 #' @rdname mpf_accessors
 mf_nrow <- function(mf) max(mf_lgrouping(mf)) - mf_nrheader(mf)
-
-
 
 #' @export
 #' @rdname mpf_accessors
@@ -830,93 +782,224 @@ mpf_has_rlabels <- function(mf) {
 #' @rdname mpf_accessors
 mf_has_rlabels <- function(mf) ncol(mf$strings) > mf_ncol(mf)
 
-#' Create spoof matrix form from a data.frame
+#' Create spoof matrix form from a data frame
 #'
-#' @description Useful functions for writing testing/examples, and as a
-#'   starting point for more sophisticated custom `matrix_form` methods.
+#' Useful functions for writing tests and examples, and a starting point for
+#' more sophisticated custom `matrix_form` methods.
 #'
-#' @param df data.frame
-#' @param parent_path character. parent path that all rows should be "children of",
-#'   defaults to `"root"`, and generally should not matter to end users.
-#' @param ignore_rownames logical. If `TRUE`, rownames are ignored.
-#' @param add_decoration logical. If `TRUE`, adds title and footers decorations to the
-#'   matrix form.
+#' @param df (`data.frame`)\cr a data frame.
+#' @param indent_rownames (`flag`)\cr whether row names should be indented. Being this
+#'   used for testing purposes, it defaults to `FALSE`. If `TRUE`, it assigns label rows
+#'   on even lines (also format is `"-"` and value strings are `""`). Indentation works
+#'   only if split labels are used (see parameters `split_labels` and `data_labels`).
+#' @param parent_path (`string`)\cr parent path that all rows should be "children of".
+#'   Defaults to `NULL`, as usually this is not needed. It may be necessary to use `"root"`,
+#'   for some specific scenarios.
+#' @param ignore_rownames (`flag`)\cr whether row names should be ignored.
+#' @param add_decoration (`flag`)\cr whether adds title and footer decorations should
+#'   be added to the matrix form.
+#' @param split_labels (`string`)\cr indicates which column to use as split labels. If
+#'   `NULL`, no split labels are used.
+#' @param data_labels (`string`)\cr indicates which column to use as data labels. It is
+#'   ignored if no `split_labels` is present and is automatically assigned to
+#'   `"Analysis method"` when `split_labels` is present, but `data_labels` is `NULL`.
+#'   Its direct column name is used as node name in `"DataRow"` pathing. See [mf_rinfo()]
+#'   for more information.
 #'
-#' @return A valid `MatrixPrintForm` object representing `df`,
-#'   ready for ASCII rendering
+#' @return A valid `MatrixPrintForm` object representing `df` that is ready for
+#'   ASCII rendering.
+#'
+#' @details
+#' If some of the column has a [obj_format] assigned, it will be respected for all column
+#' values except for label rows, if present (see parameter `split_labels`).
 #'
 #' @examples
 #' mform <- basic_matrix_form(mtcars)
 #' cat(toString(mform))
 #'
+#' # Advanced test case with label rows
+#' library(dplyr)
+#' iris_output <- iris %>%
+#'   group_by(Species) %>%
+#'   summarize("all obs" = round(mean(Petal.Length), 2)) %>%
+#'   mutate("DataRow_label" = "Mean")
+#' mf <- basic_matrix_form(iris_output,
+#'   indent_rownames = TRUE,
+#'   split_labels = "Species", data_labels = "DataRow_label"
+#' )
+#' cat(toString(mf))
+#'
 #' @name test_matrix_form
 #' @export
-basic_matrix_form <- function(df, parent_path = "root", ignore_rownames = FALSE,
-                              add_decoration = FALSE) {
+basic_matrix_form <- function(df,
+                              indent_rownames = FALSE,
+                              parent_path = NULL,
+                              ignore_rownames = FALSE,
+                              add_decoration = FALSE,
+                              split_labels = NULL,
+                              data_labels = NULL) {
   checkmate::assert_data_frame(df)
-  checkmate::assert_character(parent_path)
+  checkmate::assert_flag(indent_rownames)
+  checkmate::assert_character(parent_path, null.ok = TRUE)
   checkmate::assert_flag(ignore_rownames)
   checkmate::assert_flag(add_decoration)
+  checkmate::assert_character(split_labels, null.ok = TRUE)
+  checkmate::assert_character(data_labels, null.ok = TRUE)
 
-  fmts <- lapply(df, function(x) if (is.null(obj_format(x))) "xx" else obj_format(x))
+  # Some defaults
+  row_classes <- "DataRow" # Default for all rows
+  data_row_format <- "xx" # Default if no labels are used
+  indent_size <- 2
+  indent_space <- paste0(rep(" ", indent_size), collapse = "")
 
-  bodystrs <- mapply(function(x, fmt) {
-    sapply(x, format_value, format = fmt)
-  }, x = df, fmt = fmts)
+  # Pre-processing the fake split
+  if (!is.null(split_labels)) {
+    checkmate::assert_choice(split_labels, colnames(df))
+    label_rows <- as.character(df[[split_labels]])
+    if (is.null(data_labels)) {
+      data_rows <- rep("Analysis Method", nrow(df))
+      data_labels <- "Analyzed Variable"
+    } else {
+      checkmate::assert_choice(data_labels, colnames(df))
+      data_rows <- as.character(df[[data_labels]])
+    }
+    rnms_special <- c(rbind(label_rows, data_rows))
+    row_classes <- c(rbind(
+      rep("LabelRow", length(label_rows)),
+      rep("DataRow", length(data_rows))
+    ))
+    data_colnm <- setdiff(colnames(df), c(split_labels, data_labels))
+    tmp_df <- NULL
+    for (col_i in seq_along(data_colnm)) {
+      lbl_and_dt <- c(rbind(rep("", length(label_rows)), df[[data_colnm[col_i]]]))
+      tmp_df <- cbind(tmp_df, lbl_and_dt)
+    }
+    colnames(tmp_df) <- data_colnm
+    rownames(tmp_df) <- NULL
+    df <- as.data.frame(tmp_df)
+    ignore_rownames <- FALSE
+  }
+
+  # Formats
+  fmts <- lapply(df, function(x) {
+    if (is.null(obj_format(x))) {
+      fmt_tmp <- data_row_format
+    } else {
+      fmt_tmp <- obj_format(x) # Can be assigned for each column
+    }
+    out <- rep(fmt_tmp, NROW(df))
+    if (!is.null(split_labels)) {
+      out[row_classes == "LabelRow"] <- "-"
+    }
+    out
+  })
+
+  formats <- rbind("", data.frame(fmts))
+  if (!ignore_rownames) {
+    formats <- cbind("rnms" = "", formats)
+  }
+
+  # Strings
+  bodystrs <- mapply(function(x, coli_fmt) {
+    coli_fmt[coli_fmt == "-"] <- "xx"
+    sapply(seq_along(x), function(y) {
+      format_value(x[y], format = coli_fmt[y])
+    })
+  }, x = df, coli_fmt = fmts)
 
   if (!ignore_rownames) {
     rnms <- row.names(df)
-    if (is.null(rnms)) {
+    if (!is.null(split_labels)) {
+      # This overload is done because identical rownames not allowed (e.g. Mean.1 Mean.2)
+      rnms <- rnms_special
+    } else if (is.null(rnms)) {
       rnms <- as.character(seq_len(NROW(df)))
     }
   }
 
-  cnms <- names(df)
-
-  strings <- rbind(cnms, bodystrs)
+  strings <- rbind(colnames(df), bodystrs)
   rownames(strings) <- NULL
   if (!ignore_rownames) {
     strings <- cbind("rnms" = c("", rnms), strings)
   }
+  # colnames(strings) <- NULL # to add after fixing basic_mf for listings
 
-  fnr <- nrow(strings)
-  fnc <- ncol(strings)
+  # Spans
+  spans <- matrix(1, nrow = nrow(strings), ncol = ncol(strings))
 
-  ## center alignment for column labels, left alignment for everything else
-  aligns <- rbind(
-    "center",
-    matrix("left", nrow = NROW(df), ncol = fnc)
+  # Aligns
+  # Default alignment is left for rownames column and center for the rest
+  aligns <- matrix("center",
+    nrow = NROW(strings),
+    ncol = NCOL(strings) - as.numeric(!ignore_rownames)
   )
+  if (!ignore_rownames) {
+    aligns <- cbind("left", aligns)
+  }
 
-
-  ## build up fake pagination df
+  # Row Info: build up fake pagination df
   charcols <- which(sapply(df, is.character))
   if (length(charcols) > 0) {
     exts <- apply(df[, charcols, drop = FALSE], 1, function(x) max(vapply(x, nlines, 1L)))
   } else {
     exts <- rep(1L, NROW(df))
   }
-  rowdf <- basic_pagdf(row.names(df),
+  # Constructing path roughly
+  if (!is.null(split_labels)) {
+    paths <- lapply(
+      seq_along(rnms),
+      function(row_path_i) {
+        if (row_classes[row_path_i] == "DataRow") {
+          c(
+            split_labels,
+            rnms[row_path_i - 1], # LabelRow before
+            data_labels,
+            rnms[row_path_i]
+          )
+        } else {
+          c(split_labels, rnms[row_path_i])
+        }
+      }
+    )
+  } else {
+    rnms <- row.names(df)
+    if (is.null(rnms)) {
+      rnms <- as.character(seq_len(NROW(df)))
+    }
+    paths <- lapply(rnms, function(x) c(parent_path, x))
+  }
+  rowdf <- basic_pagdf(
+    rnames = rnms,
     extents = exts,
-    parent_path = parent_path
+    rclass = row_classes,
+    parent_path = NULL, # Overloaded by above parent_path lapply
+    paths = paths
   )
 
-  formats <- rbind("", matrix("xx", nrow = nrow(df), ncol = ncol(df)))
-  if (!ignore_rownames) {
-    formats <- cbind("", formats)
+  # Indentation happens last so to be sure we have all ready (only strings and formats change)
+  if (indent_rownames && !is.null(split_labels)) {
+    where_to_indent <- which(row_classes == "DataRow") + 1 # +1 because of colnames
+    strings[where_to_indent, 1] <- paste0(indent_space, strings[where_to_indent, 1])
+    formats[where_to_indent, 1] <- paste0(indent_space, formats[where_to_indent, 1]) # Needs fixing
+    rowdf$indent[where_to_indent - 1] <- 1 # -1 because only rows
   }
 
   ret <- MatrixPrintForm(
     strings = strings,
     aligns = aligns,
-    spans = matrix(1, nrow = fnr, ncol = fnc),
+    spans = spans,
     formats = formats, ## matrix("xx", nrow = fnr, ncol = fnc),
     row_info = rowdf,
     has_topleft = FALSE,
     nlines_header = 1,
     nrow_header = 1,
-    has_rowlabs = TRUE
+    has_rowlabs = isFALSE(ignore_rownames),
+    indent_size = indent_size,
   )
+
+  # Check for ncols
+  stopifnot(mf_has_rlabels(ret) == isFALSE(ignore_rownames))
+
   ret <- mform_build_refdf(ret)
 
   if (add_decoration) {
@@ -929,16 +1012,14 @@ basic_matrix_form <- function(df, parent_path = "root", ignore_rownames = FALSE,
   ret
 }
 
-#' Create spoof matrix form from a data.frame
-#'
-#' @describeIn test_matrix_form Create a `MatrixPrintForm` object from a data.frame `df` that
+#' @describeIn test_matrix_form Create a `MatrixPrintForm` object from data frame `df` that
 #'   respects the default formats for a listing object.
 #'
-#' @param keycols character. Vector of `df` column names that are printed first and
-#'   repeated values are assigned to `""`. This format is characteristic of a listing matrix form.
-#'   When `NULL`, no key columns are used. Defaults to `c("vs", "gear")` for `mtcars` default dataset.
-#' @return A valid `MatrixPrintForm` object representing `df` as a listing,
-#'   ready for ASCII rendering.
+#' @param keycols (`character`)\cr a vector of `df` column names that are printed first and for which
+#'   repeated values are assigned `""`. This format is characteristic of a listing matrix form.
+#'
+#' @return A valid `MatrixPrintForm` object representing `df` as a listing that is ready for ASCII
+#'   rendering.
 #'
 #' @examples
 #' mform <- basic_listing_mf(mtcars)
@@ -946,17 +1027,20 @@ basic_matrix_form <- function(df, parent_path = "root", ignore_rownames = FALSE,
 #'
 #' @export
 basic_listing_mf <- function(df,
-                             keycols = c("vs", "gear"),
-                             ignore_rownames = FALSE,
+                             keycols = names(df)[1],
                              add_decoration = TRUE) {
   checkmate::assert_data_frame(df)
   checkmate::assert_subset(keycols, colnames(df))
 
   dfmf <- basic_matrix_form(
     df = df,
-    ignore_rownames = ignore_rownames,
+    indent_rownames = FALSE,
+    ignore_rownames = TRUE,
     add_decoration = add_decoration
   )
+
+  # keycols addition to MatrixPrintForm (should happen in the constructor)
+  dfmf$listing_keycols <- keycols
 
   # Modifications needed for making it a listings
   mf_strings(dfmf)[1, ] <- colnames(mf_strings(dfmf)) # set colnames
@@ -994,7 +1078,8 @@ basic_listing_mf <- function(df,
 
   dfmf$aligns[seq(2, nrow(dfmf$aligns)), ] <- "center" # the default for listings
 
-  dfmf$formats[] <- 1 # the default for listings is numeric??
+  # the default for listings is a 1 double??
+  dfmf$formats <- matrix(1, nrow = nrow(dfmf$formats), ncol = ncol(dfmf$formats))
 
   # row info
   ri <- dfmf$row_info
@@ -1003,20 +1088,25 @@ basic_listing_mf <- function(df,
   ri$path <- as.list(NA_character_) # same format of listings
   ri$node_class <- "listing_df"
   # l_ri$pos_in_siblings # why is it like this in rlistings?? also n_siblings
+  class(ri$path) <- "AsIs" # Artifact from I()
   dfmf$row_info <- ri
 
   # colwidths need to be sorted too!!
   dfmf$col_widths <- dfmf$col_widths[colnames(mf_strings(dfmf))]
 
+  if (!add_decoration) {
+    # This is probably a forced behavior in the original matrix_form in rlistings
+    main_title(dfmf) <- character()
+    main_footer(dfmf) <- character()
+  }
+
   dfmf
 }
-
 
 map_to_new <- function(old, map) {
   inds <- match(old, map$old_idx)
   map$new_idx[inds]
 }
-
 
 reconstruct_basic_fnote_list <- function(mf) {
   refdf <- mf_fnote_df(mf)
@@ -1046,11 +1136,12 @@ reconstruct_basic_fnote_list <- function(mf) {
 
   tmp_strmat <- mf_strings(mf)[i_mat, j_mat, drop = FALSE]
 
-  # Only for listings
-  if (nrow(tmp_strmat) > 0 && .is_listing(mf)) { # safe check for empty listings
+  # Only for listings - Fix pagination with empty values in key columns
+  if (nrow(tmp_strmat) > 0 && .is_listing_mf(mf)) { # safe check for empty listings
+    ind_keycols <- which(colnames(tmp_strmat) %in% keycols)
 
     # Fix for missing labels in key columns (only for rlistings)
-    empty_keycols <- !nzchar(tmp_strmat[-seq_len(nlh), keycols, drop = FALSE][1, ])
+    empty_keycols <- !nzchar(tmp_strmat[-seq_len(nlh), ind_keycols, drop = FALSE][1, ])
 
     if (any(empty_keycols)) { # only if there are missing keycol labels
       # find the first non-empty label in the key columns
@@ -1085,10 +1176,11 @@ reconstruct_basic_fnote_list <- function(mf) {
   mf_lgrouping(mf) <- as.integer(as.factor(mf_lgrouping(mf)[i_mat]))
 
   if (!row) {
-    newspans <- truncate_spans(mf_spans(mf), j_mat) # 'i' is the columns here, b/c row is FALSE
+    newspans <- truncate_spans(mf_spans(mf), j_mat) # 'i' is the columns here, bc row is FALSE
   } else {
     newspans <- mf_spans(mf)[i_mat, j_mat, drop = FALSE]
   }
+
   mf_spans(mf) <- newspans
   mf_formats(mf) <- mf_formats(mf)[i_mat, j_mat, drop = FALSE]
 
@@ -1123,7 +1215,6 @@ truncate_spans <- function(spans, j) {
     t(apply(spans, 1, truncate_one_span, j = j))
   }
 }
-
 
 mpf_subset_rows <- function(mf, i, keycols = NULL) {
   nlh <- mf_nlheader(mf)
@@ -1160,8 +1251,6 @@ mpf_subset_rows <- function(mf, i, keycols = NULL) {
   mf
 }
 
-
-
 ## we only care about referential footnotes, cause
 ## they are currently the only place we're tracking
 ## column information that will need to be touched up
@@ -1179,7 +1268,6 @@ mpf_subset_cols <- function(mf, j, keycols = NULL) {
     stop("duplicated columns are not allowed when subsetting a matrix print form objects")
   }
 
-
   #    j_mat <- c(if(mf_has_topleft(mf)) seq_len(nlabcol), j + nlabcol)
   map <- data.frame(old_idx = j, new_idx = order(j))
 
@@ -1187,7 +1275,6 @@ mpf_subset_cols <- function(mf, j, keycols = NULL) {
   refdf <- mf_fnote_df(mf)
 
   mf <- .mf_subset_core_mats(mf, j, keycols = keycols, row = FALSE)
-
 
   ## future proofing (pipe dreams)
   ## uncomment if we ever manage to have col info information on MPFs
@@ -1197,8 +1284,6 @@ mpf_subset_cols <- function(mf, j, keycols = NULL) {
   ##     cinfo$abs_pos <- map_to_new(cinfo$abs_pos, map)
   ##     mf_cinfo(mf) <- mf
   ## }
-
-
 
   keep <- is.na(refdf$col) | refdf$col %in% j
   refdf <- refdf[keep, , drop = FALSE]

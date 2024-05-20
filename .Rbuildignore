@@ -20,3 +20,6 @@
 ~$
 pkgdown
 ^pkgdown$
+^.revdeprefs\.yaml$
+^revdep$
+^\.covrignore$

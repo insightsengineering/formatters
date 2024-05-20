@@ -4,57 +4,85 @@
 \alias{test_matrix_form}
 \alias{basic_matrix_form}
 \alias{basic_listing_mf}
-\title{Create spoof matrix form from a data.frame}
+\title{Create spoof matrix form from a data frame}
 \usage{
 basic_matrix_form(
   df,
-  parent_path = "root",
+  indent_rownames = FALSE,
+  parent_path = NULL,
   ignore_rownames = FALSE,
-  add_decoration = FALSE
+  add_decoration = FALSE,
+  split_labels = NULL,
+  data_labels = NULL
 )
 
-basic_listing_mf(
-  df,
-  keycols = c("vs", "gear"),
-  ignore_rownames = FALSE,
-  add_decoration = TRUE
-)
+basic_listing_mf(df, keycols = names(df)[1], add_decoration = TRUE)
 }
 \arguments{
-\item{df}{data.frame}
+\item{df}{(\code{data.frame})\cr a data frame.}
 
-\item{parent_path}{character. parent path that all rows should be "children of",
-defaults to \code{"root"}, and generally should not matter to end users.}
+\item{indent_rownames}{(\code{flag})\cr whether row names should be indented. Being this
+used for testing purposes, it defaults to \code{FALSE}. If \code{TRUE}, it assigns label rows
+on even lines (also format is \code{"-"} and value strings are \code{""}). Indentation works
+only if split labels are used (see parameters \code{split_labels} and \code{data_labels}).}
 
-\item{ignore_rownames}{logical. If \code{TRUE}, rownames are ignored.}
+\item{parent_path}{(\code{string})\cr parent path that all rows should be "children of".
+Defaults to \code{NULL}, as usually this is not needed. It may be necessary to use \code{"root"},
+for some specific scenarios.}
 
-\item{add_decoration}{logical. If \code{TRUE}, adds title and footers decorations to the
-matrix form.}
+\item{ignore_rownames}{(\code{flag})\cr whether row names should be ignored.}
 
-\item{keycols}{character. Vector of \code{df} column names that are printed first and
-repeated values are assigned to \code{""}. This format is characteristic of a listing matrix form.
-When \code{NULL}, no key columns are used. Defaults to \code{c("vs", "gear")} for \code{mtcars} default dataset.}
+\item{add_decoration}{(\code{flag})\cr whether adds title and footer decorations should
+be added to the matrix form.}
+
+\item{split_labels}{(\code{string})\cr indicates which column to use as split labels. If
+\code{NULL}, no split labels are used.}
+
+\item{data_labels}{(\code{string})\cr indicates which column to use as data labels. It is
+ignored if no \code{split_labels} is present and is automatically assigned to
+\code{"Analysis method"} when \code{split_labels} is present, but \code{data_labels} is \code{NULL}.
+Its direct column name is used as node name in \code{"DataRow"} pathing. See \code{\link[=mf_rinfo]{mf_rinfo()}}
+for more information.}
+
+\item{keycols}{(\code{character})\cr a vector of \code{df} column names that are printed first and for which
+repeated values are assigned \code{""}. This format is characteristic of a listing matrix form.}
 }
 \value{
-A valid \code{MatrixPrintForm} object representing \code{df},
-ready for ASCII rendering
+A valid \code{MatrixPrintForm} object representing \code{df} that is ready for
+ASCII rendering.
 
-A valid \code{MatrixPrintForm} object representing \code{df} as a listing,
-ready for ASCII rendering.
+A valid \code{MatrixPrintForm} object representing \code{df} as a listing that is ready for ASCII
+rendering.
 }
 \description{
-Useful functions for writing testing/examples, and as a
-starting point for more sophisticated custom \code{matrix_form} methods.
+Useful functions for writing tests and examples, and a starting point for
+more sophisticated custom \code{matrix_form} methods.
+}
+\details{
+If some of the column has a \link{obj_format} assigned, it will be respected for all column
+values except for label rows, if present (see parameter \code{split_labels}).
 }
 \section{Functions}{
 \itemize{
-\item \code{basic_listing_mf()}: Create a \code{MatrixPrintForm} object from a data.frame \code{df} that
+\item \code{basic_listing_mf()}: Create a \code{MatrixPrintForm} object from data frame \code{df} that
 respects the default formats for a listing object.
 
 }}
 \examples{
 mform <- basic_matrix_form(mtcars)
 cat(toString(mform))
+
+# Advanced test case with label rows
+library(dplyr)
+iris_output <- iris \%>\%
+  group_by(Species) \%>\%
+  summarize("all obs" = round(mean(Petal.Length), 2)) \%>\%
+  mutate("DataRow_label" = "Mean")
+mf <- basic_matrix_form(iris_output,
+  indent_rownames = TRUE,
+  split_labels = "Species", data_labels = "DataRow_label"
+)
+cat(toString(mf))
 
 mform <- basic_listing_mf(mtcars)
 cat(toString(mform))

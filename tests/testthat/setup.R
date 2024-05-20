@@ -1,3 +1,4 @@
+library(dplyr)
 make_basemf_fnotes <- function() {
   dfmf <- basic_matrix_form(mtcars)
   main_title(dfmf) <- "main title"

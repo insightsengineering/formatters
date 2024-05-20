@@ -10,17 +10,17 @@ default_page_number()
 set_default_page_number(page_number)
 }
 \arguments{
-\item{page_number}{character(1). Single string value to set the page number format.
-It should be like the following format: \code{"page {i}/{n}"}. \code{{i}} will be replaced with
-current page number, \code{{n}} will be replaced with total page number. It uses current \code{cpp}
-to position the string on the bottom right corner.}
+\item{page_number}{(\code{string})\cr single string value to set the page number format.
+It should be formatted similarly to the following format: \code{"page {i}/{n}"}.
+\code{{i}} will be replaced with the current page number, and \code{{n}} will be replaced with the
+total page number. Current \code{cpp} is used to position the string in the bottom right corner.}
 }
 \value{
-The page number format string. If not set, it returns \code{NULL}.
+The page number format string (\code{NULL} if not set).
 }
 \description{
-If set the default page number string will appear on the bottom right of
-every paginated table. It uses the current \code{cpp} to position the string.
+If set, the default page number string will appear on the bottom right of
+every page of a paginated table. The current \code{cpp} is used to position the string.
 }
 \examples{
 default_page_number()

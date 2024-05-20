@@ -2,36 +2,32 @@
   !(is.null(page_type) && is.null(pg_width) && is.null(pg_height) && is.null(cpp) && is.null(lpp))
 }
 
-#' Export a table-like object to plain (ASCII) text with page break
+#' Export a table-like object to plain (ASCII) text with page breaks
 #'
-#' This function converts \code{x} to a \code{MatrixPrintForm} object via
-#' \code{matrix_form}, paginates it via \code{paginate}, converts each
-#' page to ASCII text via \code{toString}, and emits the strings to \code{file},
-#' separated by \code{page_break}.
+#' This function converts `x` to a `MatrixPrintForm` object via [matrix_form()], paginates it
+#' via [paginate_to_mpfs()], converts each page to ASCII text via [toString()], and outputs
+#' the strings, separated by `page_break`, to `file`.
 #'
 #' @inheritParams paginate_indices
 #' @inheritParams toString
 #' @inheritParams propose_column_widths
-#' @param x  ANY.  The  table-like object  to  export.  Must have  an
-#'     applicable \code{matrix_form} method.
-#' @param file character(1) or NULL.  If non-NULL, the path to write a
-#'     text file to containing the \code{x} rendered as ASCII text,
-#' @param page_break  character(1).  Page break  symbol (defaults  to
-#'     outputting \code{"\\n\\s"}).
-#' @param paginate logical(1). Whether pagination should be performed,
-#'     defaults to \code{TRUE} if page size is specified (including
-#'     the default).
-#' @param ...  Further parameters to be passed to [paginate_to_mpfs()].
+#' @param x (`ANY`)\cr a table-like object to export. Must have an applicable `matrix_form` method.
+#' @param file (`string` or `NULL`)\cr if non-`NULL`, the path to write a text file to
+#'   containing `x` rendered as ASCII text.
+#' @param page_break (`string`)\cr page break symbol (defaults to `"\\n\\s"`).
+#' @param paginate (`flag`)\cr whether pagination should be performed. Defaults to `TRUE`
+#'   if page size is specified (including the default).
+#' @param ... additional parameters passed to [paginate_to_mpfs()].
 #'
-#' @details if  \code{x} has an \code{num_rep_cols}  method, the value
-#'     returned by it will be  used for \code{rep_cols} by default, if
-#'     not, 0 will be used.
+#' @details
+#' If `x` has a `num_rep_cols` method, the value returned by it will be used for `rep_cols` by
+#' default. Otherwise, 0 will be used.
 #'
-#' If \code{x} has an applicable \code{do_mand_paginate} method, it will be invoked
-#' during the pagination process.
+#' If `x` has an applicable `do_forced_paginate` method, it will be invoked during the
+#' pagination process.
 #'
-#' @return if \code{file} is NULL, the total paginated and then concatenated
-#' string value, otherwise the file that was written.
+#' @return If `file` is `NULL`, the full paginated and concatenated string value is returned,
+#'   otherwise the output is written to `file` and no value (invisible `NULL`) is returned.
 #'
 #' @examples
 #' export_as_txt(basic_matrix_form(mtcars), pg_height = 5, pg_width = 4)
@@ -58,10 +54,20 @@ export_as_txt <- function(x,
                           colwidths = NULL,
                           min_siblings = 2,
                           nosplitin = character(),
-                          rep_cols = num_rep_cols(x),
+                          rep_cols = NULL,
                           verbose = FALSE,
                           page_break = "\\s\\n",
                           page_num = default_page_number()) {
+  # Processing lists of tables or listings
+  if (.is_list_of_tables_or_listings(x)) {
+    if (isFALSE(paginate)) {
+      warning(
+        "paginate is FALSE, but x is a list of tables or listings, ",
+        "so paginate will automatically be updated to TRUE"
+      )
+    }
+    paginate <- TRUE
+  }
 
   if (paginate) {
     pages <- paginate_to_mpfs(
@@ -101,7 +107,7 @@ export_as_txt <- function(x,
     )
   }
 
-  ## we dont' set widths here because we already but that info on mpf
+  ## we don't set widths here because we already put that info in mpf
   ## so its on each of the pages.
   strings <- vapply(
     pages, toString, "",
@@ -118,54 +124,29 @@ export_as_txt <- function(x,
   }
 }
 
+.is_list_of_tables_or_listings <- function(a_list) {
+  if (is(a_list, "list")) {
+    all_matrix_forms <- FALSE
+    obj_are_tables_or_listings <- FALSE
 
+    if (is(a_list[[1]], "MatrixPrintForm")) {
+      all_matrix_forms <- all(sapply(a_list, is, class2 = "MatrixPrintForm"))
+    } else {
+      obj_are_tables_or_listings <- all(
+        sapply(a_list, function(list_i) {
+          is(list_i, "listing_df") || is(list_i, "VTableTree")
+        })
+      )
+    }
+    out <- obj_are_tables_or_listings || all_matrix_forms
+  } else {
+    out <- FALSE
+  }
 
-##     ## TODO this needs to be in terms of a MPF, so ncol(tt) needs to change
+  out
+}
 
-##     ## if(!is.null(colwidths) && length(colwidths) != ncol(tt) + 1)
-##     ##     stop("non-null colwidths argument must have length ncol(tt) + 1 [",
-##     ##          ncol(tt) + 1, "], got length ", length(colwidths))
-
-##     mpf <- matrix_form(x, indent_rownames = TRUE)
-
-##     ps_spec <- calc_lcpp(page_type = page_type,
-##                          landscape = landscape,
-##                          pg_width = pg_width,
-##                          pg_height = pg_height,
-##                          font_family = font_family,
-##                          cpp = cpp,
-##                          lpp = lpp)
-
-##     ## This needs to return list(x) in cases where no pagination was necessary
-##     idx_lst <- paginate(mpf, .page_size_spec = ps_spec, colwidths = colwidths,
-##                      tf_wrap = tf_wrap, ## XXX I think we don't need this
-##                      ...)
-
-##     tbls <- lapply(idx_lst, function(ii)
-##     ## XXX how do we partition the colwidths ???
-##     ## Also this is gross make it a function!!!
-##     res <- paste(mapply(function(tb, cwidths, ...) {
-##         ## 1 and +1 are because cwidths includes rowlabel 'column'
-##         cinds <- c(1, .figure_out_colinds(tb, tt) + 1L)
-##         toString(tb, widths = cwidths[cinds], ...)
-##     },
-##     MoreArgs = list(hsep = hsep,
-##                     indent_size = indent_size,
-##                     tf_wrap = tf_wrap,
-##                     max_width = max_width,
-##                     cwidths = colwidths),
-##     SIMPLIFY = FALSE,
-##     tb = tbls),
-##     collapse = page_break)
-
-##     if(!is.null(file))
-##         cat(res, file = file)
-##     else
-##         res
-## }
-
-
-
+# RTF support ------------------------------------------------------------------
 
 ## In use, must be tested
 prep_header_line <- function(mf, i) {
@@ -191,9 +172,6 @@ prep_header_line <- function(mf, i) {
 ##   )
 ## }
 
-
-
-
 mpf_to_dfbody <- function(mpf, colwidths) {
   mf <- matrix_form(mpf, indent_rownames = TRUE)
   nlr <- mf_nlheader(mf)
@@ -210,23 +188,24 @@ mpf_to_dfbody <- function(mpf, colwidths) {
   myfakedf
 }
 
-
-#' Transform `MPF` to `RTF`
+#' Transform `MatrixPrintForm` to RTF
 #'
-#' Experimental export to `RTF` via the `r2rtf` package
+#' Experimental export to rich text format (RTF) via the `r2rtf` package.
 #'
 #' @inheritParams page_lcpp
 #' @inheritParams toString
 #' @inheritParams grid::plotViewport
-#' @param mpf `MatrixPrintForm`. `MatrixPrintForm` object.
-#' @param colwidths character(1). Column widths.
-#' @details This function provides a low-level coercion of a
-#' `MatrixPrintForm` object into text containing the corresponding
-#' table in `RTF`. Currently, no pagination is done at this level,
-#' and should be done prior to calling this function, though that
+#' @param mpf (`MatrixPrintForm`)\cr a `MatrixPrintForm` object.
+#' @param colwidths (`numeric`)\cr column widths.
+#'
+#' @details
+#' This function provides a low-level coercion of a `MatrixPrintForm` object into
+#' text containing the corresponding table in RTF. Currently, no pagination is done
+#' at this level, and should be done prior to calling this function, though that
 #' may change in the future.
 #'
-#' @return An `RTF` object
+#' @return An RTF object.
+#'
 #' @export
 mpf_to_rtf <- function(mpf,
                        colwidths = NULL,
@@ -326,7 +305,6 @@ mpf_to_rtf <- function(mpf,
 ##       cumsum(mf$display[i, ])
 ##     )
 
-
 ##     for (j in seq_along(spanspl)) {
 ##       if (length(spanspl[[j]]) > 1) {
 ##         ret <- huxtable::merge_cells(ret, row = i, col = spanspl[[j]])
@@ -349,9 +327,6 @@ mpf_to_rtf <- function(mpf,
 ##   ## a bunch more stuff here
 ##   huxtable::quick_rtf(huxt, ..., file = file)
 ## }
-
-
-
 
 ## ## XXX Experimental. Not to be exported without approval
 ## mpf_to_gt <- function(obj) {
@@ -393,30 +368,27 @@ mpf_to_rtf <- function(mpf,
 ##   ret
 ## }
 
-
-
-#' Export table to `RTF`
+#' Export as RTF
 #'
-#' Experimental export to the `RTF` format.
+#' Experimental export to the rich text format (RTF) format.
 #'
-#' @details `RTF` export occurs by via the following steps
+#' @details RTF export occurs via the following steps:
+#'   * The table is paginated to the specified page size (vertically and horizontally).
+#'   * Each separate page is converted to a `MatrixPrintForm` object and then to
+#'     RTF-encoded text.
+#'   * Separate RTF text chunks are combined and written to a single RTF file.
 #'
-#' \itemize{
-#' \item{the table is paginated to the page size (Vertically and horizontally)}
-#' \item{Each separate page is converted to a `MatrixPrintForm` and from there to `RTF`-encoded text}
-#' \item{Separate `RTFs` text chunks are combined and written out as a single `RTF` file}
-#' }
+#'   Conversion of `MatrixPrintForm` objects to RTF is done via [mpf_to_rtf()].
 #'
-#' Conversion of `MatrixPrintForm` objects to `RTF` is done via [formatters::mpf_to_rtf()].
 #' @inheritParams export_as_txt
 #' @inheritParams toString
 #' @inheritParams grid::plotViewport
 #' @inheritParams paginate_to_mpfs
+#'
 #' @export
-
 export_as_rtf <- function(x,
                           file = NULL,
-                          colwidths = propose_column_widths(matrix_form(x, TRUE)),
+                          colwidths = NULL,
                           page_type = "letter",
                           pg_width = page_dim(page_type)[if (landscape) 2 else 1],
                           pg_height = page_dim(page_type)[if (landscape) 1 else 2],
@@ -425,6 +397,17 @@ export_as_rtf <- function(x,
                           font_size = 8,
                           font_family = "Courier",
                           ...) {
+  # Processing lists of tables or listings
+  if (.is_list_of_tables_or_listings(x)) {
+    if (isFALSE(paginate)) {
+      warning(
+        "paginate is FALSE, but x is a list of tables or listings, ",
+        "so paginate will automatically be updated to TRUE"
+      )
+    }
+    paginate <- TRUE
+  }
+
   if (!requireNamespace("r2rtf")) {
     stop("RTF export requires the r2rtf package, please install it.")
   }
@@ -432,20 +415,11 @@ export_as_rtf <- function(x,
     names(margins) <- marg_order
   }
 
-  fullmf <- matrix_form(x, indent_rownames = TRUE)
-  req_ncols <- ncol(fullmf) + as.numeric(mf_has_rlabels(fullmf))
-  if (!is.null(colwidths) && length(colwidths) != req_ncols) {
-    stop(
-      "non-null colwidths argument must have length ncol(x) (+ 1 if row labels are present) [",
-      req_ncols, "], got length ", length(colwidths)
-    )
-  }
-
   true_width <- pg_width - sum(margins[c("left", "right")])
   true_height <- pg_height - sum(margins[c("top", "bottom")])
 
   mpfs <- paginate_to_mpfs(
-    fullmf,
+    x,
     font_family = font_family, font_size = font_size,
     pg_width = true_width,
     pg_height = true_height,
@@ -481,40 +455,38 @@ export_as_rtf <- function(x,
 }
 
 
+# PDF support ------------------------------------------------------------------
+
 #' Export as PDF
 #'
-#' The PDF output is based on the ASCII output created with [toString()]
+#' The PDF output from this function is based on the ASCII output created with [toString()].
 #'
 #' @inheritParams export_as_txt
-#' @param file file to write, must have `.pdf` extension
-#' @param width Deprecated, please use `pg_width` or specify
-#'   `page_type`. The width of the graphics region in inches
-#' @param height Deprecated, please use `pg_height` or specify
-#'   `page_type`. The height of the graphics region in inches
-#' @param fontsize Deprecated, please use `font_size`. The size of
-#'   text (in points)
-#' @param margins numeric(4). The number of lines/characters of margin on the
-#'   bottom, left, top, and right sides of the page.
+#' @param file (`string`)\cr file to write to, must have `.pdf` extension.
+#' @param width `r lifecycle::badge("deprecated")` Please use the `pg_width` argument or specify
+#'   `page_type` instead.
+#' @param height `r lifecycle::badge("deprecated")` Please use the `pg_height` argument or
+#'   specify `page_type` instead.
+#' @param fontsize `r lifecycle::badge("deprecated")` Please use the `font_size` argument instead.
+#' @param margins (`numeric(4)`)\cr the number of lines/characters of the margin on the bottom,
+#'   left, top, and right sides of the page, respectively.
 #'
 #' @importFrom grDevices pdf
 #' @importFrom grid textGrob grid.newpage gpar pushViewport plotViewport unit grid.draw
 #'   convertWidth convertHeight grobHeight grobWidth
-#'
-#' @details By default, pagination is performed with default
-#' `cpp` and `lpp` defined by specified page dimensions and margins.
-#' User-specified `lpp` and `cpp` values override this, and should
-#' be used with caution.
-#'
-#' Title and footer materials are also word-wrapped by default
-#' (unlike when printed to the terminal), with `cpp`, as
-#' defined above, as the default `max_width`.
-#'
-#' @seealso [export_as_txt()]
-#'
 #' @importFrom grid textGrob get.gpar
 #' @importFrom grDevices dev.off
 #' @importFrom tools file_ext
-#' @export
+#'
+#' @details
+#' By default, pagination is performed with default `cpp` and `lpp` defined by specified page
+#' dimensions and margins. User-specified `lpp` and `cpp` values override this, and should
+#' be used with caution.
+#'
+#' Title and footer materials are also word-wrapped by default (unlike when printed to the
+#' terminal), with `cpp` (as defined above) as the default `max_width`.
+#'
+#' @seealso [export_as_txt()]
 #'
 #' @examples
 #' \dontrun{
@@ -524,48 +496,59 @@ export_as_rtf <- function(x,
 #' tf <- tempfile(fileext = ".pdf")
 #' export_as_pdf(basic_matrix_form(mtcars), file = tf, lpp = 8)
 #' }
+#'
+#' @export
 export_as_pdf <- function(x,
                           file,
                           page_type = "letter",
                           landscape = FALSE,
                           pg_width = page_dim(page_type)[if (landscape) 2 else 1],
                           pg_height = page_dim(page_type)[if (landscape) 1 else 2],
-                          width = NULL,
-                          height = NULL, # passed to pdf()
+                          width = lifecycle::deprecated(),
+                          height = lifecycle::deprecated(),
                           margins = c(4, 4, 4, 4),
                           min_siblings = 2,
                           font_family = "Courier",
                           font_size = 8,
-                          fontsize = font_size,
+                          fontsize = lifecycle::deprecated(),
                           paginate = TRUE,
                           page_num = default_page_number(),
                           lpp = NULL,
                           cpp = NULL,
                           hsep = "-",
                           indent_size = 2,
+                          rep_cols = NULL,
                           tf_wrap = TRUE,
                           max_width = NULL,
-                          colwidths = propose_column_widths(x)) {
+                          colwidths = NULL) {
   stopifnot(tools::file_ext(file) != ".pdf")
-  if (!is.null(colwidths) && length(colwidths) != ncol(x) + 1) {
-    stop(
-      "non-null colwidths argument must have length ncol(x) + 1 [",
-      ncol(x) + 1, "], got length ", length(colwidths)
-    )
-  }
-  gp_plot <- grid::gpar(fontsize = font_size, fontfamily = font_family)
 
-  if (!is.null(height)) {
-    pg_height <- height
+  # Processing lists of tables or listings
+  if (.is_list_of_tables_or_listings(x)) {
+    if (isFALSE(paginate)) {
+      warning(
+        "paginate is FALSE, but x is a list of tables or listings, ",
+        "so paginate will automatically be updated to TRUE"
+      )
+    }
+    paginate <- TRUE
   }
 
-  if (!is.null(width)) {
+  if (lifecycle::is_present(width)) {
+    lifecycle::deprecate_warn("0.5.5", "export_as_pdf(width)", "export_as_pdf(pg_width)")
     pg_width <- width
   }
-
-  if (missing(font_size) && !missing(fontsize)) {
+  if (lifecycle::is_present(height)) {
+    lifecycle::deprecate_warn("0.5.5", "export_as_pdf(height)", "export_as_pdf(pg_height)")
+    pg_height <- height
+  }
+  if (lifecycle::is_present(fontsize)) {
+    lifecycle::deprecate_warn("0.5.5", "export_as_pdf(fontsize)", "export_as_pdf(font_size)")
     font_size <- fontsize
   }
+
+  gp_plot <- grid::gpar(fontsize = font_size, fontfamily = font_family)
+
   pdf(file = file, width = pg_width, height = pg_height)
   on.exit(dev.off())
   grid::grid.newpage()
@@ -604,7 +587,7 @@ export_as_pdf <- function(x,
       max_width = max_width,
       indent_size = indent_size,
       verbose = FALSE,
-      rep_cols = num_rep_cols(x),
+      rep_cols = rep_cols,
       page_num = page_num
     )
   } else {

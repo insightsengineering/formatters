@@ -2,7 +2,7 @@
 % Please edit documentation in R/matrix_form.R
 \name{MatrixPrintForm-class}
 \alias{MatrixPrintForm-class}
-\title{Matrix Print Form - Intermediate Representation for ASCII Table Printing}
+\title{Class for Matrix Print Form}
 \description{
-Matrix Print Form - Intermediate Representation for ASCII Table Printing
+The \code{MatrixPrintForm} class, an intermediate representation for ASCII table printing.
 }
