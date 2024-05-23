@@ -54,9 +54,6 @@ cwidth_inches_unsafe <- function(x) {
 #'
 #' @export
 open_font_dev <- function(fontspec, silent = FALSE) {
-  ## XXX to remove for debugging only
-  ## if(identical(fontspec, font_spec()))
-  ##     stop()
   if (is.null(fontspec)) {
     return(invisible(FALSE))
   } else if (font_dev_state$open) {
