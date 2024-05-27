@@ -600,9 +600,9 @@ calc_str_adj <- function(str, fontspec) {
 #'   footnotes) materials should be word-wrapped to. If `NULL`, it is set to the current print width of the
 #'   session (`getOption("width")`). If set to `"auto"`, the width of the table (plus any table inset) is
 #'   used. Parameter is ignored if `tf_wrap = FALSE`.
-#' @param ttype_ok logical(1). Should truetype (non-monospace) fonts be
-#' allowed via `fontspec`. Defaults to `FALSE`. This parameter is primarily
-#' for internal testing and generally should not be set by end users.
+#' @param ttype_ok (`logical(1)`)\cr should truetype (non-monospace) fonts be
+#'   allowed via `fontspec`. Defaults to `FALSE`. This parameter is primarily
+#'   for internal testing and generally should not be set by end users.
 #'
 #' @details
 #' Manual insertion of newlines is not supported when `tf_wrap = TRUE` and will result in a warning and
