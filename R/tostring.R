@@ -1087,9 +1087,6 @@ wrap_string <- function(str, width, collapse = NULL, fontspec = font_spec()) {
 }
 
 .go_stri_wrap <- function(str, w) {
-  if (is.na(w) || is.nan(w)) {
-    browser()
-  }
   if (w < 1) {
     return(str)
   }
