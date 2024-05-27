@@ -1573,7 +1573,6 @@ padstr <- function(x, n, just = list_valid_aligns(), fontspec = font_spec()) {
 
   if (is.na(x)) x <- "<NA>"
 
-  ## nc <- nchar(x)
   nc <- nchar_ttype(x, fontspec)
   if (n < nc) stop("\"", x, "\" has more than ", n, " characters")
 
