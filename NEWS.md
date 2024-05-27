@@ -2,6 +2,7 @@
 
 * Deprecate `width`, `height` and `fontsize` arguments of `export_as_pdf()` using `lifecycle` package.
 * Add `lifecycle` badge files for documentation.
+* Fixed bug causing recursive appending of page number text during pagination.
 
 ## formatters 0.5.6
  * Added "N=xx" format and unit test for it.
