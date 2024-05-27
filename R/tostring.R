@@ -1131,9 +1131,9 @@ split_word_ttype <- function(str, width, fontspec, min_ok_chars) {
 #' @inheritParams wrap_string
 #' @param min_ok_chars numeric(1). Number of minimum characters which much remain
 #' on either side when a word is split
-#' @param wordbreak_ok logical(1). Should breaking within a word be allowed. If, `FALSE`,
-#' attempts to wrap a string to a width narrower than its widest word will result
-#' in an error.
+#' @param wordbreak_ok (`logical(1)`)\cr should breaking within a word be allowed? If, `FALSE`,
+#'   attempts to wrap a string to a width narrower than its widest word will result
+#'   in an error.
 #' @return `str`, broken up into a word-wrapped vector
 #' @export
 wrap_string_ttype <- function(str,
