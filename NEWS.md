@@ -1,4 +1,4 @@
-## formatters 0.5.6.9005
+## formatters 0.5.6.9006
 
 * Deprecate `width`, `height` and `fontsize` arguments of `export_as_pdf()` using `lifecycle` package.
 * Add `lifecycle` badge files for documentation.
