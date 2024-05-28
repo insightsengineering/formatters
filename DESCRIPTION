@@ -1,7 +1,7 @@
 Package: formatters
 Title: ASCII Formatting for Values and Tables
-Version: 0.5.6.9004
-Date: 2024-05-08
+Version: 0.5.6.9006
+Date: 2024-05-27
 Authors@R: c(
     person("Gabriel", "Becker", , "gabembecker@gmail.com", role = "aut",
            comment = "original creator of the package"),
@@ -29,11 +29,11 @@ Imports:
     lifecycle (>= 0.2.0)
 Suggests:
     dplyr (>= 1.0.9),
-    gt (>= 0.7.0),
+    gt (>= 0.10.0),
     huxtable (>= 2.0.0),
     knitr (>= 1.42),
     r2rtf (>= 0.3.2),
-    rmarkdown (>= 2.19),
+    rmarkdown (>= 2.23),
     stringi (>= 1.6),
     testthat (>= 3.0.4),
     withr (>= 2.0.0)
