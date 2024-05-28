@@ -1449,7 +1449,6 @@ propose_column_widths <- function(x,
             # need to update widths to fit content with colspans
             # spread width among columns
             widths[i_cols] <- cw_i + spread_integer(nchar_i - available_width, length(cw_i))
-            ## widths[i_cols] <- cw_i + spread_width(nchar_i - available_width, length(cw_i))
           }
         }
       }
