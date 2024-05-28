@@ -359,13 +359,13 @@ test_that("formats work", {
   # )
 
   expect_error(
-      format_value(c(1.2, NA, NA), "xx.x (xx.x - xx.x)", na_str = c("x","y")),
-      "are of different length"
-    )
+    format_value(c(1.2, NA, NA), "xx.x (xx.x - xx.x)", na_str = c("x", "y")),
+    "are of different length"
+  )
 
   expect_identical(
     format_value(c(1, NA), "xx"),
-    c("1","NA")
+    c("1", "NA")
   )
 
   ## trailing 0s are correct

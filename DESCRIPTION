@@ -25,8 +25,7 @@ Depends:
 Imports:
     checkmate (>= 2.1.0),
     grid,
-    htmltools (>= 0.5.3),
-    tidytlg (>= 0.1.4)
+    htmltools (>= 0.5.3)
 Suggests:
     dplyr (>= 1.0.9),
     gt (>= 0.7.0),
@@ -37,9 +36,7 @@ Suggests:
     rmarkdown (>= 2.19),
     stringi (>= 1.6),
     testthat (>= 3.0.4),
-    withr (>= 2.0.0),
-    stringr (>= 1.5.0),
-    tern (>= 0.9.3)
+    withr (>= 2.0.0)
 VignetteBuilder:
     knitr
 Config/Needs/verdepcheck: mllg/checkmate, rstudio/htmltools,
@@ -55,9 +52,9 @@ RoxygenNote: 7.3.1
 Collate:
     'data.R'
     'format_value.R'
+    'formats_xx.R'
     'matrix_form.R'
     'generics.R'
-    'jjcsformats.R'
     'labels.R'
     'mpf_exporters.R'
     'package.R'
