@@ -1092,7 +1092,7 @@ paginate_to_mpfs <- function(obj,
     return(mpfs)
   }
 
-  if (!is.null(page_num) && (length(prov_footer(obj)) == 0 || !any(grepl(page_num, prov_footer(obj), fixed = TRUE)))) {
+  if (!is.null(page_num)) {
     # Only adding a line for pagination -> lpp - 1 would have worked too
     prov_footer(obj) <- c(prov_footer(obj), page_num)
   }
@@ -1149,7 +1149,7 @@ paginate_to_mpfs <- function(obj,
       col_gap = col_gap
     )
   }
-  ## this MUST alsways return a list, inluding list(obj) when
+  ## this MUST always return a list, including list(obj) when
   ## no forced pagination is needed! otherwise stuff breaks for things
   ## based on s3 classes that are lists underneath!!!
   fpags <- do_forced_paginate(obj)
@@ -1161,8 +1161,13 @@ paginate_to_mpfs <- function(obj,
   ## but we will if we ever allow force_paginate to do horiz
   ## pagination.
   if (length(fpags) > 1) {
-    deep_pag <- lapply(
-      fpags, paginate_to_mpfs,
+    # Correction for case we are entering here (page_by?)
+    if (!is.null(page_num)) {
+      prov_footer(obj) <- head(prov_footer(obj), -1)
+      fpags <- do_forced_paginate(obj)
+    }
+    deep_pag <- paginate_to_mpfs( # what about the other parameters?
+      fpags,
       pg_size_spec = pg_size_spec,
       colwidths = colwidths,
       min_siblings = min_siblings,
@@ -1170,7 +1175,7 @@ paginate_to_mpfs <- function(obj,
       verbose = verbose,
       page_num = page_num
     )
-    return(unlist(deep_pag, recursive = FALSE))
+    return(deep_pag)
   } else if (has_page_title(fpags[[1]])) {
     obj <- fpags[[1]]
   }
