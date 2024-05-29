@@ -96,19 +96,12 @@ open_font_dev <- function(fontspec, silent = FALSE) {
   gp <- gpar_from_fspec(fontspec)
   pushViewport(plotViewport(gp = gp))
   spcwidth <- cwidth_inches_unsafe(" ")
-  ## ## XXX this assumes M or W is the widest "reasonable char"
-  ## ## should be true for any reasonable font but not guaranteed!!!
-  ## mwidth <- cwidth_inches_unsafe("M")
-  ## wwidth <- cwidth_inches_unsafe("W")
   assign("open", TRUE, envir = font_dev_state)
   assign("fontspec", fontspec, envir = font_dev_state)
   assign("spacewidth", spcwidth, envir = font_dev_state)
   assign("ismonospace", spcwidth == cwidth_inches_unsafe("W"),
     envir = font_dev_state
   )
-  ## assign("maxratio", max(mwidth, wwidth) / spcwidth,
-  ##   envir = font_dev_state
-  ## )
   assign("dev_num", dev.cur(),
     envir = font_dev_state
   )
@@ -124,7 +117,6 @@ close_font_dev <- function() {
     assign("fontspec", list(), envir = font_dev_state)
     assign("spacewidth", NA_real_, envir = font_dev_state)
     assign("ismonospace", NA, envir = font_dev_state)
-#    assign("maxratio", NA_real_, envir = font_dev_state)
     assign("dev_num", NA_integer_, envir = font_dev_state)
   }
   invisible(NULL)
