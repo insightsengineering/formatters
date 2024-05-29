@@ -1,8 +1,8 @@
-## formatters 0.5.6.9008
+## formatters 0.5.7
 
-* Deprecate `width`, `height` and `fontsize` arguments of `export_as_pdf()` using `lifecycle` package.
-* Add `lifecycle` badge files for documentation.
-* Fixed bug causing recursive appending of page number text during pagination.
+* Added `lifecycle` badge files for documentation.
+* Fixed a bug causing recursive appending of page number text during pagination.
+* Deprecated `width`, `height` and `fontsize` arguments of `export_as_pdf()` using `lifecycle` package.
 
 ## formatters 0.5.6
  * Added "N=xx" format and unit test for it.
