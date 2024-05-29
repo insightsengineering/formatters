@@ -567,6 +567,8 @@ decimal_align <- function(string_mat, align_mat) {
 ## this gives the conversion from number of spaces to number of characters
 ## for use in, e.g., repping out divider lines.
 calc_str_adj <- function(str, fontspec) {
+  if (nchar(str) == 0)
+    return(0)
   nchar(str) / nchar_ttype(str, fontspec, raw = TRUE)
 }
 

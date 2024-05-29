@@ -213,12 +213,26 @@ build_fail_msg <- function(row, lines, raw_rowlines,
     spacetype <- "chars"
     spacetype_abr <- "chars"
     structtype_abr <- "cols"
+    raw_ncol <- guess - start + 1
+    tot_ncol <- raw_ncol + n_reprint
+    rep_ext <- rep_ext
     sprintf(
-      "  FAIL: selected columns require %d %s (%d %s).",
-      lines,
+      paste0("  FAIL: selected %d columns require %d %s, while only %d are available. \n",
+      "        details: [raw: %d %s (%d %s), rep. cols: %d %s (%d %s), tot. colgap: %d %s]."),
+      guess - start + 1,   
+      lines + rep_ext + sectlines,
       spacetype,
-      guess - start + 1, # because it includes both start and guess
-      structtype_abr
+      lpp,
+      lines,
+      spacetype_abr,
+      raw_ncol,
+      structtype_abr,
+      rep_ext,
+      spacetype_abr,
+      n_reprint,
+      structtype_abr,
+      sectlines,
+      spacetype
     )
   }
 }
@@ -273,7 +287,7 @@ valid_pag <- function(pagdf,
     ncols <- guess - start + 1 + length(pagdf$reprint_inds[[start]]) ## +1 because its incluive, 5-6 is 2 columns
     sectlines <- col_gap * (ncols - as.integer(!has_rowlabels)) ## -1 if no row labels
   }
-  lines <- rowlines + sectlines # guess - start + 1 because inclusive of start
+  lines <- rowlines + sectlines
   rep_ext <- pagdf$par_extent[start]
   if (lines > rlpp) {
     if (verbose) {
