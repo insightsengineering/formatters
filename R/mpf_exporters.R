@@ -605,8 +605,9 @@ export_as_pdf <- function(x,
   }
 
   newdev <- open_font_dev(fontspec, silent = TRUE) ## cause we know there's another dev open...
-  if (newdev)
+  if (newdev) {
     on.exit(close_font_dev(), add = TRUE)
+  }
 
   if (paginate) {
     tbls <- paginate_to_mpfs(
@@ -647,7 +648,7 @@ export_as_pdf <- function(x,
   tbl_txts <- lapply(tbls, function(tbli) {
     toString(
       tbli,
-      widths =  tbli$col_widths + 1,
+      widths = tbli$col_widths + 1,
       hsep = hsep,
       tf_wrap = tf_wrap,
       max_width = max_width,
