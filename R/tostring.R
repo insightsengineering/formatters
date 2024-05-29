@@ -117,7 +117,6 @@ close_font_dev <- function() {
     assign("fontspec", list(), envir = font_dev_state)
     assign("spacewidth", NA_real_, envir = font_dev_state)
     assign("ismonospace", NA, envir = font_dev_state)
-    #    assign("maxratio", NA_real_, envir = font_dev_state)
     assign("dev_num", NA_integer_, envir = font_dev_state)
   }
   invisible(NULL)
