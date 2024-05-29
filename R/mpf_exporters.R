@@ -57,7 +57,9 @@ export_as_txt <- function(x,
                           rep_cols = NULL,
                           verbose = FALSE,
                           page_break = "\\s\\n",
-                          page_num = default_page_number()) {
+                          page_num = default_page_number(),
+                          fontspec = font_spec(font_family, font_size, lineheight),
+                          col_gap = 3) {
   # Processing lists of tables or listings
   if (.is_list_of_tables_or_listings(x)) {
     if (isFALSE(paginate)) {
@@ -73,9 +75,9 @@ export_as_txt <- function(x,
     pages <- paginate_to_mpfs(
       x,
       page_type = page_type,
-      font_family = font_family,
-      font_size = font_size,
-      lineheight = lineheight,
+      ## font_family = font_family,
+      ## font_size = font_size,
+      ## lineheight = lineheight,
       landscape = landscape,
       pg_width = pg_width,
       pg_height = pg_height,
@@ -90,11 +92,13 @@ export_as_txt <- function(x,
       indent_size = indent_size,
       verbose = verbose,
       rep_cols = rep_cols,
-      page_num = page_num
+      page_num = page_num,
+      fontspec = fontspec,
+      col_gap = col_gap
     )
   } else {
-    mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size)
-    mf_col_widths(mf) <- colwidths %||% propose_column_widths(mf)
+    mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec, col_gap = col_gap)
+    mf_col_widths(mf) <- colwidths %||% propose_column_widths(mf, fontspec = fontspec)
     pages <- list(mf)
   }
 
@@ -112,7 +116,7 @@ export_as_txt <- function(x,
   strings <- vapply(
     pages, toString, "",
     widths = NULL,
-    hsep = hsep, tf_wrap = tf_wrap, max_width = max_width
+    hsep = hsep, tf_wrap = tf_wrap, max_width = max_width, col_gap = col_gap
   )
 
   res <- paste(strings, collapse = page_break)
@@ -172,11 +176,11 @@ prep_header_line <- function(mf, i) {
 ##   )
 ## }
 
-mpf_to_dfbody <- function(mpf, colwidths) {
-  mf <- matrix_form(mpf, indent_rownames = TRUE)
+mpf_to_dfbody <- function(mpf, colwidths, fontspec) {
+  mf <- matrix_form(mpf, indent_rownames = TRUE, fontspec = fontspec)
   nlr <- mf_nlheader(mf)
   if (is.null(colwidths)) {
-    colwidths <- propose_column_widths(mf)
+    colwidths <- propose_column_widths(mf, fontspec = fontspec)
   }
   mf$strings[1:nlr, 1] <- ifelse(nzchar(mf$strings[1:nlr, 1, drop = TRUE]),
     mf$strings[1:nlr, 1, drop = TRUE],
@@ -214,22 +218,28 @@ mpf_to_rtf <- function(mpf,
                        pg_height = page_dim(page_type)[if (landscape) 1 else 2],
                        landscape = FALSE,
                        margins = c(4, 4, 4, 4),
+                       font_family = "Courier",
                        font_size = 8,
+                       lineheight = 1,
+                       fontspec = font_spec(font_family, font_size, lineheight),
                        ...) {
   if (!requireNamespace("r2rtf")) {
     stop("RTF export requires the 'r2rtf' package, please install it.")
   }
-  mpf <- matrix_form(mpf, indent_rownames = TRUE)
+  if (fontspec$family != "Courier") {
+    stop("Experimental RTF export does not currently support fonts other than Courier")
+  }
+  mpf <- matrix_form(mpf, indent_rownames = TRUE, fontspec = fontspec)
   nlr <- mf_nlheader(mpf)
   if (is.null(colwidths)) {
-    colwidths <- propose_column_widths(mpf)
+    colwidths <- propose_column_widths(mpf, fontspec = fontspec)
   }
   mpf$strings[1:nlr, 1] <- ifelse(nzchar(mpf$strings[1:nlr, 1, drop = TRUE]),
     mpf$strings[1:nlr, 1, drop = TRUE],
     strrep(" ", colwidths)
   )
 
-  myfakedf <- mpf_to_dfbody(mpf, colwidths)
+  myfakedf <- mpf_to_dfbody(mpf, colwidths, fontspec = fontspec)
 
   rtfpg <- r2rtf::rtf_page(myfakedf,
     width = pg_width,
@@ -388,14 +398,17 @@ mpf_to_rtf <- function(mpf,
 #' @export
 export_as_rtf <- function(x,
                           file = NULL,
+                          # colwidths = propose_column_widths(matrix_form(x, TRUE, fontspec = fontspec), fontspec = fontspec), # nolint
                           colwidths = NULL,
                           page_type = "letter",
                           pg_width = page_dim(page_type)[if (landscape) 2 else 1],
                           pg_height = page_dim(page_type)[if (landscape) 1 else 2],
                           landscape = FALSE,
                           margins = c(bottom = .5, left = .75, top = .5, right = .75),
-                          font_size = 8,
                           font_family = "Courier",
+                          font_size = 8,
+                          lineheight = 1,
+                          fontspec = font_spec(font_family, font_size, lineheight),
                           ...) {
   # Processing lists of tables or listings
   if (.is_list_of_tables_or_listings(x)) {
@@ -411,16 +424,30 @@ export_as_rtf <- function(x,
   if (!requireNamespace("r2rtf")) {
     stop("RTF export requires the r2rtf package, please install it.")
   }
+  if (fontspec$family != "Courier") {
+    stop("Experimental RTF export does not currently support fonts other than Courier")
+  }
+
   if (is.null(names(margins))) {
     names(margins) <- marg_order
   }
+
+  # NEEDS TO BE INTO paginate_to_mpfs so to have this check once for all paginations
+  # fullmf <- matrix_form(x, indent_rownames = TRUE, fontspec = fontspec)
+  # req_ncols <- ncol(fullmf) + as.numeric(mf_has_rlabels(fullmf))
+  # if (!is.null(colwidths) && length(colwidths) != req_ncols) {
+  #   stop(
+  #     "non-null colwidths argument must have length ncol(x) (+ 1 if row labels are present) [",
+  #     req_ncols, "], got length ", length(colwidths)
+  #   )
+  # }
 
   true_width <- pg_width - sum(margins[c("left", "right")])
   true_height <- pg_height - sum(margins[c("top", "bottom")])
 
   mpfs <- paginate_to_mpfs(
     x,
-    font_family = font_family, font_size = font_size,
+    fontspec = fontspec,
     pg_width = true_width,
     pg_height = true_height,
     margins = c(bottom = 0, left = 0, top = 0, right = 0),
@@ -435,7 +462,7 @@ export_as_rtf <- function(x,
       page_type = page_type,
       pg_width = pg_width,
       pg_height = pg_height,
-      font_size = font_size,
+      font_size = fontspec$size,
       margins = c(top = 0, left = 0, bottom = 0, right = 0)
     ))
   })
@@ -462,6 +489,7 @@ export_as_rtf <- function(x,
 #' The PDF output from this function is based on the ASCII output created with [toString()].
 #'
 #' @inheritParams export_as_txt
+#' @inheritParams toString
 #' @param file (`string`)\cr file to write to, must have `.pdf` extension.
 #' @param width `r lifecycle::badge("deprecated")` Please use the `pg_width` argument or specify
 #'   `page_type` instead.
@@ -510,7 +538,8 @@ export_as_pdf <- function(x,
                           min_siblings = 2,
                           font_family = "Courier",
                           font_size = 8,
-                          fontsize = lifecycle::deprecated(),
+                          fontsize = font_size,
+                          lineheight = 1.2, ## XXX this matches legacy behavior but differs from default everywhere else
                           paginate = TRUE,
                           page_num = default_page_number(),
                           lpp = NULL,
@@ -520,7 +549,16 @@ export_as_pdf <- function(x,
                           rep_cols = NULL,
                           tf_wrap = TRUE,
                           max_width = NULL,
-                          colwidths = NULL) {
+                          colwidths = NULL,
+                          fontspec = font_spec(font_family, font_size, lineheight),
+                          # colwidths = propose_column_widths(x, indent_size = indent_size, fontspec = fontspec),
+                          ttype_ok = FALSE) {
+  ## this has to happen at the very beginning before the first use of fontspec
+  ## which happens in the default value of colwidths. yay lazy evaluation...
+  if (missing(font_size) && !missing(fontsize)) {
+    font_size <- fontsize
+  }
+
   stopifnot(tools::file_ext(file) != ".pdf")
 
   # Processing lists of tables or listings
@@ -534,6 +572,8 @@ export_as_pdf <- function(x,
     paginate <- TRUE
   }
 
+  gp_plot <- gpar_from_fspec(fontspec)
+
   if (lifecycle::is_present(width)) {
     lifecycle::deprecate_warn("0.5.5", "export_as_pdf(width)", "export_as_pdf(pg_width)")
     pg_width <- width
@@ -542,38 +582,37 @@ export_as_pdf <- function(x,
     lifecycle::deprecate_warn("0.5.5", "export_as_pdf(height)", "export_as_pdf(pg_height)")
     pg_height <- height
   }
-  if (lifecycle::is_present(fontsize)) {
-    lifecycle::deprecate_warn("0.5.5", "export_as_pdf(fontsize)", "export_as_pdf(font_size)")
-    font_size <- fontsize
-  }
 
   gp_plot <- grid::gpar(fontsize = font_size, fontfamily = font_family)
 
   pdf(file = file, width = pg_width, height = pg_height)
-  on.exit(dev.off())
+  out_dev_num <- dev.cur()
+  on.exit(dev.off(out_dev_num), add = TRUE)
   grid::grid.newpage()
   grid::pushViewport(grid::plotViewport(margins = margins, gp = gp_plot))
 
   cur_gpar <- grid::get.gpar()
   if (is.null(lpp)) {
     lpp <- floor(grid::convertHeight(grid::unit(1, "npc"), "lines", valueOnly = TRUE) /
-      (cur_gpar$cex * cur_gpar$lineheight)) - sum(margins[c(1, 3)]) # bottom, top # nolint
+      (cur_gpar$cex * cur_gpar$lineheight)) ## - sum(margins[c(1, 3)]) # bottom, top # nolint
   }
   if (is.null(cpp)) {
     cpp <- floor(grid::convertWidth(grid::unit(1, "npc"), "inches", valueOnly = TRUE) *
-      font_lcpi(font_family, font_size, cur_gpar$lineheight)$cpi) - sum(margins[c(2, 4)]) # left, right # nolint
+      font_lcpi(fontspec$family, fontspec$size, cur_gpar$lineheight)$cpi) - sum(margins[c(2, 4)]) # left, right # nolint
   }
   if (tf_wrap && is.null(max_width)) {
     max_width <- cpp
   }
 
+  newdev <- open_font_dev(fontspec, silent = TRUE) ## cause we know there's another dev open...
+  if (newdev)
+    on.exit(close_font_dev(), add = TRUE)
+
   if (paginate) {
     tbls <- paginate_to_mpfs(
       x,
       page_type = page_type,
-      font_family = font_family,
-      font_size = font_size,
-      lineheight = cur_gpar$lineheight,
+      fontspec = fontspec,
       landscape = landscape,
       pg_width = pg_width,
       pg_height = pg_height,
@@ -591,8 +630,8 @@ export_as_pdf <- function(x,
       page_num = page_num
     )
   } else {
-    mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size)
-    mf_col_widths(mf) <- colwidths %||% propose_column_widths(mf)
+    mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec)
+    mf_col_widths(mf) <- colwidths %||% propose_column_widths(mf, fontspec = fontspec)
     tbls <- list(mf)
   }
 
@@ -605,12 +644,23 @@ export_as_pdf <- function(x,
     )
   }
 
-  gtbls <- lapply(tbls, function(txt) {
+  tbl_txts <- lapply(tbls, function(tbli) {
+    toString(
+      tbli,
+      widths =  tbli$col_widths + 1,
+      hsep = hsep,
+      tf_wrap = tf_wrap,
+      max_width = max_width,
+      fontspec = fontspec,
+      ttype_ok = ttype_ok
+    )
+  })
+
+  ## switch back to our output pdf device
+  dev.set(out_dev_num)
+  gtbls <- lapply(tbl_txts, function(txt) {
     grid::textGrob(
-      label = toString(txt,
-        widths = txt$col_widths + 1, hsep = hsep,
-        tf_wrap = tf_wrap, max_width = max_width
-      ),
+      txt,
       x = grid::unit(0, "npc"), y = grid::unit(1, "npc"),
       just = c("left", "top")
     )

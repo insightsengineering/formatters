@@ -9,6 +9,7 @@
 #' This function works **only** on `rtables` and `rlistings` objects, and not on their `print` counterparts
 #' (like [`MatrixPrintForm`]).
 #'
+#' @inheritParams open_font_dev
 #' @param tt (`ANY`)\cr object representing the table-like object to be summarized.
 #' @param visible_only (`flag`)\cr should only visible aspects of the table structure be reflected
 #'   in this summary. Defaults to `TRUE`. May not be supported by all methods.
@@ -22,6 +23,8 @@
 #' @param colwidths (`numeric`)\cr internal detail, do not set manually.
 #' @param path (`character`)\cr path to the (sub)table represented by `tt`. Defaults to `character()`.
 #' @param max_width (`numeric(1)` or `NULL`)\cr maximum width for title/footer materials.
+#' @param col_gap (`numeric(1)`)\cr the gap to be assumed between columns, in number of spaces with
+#'   font specified by `fontspec`.
 #'
 #' @import methods
 #' @include matrix_form.R
@@ -61,7 +64,9 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
                                    repr_inds = integer(),
                                    sibpos = NA_integer_,
                                    nsibs = NA_integer_,
-                                   max_width = NULL) {
+                                   max_width = NULL,
+                                   fontspec = font_spec(),
+                                   col_gap = 3L) {
   standardGeneric("make_row_df")
 })
 
@@ -75,7 +80,9 @@ setMethod("make_row_df", "MatrixPrintForm", function(tt, colwidths = NULL, visib
                                                      repr_inds = integer(),
                                                      sibpos = NA_integer_,
                                                      nsibs = NA_integer_,
-                                                     max_width = NULL) {
+                                                     max_width = NULL,
+                                                     fontspec = font_spec(),
+                                                     col_gap = mf_colgap(tt) %||% 3L) {
   msg <- paste0(
     "make_row_df can be used only on {rtables} table objects, and not on `matrix_form`-",
     "generated objects (MatrixPrintForm)."
@@ -88,6 +95,7 @@ setMethod("make_row_df", "MatrixPrintForm", function(tt, colwidths = NULL, visib
 #' Although `rtable`s are represented as a tree data structure when outputting the table to ASCII or HTML,
 #' it is useful to map the `rtable` to an in-between state with the formatted cells in a matrix form.
 #'
+#' @inheritParams make_row_df
 #' @param obj (`ANY`)\cr object to be transformed into a ready-to-render form (a [`MatrixPrintForm`] object).
 #' @param indent_rownames (`flag`)\cr if `TRUE`, the row names column in the `strings` matrix of `obj`
 #'   will have indented row names (strings pre-fixed).
@@ -112,7 +120,9 @@ setMethod("make_row_df", "MatrixPrintForm", function(tt, colwidths = NULL, visib
 setGeneric("matrix_form", function(obj,
                                    indent_rownames = FALSE,
                                    expand_newlines = TRUE,
-                                   indent_size = 2) {
+                                   indent_size = 2,
+                                   fontspec = NULL,
+                                   col_gap = NULL) {
   standardGeneric("matrix_form")
 })
 
@@ -122,7 +132,15 @@ setGeneric("matrix_form", function(obj,
 setMethod("matrix_form", "MatrixPrintForm", function(obj,
                                                      indent_rownames = FALSE,
                                                      expand_newlines = TRUE,
-                                                     indent_size = 2) {
+                                                     indent_size = 2,
+                                                     fontspec = NULL,
+                                                     col_gap = NULL) {
+  if (!is.null(fontspec)) {
+    mf_fontspec(obj) <- fontspec
+  }
+  if (!is.null(col_gap) && !isTRUE(all.equal(col_gap, mf_colgap(obj)))) {
+    mf_colgap(obj) <- col_gap
+  }
   obj
 })
 
@@ -159,17 +177,22 @@ setMethod(
 
 #' Number of lines required to print a value
 #'
+#' @inheritParams open_font_dev
 #' @param x (`ANY`)\cr the object to be printed.
 #' @param colwidths (`numeric`)\cr column widths (if necessary).
 #' @param max_width (`numeric(1)`)\cr width that strings should be wrapped to when
 #'   determining how many lines they require.
+#' @param col_gap (`numeric(1)`)\cr width of gap between columns in number of spaces.
+#'   Only used by methods which must calculate span widths after wrapping.
 #'
 #' @return The number of lines needed to render the object `x`.
 #'
 #' @export
 setGeneric(
   "nlines",
-  function(x, colwidths = NULL, max_width = NULL) standardGeneric("nlines")
+  ## XXX TODO come back and add fontspec default value once not having
+  ## it has found all the disconnection breakages
+  function(x, colwidths = NULL, max_width = NULL, fontspec, col_gap = NULL) standardGeneric("nlines")
 )
 
 ## XXX beware. I think it is dangerous
@@ -177,34 +200,37 @@ setGeneric(
 #' @rdname nlines
 setMethod(
   "nlines", "list",
-  function(x, colwidths, max_width) {
+  function(x, colwidths, max_width, fontspec, col_gap = NULL) {
     if (length(x) == 0) {
       0L
     } else {
-      sum(unlist(vapply(x, nlines, NA_integer_, colwidths = colwidths, max_width = max_width)))
+      sum(unlist(vapply(x, nlines, NA_integer_, colwidths = colwidths, max_width = max_width, fontspec = fontspec)))
     }
   }
 )
 
 #' @export
 #' @rdname nlines
-setMethod("nlines", "NULL", function(x, colwidths, max_width) 0L)
+setMethod("nlines", "NULL", function(x, colwidths, max_width, fontspec, col_gap = NULL) 0L)
 
 #' @export
 #' @rdname nlines
-setMethod("nlines", "character", function(x, colwidths, max_width) {
+setMethod("nlines", "character", function(x, colwidths, max_width, fontspec, col_gap = NULL) {
+  splstr <- strsplit(x, "\n", fixed = TRUE)
   if (length(x) == 0) {
     return(0L)
-  }
+  } ## else if(is.null(colwidths) && is.null(max_width)) { ## don't need wrapping
+  ##   return(length(splstr))
+  ## }
 
-  sum(vapply(strsplit(x, "\n", fixed = TRUE),
+  sum(vapply(splstr,
     function(xi, max_width) {
       if (length(xi) == 0) {
         1L
       } else if (length(max_width) == 0) { ## this happens with strsplit("", "\n")
         length(xi)
       } else {
-        length(wrap_txt(xi, max_width))
+        length(wrap_txt(xi, max_width, fontspec = fontspec))
       }
     }, 1L,
     max_width = max_width
@@ -649,6 +675,26 @@ setMethod("num_rep_cols", "MatrixPrintForm", function(obj) {
   } else {
     return(0L) # same as ANY for non-listing objects
   }
+})
+
+#' @export
+#' @rdname num_rep_cols
+setMethod("num_rep_cols", "MatrixPrintForm", function(obj) obj$num_rep_cols)
+
+#' @export
+#' @param value numeric(1). The new number of columns to repeat.
+#' @rdname num_rep_cols
+setGeneric("num_rep_cols<-", function(obj, value) standardGeneric("num_rep_cols<-"))
+
+#' @export
+#' @rdname num_rep_cols
+setMethod("num_rep_cols<-", "ANY", function(obj, value) stop("No num_rep_cols<- method for class ", class(obj)))
+
+#' @export
+#' @rdname num_rep_cols
+setMethod("num_rep_cols<-", "MatrixPrintForm", function(obj, value) {
+  obj <- mf_update_cinfo(obj, colwidths = NULL, rep_cols = value)
+  obj
 })
 
 # header_section_div -----------------------------------------------------------

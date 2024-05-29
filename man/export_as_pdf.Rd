@@ -17,7 +17,8 @@ export_as_pdf(
   min_siblings = 2,
   font_family = "Courier",
   font_size = 8,
-  fontsize = lifecycle::deprecated(),
+  fontsize = font_size,
+  lineheight = 1.2,
   paginate = TRUE,
   page_num = default_page_number(),
   lpp = NULL,
@@ -27,7 +28,9 @@ export_as_pdf(
   rep_cols = NULL,
   tf_wrap = TRUE,
   max_width = NULL,
-  colwidths = NULL
+  colwidths = NULL,
+  fontspec = font_spec(font_family, font_size, lineheight),
+  ttype_ok = FALSE
 )
 }
 \arguments{
@@ -65,6 +68,8 @@ if the family named is not monospaced. Defaults to \code{"Courier"}.}
 
 \item{fontsize}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{font_size} argument instead.}
 
+\item{lineheight}{(\code{numeric(1)})\cr line height. Defaults to \code{1}.}
+
 \item{paginate}{(\code{flag})\cr whether pagination should be performed. Defaults to \code{TRUE}
 if page size is specified (including the default).}
 
@@ -95,6 +100,13 @@ session (\code{getOption("width")}). If set to \code{"auto"}, the width of the t
 used. Parameter is ignored if \code{tf_wrap = FALSE}.}
 
 \item{colwidths}{(\code{numeric})\cr vector of column widths (in characters) for use in vertical pagination.}
+
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
+
+\item{ttype_ok}{(\code{logical(1)})\cr should truetype (non-monospace) fonts be
+allowed via \code{fontspec}. Defaults to \code{FALSE}. This parameter is primarily
+for internal testing and generally should not be set by end users.}
 }
 \description{
 The PDF output from this function is based on the ASCII output created with \code{\link[=toString]{toString()}}.

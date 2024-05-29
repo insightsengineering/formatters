@@ -13,7 +13,9 @@ toString(x, ...)
   tf_wrap = FALSE,
   max_width = NULL,
   col_gap = mf_colgap(x),
-  hsep = NULL
+  hsep = NULL,
+  fontspec = font_spec(),
+  ttype_ok = FALSE
 )
 }
 \arguments{
@@ -37,6 +39,13 @@ used. Parameter is ignored if \code{tf_wrap = FALSE}.}
 \item{hsep}{(\code{string})\cr character to repeat to create header/body separator line. If
 \code{NULL}, the object value will be used. If \code{" "}, an empty separator will be printed. See
 \code{\link[=default_hsep]{default_hsep()}} for more information.}
+
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
+
+\item{ttype_ok}{(\code{logical(1)})\cr should truetype (non-monospace) fonts be
+allowed via \code{fontspec}. Defaults to \code{FALSE}. This parameter is primarily
+for internal testing and generally should not be set by end users.}
 }
 \value{
 A character string containing the ASCII rendering of the table-like object represented by \code{x}.

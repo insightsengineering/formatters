@@ -1,3 +1,244 @@
+## state completely sucks and I hate it, but
+## we need a pdf device open to calculate the
+## print width of strings, and we can't be opening
+## a new one every time we want to
+font_dev_state <- new.env()
+font_dev_state$open <- FALSE
+font_dev_state$fontspec <- list()
+font_dev_state$spacewidth <- NA_real_
+font_dev_state$ismonospace <- NA
+font_dev_state$max_ratio <- NA_real_
+font_dev_state$dev_num <- NA_integer_
+
+
+cwidth_inches_unsafe <- function(x) {
+  convertWidth(unit(1, "strwidth", x), "inches", valueOnly = TRUE)
+}
+
+## returns whether it opened a new device or not
+#' Activate font state
+#'
+#' @param fontspec (`font_spec`)\cr a font_spec object specifying the font information to use for
+#'   calculating string widths and heights, as returned by [font_spec()].
+#' @param silent (`logical(1)`)\cr If `FALSE`, the default, a warning will be
+#'   emitted if this function switches away from an active graphics device.
+#'
+#' @details The font device state is an environment with
+#' four variables guaranteed to be set:
+#'
+#' \describe{
+#'   \item{`open`}{(`logical(1)`)\cr whether a device is already open with font info}
+#'   \item{`fontspec`}{(`font_spec`)\cr the font specification, if any, that is currently active (`list()` if none is).}
+#'   \item{`spacewidth`}{(`numeric(1)`)\cr the width of the space character in the currently active font.}
+#'   \item{`ismonospace`}{(`logical(1)`)\cr whether the specified font is monospaced.}
+#' }
+#'
+#' `open_font_dev` opens a pdf device with the specified font
+#' only if there is not one currently open with the same font.
+#' If a new device is opened, it caches `spacewidth` and
+#' `ismonospace` for use in `nchar_ttype`).
+#'
+#' `close_font_dev` closes any open font state device
+#' and clears the cached values.
+#'
+#' @return
+#' - `open_font_dev` returns a logical value indicating whether a *new* pdf device was opened.
+#' - `close_font_dev` returns `NULL`.
+#'
+#' In both cases the value is returned invisibly.
+#'
+#' @examples
+#' open_font_dev(font_spec("Times"))
+#' nchar_ttype("Hiya there", font_spec("Times"))
+#' close_font_dev()
+#'
+#' @export
+open_font_dev <- function(fontspec, silent = FALSE) {
+  if (is.null(fontspec)) {
+    return(invisible(FALSE))
+  } else if (font_dev_state$open) {
+    if (identical(font_dev_state$fontspec, fontspec)) {
+      if (!silent && dev.cur() != font_dev_state$dev_num) {
+        warning(
+          "formatters is switching to the font state graphics device ",
+          "to perform string width calculations. You may need to switch ",
+          "to your currently open graphics device, depending on whether ",
+          "the font device is closed and what other devices you have open."
+        )
+        dev.set(font_dev_state$dev_num)
+      }
+      return(invisible(FALSE))
+    } else {
+      close_font_dev()
+    }
+  } else if (FALSE && !font_dev_state$open) { ## remove 'FALSE &&' to get debugging info to helplocate places which aren't receiving/using the state properly # nolint
+    # start nocov
+    ## dump the call stack any time we have cache misses
+    ## and have to open a completely new font state device
+    scalls <- sys.calls()
+    msg <- sapply(
+      scalls[2:length(scalls)],
+      function(sci) {
+        toret <- deparse(sci[[1]], nlines = 3)
+        if (substr(toret[1], 1, 8) == "function") {
+          toret <- "anon function"
+        }
+        toret
+      }
+    )
+    cat("\n***** START font dev debugging dump *****\n")
+    cat(paste(msg, collapse = " -> "), "\n")
+    print(fontspec)
+  } #end nocov
+  tmppdf <- tempfile(fileext = ".pdf")
+  pdf(tmppdf)
+  grid.newpage()
+  gp <- gpar_from_fspec(fontspec)
+  pushViewport(plotViewport(gp = gp))
+  spcwidth <- cwidth_inches_unsafe(" ")
+  ## ## XXX this assumes M or W is the widest "reasonable char"
+  ## ## should be true for any reasonable font but not guaranteed!!!
+  ## mwidth <- cwidth_inches_unsafe("M")
+  ## wwidth <- cwidth_inches_unsafe("W")
+  assign("open", TRUE, envir = font_dev_state)
+  assign("fontspec", fontspec, envir = font_dev_state)
+  assign("spacewidth", spcwidth, envir = font_dev_state)
+  assign("ismonospace", spcwidth == cwidth_inches_unsafe("W"),
+    envir = font_dev_state
+  )
+  ## assign("maxratio", max(mwidth, wwidth) / spcwidth,
+  ##   envir = font_dev_state
+  ## )
+  assign("dev_num", dev.cur(),
+    envir = font_dev_state
+  )
+  invisible(TRUE)
+}
+
+#' @rdname open_font_dev
+#' @export
+close_font_dev <- function() {
+  if (font_dev_state$open) {
+    dev.off(font_dev_state$dev_num)
+    assign("open", FALSE, envir = font_dev_state)
+    assign("fontspec", list(), envir = font_dev_state)
+    assign("spacewidth", NA_real_, envir = font_dev_state)
+    assign("ismonospace", NA, envir = font_dev_state)
+#    assign("maxratio", NA_real_, envir = font_dev_state)
+    assign("dev_num", NA_integer_, envir = font_dev_state)
+  }
+  invisible(NULL)
+}
+
+## can only be called when font_dev_state$open is TRUE
+get_space_width <- function() {
+  if (!font_dev_state$open) {
+    stop(
+      "get_space_width called when font dev state is not open. ",
+      "This shouldn't happen, please contact the maintainers."
+    )
+  }
+  font_dev_state$spacewidth
+}
+
+.open_fdev_is_monospace <- function() {
+  if (!font_dev_state$open) {
+    stop(
+      ".open_fdev_is_monospace called when font dev state is not open. ",
+      "This shouldn't happen, please contact the maintainers."
+    )
+  }
+  font_dev_state$ismonospace
+}
+
+## safe wrapper around .open_fdev_is_monospace
+is_monospace <- function(fontspec = font_spec(font_family, font_size, lineheight),
+                         font_family = "Courier",
+                         font_size = 8,
+                         lineheight = 1) {
+  if (is.null(fontspec)) {
+    return(TRUE)
+  }
+  new_dev <- open_font_dev(fontspec)
+  if (new_dev) {
+    on.exit(close_font_dev())
+  }
+  .open_fdev_is_monospace()
+}
+
+## get_max_wratio <- function() {
+##   if (!font_dev_state$open) {
+##     stop(
+##       "get_space_width called when font dev state is not open. ",
+##       "This shouldn't happen, please contact the maintainers."
+##     )
+##   }
+##   if (.open_fdev_is_monospace()) {
+##     1
+##   } else {
+##     font_dev_state$maxratio
+##   }
+## }
+
+gpar_from_fspec <- function(fontspec) {
+  gpar(
+    fontfamily = fontspec$family,
+    fontsize = fontspec$size,
+    lineheight = fontspec$lineheight
+  )
+}
+
+font_dev_is_open <- function() font_dev_state$open
+
+#' Default horizontal separator
+#'
+#' The default horizontal separator character which can be displayed in the current
+#' charset for use in rendering table-like objects.
+#'
+#' @param hsep_char (`string`)\cr character that will be set in the R environment
+#'   options as the default horizontal separator. Must be a single character. Use
+#'   `getOption("formatters_default_hsep")` to get its current value (`NULL` if not set).
+#'
+#' @return unicode 2014 (long dash for generating solid horizontal line) if in a
+#'   locale that uses a UTF character set, otherwise an ASCII hyphen with a
+#'   once-per-session warning.
+#'
+#' @examples
+#' default_hsep()
+#' set_default_hsep("o")
+#' default_hsep()
+#'
+#' @name default_horizontal_sep
+#' @export
+default_hsep <- function() {
+  system_default_hsep <- getOption("formatters_default_hsep")
+
+  if (is.null(system_default_hsep)) {
+    if (any(grepl("^UTF", utils::localeToCharset()))) {
+      hsep <- "\u2014"
+    } else {
+      if (interactive()) {
+        warning(
+          "Detected non-UTF charset. Falling back to '-' ",
+          "as default header/body separator. This warning ",
+          "will only be shown once per R session."
+        ) # nocov
+      } # nocov
+      hsep <- "-" # nocov
+    }
+  } else {
+    hsep <- system_default_hsep
+  }
+  hsep
+}
+
+#' @name default_horizontal_sep
+#' @export
+set_default_hsep <- function(hsep_char) {
+  checkmate::assert_character(hsep_char, n.chars = 1, len = 1, null.ok = TRUE)
+  options("formatters_default_hsep" = hsep_char)
+}
+
 .calc_cell_widths <- function(mat, colwidths, col_gap) {
   spans <- mat$spans
   keep_mat <- mat$display
@@ -27,9 +268,9 @@
 }
 
 # Main function that does the wrapping
-do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
+do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap, fontspec, expand_newlines = TRUE) {
   col_gap <- mf_colgap(mat)
-  ncchar <- sum(widths) + (length(widths) - 1) * col_gap
+  ncchar <- sum(widths) + (length(widths) - as.integer(mf_has_rlabels(mat))) * col_gap
   inset <- table_inset(mat)
 
   ## Text wrapping checks
@@ -59,22 +300,25 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap) {
     unlist(mapply(wrap_string,
       str = mfs,
       width = cell_widths_mat,
-      collapse = "\n"
+      collapse = "\n",
+      MoreArgs = list(fontspec = fontspec)
     )),
     ncol = ncol(mfs)
   )
 
-  ## XXXXX this is wrong and will break for listings cause we don't know when
-  ## we need has_topleft to be FALSE!!!!!!!!!!
-  mat <- mform_handle_newlines(mat)
+  if (expand_newlines) {
+    ## XXXXX this is wrong and will break for listings cause we don't know when
+    ## we need has_topleft to be FALSE!!!!!!!!!!
+    mat <- mform_handle_newlines(mat)
 
-  ## this updates extents in rinfo AND nlines in ref_fnotes_df
-  mat <- update_mf_nlines(mat, max_width = max_width)
+    ## this updates extents in rinfo AND nlines in ref_fnotes_df
+    ## mat already has fontspec on it so no need to pass that down
+    mat <- update_mf_nlines(mat, max_width = max_width)
 
-  # Re-indenting
-  mf_strings(mat) <- .modify_indentation(mat, cell_widths_mat, do_what = "add")[["mfs"]]
-  .check_indentation(mat) # all went well
-
+    # Re-indenting
+    mf_strings(mat) <- .modify_indentation(mat, cell_widths_mat, do_what = "add")[["mfs"]]
+    .check_indentation(mat) # all went well
+  }
   mat
 }
 
@@ -328,8 +572,14 @@ decimal_align <- function(string_mat, align_mat) {
   string_mat
 }
 
-## toString ---------------------------------------------------------------------
-## main printing method for MatrixPrintForm
+## this gives the conversion from number of spaces to number of characters
+## for use in, e.g., repping out divider lines.
+calc_str_adj <- function(str, fontspec) {
+  nchar(str) / nchar_ttype(str, fontspec, raw = TRUE)
+}
+
+# toString ---------------------------------------------------------------------
+# main printing code for MatrixPrintForm
 
 #' @description
 #' All objects that are printed to console pass via `toString`. This function allows
@@ -338,6 +588,7 @@ decimal_align <- function(string_mat, align_mat) {
 #' `max_width`), and horizontal separator character (e.g. `hsep = "+"`).
 #'
 #' @inheritParams MatrixPrintForm
+#' @inheritParams open_font_dev
 #' @param widths (`numeric` or  `NULL`)\cr Proposed widths for the columns of `x`. The expected
 #'   length of this numeric vector can be retrieved with `ncol(x) + 1` as the column of row names
 #'   must also be considered.
@@ -349,6 +600,9 @@ decimal_align <- function(string_mat, align_mat) {
 #'   footnotes) materials should be word-wrapped to. If `NULL`, it is set to the current print width of the
 #'   session (`getOption("width")`). If set to `"auto"`, the width of the table (plus any table inset) is
 #'   used. Parameter is ignored if `tf_wrap = FALSE`.
+#' @param ttype_ok (`logical(1)`)\cr should truetype (non-monospace) fonts be
+#'   allowed via `fontspec`. Defaults to `FALSE`. This parameter is primarily
+#'   for internal testing and generally should not be set by end users.
 #'
 #' @details
 #' Manual insertion of newlines is not supported when `tf_wrap = TRUE` and will result in a warning and
@@ -370,10 +624,25 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   tf_wrap = FALSE,
                                                   max_width = NULL,
                                                   col_gap = mf_colgap(x),
-                                                  hsep = NULL) {
+                                                  hsep = NULL,
+                                                  fontspec = font_spec(),
+                                                  ttype_ok = FALSE) {
   checkmate::assert_flag(tf_wrap)
 
-  mat <- matrix_form(x, indent_rownames = TRUE)
+  ## we are going to use the pdf device and grid to understand the actual
+  ## print width of things given our font family and font size
+  new_dev <- open_font_dev(fontspec)
+  if (new_dev) {
+    on.exit(close_font_dev())
+  }
+
+  if (!is_monospace(fontspec = fontspec) && !ttype_ok) {
+    stop(
+      "non-monospace font specified in toString call; this would result in cells contents not lining up exactly. ",
+      "If you truly want this behavior please set ttype_ok = TRUE in the call to toString/export_as_txt/export_as_pdf"
+    )
+  }
+  mat <- matrix_form(x, indent_rownames = TRUE, fontspec = fontspec)
 
   # Check for \n in mat strings -> if there are any, matrix_form did not work
   if (any(grepl("\n", mf_strings(mat)))) {
@@ -407,7 +676,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
   # if cells are decimal aligned, run propose column widths
   # if the provided widths is less than proposed width, return an error
   if (any_dec_align(mf_aligns(mat))) {
-    aligned <- propose_column_widths(x)
+    aligned <- propose_column_widths(x, fontspec = fontspec)
 
     # catch any columns that require widths more than what is provided
     if (!is.null(widths)) {
@@ -429,12 +698,14 @@ setMethod("toString", "MatrixPrintForm", function(x,
   # Column widths are fixed here
   if (is.null(widths)) {
     # if mf does not have widths -> propose them
-    widths <- mf_col_widths(x) %||% propose_column_widths(x)
+    widths <- mf_col_widths(x) %||% propose_column_widths(x, fontspec = fontspec)
   } else {
     mf_col_widths(x) <- widths
   }
 
-  # Total number of characters for the table
+  ## Total number of characters for the table
+  ## col_gap (and table inset) are in number of spaces
+  ## so we're ok here even in the truetype case
   ncchar <- sum(widths) + (length(widths) - 1) * col_gap
 
   ## max_width for wrapping titles and footers (not related to ncchar if not indirectly)
@@ -447,7 +718,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
   )
 
   # Main wrapper function for table core
-  mat <- do_cell_fnotes_wrap(mat, widths, max_width = max_width, tf_wrap = tf_wrap)
+  mat <- do_cell_fnotes_wrap(mat, widths, max_width = max_width, tf_wrap = tf_wrap, fontspec = fontspec)
 
   body <- mf_strings(mat)
   aligns <- mf_aligns(mat)
@@ -465,7 +736,10 @@ setMethod("toString", "MatrixPrintForm", function(x,
   }
 
   # Content is a matrix of cells with the right amount of spaces
-  content <- matrix(mapply(padstr, body, cell_widths_mat, aligns), ncol = ncol(body))
+  content <- matrix(
+    mapply(padstr, body, cell_widths_mat, aligns, MoreArgs = list(fontspec = fontspec)),
+    ncol = ncol(body)
+  )
   content[!keep_mat] <- NA
 
   # Define gap string and divisor string
@@ -473,10 +747,12 @@ setMethod("toString", "MatrixPrintForm", function(x,
   if (is.null(hsep)) {
     hsep <- horizontal_sep(mat)
   }
-  div <- substr(strrep(hsep, ncchar), 1, ncchar)
+  adj_hsep <- calc_str_adj(hsep, fontspec)
+  div <- substr(strrep(hsep, ceiling(ncchar * adj_hsep)), 1, ceiling(ncchar * adj_hsep))
   hsd <- header_section_div(mat)
   if (!is.na(hsd)) {
-    hsd <- substr(strrep(hsd, ncchar), 1, ncchar)
+    adj_hsd <- calc_str_adj(hsd, fontspec)
+    hsd <- substr(strrep(hsd, ceiling(ncchar * adj_hsd)), 1, ceiling(ncchar * adj_hsd))
   } else {
     hsd <- NULL # no divisor
   }
@@ -517,9 +793,10 @@ setMethod("toString", "MatrixPrintForm", function(x,
         ## this also ensures an extraneous sec div won't be printed if we have non-sec-div
         ## rows after the last sec div row (#77)
         if (sec_end < nrbody) {
+          adj_i <- calc_str_adj(sec_seps_df$trailing_sep[i], fontspec)
           substr(
-            strrep(sec_seps_df$trailing_sep[i], ncchar), 1,
-            ncchar - inset
+            strrep(sec_seps_df$trailing_sep[i], ceiling(ncchar * adj_i)), 1,
+            ceiling((ncchar - inset) * adj_i)
           )
         }
       )
@@ -535,7 +812,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
 
   ref_fnotes <- reorder_ref_fnotes(ref_fnotes)
   # Fix for ref_fnotes with \n characters XXX this does not count in the pagination
-  if (any(grepl("\n", ref_fnotes))) {
+  if (any(grepl("\\n", ref_fnotes))) {
     ref_fnotes <- unlist(strsplit(ref_fnotes, "\n", fixed = TRUE))
   }
 
@@ -549,17 +826,17 @@ setMethod("toString", "MatrixPrintForm", function(x,
   ## Wrapping titles if they go beyond the horizontally allowed space
   if (tf_wrap) {
     new_line_warning(allts)
-    allts <- wrap_txt(allts, max_width)
+    allts <- wrap_txt(allts, max_width, fontspec = fontspec)
   }
   titles_txt <- if (any(nzchar(allts))) c(allts, "", .do_inset(div, inset)) else NULL
 
   # Wrapping footers if they go beyond the horizontally allowed space
   if (tf_wrap) {
     new_line_warning(allfoots)
-    allfoots$main_footer <- wrap_txt(allfoots$main_footer, max_width - inset)
-    allfoots$ref_footnotes <- wrap_txt(allfoots$ref_footnotes, max_width - inset)
+    allfoots$main_footer <- wrap_txt(allfoots$main_footer, max_width - inset, fontspec = fontspec)
+    allfoots$ref_footnotes <- wrap_txt(allfoots$ref_footnotes, max_width - inset, fontspec = fontspec)
     ## no - inset here because the prov_footer is not inset
-    allfoots$prov_footer <- wrap_txt(allfoots$prov_footer, max_width)
+    allfoots$prov_footer <- wrap_txt(allfoots$prov_footer, max_width, fontspec = fontspec)
   }
 
   # Final return
@@ -699,6 +976,7 @@ new_line_warning <- function(str_v) {
 #' If the width is smaller than any large word, these will be truncated after `width` characters. If
 #' the split leaves trailing groups of empty spaces, they will be dropped.
 #'
+#' @inheritParams open_font_dev
 #' @param str (`string`, `character`, or `list`)\cr string to be wrapped. If it is a `vector` or
 #'   a `list`, it will be looped as a `list` and returned with `unlist(use.names = FALSE)`.
 #' @param width (`numeric(1)`)\cr width, in characters, that the text should be wrapped to.
@@ -720,11 +998,11 @@ new_line_warning <- function(str_v) {
 #' wrap_string(str, 5, collapse = "\n")
 #'
 #' @export
-wrap_string <- function(str, width, collapse = NULL) {
+wrap_string <- function(str, width, collapse = NULL, fontspec = font_spec()) {
   if (length(str) > 1) {
     return(
       unlist(
-        lapply(str, wrap_string, width = width, collapse = collapse),
+        lapply(str, wrap_string, width = width, collapse = collapse, fontspec = fontspec),
         use.names = FALSE
       )
     )
@@ -744,19 +1022,23 @@ wrap_string <- function(str, width, collapse = NULL) {
     )
   }
 
+  if (!is_monospace(fontspec)) {
+    return(wrap_string_ttype(str, width, fontspec, collapse = collapse))
+  }
+
   # str can be also a vector or list. In this case simplify manages the output
   ret <- .go_stri_wrap(str, width)
 
   # Check if it went fine
-  if (any(nchar(ret) > width)) {
-    which_exceeded <- which(nchar(ret) > width)
+  if (any(nchar_ttype(ret, fontspec) > width)) {
+    which_exceeded <- which(nchar_ttype(ret, fontspec) > width)
 
     # Recursive for loop to take word interval
     while (length(which_exceeded) > 0) {
       we_i <- which_exceeded[1]
       # Is there space for some part of the next word?
       char_threshold <- width * (2 / 3) + 0.01 # if too little space -> no previous word
-      smart_condition <- nchar(ret[we_i - 1]) + 1 < char_threshold # +1 is for spaces
+      smart_condition <- nchar_ttype(ret[we_i - 1], fontspec) + 1 < char_threshold # +1 is for spaces
       if (we_i - 1 > 0 && smart_condition) {
         we_interval <- unique(c(we_i - 1, we_i))
         we_interval <- we_interval[
@@ -782,15 +1064,15 @@ wrap_string <- function(str, width, collapse = NULL) {
       # Checking if we are stuck in a loop
       ori_wrapped_txt_v <- .go_stri_wrap(str, width)
       cur_wrapped_txt_v <- .go_stri_wrap(ret_collapse, width)
-      broken_char_ori <- sum(nchar(ori_wrapped_txt_v) > width) # how many issues there were
-      broken_char_cur <- sum(nchar(cur_wrapped_txt_v) > width) # how many issues there are
+      broken_char_ori <- sum(nchar_ttype(ori_wrapped_txt_v, fontspec) > width) # how many issues there were
+      broken_char_cur <- sum(nchar_ttype(cur_wrapped_txt_v, fontspec) > width) # how many issues there are
 
       # if still broken, we did not solve the current issue!
       if (setequal(ori_wrapped_txt_v, cur_wrapped_txt_v) || broken_char_cur >= broken_char_ori) {
         # help function: Very rare case where the recursion is stuck in a loop
         ret_tmp <- force_split_words_by(ret[we_interval], width) # here we_interval is only one ind
         ret <- append(ret, ret_tmp, we_interval)[-we_interval]
-        which_exceeded <- which(nchar(ret) > width)
+        which_exceeded <- which(nchar_ttype(ret, fontspec) > width)
       } else {
         return(wrap_string(str = ret_collapse, width = width, collapse = collapse))
       }
@@ -805,12 +1087,154 @@ wrap_string <- function(str, width, collapse = NULL) {
 }
 
 .go_stri_wrap <- function(str, w) {
+  if (w < 1) {
+    return(str)
+  }
   stringi::stri_wrap(str,
     width = w,
     normalize = FALSE, # keeps spaces
     simplify = TRUE, # If FALSE makes it a list with str elements
-    indent = 0
+    indent = 0,
+    use_length = FALSE # incase the defaul changes, use actual char widths
   )
+}
+
+#' @rdname wrap_string_ttype
+#' @export
+split_word_ttype <- function(str, width, fontspec, min_ok_chars) {
+  chrs <- strsplit(str, "")[[1]]
+  nctt_chars <- nchar_ttype(chrs, fontspec, raw = TRUE)
+  ok <- which(cumsum(nctt_chars) <= width)
+  if (length(ok) < min_ok_chars || length(chrs) - length(ok) < min_ok_chars) {
+    list(
+      ok = character(),
+      remainder = str
+    )
+  } else {
+    list(
+      ok = substr(str, 1, length(ok)),
+      remainder = substr(str, length(ok) + 1, nchar(str))
+    )
+  }
+}
+
+## need a separate path here because **the number of characters**
+## in each part is no longer going to be constant the way it
+## was for monospace
+## this is much slower but still shouldn't be a bottleneck, if it is we'll
+## have to do something else
+#' wrap string given a Truetype font
+#'
+#' @inheritParams wrap_string
+#' @param min_ok_chars (`numeric(1)`)\cr number of minimum characters that remain
+#'   on either side when a word is split.
+#' @param wordbreak_ok (`logical(1)`)\cr should breaking within a word be allowed? If, `FALSE`,
+#'   attempts to wrap a string to a width narrower than its widest word will result
+#'   in an error.
+#' @return `str`, broken up into a word-wrapped vector
+#' @export
+wrap_string_ttype <- function(str,
+                              width,
+                              fontspec,
+                              collapse = NULL,
+                              min_ok_chars = min(floor(nchar(str) / 2), 4, floor(width / 2)),
+                              wordbreak_ok = TRUE) {
+  newdev <- open_font_dev(fontspec)
+  if (newdev) {
+    on.exit(close_font_dev())
+  }
+
+  rawspls <- strsplit(str, "[[:space:]](?=[^[:space:]])", perl = TRUE)[[1]] # preserve all but one space
+  nctt <- nchar_ttype(rawspls, fontspec, raw = TRUE)
+  pts <- which(cumsum(nctt) <= width)
+  if (length(pts) == length(rawspls)) { ## no splitting needed
+    return(str)
+  } else if (length(pts) == 0) { ## no spaces, all one word, split it and keep going
+    if (wordbreak_ok) {
+      inner_res <- list()
+      min_ok_inner <- min_ok_chars
+      while (length(inner_res$ok) == 0) {
+        inner_res <- split_word_ttype(rawspls[1], width, fontspec, min_ok_inner) # min_ok_chars)
+        min_ok_inner <- floor(min_ok_inner / 2)
+      }
+      done <- inner_res$ok
+      remainder <- paste(c(inner_res$remainder, rawspls[-1]), collapse = " ")
+    } else {
+      stop(
+        "Unable to find word wrapping solution without breaking word: ",
+        rawspls[[1]], " [requires  ", nchar_ttype(rawspls[[1]], fontspec), " spaces of width, out of ",
+        width, " available]."
+      )
+    }
+  } else { ## some words fit, and some words don't
+    done_tmp <- paste(rawspls[pts], collapse = " ")
+    tospl_tmp <- rawspls[length(pts) + 1]
+    width_tmp <- width - sum(nctt[pts])
+    if (wordbreak_ok && width_tmp / width > .33) {
+      inner_res <- split_word_ttype(tospl_tmp, width_tmp, fontspec,
+        min_ok_chars = min_ok_chars
+      )
+    } else {
+      inner_res <- list(done = "", remainder = tospl_tmp)
+    }
+    done <- paste(c(rawspls[pts], inner_res$ok),
+      collapse = " "
+    )
+    remainder <- paste(
+      c(
+        inner_res$remainder,
+        if (length(rawspls) > length(pts) + 1) tail(rawspls, -(length(pts) + 1))
+      ),
+      collapse = " "
+    )
+  }
+  ret <- c(
+    done,
+    wrap_string_ttype(remainder, width, fontspec)
+  )
+  if (!is.null(collapse)) {
+    ret <- paste(ret, collapse = collapse)
+  }
+  ret
+}
+
+## w comes in in terms of number of spaces, but
+## we need the more generic "number of characters"
+## to pass to stringi::stri_wrap
+#' @importFrom stats quantile
+.ttype_adjust_width <- function(str, w, fontspec, adj_qntl) {
+  ## we are going to be conservative in the truetype
+  ## case, but monospace behavior shouldn't change
+  ## so just immediately return w.
+  new_dev <- open_font_dev(fontspec)
+  if (new_dev) {
+    on.exit(close_font_dev())
+  }
+
+  if (is_monospace(fontspec = fontspec) || nchar(str) == 0) {
+    return(w)
+  }
+  nchars <- nchar(str)
+  ind_chars <- strsplit(str, "")[[1]]
+  nspaces <- nchar_ttype(ind_chars, fontspec, raw = TRUE)
+  if (length(nspaces) == 1) {
+    spc_per_char <- nspaces
+  } else {
+    ## use 75th percentile as conservative
+    ## "character width"...
+    ## if 75% of chars in str are that wide
+    ## or narrower, having enough of them
+    ## in a row to make wrapping do the wrong
+    ## thing  seems very unlikely
+    spc_per_char <- quantile(nspaces, adj_qntl)
+  }
+
+  ## convert from w spaces to adj_w characters
+  ## where a "character" takes up the average
+  ## width of characters in str
+  ## then be a bit conservative with floor
+  adj_w <- max(1L, floor(w / spc_per_char))
+  adj_w
 }
 
 # help function: Very rare case where the recursion is stuck in a loop
@@ -856,8 +1280,13 @@ split_words_by <- function(wrd, width) {
 #' wrap_txt(str, 5, collapse = NULL)
 #'
 #' @export
-wrap_txt <- function(str, width, collapse = NULL) {
-  unlist(wrap_string(str, width, collapse), use.names = FALSE)
+wrap_txt <- function(str, width, collapse = NULL, fontspec = font_spec()) {
+  new_dev <- open_font_dev(fontspec)
+  if (new_dev) {
+    on.exit(close_font_dev())
+  }
+
+  unlist(wrap_string(str, width, collapse, fontspec = fontspec), use.names = FALSE)
 }
 
 pad_vert_top <- function(x, len, default = "") {
@@ -953,6 +1382,7 @@ spans_to_viscell <- function(spans) {
 #'
 #' Row names are also considered a column for the output.
 #'
+#' @inheritParams open_font_dev
 #' @param x (`ANY`)\cr a `MatrixPrintForm` object, or an object with a `matrix_form` method.
 #' @param indent_size (`numeric(1)`)\cr indent size, in characters. Ignored when `x` is already
 #'   a `MatrixPrintForm` object in favor of information there.
@@ -964,9 +1394,16 @@ spans_to_viscell <- function(spans) {
 #' propose_column_widths(mf)
 #'
 #' @export
-propose_column_widths <- function(x, indent_size = 2) {
+propose_column_widths <- function(x,
+                                  indent_size = 2,
+                                  fontspec = font_spec()) {
+  new_dev <- open_font_dev(fontspec)
+  if (new_dev) {
+    on.exit(close_font_dev())
+  }
+
   if (!is(x, "MatrixPrintForm")) {
-    x <- matrix_form(x, indent_rownames = TRUE, indent_size = indent_size)
+    x <- matrix_form(x, indent_rownames = TRUE, indent_size = indent_size, fontspec = fontspec)
   }
   body <- mf_strings(x)
   spans <- mf_spans(x)
@@ -978,7 +1415,11 @@ propose_column_widths <- function(x, indent_size = 2) {
     body <- decimal_align(body, aligns)
   }
 
-  chars <- nchar(body)
+  ## chars <- nchar(body) #old monospace assumption
+  ## we now use widths in terms of the printwidth of the space (" ")
+  ## character. This collapses to the same thing in the monospace
+  ## case but allows us to reasonably support truetype fonts
+  chars <- nchar_ttype(body, fontspec)
 
   # first check column widths without colspan
   has_spans <- spans != 1
@@ -1016,8 +1457,93 @@ propose_column_widths <- function(x, indent_size = 2) {
   widths
 }
 
+## "number of characters" width in terms of
+## width of " " for the chosen font family
+
+## pdf device with font specification MUST already be open
+
+#' Calculate font-specific string width
+#'
+#' This function returns the width of each element `x`
+#' *as a multiple of the width of the space character
+#' for in declared font*, rounded up to the nearest
+#' integer. This is used extensively in the text rendering
+#' ([toString()]) and pagination machinery for
+#' calculating word wrapping, default column widths,
+#' lines per page, etc.
+#'
+#' @param x (`character`)\cr the string(s) to calculate width(s) for.
+#' @param fontspec (`font_spec` or `NULL`)\cr if non-NULL, the font to use for
+#'   the calculations (as returned by [font_spec()]). Defaults to "Courier",
+#'   which is a monospace font. If NULL, the width will be returned
+#'   in number of characters by calling `nchar` directly.
+#' @param tol (`numeric(1)`)\cr the tolerance to use when determining
+#'   if a multiple needs to be rounded up to the next integer. See
+#'   Details.
+#' @param raw (`logical(1)`)\cr whether unrounded widths should be returned. Defaults to `FALSE`.
+#'
+#' @details String width is defined in terms of spaces within
+#' the specified font. For monospace fonts, this definition
+#' collapses to the number of characters in the string
+#' ([nchar()]), but for truetype fonts it does not.
+#'
+#' For `raw = FALSE`, non-integer values (the norm in a truetype
+#' setting) for the number of spaces a string takes up is rounded
+#' up, *unless the multiple is less than `tol` above the last integer
+#' before it*. E.g., if `k - num_spaces < tol` for an integer
+#' `k`, `k` is returned instead of `k+1`.
+#'
+#' @seealso [font_spec()]
+#'
+#' @examples
+#' nchar_ttype("hi there!")
+#'
+#' nchar_ttype("hi there!", font_spec("Times"))
+#'
+#' @export
+nchar_ttype <- function(x, fontspec = font_spec(), tol = sqrt(.Machine$double.eps), raw = FALSE) {
+  ## escape hatch because sometimes we need to call, e.g. make_row_df
+  ## but we dont' care about getting the word wrapping right and the
+  ## performance penalty was KILLING us. Looking at you
+  ## rtables::update_ref_indexing @.@
+  if (is.null(fontspec)) {
+    return(nchar(x))
+  }
+  new_dev <- open_font_dev(fontspec)
+  if (new_dev) {
+    on.exit(close_font_dev())
+  }
+  if (font_dev_state$ismonospace) { ## WAY faster if we can do it
+    return(nchar(x))
+  }
+  space_width <- get_space_width()
+  ## cwidth_inches_unsafe is ok here because if we don't
+  ## have a successfully opened state (somehow), get_space_width
+  ## above will error.
+  num_inches_raw <- vapply(x, cwidth_inches_unsafe, 1.0)
+  num_spaces_raw <- num_inches_raw / space_width
+  if (!raw) {
+    num_spaces_ceil <- ceiling(num_spaces_raw)
+    ## we don't want to add one when the answer is e.g, 3.0000000000000953
+    within_tol <- which(num_spaces_raw + 1 - num_spaces_ceil <= tol)
+    ret <- num_spaces_ceil
+    if (length(within_tol) == 0L) {
+      ret[within_tol] <- floor(num_spaces_raw[within_tol])
+    }
+  } else {
+    ret <- num_spaces_raw
+  }
+  if (!is.null(dim(x))) {
+    dim(ret) <- dim(x)
+  } else {
+    names(ret) <- NULL
+  }
+  ret
+}
+
 #' Pad a string and align within string
 #'
+#' @inheritParams open_font_dev
 #' @param x (`string`)\cr a string.
 #' @param n (`integer(1)`)\cr number of characters in the output string. If `n < nchar(x)`, an error is thrown.
 #' @param just (`string`)\cr text alignment justification to use. Defaults to `"center"`. Must be one of
@@ -1038,7 +1564,7 @@ propose_column_widths <- function(x, indent_size = 2) {
 #' }
 #'
 #' @export
-padstr <- function(x, n, just = list_valid_aligns()) {
+padstr <- function(x, n, just = list_valid_aligns(), fontspec = font_spec()) {
   just <- match.arg(just)
 
   if (length(x) != 1) stop("length of x needs to be 1 and not", length(x))
@@ -1046,8 +1572,7 @@ padstr <- function(x, n, just = list_valid_aligns()) {
 
   if (is.na(x)) x <- "<NA>"
 
-  nc <- nchar(x)
-
+  nc <- nchar_ttype(x, fontspec)
   if (n < nc) stop("\"", x, "\" has more than ", n, " characters")
 
   switch(just,
@@ -1116,6 +1641,10 @@ spread_integer <- function(x, len) {
     }
     y
   }
+}
+
+spread_width <- function(x, len) {
+  rep(x / len, len)
 }
 
 #' Check if a value is a whole number

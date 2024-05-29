@@ -10,6 +10,7 @@ MatrixPrintForm(
   aligns,
   formats,
   row_info,
+  colpaths = NULL,
   line_grouping = seq_len(NROW(strings)),
   ref_fnotes = list(),
   nlines_header,
@@ -28,7 +29,9 @@ MatrixPrintForm(
   col_gap = 3,
   table_inset = 0L,
   colwidths = NULL,
-  indent_size = 2
+  indent_size = 2,
+  fontspec = font_spec(),
+  rep_cols = 0L
 )
 }
 \arguments{
@@ -49,6 +52,9 @@ information for each element. Must be repeated to match placeholders in \code{st
 
 \item{row_info}{(\code{data.frame})\cr data frame with row-information necessary for pagination (see
 \code{\link[=basic_pagdf]{basic_pagdf()}} for more details).}
+
+\item{colpaths}{(\code{list} or \code{NULL})\cr \code{NULL}, or a list of paths to each leaf column,
+for use during horizontal pagination.}
 
 \item{line_grouping}{(\code{integer})\cr sequence of integers indicating how print lines correspond
 to semantic rows in the object. Typically this should not be set manually unless
@@ -99,6 +105,11 @@ equal to \code{ncol(strings)}.}
 
 \item{indent_size}{(\code{numeric(1)})\cr number of spaces to be used per level of indent (if supported by
 the relevant method). Defaults to 2.}
+
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
+
+\item{rep_cols}{(\code{numeric(1)})\cr number of columns to be repeated as context during horizontal pagination.}
 }
 \value{
 An object of class \code{MatrixPrintForm}. Currently this is implemented as an S3 class inheriting

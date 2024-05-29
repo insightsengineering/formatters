@@ -87,6 +87,7 @@ NULL
 
 #' Create a row of a pagination data frame
 #'
+#' @inheritParams open_font_dev
 #' @param nm (`string`)\cr name.
 #' @param lab (`string`)\cr label.
 #' @param rnum (`numeric(1)`)\cr absolute row number.
@@ -121,7 +122,7 @@ pagdfrow <- function(row,
                      pth,
                      sibpos = NA_integer_,
                      nsibs = NA_integer_,
-                     extent = nlines(row, colwidths),
+                     extent = nlines(row, colwidths, fontspec = fontspec),
                      colwidths = NULL,
                      repext = 0L,
                      repind = integer(),
@@ -133,7 +134,8 @@ pagdfrow <- function(row,
                      # ref_df = .make_ref_df(NULL, NULL),
                      force_page = FALSE,
                      page_title = NA_character_,
-                     trailing_sep = NA_character_) {
+                     trailing_sep = NA_character_,
+                     fontspec) {
   data.frame(
     label = lab,
     name = nm,
@@ -232,7 +234,9 @@ valid_pag <- function(pagdf,
                       div_height = 1L,
                       verbose = FALSE,
                       row = TRUE,
-                      have_col_fnotes = FALSE) {
+                      have_col_fnotes = FALSE,
+                      col_gap,
+                      has_rowlabels) {
   # FALSE output from this function means that another guess is taken till success or failure
   rw <- pagdf[guess, ]
 
@@ -256,12 +260,19 @@ valid_pag <- function(pagdf,
     reflines <- reflines + div_height + 1L
   }
 
-  ##  reflines <- sum(pagdf[start:guess, "nreflines"])
+
   rowlines <- raw_rowlines + reflines ## sum(pagdf[start:guess, "self_extent"]) - reflines
   ## self extent includes reflines
-  ## self extent does ***not*** currently include trailing sep
+  ## self extent does ***not*** currently include trailing sep for rows
+  ## self extent does ***not*** currently include col_gap for columns
   ## we don't include the trailing_sep for guess because if we paginate here it won't be printed
-  sectlines <- if (start == guess) 0L else sum(!is.na(pagdf[start:(guess - 1), "trailing_sep"]))
+  ncols <- 0L
+  if (row) {
+    sectlines <- if (start == guess) 0L else sum(!is.na(pagdf[start:(guess - 1), "trailing_sep"]))
+  } else { ## columns
+    ncols <- guess - start + 1 + length(pagdf$reprint_inds[[start]]) ## +1 because its incluive, 5-6 is 2 columns
+    sectlines <- col_gap * (ncols - as.integer(!has_rowlabels)) ## -1 if no row labels
+  }
   lines <- rowlines + sectlines # guess - start + 1 because inclusive of start
   rep_ext <- pagdf$par_extent[start]
   if (lines > rlpp) {
@@ -377,7 +388,9 @@ find_pag <- function(pagdf,
                      row = TRUE,
                      have_col_fnotes = FALSE,
                      div_height = 1L,
-                     do_error = FALSE) {
+                     do_error = FALSE,
+                     col_gap,
+                     has_rowlabels) {
   if (verbose) {
     if (row) {
       message("--------- ROW-WISE: Checking possible pagination for page ", current_page)
@@ -394,7 +407,9 @@ find_pag <- function(pagdf,
     min_sibs = min_siblings,
     nosplit = nosplitin, verbose, row = row,
     have_col_fnotes = have_col_fnotes,
-    div_height = div_height
+    div_height = div_height,
+    col_gap = col_gap,
+    has_rowlabels = has_rowlabels
   )) {
     guess <- guess - 1
   }
@@ -413,7 +428,9 @@ find_pag <- function(pagdf,
         row = row,
         have_col_fnotes = have_col_fnotes,
         div_height = div_height,
-        do_error = TRUE # only used to avoid loop
+        do_error = TRUE, # only used to avoid loop
+        col_gap = col_gap,
+        has_rowlabels = has_rowlabels
       )
     }
     stop(
@@ -463,6 +480,9 @@ find_pag <- function(pagdf,
 #'   referential footnotes.
 #' @param div_height (`numeric(1)`)\cr the height of the divider line when the associated object is rendered.
 #'   Defaults to `1`.
+#' @param col_gap (`numeric(1)`)\cr width of gap between columns, in same units as extent in `pagdf` (spaces
+#'   under a particular font specification).
+#' @param has_rowlabels (`logical(1)`)\cr whether the object being paginated has row labels.
 #'
 #' @details `pab_indices_inner` implements the core pagination algorithm (see below)
 #' for a single direction (vertical if `row = TRUE` (the default), horizontal otherwise)
@@ -488,7 +508,9 @@ pag_indices_inner <- function(pagdf,
                               verbose = FALSE,
                               row = TRUE,
                               have_col_fnotes = FALSE,
-                              div_height = 1L) {
+                              div_height = 1L,
+                              col_gap = 3L,
+                              has_rowlabels) {
   start <- 1
   current_page <- 1
   nr <- nrow(pagdf)
@@ -512,7 +534,9 @@ pag_indices_inner <- function(pagdf,
       verbose = verbose,
       row = row,
       have_col_fnotes = have_col_fnotes,
-      div_height = div_height
+      div_height = div_height,
+      col_gap = col_gap,
+      has_rowlabels = has_rowlabels
     )
     ret <- c(ret, list(c(
       pagdf$reprint_inds[[start]],
@@ -527,6 +551,7 @@ pag_indices_inner <- function(pagdf,
 #' Find column indices for vertical pagination
 #'
 #' @inheritParams pag_indices_inner
+#' @inheritParams open_font_dev
 #' @param obj (`ANY`)\cr object to be paginated. Must have a [matrix_form()] method.
 #' @param cpp (`numeric(1)`)\cr number of characters per page (width).
 #' @param colwidths (`numeric`)\cr vector of column widths (in characters) for use in vertical pagination.
@@ -537,16 +562,27 @@ pag_indices_inner <- function(pagdf,
 #'
 #' @examples
 #' mf <- basic_matrix_form(df = mtcars)
-#' colpaginds <- vert_pag_indices(mf)
+#' colpaginds <- vert_pag_indices(mf, fontspec = font_spec())
 #' lapply(colpaginds, function(j) mtcars[, j, drop = FALSE])
 #'
 #' @export
-vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, rep_cols = 0L) {
-  mf <- matrix_form(obj, TRUE)
-  clwds <- colwidths %||% propose_column_widths(mf)
-  if (is.null(mf_cinfo(mf))) { ## like always, ugh.
-    mf <- mpf_infer_cinfo(mf, colwidths = clwds, rep_cols = rep_cols)
+vert_pag_indices <- function(obj,
+                             cpp = 40,
+                             colwidths = NULL,
+                             verbose = FALSE,
+                             rep_cols = 0L,
+                             fontspec,
+                             nosplitin = character()) {
+  if (is.list(nosplitin)) {
+    nosplitin <- nosplitin[["cols"]]
   }
+  mf <- matrix_form(obj, indent_rownames = TRUE, fontspec = fontspec)
+  clwds <- colwidths %||% propose_column_widths(mf, fontspec = fontspec)
+  if (is.null(mf_cinfo(mf))) { ## like always, ugh.
+    mf <- mpf_infer_cinfo(mf, colwidths = clwds, rep_cols = rep_cols, fontspec = fontspec)
+  }
+
+  num_rep_cols(mf) <- rep_cols
 
   has_rlabs <- mf_has_rlabels(mf)
   rlabs_flag <- as.integer(has_rlabs)
@@ -567,16 +603,26 @@ vert_pag_indices <- function(obj, cpp = 40, colwidths = NULL, verbose = FALSE, r
     # cpp - sum(clwds[seq_len(rep_cols)]),
     verbose = verbose,
     min_siblings = 1,
-    row = FALSE
+    nosplitin = nosplitin,
+    row = FALSE,
+    col_gap = mf_colgap(mf),
+    has_rowlabels = mf_has_rlabels(mf)
   )
   res
 }
 
-mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf)) {
+mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf), fontspec, colpaths = NULL) {
+  if (!is.null(mf_cinfo(mf))) {
+    return(mf_update_cinfo(mf, colwidths = colwidths))
+  }
+  new_dev <- open_font_dev(fontspec)
+  if (new_dev) {
+    on.exit(close_font_dev())
+  }
   if (!is(rep_cols, "numeric") || is.na(rep_cols) || rep_cols < 0) {
     stop("got invalid number of columns to be repeated: ", rep_cols)
   }
-  clwds <- (colwidths %||% mf_col_widths(mf)) %||% propose_column_widths(mf)
+  clwds <- (colwidths %||% mf_col_widths(mf)) %||% propose_column_widths(mf, fontspec = fontspec)
   has_rlabs <- mf_has_rlabels(mf)
   rlabs_flag <- as.integer(has_rlabs)
   rlab_extent <- if (has_rlabs) clwds[1] else 0L
@@ -587,19 +633,23 @@ mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf)) {
     function(i) {
       rownum <- i - rlabs_flag
       rep_inds <- seq_len(rep_cols)[seq_len(rep_cols) < rownum]
-      rep_extent_i <- sum(0L, clwds[rlabs_flag + rep_inds]) + mf$col_gap * length(rep_inds)
+      rep_extent_i <- sum(
+        0L,
+        clwds[rlabs_flag + rep_inds]
+      ) ## colwidths
       pagdfrow(
         row = NA,
         nm = rownum,
         lab = rownum,
         rnum = rownum,
         pth = NA,
-        extent = clwds[i] + mf$col_gap,
+        extent = clwds[i],
         repext = rep_extent_i, # sum(clwds[rep_cols]) + mf$col_gap * max(0, (length(rep_cols) - 1)),
         repind = rep_inds, # rep_cols,
         rclass = "stuff",
         sibpos = 1 - 1,
-        nsibs = 1 - 1
+        nsibs = 1 - 1,
+        fontspec = fontspec
       )
     }
   )
@@ -607,6 +657,18 @@ mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf)) {
 
   refdf <- mf_fnote_df(mf)
   pdf <- splice_fnote_info_in(pdf, refdf, row = FALSE)
+  if (!is.null(colpaths)) {
+    if (length(colpaths) != NROW(pdf)) {
+      stop(
+        "Got non-null colpaths with length not equal to number of columns (",
+        length(colpaths),
+        "!=",
+        NROW(pdf),
+        ") during MatrixPrintForm construction. Please contact the maintainers."
+      )
+    }
+    pdf[["path"]] <- colpaths
+  }
   mf_cinfo(mf) <- pdf
   mf
 }
@@ -616,6 +678,7 @@ mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf)) {
 #' Returns a minimal pagination info `data.frame` (with no info on siblings, footnotes, etc.).
 #'
 #' @inheritParams test_matrix_form
+#' @inheritParams open_font_dev
 #' @param rnames (`character`)\cr vector of row names.
 #' @param labs (`character`)\cr vector of row labels. Defaults to `rnames`.
 #' @param rnums (`integer`)\cr vector of row numbers. Defaults to `seq_along(rnames)`.
@@ -635,10 +698,12 @@ basic_pagdf <- function(rnames,
                         extents = 1L,
                         rclass = "DataRow",
                         parent_path = NULL,
-                        paths = lapply(rnames, function(x) c(parent_path, x))) {
+                        paths = lapply(rnames, function(x) c(parent_path, x)),
+                        fontspec = font_spec()) {
   rws <- mapply(pagdfrow,
     nm = rnames, lab = labs, extent = extents,
     rclass = rclass, rnum = rnums, pth = paths,
+    MoreArgs = list(fontspec = fontspec),
     SIMPLIFY = FALSE, nsibs = 1, sibpos = 1
   )
   res <- do.call(rbind.data.frame, rws)
@@ -659,12 +724,28 @@ basic_pagdf <- function(rnames,
 
 ## write paginate() which operates **solely** on a MatrixPrintForm obj
 
-page_size_spec <- function(lpp, cpp, max_width) {
+page_size_spec <- function(lpp, cpp, max_width,
+                           font_family,
+                           font_size,
+                           lineheight,
+                           fontspec = font_spec(
+                             font_family = font_family,
+                             font_size = font_size,
+                             lineheight = lineheight
+                           )) {
   structure(list(
     lpp = lpp,
     cpp = cpp,
-    max_width = max_width
+    max_width = max_width,
+    font_spec = fontspec
   ), class = "page_size_spec")
+}
+
+get_font_spec <- function(obj) {
+  if (!is(obj, "page_size_spec")) {
+    stop("get_font_spec is only currently defined for page_size_spec objects")
+  }
+  obj$font_spec
 }
 
 non_null_na <- function(x) !is.null(x) && is.na(x)
@@ -673,13 +754,14 @@ calc_lcpp <- function(page_type = NULL,
                       landscape = FALSE,
                       pg_width = page_dim(page_type)[if (landscape) 2 else 1],
                       pg_height = page_dim(page_type)[if (landscape) 1 else 2],
-                      font_family = "Courier",
-                      font_size = 8, # grid parameters
+                      fontspec,
+                      ## font_family = "Courier",
+                      ## font_size = 8, # grid parameters
                       cpp = NA_integer_,
                       lpp = NA_integer_,
                       tf_wrap = TRUE,
                       max_width = NULL,
-                      lineheight = 1,
+                      ## lineheight = 1,
                       margins = c(bottom = .5, left = .75, top = .5, right = .75),
                       colwidths,
                       col_gap,
@@ -687,9 +769,10 @@ calc_lcpp <- function(page_type = NULL,
   pg_lcpp <- page_lcpp(
     page_type = page_type,
     landscape = landscape,
-    font_family = font_family,
-    font_size = font_size,
-    lineheight = lineheight,
+    ## font_family = font_family,
+    ## font_size = font_size,
+    ## lineheight = lineheight,
+    fontspec = fontspec,
     margins = margins,
     pg_width = pg_width,
     pg_height = pg_height
@@ -705,13 +788,19 @@ calc_lcpp <- function(page_type = NULL,
 
   max_width <- .handle_max_width(tf_wrap, max_width, cpp, colwidths, col_gap, inset)
 
-  page_size_spec(lpp = lpp, cpp = cpp, max_width = max_width)
+  page_size_spec(
+    lpp = lpp, cpp = cpp, max_width = max_width,
+    ## font_family = font_family,
+    ## font_size = font_size,
+    ## lineheight = lineheight
+    fontspec = fontspec
+  )
 }
 
 calc_rlpp <- function(pg_size_spec, mf, colwidths, tf_wrap, verbose) {
   lpp <- pg_size_spec$lpp
   max_width <- pg_size_spec$max_width
-
+  fontspec <- get_font_spec(pg_size_spec)
   dh <- divider_height(mf)
   if (any(nzchar(all_titles(mf)))) {
     ## +1 is for blank line between subtitles and divider
@@ -720,7 +809,7 @@ calc_rlpp <- function(pg_size_spec, mf, colwidths, tf_wrap, verbose) {
     if (!tf_wrap) {
       tlines <- length(all_titles(mf))
     } else {
-      tlines <- sum(nlines(all_titles(mf), colwidths = colwidths, max_width = max_width))
+      tlines <- sum(nlines(all_titles(mf), colwidths = colwidths, max_width = max_width, fontspec = fontspec))
     }
     tlines <- tlines + dh + 1L
   } else {
@@ -747,12 +836,13 @@ calc_rlpp <- function(pg_size_spec, mf, colwidths, tf_wrap, verbose) {
     flines <- nlines(
       mnfoot,
       colwidths = colwidths,
-      max_width = max_width - table_inset(mf)
+      max_width = max_width - table_inset(mf),
+      fontspec = fontspec
     )
   }
   prfoot <- prov_footer(mf)
   if (length(prfoot) && any(nzchar(prfoot))) {
-    flines <- flines + nlines(prov_footer(mf), colwidths = colwidths, max_width = max_width)
+    flines <- flines + nlines(prov_footer(mf), colwidths = colwidths, max_width = max_width, fontspec = fontspec)
     if (havemn) {
       flines <- flines + 1L
     } ## space between main and prov footer.
@@ -785,6 +875,8 @@ calc_rlpp <- function(pg_size_spec, mf, colwidths, tf_wrap, verbose) {
   ret
 }
 
+## this is ok to be unchanged because by this point
+## all of these are in terms of space widths
 calc_rcpp <- function(pg_size_spec, mf, colwidths) {
   cpp <- pg_size_spec$cpp
 
@@ -845,7 +937,8 @@ splice_idx_lists <- function(lsts) {
 #'   automatically based on the specified page size). `NULL` indicates no horizontal pagination should occur.
 #' @param pg_size_spec (`page_size_spec`)\cr. a pre-calculated page size specification. Typically this is not set by
 #'   end users.
-#' @param col_gap (`numeric(1)`)\cr currently ignored.
+#' @param col_gap (`numeric(1)`)\cr The number of spaces to be placed between columns
+#'   in the rendered table (and assumed for horizontal pagination).
 #' @param page_num (`string`)\cr placeholder string for page numbers. See [default_page_number] for more
 #'   information. Defaults to `NULL`.
 #'
@@ -875,7 +968,10 @@ paginate_indices <- function(obj,
                              lpp = NA_integer_,
                              cpp = NA_integer_,
                              min_siblings = 2,
-                             nosplitin = character(),
+                             nosplitin = list(
+                               rows = character(),
+                               cols = character()
+                             ),
                              colwidths = NULL,
                              tf_wrap = FALSE,
                              max_width = NULL,
@@ -883,12 +979,24 @@ paginate_indices <- function(obj,
                              pg_size_spec = NULL,
                              rep_cols = num_rep_cols(obj),
                              col_gap = 3,
+                             fontspec = font_spec(font_family, font_size, lineheight),
                              verbose = FALSE) {
+  ## this preserves backwards compatibility
+  ## could start deprecation cycle of char input
+  if (is.character(nosplitin)) {
+    nosplitin <- list(
+      rows = nosplitin,
+      cols = character()
+    )
+  }
+  newdev <- open_font_dev(fontspec)
+  if (newdev) {
+    on.exit(close_font_dev())
+  }
   ## this MUST alsways return a list, inluding list(obj) when
   ## no forced pagination is needed! otherwise stuff breaks for things
   ## based on s3 classes that are lists underneath!!!
   fpags <- do_forced_paginate(obj)
-
   ## if we have more than one forced "page",
   ## paginate each of them individually and return the result.
   ## forced pagination is ***currently*** only vertical, so
@@ -903,49 +1011,30 @@ paginate_indices <- function(obj,
     )
   }
 
-  ## I'm not sure this is worth doing.
-  ## ## We can't support forced pagination here, but we can support calls to,
-  ## ## e.g., paginate_indices(do_forced_pag(tt))
-  ## if(is.list(obj) && !is.object(obj)) {
-  ##     res <- lapply(obj, paginate_indices,
-  ##                   page_type = page_type,
-  ##                   font_family = font_family,
-  ##                   font_size = font_size,
-  ##                   lineheight = lineheight,
-  ##                   landscape = landscape,
-  ##                   pg_width = pg_width,
-  ##                   pg_height = pg_height,
-  ##                   margins = margins,
-  ##                   lpp = lpp,
-  ##                   cpp = cpp,
-  ##                   tf_wrap = tf_wrap,
-  ##                   max_width = max_width,
-  ##                   colwidths = colwidths,
-  ##                   min_siblings = min_siblings,
-  ##                   nosplitin = nosplitin,
-  ##                   col_gap = col_gap,
-  ##                   ## not setting num_rep_cols here cause it wont' get it right
-  ##                   verbose = verbose)
-  ##     return(splice_idx_lists(res))
-  ## }
   ## order is annoying here, since we won't actually need the mpf if
   ## we run into forced pagination, but life is short and this should work fine.
-  mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size)
+  mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec)
   if (is.null(colwidths)) {
-    colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf)
+    colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf, fontspec = fontspec)
   } else {
     mf_col_widths(mpf) <- colwidths
   }
+
+  mf_colgap(mpf) <- col_gap
+  if (!is.null(rep_cols) && rep_cols != num_rep_cols(obj)) {
+    num_rep_cols(mpf) <- rep_cols
+  }
   if (NROW(mf_cinfo(mpf)) == 0) {
-    mpf <- mpf_infer_cinfo(mpf, colwidths, rep_cols)
+    mpf <- mpf_infer_cinfo(mpf, colwidths, rep_cols, fontspec = fontspec)
   }
 
   if (is.null(pg_size_spec)) {
     pg_size_spec <- calc_lcpp(
       page_type = page_type,
-      font_family = font_family,
-      font_size = font_size,
-      lineheight = lineheight,
+      ## font_family = font_family,
+      ## font_size = font_size,
+      ## lineheight = lineheight,
+      fontspec = fontspec,
       landscape = landscape,
       pg_width = pg_width,
       pg_height = pg_height,
@@ -967,8 +1056,8 @@ paginate_indices <- function(obj,
   ## has already occurred.
 
   ## this wraps the cell contents AND shoves referential footnote
-  ## info mf_rinfo(mpf)
-  mpf <- do_cell_fnotes_wrap(mpf, colwidths, max_width, tf_wrap = tf_wrap)
+  ## info into mf_rinfo(mpf)
+  mpf <- do_cell_fnotes_wrap(mpf, colwidths, max_width, tf_wrap = tf_wrap, fontspec = fontspec)
 
   # rlistings note: if there is a wrapping in a keycol, it is not calculated correctly
   #                 in the above call, so we need to keep this information in mf_rinfo
@@ -1018,7 +1107,9 @@ paginate_indices <- function(obj,
       context_lpp_or_cpp = pg_size_spec$lpp - rlpp,
       verbose = verbose,
       min_siblings = min_siblings,
-      nosplitin = nosplitin
+      nosplitin = nosplitin[["rows"]],
+      col_gap = col_gap,
+      has_rowlabels = mf_has_rlabels(mpf)
     )
   }
 
@@ -1028,7 +1119,9 @@ paginate_indices <- function(obj,
     pag_col_indices <- vert_pag_indices(
       mpf,
       cpp = pg_size_spec$cpp, colwidths = colwidths,
-      rep_cols = rep_cols, verbose = verbose
+      rep_cols = rep_cols, fontspec = fontspec,
+      nosplitin = nosplitin[["cols"]],
+      verbose = verbose
     )
   }
 
@@ -1061,8 +1154,16 @@ paginate_to_mpfs <- function(obj,
                              pg_size_spec = NULL,
                              page_num = default_page_number(),
                              rep_cols = NULL,
-                             col_gap = 2,
+                             # rep_cols = num_rep_cols(obj),
+                             # col_gap = 3, # this could be change in default - breaking change
+                             col_gap = 3,
+                             fontspec = font_spec(font_family, font_size, lineheight),
                              verbose = FALSE) {
+  newdev <- open_font_dev(fontspec)
+  if (newdev) {
+    on.exit(close_font_dev())
+  }
+
   if (isTRUE(page_num)) {
     page_num <- "page {i}/{n}"
   }
@@ -1092,12 +1193,17 @@ paginate_to_mpfs <- function(obj,
     return(mpfs)
   }
 
-  if (!is.null(page_num)) {
+  if (!is.null(page_num) && (length(prov_footer(obj)) == 0 || !grepl(page_num, prov_footer(obj), perl = TRUE))) {
     # Only adding a line for pagination -> lpp - 1 would have worked too
     prov_footer(obj) <- c(prov_footer(obj), page_num)
   }
 
-  mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size)
+  mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec)
+  # For listings, keycols are mandatory rep_num_cols
+  if (is.null(rep_cols)) {
+    rep_cols <- num_rep_cols(obj)
+  }
+  num_rep_cols(mpf) <- rep_cols
 
   # Turning off min_siblings for listings
   if (.is_listing_mf(mpf)) {
@@ -1106,7 +1212,7 @@ paginate_to_mpfs <- function(obj,
 
   # Checking colwidths
   if (is.null(colwidths)) {
-    colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf)
+    colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf, fontspec = fontspec)
   } else {
     cur_ncol <- ncol(mpf)
     if (!.is_listing_mf(mpf)) {
@@ -1121,21 +1227,17 @@ paginate_to_mpfs <- function(obj,
     mf_col_widths(mpf) <- colwidths
   }
 
-  # For listings, keycols are mandatory rep_num_cols
-  if (is.null(rep_cols)) {
-    rep_cols <- num_rep_cols(obj)
-  }
-
   if (NROW(mf_cinfo(mpf)) == 0) {
-    mpf <- mpf_infer_cinfo(mpf, colwidths, rep_cols)
+    mpf <- mpf_infer_cinfo(mpf, colwidths, rep_cols, fontspec = fontspec)
   }
 
   if (is.null(pg_size_spec)) {
     pg_size_spec <- calc_lcpp(
       page_type = page_type,
-      font_family = font_family,
-      font_size = font_size,
-      lineheight = lineheight,
+      ## font_family = font_family,
+      ## font_size = font_size,
+      ## lineheight = lineheight,
+      fontspec = fontspec,
       landscape = landscape,
       pg_width = pg_width,
       pg_height = pg_height,
@@ -1149,7 +1251,7 @@ paginate_to_mpfs <- function(obj,
       col_gap = col_gap
     )
   }
-  ## this MUST always return a list, including list(obj) when
+  ## this MUST alsways return a list, inluding list(obj) when
   ## no forced pagination is needed! otherwise stuff breaks for things
   ## based on s3 classes that are lists underneath!!!
   fpags <- do_forced_paginate(obj)
@@ -1161,31 +1263,30 @@ paginate_to_mpfs <- function(obj,
   ## but we will if we ever allow force_paginate to do horiz
   ## pagination.
   if (length(fpags) > 1) {
-    # Correction for case we are entering here (page_by?)
-    if (!is.null(page_num)) {
-      prov_footer(obj) <- head(prov_footer(obj), -1)
-      fpags <- do_forced_paginate(obj)
-    }
-    deep_pag <- paginate_to_mpfs( # what about the other parameters?
-      fpags,
+    deep_pag <- lapply(
+      fpags, paginate_to_mpfs,
       pg_size_spec = pg_size_spec,
       colwidths = colwidths,
       min_siblings = min_siblings,
       nosplitin = nosplitin,
+      fontspec = fontspec,
       verbose = verbose,
+      rep_cols = rep_cols,
       page_num = page_num
     )
-    return(deep_pag)
+    return(unlist(deep_pag, recursive = FALSE))
   } else if (has_page_title(fpags[[1]])) {
     obj <- fpags[[1]]
   }
 
   ## we run into forced pagination, but life is short and this should work fine.
-  mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size)
+  mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec)
+  num_rep_cols(mpf) <- rep_cols
   if (is.null(colwidths)) {
-    colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf)
+    colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf, fontspec = fontspec)
   }
   mf_col_widths(mpf) <- colwidths
+  mf_colgap(mpf) <- col_gap
 
   page_indices <- paginate_indices(
     obj = obj,
@@ -1206,7 +1307,9 @@ paginate_to_mpfs <- function(obj,
     tf_wrap = tf_wrap,
     ## max_width = max_width,
     rep_cols = rep_cols,
-    verbose = verbose
+    verbose = verbose,
+    col_gap = col_gap,
+    fontspec = fontspec
   )
 
   pagmats <- lapply(page_indices$pag_row_indices, function(ii) {
@@ -1330,24 +1433,30 @@ diagnose_pagination <- function(obj,
                                 cpp = NA_integer_,
                                 min_siblings = 2,
                                 nosplitin = character(),
-                                colwidths = propose_column_widths(matrix_form(obj, TRUE)),
+                                colwidths = propose_column_widths(matrix_form(obj, TRUE), fontspec = fontspec),
                                 tf_wrap = FALSE,
                                 max_width = NULL,
                                 indent_size = 2,
                                 pg_size_spec = NULL,
                                 rep_cols = num_rep_cols(obj),
-                                col_gap = 2,
+                                col_gap = 3,
                                 verbose = FALSE,
+                                fontspec = font_spec(
+                                  font_family,
+                                  font_size,
+                                  lineheight
+                                ),
                                 ...) {
+  new_dev <- open_font_dev(fontspec)
+  if (new_dev) {
+    on.exit(close_font_dev())
+  }
   fpag <- do_forced_paginate(obj)
   if (length(fpag) > 1) {
     return(lapply(
       fpag,
       diagnose_pagination,
       page_type = page_type,
-      font_family = font_family,
-      font_size = font_size,
-      lineheight = lineheight,
       landscape = landscape,
       pg_width = pg_width,
       pg_height = pg_height,
@@ -1359,20 +1468,18 @@ diagnose_pagination <- function(obj,
       colwidths = colwidths,
       col_gap = col_gap,
       min_siblings = min_siblings,
-      nosplitin = nosplitin
+      nosplitin = nosplitin,
+      fontspec = fontspec
     ))
   }
 
-  mpf <- matrix_form(obj, TRUE)
+  mpf <- matrix_form(obj, TRUE, fontspec = fontspec)
   msgres <- capture.output(
     {
       tmp <- try(
         paginate_to_mpfs(
           obj,
           page_type = page_type,
-          font_family = font_family,
-          font_size = font_size,
-          lineheight = lineheight,
           landscape = landscape,
           pg_width = pg_width,
           pg_height = pg_height,
@@ -1385,6 +1492,7 @@ diagnose_pagination <- function(obj,
           col_gap = col_gap,
           min_siblings = min_siblings,
           nosplitin = nosplitin,
+          fontspec = fontspec,
           verbose = TRUE
         )
       )
@@ -1399,8 +1507,12 @@ diagnose_pagination <- function(obj,
   lpp_diagnostic <- grep("^(Determining lines|Lines per page available).*$", msgres, value = TRUE)
   cpp_diagnostic <- unique(grep("^Adjusted characters per page.*$", msgres, value = TRUE))
 
-  mpf <- do_cell_fnotes_wrap(mpf, widths = colwidths, max_width = max_width, tf_wrap = tf_wrap)
-  mpf <- mpf_infer_cinfo(mpf, colwidths = colwidths)
+  mpf <- do_cell_fnotes_wrap(
+    mpf,
+    widths = colwidths, max_width = max_width, tf_wrap = tf_wrap,
+    fontspec = font_spec(font_family, font_size, lineheight)
+  )
+  mpf <- mpf_infer_cinfo(mpf, colwidths = colwidths, fontspec = fontspec)
 
   rownls <- grep("Checking pagination after row", msgres, fixed = TRUE)
   rownum <- as.integer(gsub("[^[:digit:]]*(.*)$", "\\1", msgres[rownls]))

@@ -153,14 +153,14 @@ test_that("pagination works", {
     c(2L, 2L, 2L, 3L, 2L, 1L)
   )
 
-  vpaginds2 <- vert_pag_indices(df2mf, cpp = 39, verbose = TRUE)
+  vpaginds2 <- vert_pag_indices(df2mf, cpp = 39, verbose = TRUE, fontspec = NULL)
 
   ## expect_identical(
   ##   lengths(vpaginds2),
   ##   c(2L, 2L, 2L, 3L, 2L, 1L)
   ## )
 
-  vpaginds3 <- vert_pag_indices(df2mf, cpp = 44, verbose = TRUE, rep_cols = 1L)
+  vpaginds3 <- vert_pag_indices(df2mf, cpp = 44, verbose = TRUE, rep_cols = 1L, fontspec = NULL)
 
   ## make sure it was repeated as requested
   expect_identical(
@@ -325,15 +325,13 @@ test_that("page to lcpp stuff works", {
   )
 
   expect_identical(
-    calc_lcpp(),
-    calc_lcpp(page_type = "letter")
+    calc_lcpp(fontspec = NULL),
+    calc_lcpp(page_type = "letter", fontspec = NULL)
   )
 })
 
-test_that("non-monospaced fonts are caught", {
-  ## non-monospaced fonts
-  expect_error(page_lcpp(font_family = "Times"), "does not appear to be monospaced")
 
+test_that("Page type dictates page dims", {
   expect_identical(
     page_lcpp("a4"),
     page_lcpp(
@@ -353,6 +351,8 @@ test_that("spans and string matrix match after pagination when table has single 
     dim(pag_test[[1]]$strings)
   )
 })
+
+
 
 test_that("pag_num works in paginate_to_mpfs and export_as_txt", {
   tst <- basic_matrix_form(mtcars, add_decoration = TRUE)
@@ -402,6 +402,26 @@ test_that("pag_num works in paginate_to_mpfs and export_as_txt", {
   expect_equal(pages_tst_exp, print_pg_tst)
 })
 
+test_that("colgap is applied correctly during pagination with and without row labels ", {
+  df <- mtcars
+
+  test <- basic_matrix_form(df, ignore_rownames = TRUE)
+  res <- paginate_to_mpfs(test, cpp = 10, col_gap = 50)
+  expect_equal(
+    length(res),
+    ncol(test)
+  )
+  test2 <- basic_matrix_form(df, ignore_rownames = FALSE)
+  expect_error(
+    paginate_to_mpfs(test2, cpp = 50, col_gap = 50),
+    ".*Unable to find any valid pagination split for page 1.*"
+  )
+
+  expect_error(
+    export_as_txt(test2, cpp = 50, col_gap = 50),
+    ".*Unable to find any valid pagination split for page 1.*"
+  )
+})
 
 test_that("colwidths and num_rep_cols work when using lists of tables and listings", {
   bmf <- basic_matrix_form(mtcars, ignore_rownames = TRUE)
@@ -451,7 +471,18 @@ test_that("rep_cols works as intended for listings and tables", {
   expect_true(grepl(out[51], pattern = "vs")) # vs is repeated
   expect_true(grepl(out[51], pattern = "gear")) # gear is repeated
 
+  ## XXX this doesn't make sense, key cols are always repeated columns
+  ## having a listing with specified key columns and then
+  ## saying the number of rep columns is something else is an anti-pattern
+  ## we should not support. I made it work to not remove a test in my PR, but we should remove this test
   out <- export_as_txt(blmf, rep_cols = 1, cpp = 70) %>%
+    strsplit("\n") %>%
+    unlist()
+  expect_true(grepl(out[51], pattern = "vs")) # vs is repeated
+  expect_false(grepl(out[51], pattern = "gear")) # gear is NOT repeated
+
+  blmf2 <- basic_listing_mf(mtcars, keycols = "vs")
+  out <- export_as_txt(blmf2, rep_cols = 1, cpp = 70) %>%
     strsplit("\n") %>%
     unlist()
   expect_true(grepl(out[51], pattern = "vs")) # vs is repeated

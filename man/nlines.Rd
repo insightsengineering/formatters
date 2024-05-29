@@ -7,13 +7,13 @@
 \alias{nlines,character-method}
 \title{Number of lines required to print a value}
 \usage{
-nlines(x, colwidths = NULL, max_width = NULL)
+nlines(x, colwidths = NULL, max_width = NULL, fontspec, col_gap = NULL)
 
-\S4method{nlines}{list}(x, colwidths = NULL, max_width = NULL)
+\S4method{nlines}{list}(x, colwidths = NULL, max_width = NULL, fontspec, col_gap = NULL)
 
-\S4method{nlines}{NULL}(x, colwidths = NULL, max_width = NULL)
+\S4method{nlines}{NULL}(x, colwidths = NULL, max_width = NULL, fontspec, col_gap = NULL)
 
-\S4method{nlines}{character}(x, colwidths = NULL, max_width = NULL)
+\S4method{nlines}{character}(x, colwidths = NULL, max_width = NULL, fontspec, col_gap = NULL)
 }
 \arguments{
 \item{x}{(\code{ANY})\cr the object to be printed.}
@@ -22,6 +22,12 @@ nlines(x, colwidths = NULL, max_width = NULL)
 
 \item{max_width}{(\code{numeric(1)})\cr width that strings should be wrapped to when
 determining how many lines they require.}
+
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
+
+\item{col_gap}{(\code{numeric(1)})\cr width of gap between columns in number of spaces.
+Only used by methods which must calculate span widths after wrapping.}
 }
 \value{
 The number of lines needed to render the object \code{x}.
