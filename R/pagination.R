@@ -217,9 +217,11 @@ build_fail_msg <- function(row, lines, raw_rowlines,
     tot_ncol <- raw_ncol + n_reprint
     rep_ext <- rep_ext
     sprintf(
-      paste0("  FAIL: selected %d columns require %d %s, while only %d are available. \n",
-      "        details: [raw: %d %s (%d %s), rep. cols: %d %s (%d %s), tot. colgap: %d %s]."),
-      guess - start + 1,   
+      paste0(
+        "  FAIL: selected %d columns require %d %s, while only %d are available. \n",
+        "        details: [raw: %d %s (%d %s), rep. cols: %d %s (%d %s), tot. colgap: %d %s]."
+      ),
+      guess - start + 1,
       lines + rep_ext + sectlines,
       spacetype,
       lpp,
