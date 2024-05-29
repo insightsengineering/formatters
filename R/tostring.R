@@ -89,7 +89,7 @@ open_font_dev <- function(fontspec, silent = FALSE) {
     cat("\n***** START font dev debugging dump *****\n")
     cat(paste(msg, collapse = " -> "), "\n")
     print(fontspec)
-  } #end nocov
+  } # end nocov
   tmppdf <- tempfile(fileext = ".pdf")
   pdf(tmppdf)
   grid.newpage()
@@ -124,7 +124,7 @@ close_font_dev <- function() {
     assign("fontspec", list(), envir = font_dev_state)
     assign("spacewidth", NA_real_, envir = font_dev_state)
     assign("ismonospace", NA, envir = font_dev_state)
-#    assign("maxratio", NA_real_, envir = font_dev_state)
+    #    assign("maxratio", NA_real_, envir = font_dev_state)
     assign("dev_num", NA_integer_, envir = font_dev_state)
   }
   invisible(NULL)

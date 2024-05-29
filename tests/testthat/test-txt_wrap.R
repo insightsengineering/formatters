@@ -432,8 +432,10 @@ test_that("font device plays nice(ish) with other graphics devices", {
   filpdf <- tempfile("ohnoes", fileext = ".pdf")
   pdf(filpdf)
   my_pdf_dev <- dev.cur()
-  expect_warning(open_font_dev(fspec),
-                 "formatters is switching to the font state graphics device ")
+  expect_warning(
+    open_font_dev(fspec),
+    "formatters is switching to the font state graphics device "
+  )
   expect_silent(open_font_dev(fspec))
   expect_true(my_pdf_dev %in% dev.list())
   close_font_dev()
