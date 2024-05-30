@@ -682,7 +682,7 @@ setMethod("num_rep_cols", "MatrixPrintForm", function(obj) {
 setMethod("num_rep_cols", "MatrixPrintForm", function(obj) obj$num_rep_cols)
 
 #' @export
-#' @param value numeric(1). The new number of columns to repeat.
+#' @param value (`numeric(1)`)\cr the new number of columns to repeat.
 #' @rdname num_rep_cols
 setGeneric("num_rep_cols<-", function(obj, value) standardGeneric("num_rep_cols<-"))
 
