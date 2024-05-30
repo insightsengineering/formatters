@@ -1,10 +1,12 @@
-## formatters 0.5.6.9006
-
+## formatters 0.5.7.9000
+* Fixed bug where `col_gap` was not correctly taken into account during horizontal pagination (#249) by @gmbecker.
 * Add TrueType font support to pagination and wordwrapping machinery by @gmbecker
-* Deprecate `width`, `height` and `fontsize` arguments of `export_as_pdf()` using `lifecycle` package.
-* Add `lifecycle` badge files for documentation.
-* Fixed bug causing recursive appending of page number text during pagination.
-* Fixed bug where `col_gap` was not correctly taken into account during horizontal pagination (#249) by @gmbecker
+
+## formatters 0.5.7
+
+* Added `lifecycle` badge files for documentation.
+* Fixed a bug causing recursive appending of page number text during pagination.
+* Deprecated `width`, `height` and `fontsize` arguments of `export_as_pdf()` using `lifecycle` package.
 
 ## formatters 0.5.6
  * Added "N=xx" format and unit test for it.
