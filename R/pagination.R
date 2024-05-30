@@ -1210,8 +1210,8 @@ paginate_to_mpfs <- function(obj,
   }
 
   if (!is.null(page_num) &&
-      (length(prov_footer(obj)) == 0 ||
-       !grepl(page_num, tail(prov_footer(obj), 1), perl = TRUE))) {
+    (length(prov_footer(obj)) == 0 ||
+      !grepl(page_num, tail(prov_footer(obj), 1), perl = TRUE))) {
     # Only adding a line for pagination -> lpp - 1 would have worked too
     prov_footer(obj) <- c(prov_footer(obj), page_num)
   }
