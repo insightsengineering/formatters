@@ -45,7 +45,7 @@
 #' @return A `data.frame` of row/column-structure information used by the pagination machinery.
 #'
 #' @note The technically present root tree node is excluded from the summary returned by
-#'   both `make_row_df` and `make_col_df` (see [rtables::make_col_df()]), as it is simply the
+#'   both `make_row_df` and `make_col_df` (see relevant functions in`rtables`), as it is the
 #'   row/column structure of `tt` and thus not useful for pathing or pagination.
 #'
 #' @examples

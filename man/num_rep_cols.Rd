@@ -15,8 +15,6 @@ num_rep_cols(obj)
 
 \S4method{num_rep_cols}{MatrixPrintForm}(obj)
 
-\S4method{num_rep_cols}{MatrixPrintForm}(obj)
-
 num_rep_cols(obj) <- value
 
 \S4method{num_rep_cols}{ANY}(obj) <- value
