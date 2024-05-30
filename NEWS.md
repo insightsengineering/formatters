@@ -1,6 +1,6 @@
 ## formatters 0.5.7.9000
 * Fixed bug where `col_gap` was not correctly taken into account during horizontal pagination (#249) by @gmbecker.
-* Add TrueType font support to pagination and wordwrapping machinery by @gmbecker
+* Add TrueType font support to pagination and wordwrapping machinery by @gmbecker.
 
 ## formatters 0.5.7
 
