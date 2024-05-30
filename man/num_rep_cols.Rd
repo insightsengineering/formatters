@@ -26,7 +26,7 @@ num_rep_cols(obj) <- value
 \arguments{
 \item{obj}{(\code{ANY})\cr a table-like object.}
 
-\item{value}{numeric(1). The new number of columns to repeat.}
+\item{value}{(\code{numeric(1)})\cr the new number of columns to repeat.}
 }
 \value{
 An integer.

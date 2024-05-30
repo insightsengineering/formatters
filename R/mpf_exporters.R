@@ -551,7 +551,6 @@ export_as_pdf <- function(x,
                           max_width = NULL,
                           colwidths = NULL,
                           fontspec = font_spec(font_family, font_size, lineheight),
-                          # colwidths = propose_column_widths(x, indent_size = indent_size, fontspec = fontspec),
                           ttype_ok = FALSE) {
   ## this has to happen at the very beginning before the first use of fontspec
   ## which happens in the default value of colwidths. yay lazy evaluation...
