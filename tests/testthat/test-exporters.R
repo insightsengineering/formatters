@@ -151,6 +151,18 @@ test_that("export_as_txt maintains horizontal separator from table", {
   expect_equal(out, paste0(rep("=", nchar(out)), collapse = ""))
 })
 
+test_that("export_as_txt works with prov footer and page numbers", {
+  dfmf <- basic_matrix_form(mtcars)
+  prov_footer(dfmf) <- c("my", "prov", "footer")
+
+  set_default_page_number("page {i} of {n}")
+  expect_silent(res <- export_as_txt(dfmf, paginate = TRUE, cpp = 60))
+  set_default_page_number(NULL)
+
+  expect_true(grepl("page 1 of 2", res))
+  expect_true(grepl("page 2 of 2", res))
+})
+
 test_that("export_as_pdf works", {
   # Enhancing coverage -> modified copy from rtables
   bmf <- basic_matrix_form(mtcars)

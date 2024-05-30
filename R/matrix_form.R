@@ -186,16 +186,6 @@ disp_from_spans <- function(spans) {
   display
 }
 
-.fixup_cinfo <- function(col_df) {
-  if (is.null(col_df$par_extent)) {
-    col_df$par_extent <- 0L
-  }
-  if (is.null(col_df$node_class)) {
-    col_df$node_class <- "Column"
-  }
-  col_df
-}
-
 #' Constructor for Matrix Print Form
 #'
 #' Constructor for `MatrixPrintForm`, an intermediate representation for ASCII table printing.
