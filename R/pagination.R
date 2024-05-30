@@ -770,7 +770,7 @@ calc_lcpp <- function(page_type = NULL,
                       landscape = FALSE,
                       pg_width = page_dim(page_type)[if (landscape) 2 else 1],
                       pg_height = page_dim(page_type)[if (landscape) 1 else 2],
-                      fontspec,
+                      fontspec = font_spec(),
                       ## font_family = "Courier",
                       ## font_size = 8, # grid parameters
                       cpp = NA_integer_,
