@@ -286,7 +286,7 @@ valid_pag <- function(pagdf,
   if (row) {
     sectlines <- if (start == guess) 0L else sum(!is.na(pagdf[start:(guess - 1), "trailing_sep"]))
   } else { ## columns
-    ncols <- guess - start + 1 + length(pagdf$reprint_inds[[start]]) ## +1 because its incluive, 5-6 is 2 columns
+    ncols <- guess - start + 1 + length(pagdf$reprint_inds[[start]]) ## +1 because its inclusive, 5-6 is 2 columns
     sectlines <- col_gap * (ncols - as.integer(!has_rowlabels)) ## -1 if no row labels
   }
   lines <- rowlines + sectlines
