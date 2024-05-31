@@ -1209,7 +1209,7 @@ paginate_to_mpfs <- function(obj,
     return(mpfs)
   }
   prft <- prov_footer(obj)
-  if (!is.null(page_num) && (length(prft) == 0 || tail(!grepl(page_num, tail(prft, 1), perl = TRUE)))) {
+  if (!is.null(page_num)) {
     # Only adding a line for pagination -> lpp - 1 would have worked too
     prov_footer(obj) <- c(prov_footer(obj), page_num)
   }
@@ -1279,8 +1279,17 @@ paginate_to_mpfs <- function(obj,
   ## but we will if we ever allow force_paginate to do horiz
   ## pagination.
   if (length(fpags) > 1) {
-    deep_pag <- lapply(
-      fpags, paginate_to_mpfs,
+    # Correction for case we are entering here (page_by)
+    if (!is.null(page_num)) {
+      prov_footer(obj) <- head(prov_footer(obj), -1)
+      fpags <- lapply(fpags, function(x) {
+        prov_footer(x) <- head(prov_footer(x), -1)
+        x
+      })
+    }
+    # XXX to merge with listings and avoid recursive (after PR #296)
+    deep_pag <- paginate_to_mpfs( # what about the other parameters?
+      fpags,
       pg_size_spec = pg_size_spec,
       colwidths = colwidths,
       min_siblings = min_siblings,
@@ -1290,7 +1299,7 @@ paginate_to_mpfs <- function(obj,
       rep_cols = rep_cols,
       page_num = page_num
     )
-    return(unlist(deep_pag, recursive = FALSE))
+    return(deep_pag)
   } else if (has_page_title(fpags[[1]])) {
     obj <- fpags[[1]]
   }
