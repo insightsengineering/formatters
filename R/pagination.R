@@ -1208,7 +1208,7 @@ paginate_to_mpfs <- function(obj,
 
     return(mpfs)
   }
-  prft <- prov_footer(obj)
+
   if (!is.null(page_num)) {
     # Only adding a line for pagination -> lpp - 1 would have worked too
     prov_footer(obj) <- c(prov_footer(obj), page_num)
@@ -1267,7 +1267,7 @@ paginate_to_mpfs <- function(obj,
       col_gap = col_gap
     )
   }
-  ## this MUST alsways return a list, inluding list(obj) when
+  ## this MUST always return a list, including list(obj) when
   ## no forced pagination is needed! otherwise stuff breaks for things
   ## based on s3 classes that are lists underneath!!!
   fpags <- do_forced_paginate(obj)
