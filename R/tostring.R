@@ -91,9 +91,10 @@ open_font_dev <- function(fontspec, silent = FALSE) {
       }
     )
     message(paste("\n***** START font dev debugging dump *****\n",
-                  paste(msg, collapse = " -> "),
-                  paste(capture.output(print(fontspec)), collapse = "\n"),
-                  sep = "\n"))
+      paste(msg, collapse = " -> "),
+      paste(capture.output(print(fontspec)), collapse = "\n"),
+      sep = "\n"
+    ))
   }
   tmppdf <- tempfile(fileext = ".pdf")
   pdf(tmppdf)
