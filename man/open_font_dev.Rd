@@ -3,11 +3,17 @@
 \name{open_font_dev}
 \alias{open_font_dev}
 \alias{close_font_dev}
+\alias{debug_font_dev}
+\alias{undebug_font_dev}
 \title{Activate font state}
 \usage{
 open_font_dev(fontspec, silent = FALSE)
 
 close_font_dev()
+
+debug_font_dev()
+
+undebug_font_dev()
 }
 \arguments{
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
@@ -19,10 +25,10 @@ emitted if this function switches away from an active graphics device.}
 \value{
 \itemize{
 \item \code{open_font_dev} returns a logical value indicating whether a \emph{new} pdf device was opened.
-\item \code{close_font_dev} returns \code{NULL}.
+\item \code{close_font_dev}, \code{debug_font_dev} and \code{undebug_font_dev} return \code{NULL}.
 }
 
-In both cases the value is returned invisibly.
+In all cases the value is returned invisibly.
 }
 \description{
 Activate font state
@@ -45,6 +51,9 @@ If a new device is opened, it caches \code{spacewidth} and
 
 \code{close_font_dev} closes any open font state device
 and clears the cached values.
+
+\code{debug_font_dev} and \code{undebug_font_dev} activate and deactivate, respectively,
+logging of where in the call stack font devices are being opened.
 }
 \examples{
 open_font_dev(font_spec("Times"))

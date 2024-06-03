@@ -422,11 +422,12 @@ test_that("wrapping works with truetype font", {
 })
 
 
-test_that("font device plays nice(ish) with other graphics devices", {
+test_that("misc font device related test coverage", {
   fspec <- font_spec("Times", 8, 1.2)
   expect_silent(open_font_dev(fspec))
   expect_silent(close_font_dev())
 
+  ## font device plays nice with other devices
   open_font_dev(fspec)
   ## a challenger approaches!!
   filpdf <- tempfile("ohnoes", fileext = ".pdf")
@@ -441,4 +442,22 @@ test_that("font device plays nice(ish) with other graphics devices", {
   close_font_dev()
   expect_true(my_pdf_dev %in% dev.list())
   dev.off(my_pdf_dev)
+
+  ## cover both debugging and non-raw nchar_ttype for non-monospace
+  expect_message(debug_font_dev())
+  ## use anon function to make sure the stack dump works even in that case
+  expect_message((function() {
+    nchar_ttype("hi", font_spec("Times"))
+  })(), "START font dev debugging dump")
+  expect_message(undebug_font_dev())
+
+  expect_error(get_space_width())
+  expect_error(.open_fdev_is_monospace())
+  expect_true(is_monospace(NULL))
+  expect_false(open_font_dev(NULL))
+  expect_error(wrap_string_ttype("ahahahahahaha", 5, wordbreak_ok = FALSE))
+  expect_identical(nchar_ttype("hiya", NULL), nchar("hiya"))
+  expect_error(.open_fdev_is_monospace())
+  expect_true(is_monospace(font_spec()))
+  expect_false(is_monospace(font_spec("Times")))
 })

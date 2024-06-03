@@ -675,6 +675,7 @@ mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf), f
   pdf <- splice_fnote_info_in(pdf, refdf, row = FALSE)
   if (!is.null(colpaths)) {
     if (length(colpaths) != NROW(pdf)) {
+      ## nocov start
       stop(
         "Got non-null colpaths with length not equal to number of columns (",
         length(colpaths),
@@ -682,6 +683,7 @@ mpf_infer_cinfo <- function(mf, colwidths = NULL, rep_cols = num_rep_cols(mf), f
         NROW(pdf),
         ") during MatrixPrintForm construction. Please contact the maintainers."
       )
+      ## nocov end
     }
     pdf[["path"]] <- colpaths
   }

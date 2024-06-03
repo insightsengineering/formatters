@@ -9,6 +9,7 @@ font_dev_state$spacewidth <- NA_real_
 font_dev_state$ismonospace <- NA
 font_dev_state$max_ratio <- NA_real_
 font_dev_state$dev_num <- NA_integer_
+font_dev_state$debug_active <- FALSE
 
 
 cwidth_inches_unsafe <- function(x) {
@@ -41,11 +42,14 @@ cwidth_inches_unsafe <- function(x) {
 #' `close_font_dev` closes any open font state device
 #' and clears the cached values.
 #'
+#' `debug_font_dev` and `undebug_font_dev` activate and deactivate, respectively,
+#' logging of where in the call stack font devices are being opened.
+#'
 #' @return
 #' - `open_font_dev` returns a logical value indicating whether a *new* pdf device was opened.
-#' - `close_font_dev` returns `NULL`.
+#' - `close_font_dev`, `debug_font_dev` and `undebug_font_dev` return `NULL`.
 #'
-#' In both cases the value is returned invisibly.
+#' In all cases the value is returned invisibly.
 #'
 #' @examples
 #' open_font_dev(font_spec("Times"))
@@ -56,7 +60,7 @@ cwidth_inches_unsafe <- function(x) {
 open_font_dev <- function(fontspec, silent = FALSE) {
   if (is.null(fontspec)) {
     return(invisible(FALSE))
-  } else if (font_dev_state$open) {
+  } else if (font_dev_is_open()) {
     if (identical(font_dev_state$fontspec, fontspec)) {
       if (!silent && dev.cur() != font_dev_state$dev_num) {
         warning(
@@ -71,8 +75,8 @@ open_font_dev <- function(fontspec, silent = FALSE) {
     } else {
       close_font_dev()
     }
-  } else if (FALSE && !font_dev_state$open) { ## remove 'FALSE &&' to get debugging info to helplocate places which aren't receiving/using the state properly # nolint
-    # start nocov
+  }
+  if (font_dev_state$debug_active && !font_dev_is_open()) { ## call debug_font_dev beforehand to get debugging info to helplocate places which aren't receiving/using the state properly # nolint
     ## dump the call stack any time we have cache misses
     ## and have to open a completely new font state device
     scalls <- sys.calls()
@@ -86,10 +90,11 @@ open_font_dev <- function(fontspec, silent = FALSE) {
         toret
       }
     )
-    cat("\n***** START font dev debugging dump *****\n")
-    cat(paste(msg, collapse = " -> "), "\n")
-    print(fontspec)
-  } # end nocov
+    message(paste("\n***** START font dev debugging dump *****\n",
+                  paste(msg, collapse = " -> "),
+                  paste(capture.output(print(fontspec)), collapse = "\n"),
+                  sep = "\n"))
+  }
   tmppdf <- tempfile(fileext = ".pdf")
   pdf(tmppdf)
   grid.newpage()
@@ -122,9 +127,26 @@ close_font_dev <- function() {
   invisible(NULL)
 }
 
+#' @rdname open_font_dev
+#' @export
+debug_font_dev <- function() {
+  message("debugging font device swapping. call undebug_font_dev() to turn debugging back off.")
+  font_dev_state$debug_active <- TRUE
+  invisible(NULL)
+}
+
+#' @rdname open_font_dev
+#' @export
+undebug_font_dev <- function() {
+  message("no longer debugging font device swapping.")
+  font_dev_state$debug_active <- FALSE
+  invisible(NULL)
+}
+
+
 ## can only be called when font_dev_state$open is TRUE
 get_space_width <- function() {
-  if (!font_dev_state$open) {
+  if (!font_dev_is_open()) {
     stop(
       "get_space_width called when font dev state is not open. ",
       "This shouldn't happen, please contact the maintainers."
@@ -134,7 +156,7 @@ get_space_width <- function() {
 }
 
 .open_fdev_is_monospace <- function() {
-  if (!font_dev_state$open) {
+  if (!font_dev_is_open()) {
     stop(
       ".open_fdev_is_monospace called when font dev state is not open. ",
       "This shouldn't happen, please contact the maintainers."
@@ -1191,45 +1213,6 @@ wrap_string_ttype <- function(str,
     ret <- paste(ret, collapse = collapse)
   }
   ret
-}
-
-## w comes in in terms of number of spaces, but
-## we need the more generic "number of characters"
-## to pass to stringi::stri_wrap
-#' @importFrom stats quantile
-.ttype_adjust_width <- function(str, w, fontspec, adj_qntl) {
-  ## we are going to be conservative in the truetype
-  ## case, but monospace behavior shouldn't change
-  ## so just immediately return w.
-  new_dev <- open_font_dev(fontspec)
-  if (new_dev) {
-    on.exit(close_font_dev())
-  }
-
-  if (is_monospace(fontspec = fontspec) || nchar(str) == 0) {
-    return(w)
-  }
-  nchars <- nchar(str)
-  ind_chars <- strsplit(str, "")[[1]]
-  nspaces <- nchar_ttype(ind_chars, fontspec, raw = TRUE)
-  if (length(nspaces) == 1) {
-    spc_per_char <- nspaces
-  } else {
-    ## use 75th percentile as conservative
-    ## "character width"...
-    ## if 75% of chars in str are that wide
-    ## or narrower, having enough of them
-    ## in a row to make wrapping do the wrong
-    ## thing  seems very unlikely
-    spc_per_char <- quantile(nspaces, adj_qntl)
-  }
-
-  ## convert from w spaces to adj_w characters
-  ## where a "character" takes up the average
-  ## width of characters in str
-  ## then be a bit conservative with floor
-  adj_w <- max(1L, floor(w / spc_per_char))
-  adj_w
 }
 
 # help function: Very rare case where the recursion is stuck in a loop
