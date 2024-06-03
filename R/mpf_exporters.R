@@ -398,7 +398,6 @@ mpf_to_rtf <- function(mpf,
 #' @export
 export_as_rtf <- function(x,
                           file = NULL,
-                          # colwidths = propose_column_widths(matrix_form(x, TRUE, fontspec = fontspec), fontspec = fontspec), # nolint
                           colwidths = NULL,
                           page_type = "letter",
                           pg_width = page_dim(page_type)[if (landscape) 2 else 1],
