@@ -4,13 +4,16 @@
 \alias{propose_column_widths}
 \title{Propose column widths based on the \code{MatrixPrintForm} of an object}
 \usage{
-propose_column_widths(x, indent_size = 2)
+propose_column_widths(x, indent_size = 2, fontspec = font_spec())
 }
 \arguments{
 \item{x}{(\code{ANY})\cr a \code{MatrixPrintForm} object, or an object with a \code{matrix_form} method.}
 
 \item{indent_size}{(\code{numeric(1)})\cr indent size, in characters. Ignored when \code{x} is already
 a \code{MatrixPrintForm} object in favor of information there.}
+
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 }
 \value{
 A vector of column widths based on the content of \code{x} for use in printing and pagination.

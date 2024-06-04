@@ -4,6 +4,9 @@
 \alias{num_rep_cols}
 \alias{num_rep_cols,ANY-method}
 \alias{num_rep_cols,MatrixPrintForm-method}
+\alias{num_rep_cols<-}
+\alias{num_rep_cols<-,ANY-method}
+\alias{num_rep_cols<-,MatrixPrintForm-method}
 \title{Number of repeated columns}
 \usage{
 num_rep_cols(obj)
@@ -11,9 +14,17 @@ num_rep_cols(obj)
 \S4method{num_rep_cols}{ANY}(obj)
 
 \S4method{num_rep_cols}{MatrixPrintForm}(obj)
+
+num_rep_cols(obj) <- value
+
+\S4method{num_rep_cols}{ANY}(obj) <- value
+
+\S4method{num_rep_cols}{MatrixPrintForm}(obj) <- value
 }
 \arguments{
 \item{obj}{(\code{ANY})\cr a table-like object.}
+
+\item{value}{(\code{numeric(1)})\cr the new number of columns to repeat.}
 }
 \value{
 An integer.

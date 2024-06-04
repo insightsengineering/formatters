@@ -29,7 +29,9 @@ export_as_txt(
   rep_cols = NULL,
   verbose = FALSE,
   page_break = "\\\\s\\\\n",
-  page_num = default_page_number()
+  page_num = default_page_number(),
+  fontspec = font_spec(font_family, font_size, lineheight),
+  col_gap = 3
 )
 }
 \arguments{
@@ -103,6 +105,12 @@ pagination breaks should be shown. Defaults to \code{FALSE}.}
 
 \item{page_num}{(\code{string})\cr placeholder string for page numbers. See \link{default_page_number} for more
 information. Defaults to \code{NULL}.}
+
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
+
+\item{col_gap}{(\code{numeric(1)})\cr The number of spaces to be placed between columns
+in the rendered table (and assumed for horizontal pagination).}
 }
 \value{
 If \code{file} is \code{NULL}, the full paginated and concatenated string value is returned,
