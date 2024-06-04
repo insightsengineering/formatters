@@ -12,7 +12,7 @@ more sophisticated custom matrix_form methods."><meta property="og:image" conten
     
     <a class="navbar-brand me-2" href="../index.html">formatters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.7.9000</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,31 +29,6 @@ more sophisticated custom matrix_form methods."><meta property="og:image" conten
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.6-rc1">v0.5.6-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.4-rc1">v0.5.4-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3-rc2">v0.5.3-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3-rc1">v0.5.3-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.2-rc1">v0.5.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1-rc1">v0.5.1-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0-rc1">v0.5.0-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.7">v0.5.7</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.6">v0.5.6</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.5">v0.5.5</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.3">v0.5.3</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.2">v0.5.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1">v0.5.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0">v0.5.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.1">v0.4.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.4.0">v0.4.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.3.3">v0.3.3</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -95,11 +70,18 @@ more sophisticated custom <code>matrix_form</code> methods.</p>
 <span>  parent_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ignore_rownames <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  add_decoration <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  fontspec <span class="op">=</span> <span class="fu"><a href="font_spec.html">font_spec</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  split_labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  data_labels <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  data_labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  num_rep_cols <span class="op">=</span> <span class="fl">0L</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">basic_listing_mf</span><span class="op">(</span><span class="va">df</span>, keycols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, add_decoration <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">basic_listing_mf</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  keycols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>  add_decoration <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  fontspec <span class="op">=</span> <span class="fu"><a href="font_spec.html">font_spec</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -130,6 +112,11 @@ for some specific scenarios.</p></dd>
 be added to the matrix form.</p></dd>
 
 
+<dt>fontspec</dt>
+<dd><p>(<code>font_spec</code>)<br> a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by <code><a href="font_spec.html">font_spec()</a></code>.</p></dd>
+
+
 <dt>split_labels</dt>
 <dd><p>(<code>string</code>)<br> indicates which column to use as split labels. If
 <code>NULL</code>, no split labels are used.</p></dd>
@@ -141,6 +128,12 @@ ignored if no <code>split_labels</code> is present and is automatically assigned
 <code>"Analysis method"</code> when <code>split_labels</code> is present, but <code>data_labels</code> is <code>NULL</code>.
 Its direct column name is used as node name in <code>"DataRow"</code> pathing. See <code><a href="mpf_accessors.html">mf_rinfo()</a></code>
 for more information.</p></dd>
+
+
+<dt>num_rep_cols</dt>
+<dd><p>(<code>numeric(1)</code>)<br> Number of columns to be treated as repeating columns.
+Defaults to <code>0</code> for <code>basic_matrix_form</code> and <code>length(keycols)</code> for
+<code>basic_listing_mf</code>. Note repeating columns are separate from row labels if present.</p></dd>
 
 
 <dt>keycols</dt>
