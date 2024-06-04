@@ -1622,10 +1622,6 @@ spread_integer <- function(x, len) {
   }
 }
 
-spread_width <- function(x, len) {
-  rep(x / len, len)
-}
-
 #' Check if a value is a whole number
 #'
 #' @param x (`numeric(1)`)\cr a numeric value.

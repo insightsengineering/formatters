@@ -18,7 +18,8 @@ nlines(x, colwidths = NULL, max_width = NULL, fontspec, col_gap = NULL)
 \arguments{
 \item{x}{(\code{ANY})\cr the object to be printed.}
 
-\item{colwidths}{(\code{numeric})\cr column widths (if necessary).}
+\item{colwidths}{(\code{numeric})\cr column widths (if necessary). Principally used in \code{rtables}'
+method.}
 
 \item{max_width}{(\code{numeric(1)})\cr width that strings should be wrapped to when
 determining how many lines they require.}

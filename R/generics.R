@@ -179,7 +179,8 @@ setMethod(
 #'
 #' @inheritParams open_font_dev
 #' @param x (`ANY`)\cr the object to be printed.
-#' @param colwidths (`numeric`)\cr column widths (if necessary).
+#' @param colwidths (`numeric`)\cr column widths (if necessary). Principally used in `rtables`'
+#'   method.
 #' @param max_width (`numeric(1)`)\cr width that strings should be wrapped to when
 #'   determining how many lines they require.
 #' @param col_gap (`numeric(1)`)\cr width of gap between columns in number of spaces.
@@ -219,9 +220,7 @@ setMethod("nlines", "character", function(x, colwidths, max_width, fontspec, col
   splstr <- strsplit(x, "\n", fixed = TRUE)
   if (length(x) == 0) {
     return(0L)
-  } ## else if(is.null(colwidths) && is.null(max_width)) { ## don't need wrapping
-  ##   return(length(splstr))
-  ## }
+  }
 
   sum(vapply(splstr,
     function(xi, max_width) {
