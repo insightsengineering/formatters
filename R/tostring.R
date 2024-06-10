@@ -58,7 +58,7 @@ cwidth_inches_unsafe <- function(x) {
 #'
 #' @export
 open_font_dev <- function(fontspec, silent = FALSE) {
-  if (missing(fontspec) || is.null(fontspec)) {
+  if (is.null(fontspec)) {
     return(invisible(FALSE))
   } else if (font_dev_is_open()) {
     if (identical(font_dev_state$fontspec, fontspec)) {
@@ -1260,9 +1260,6 @@ split_words_by <- function(wrd, width) {
 #'
 #' @export
 wrap_txt <- function(str, width, collapse = NULL, fontspec = font_spec()) {
-  if (missing(fontspec)) {
-    fontspec <- NULL
-  }
   new_dev <- open_font_dev(fontspec)
   if (new_dev) {
     on.exit(close_font_dev())

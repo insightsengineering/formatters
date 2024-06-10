@@ -202,6 +202,7 @@ setGeneric(
 setMethod(
   "nlines", "list",
   function(x, colwidths, max_width, fontspec, col_gap = NULL) {
+    if (missing(fontspec)) fontspec <- NULL
     if (length(x) == 0) {
       0L
     } else {
@@ -217,6 +218,7 @@ setMethod("nlines", "NULL", function(x, colwidths, max_width, fontspec, col_gap 
 #' @export
 #' @rdname nlines
 setMethod("nlines", "character", function(x, colwidths, max_width, fontspec, col_gap = NULL) {
+  if (missing(fontspec)) fontspec <- NULL
   splstr <- strsplit(x, "\n", fixed = TRUE)
   if (length(x) == 0) {
     return(0L)
