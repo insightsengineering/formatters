@@ -1260,6 +1260,9 @@ split_words_by <- function(wrd, width) {
 #'
 #' @export
 wrap_txt <- function(str, width, collapse = NULL, fontspec = font_spec()) {
+  if (missing(fontspec)) {
+    fontspec <- NULL
+  }
   new_dev <- open_font_dev(fontspec)
   if (new_dev) {
     on.exit(close_font_dev())
