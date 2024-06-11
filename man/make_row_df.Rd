@@ -66,7 +66,8 @@ in this summary. Defaults to \code{TRUE}. May not be supported by all methods.}
 \item{max_width}{(\code{numeric(1)} or \code{NULL})\cr maximum width for title/footer materials.}
 
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
-calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.
+If \code{NULL}, no actions on the pdf device are taken and the function returns \code{FALSE}.}
 
 \item{col_gap}{(\code{numeric(1)})\cr the gap to be assumed between columns, in number of spaces with
 font specified by \code{fontspec}.}

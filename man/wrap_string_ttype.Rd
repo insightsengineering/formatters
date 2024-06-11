@@ -23,7 +23,8 @@ a \code{list}, it will be looped as a \code{list} and returned with \code{unlist
 \item{width}{(\code{numeric(1)})\cr width, in characters, that the text should be wrapped to.}
 
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
-calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.
+If \code{NULL}, no actions on the pdf device are taken and the function returns \code{FALSE}.}
 
 \item{min_ok_chars}{(\code{numeric(1)})\cr number of minimum characters that remain
 on either side when a word is split.}

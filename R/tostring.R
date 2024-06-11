@@ -21,6 +21,7 @@ cwidth_inches_unsafe <- function(x) {
 #'
 #' @param fontspec (`font_spec`)\cr a font_spec object specifying the font information to use for
 #'   calculating string widths and heights, as returned by [font_spec()].
+#'   If `NULL`, no actions on the pdf device are taken and the function returns `FALSE`.
 #' @param silent (`logical(1)`)\cr If `FALSE`, the default, a warning will be
 #'   emitted if this function switches away from an active graphics device.
 #'

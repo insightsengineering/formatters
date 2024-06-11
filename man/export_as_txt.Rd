@@ -107,7 +107,8 @@ pagination breaks should be shown. Defaults to \code{FALSE}.}
 information. Defaults to \code{NULL}.}
 
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
-calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.
+If \code{NULL}, no actions on the pdf device are taken and the function returns \code{FALSE}.}
 
 \item{col_gap}{(\code{numeric(1)})\cr The number of spaces to be placed between columns
 in the rendered table (and assumed for horizontal pagination).}

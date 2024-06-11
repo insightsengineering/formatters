@@ -37,7 +37,8 @@ to \code{TRUE}.}
 the relevant method). Defaults to 2.}
 
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
-calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.
+If \code{NULL}, no actions on the pdf device are taken and the function returns \code{FALSE}.}
 
 \item{col_gap}{(\code{numeric(1)})\cr the gap to be assumed between columns, in number of spaces with
 font specified by \code{fontspec}.}

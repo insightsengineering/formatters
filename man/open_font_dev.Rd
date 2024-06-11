@@ -17,7 +17,8 @@ undebug_font_dev()
 }
 \arguments{
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
-calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.
+If \code{NULL}, no actions on the pdf device are taken and the function returns \code{FALSE}.}
 
 \item{silent}{(\code{logical(1)})\cr If \code{FALSE}, the default, a warning will be
 emitted if this function switches away from an active graphics device.}

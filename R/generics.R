@@ -201,7 +201,7 @@ setGeneric(
 #' @rdname nlines
 setMethod(
   "nlines", "list",
-  function(x, colwidths, max_width, fontspec, col_gap = NULL) {
+  function(x, colwidths, max_width, fontspec = NULL, col_gap = NULL) {
     if (length(x) == 0) {
       0L
     } else {
@@ -223,7 +223,7 @@ setMethod("nlines", "character", function(x, colwidths, max_width, fontspec = NU
   }
 
   sum(vapply(splstr,
-    function(xi, max_width) {
+    function(xi, max_width, fontspec) {
       if (length(xi) == 0) {
         1L
       } else if (length(max_width) == 0) { ## this happens with strsplit("", "\n")
@@ -232,7 +232,8 @@ setMethod("nlines", "character", function(x, colwidths, max_width, fontspec = NU
         length(wrap_txt(xi, max_width, fontspec = fontspec))
       }
     }, 1L,
-    max_width = max_width
+    max_width = max_width,
+    fontspec = fontspec
   ))
 })
 

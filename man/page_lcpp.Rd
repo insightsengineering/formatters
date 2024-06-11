@@ -40,7 +40,8 @@ margins and \code{.75} for both horizontal margins.}
 \item{pg_height}{(\code{numeric(1)})\cr page height in inches.}
 
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
-calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.
+If \code{NULL}, no actions on the pdf device are taken and the function returns \code{FALSE}.}
 }
 \value{
 A named list containing LPP (lines per page) and CPP (characters per page)
