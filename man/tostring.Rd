@@ -41,8 +41,7 @@ used. Parameter is ignored if \code{tf_wrap = FALSE}.}
 \code{\link[=default_hsep]{default_hsep()}} for more information.}
 
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
-calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.
-If \code{NULL}, no actions on the pdf device are taken and the function returns \code{FALSE}.}
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 
 \item{ttype_ok}{(\code{logical(1)})\cr should truetype (non-monospace) fonts be
 allowed via \code{fontspec}. Defaults to \code{FALSE}. This parameter is primarily

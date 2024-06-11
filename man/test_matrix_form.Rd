@@ -43,8 +43,7 @@ for some specific scenarios.}
 be added to the matrix form.}
 
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
-calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.
-If \code{NULL}, no actions on the pdf device are taken and the function returns \code{FALSE}.}
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 
 \item{split_labels}{(\code{string})\cr indicates which column to use as split labels. If
 \code{NULL}, no split labels are used.}

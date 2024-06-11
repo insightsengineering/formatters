@@ -144,8 +144,7 @@ Defaults to 0.}
 in the rendered table (and assumed for horizontal pagination).}
 
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
-calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.
-If \code{NULL}, no actions on the pdf device are taken and the function returns \code{FALSE}.}
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 
 \item{verbose}{(\code{flag})\cr whether additional informative messages about the search for
 pagination breaks should be shown. Defaults to \code{FALSE}.}

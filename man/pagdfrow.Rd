@@ -71,8 +71,7 @@ after pagination.}
 If \code{NA_character_}, no separator is used.}
 
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
-calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.
-If \code{NULL}, no actions on the pdf device are taken and the function returns \code{FALSE}.}
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 }
 \value{
 A single row \code{data.frame} with the appropriate columns for a pagination info data frame.

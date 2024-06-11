@@ -107,8 +107,7 @@ equal to \code{ncol(strings)}.}
 the relevant method). Defaults to 2.}
 
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
-calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.
-If \code{NULL}, no actions on the pdf device are taken and the function returns \code{FALSE}.}
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 
 \item{rep_cols}{(\code{numeric(1)})\cr number of columns to be repeated as context during horizontal pagination.}
 }

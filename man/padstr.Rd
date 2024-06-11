@@ -15,8 +15,7 @@ padstr(x, n, just = list_valid_aligns(), fontspec = font_spec())
 \code{"center"}, \code{"right"}, \code{"left"}, \code{"dec_right"}, \code{"dec_left"}, or \code{"decimal"}.}
 
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
-calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.
-If \code{NULL}, no actions on the pdf device are taken and the function returns \code{FALSE}.}
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 }
 \value{
 \code{x}, padded to be a string of length \code{n}.

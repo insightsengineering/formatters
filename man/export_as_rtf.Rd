@@ -51,8 +51,7 @@ if the family named is not monospaced. Defaults to \code{"Courier"}.}
 \item{lineheight}{(\code{numeric(1)})\cr line height. Defaults to \code{1}.}
 
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
-calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.
-If \code{NULL}, no actions on the pdf device are taken and the function returns \code{FALSE}.}
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 
 \item{...}{additional parameters passed to \code{\link[=paginate_to_mpfs]{paginate_to_mpfs()}}.}
 }

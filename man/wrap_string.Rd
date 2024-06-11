@@ -20,8 +20,7 @@ have been split and should be pasted together. This is usually done internally w
 the wrapping along with other internal values.}
 
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
-calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.
-If \code{NULL}, no actions on the pdf device are taken and the function returns \code{FALSE}.}
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 }
 \value{
 A string if \code{str} is one element and if \code{collapse = NULL}. Otherwise, a list of elements

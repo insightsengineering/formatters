@@ -33,8 +33,7 @@ for some specific scenarios.}
 \item{paths}{(\code{list})\cr list of paths to the rows. Defaults to \code{lapply(rnames, function(x) c(parent_path, x))}.}
 
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
-calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.
-If \code{NULL}, no actions on the pdf device are taken and the function returns \code{FALSE}.}
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 }
 \value{
 A \code{data.frame} suitable for use in both the \code{MatrixPrintForm} constructor and the pagination machinery.
