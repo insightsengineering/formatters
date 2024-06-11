@@ -12,7 +12,8 @@ page_lcpp(
   lineheight = 1,
   margins = c(top = 0.5, bottom = 0.5, left = 0.75, right = 0.75),
   pg_width = NULL,
-  pg_height = NULL
+  pg_height = NULL,
+  fontspec = font_spec(font_family, font_size, lineheight)
 )
 }
 \arguments{
@@ -37,6 +38,9 @@ margins and \code{.75} for both horizontal margins.}
 \item{pg_width}{(\code{numeric(1)})\cr page width in inches.}
 
 \item{pg_height}{(\code{numeric(1)})\cr page height in inches.}
+
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 }
 \value{
 A named list containing LPP (lines per page) and CPP (characters per page)

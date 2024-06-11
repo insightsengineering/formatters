@@ -17,7 +17,9 @@ make_row_df(
   repr_inds = integer(),
   sibpos = NA_integer_,
   nsibs = NA_integer_,
-  max_width = NULL
+  max_width = NULL,
+  fontspec = font_spec(),
+  col_gap = 3L
 )
 
 \S4method{make_row_df}{MatrixPrintForm}(
@@ -32,7 +34,9 @@ make_row_df(
   repr_inds = integer(),
   sibpos = NA_integer_,
   nsibs = NA_integer_,
-  max_width = NULL
+  max_width = NULL,
+  fontspec = font_spec(),
+  col_gap = mf_colgap(tt) \%||\% 3L
 )
 }
 \arguments{
@@ -60,6 +64,12 @@ in this summary. Defaults to \code{TRUE}. May not be supported by all methods.}
 \item{nsibs}{(\code{integer(1)})\cr internal detail, do not set manually.}
 
 \item{max_width}{(\code{numeric(1)} or \code{NULL})\cr maximum width for title/footer materials.}
+
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
+
+\item{col_gap}{(\code{numeric(1)})\cr the gap to be assumed between columns, in number of spaces with
+font specified by \code{fontspec}.}
 }
 \value{
 A \code{data.frame} of row/column-structure information used by the pagination machinery.
@@ -84,7 +94,7 @@ Most arguments beyond \code{tt} and \code{visible_only} are present so that \cod
 }
 \note{
 The technically present root tree node is excluded from the summary returned by
-both \code{make_row_df} and \code{make_col_df} (see \code{\link[rtables:make_col_df]{rtables::make_col_df()}}), as it is simply the
+both \code{make_row_df} and \code{make_col_df} (see relevant functions in\code{rtables}), as it is the
 row/column structure of \code{tt} and thus not useful for pathing or pagination.
 }
 \examples{

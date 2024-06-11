@@ -34,12 +34,12 @@ test_that("basic_listing_mf respect core modifications from table matrix_form", 
     "sub",
     "titles",
     "",
-    "———————————————————————————————",
+    "-------------------------------",
     "vs   gear       rnms        mpg",
-    "———————————————————————————————",
+    "-------------------------------",
     "0     4       Mazda RX4     21 ",
     "            Mazda RX4 Wag   21 ",
-    "———————————————————————————————",
+    "-------------------------------",
     "",
     "main",
     "  footer",
@@ -47,7 +47,7 @@ test_that("basic_listing_mf respect core modifications from table matrix_form", 
     "prov footer"
   )
   expect_identical(
-    strsplit(toString(lmf), "\n")[[1]],
+    strsplit(toString(lmf, hsep = "-"), "\n")[[1]],
     print_out
   )
 })

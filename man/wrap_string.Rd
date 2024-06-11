@@ -5,9 +5,9 @@
 \alias{wrap_txt}
 \title{Wrap a string to a precise width}
 \usage{
-wrap_string(str, width, collapse = NULL)
+wrap_string(str, width, collapse = NULL, fontspec = font_spec())
 
-wrap_txt(str, width, collapse = NULL)
+wrap_txt(str, width, collapse = NULL, fontspec = font_spec())
 }
 \arguments{
 \item{str}{(\code{string}, \code{character}, or \code{list})\cr string to be wrapped. If it is a \code{vector} or
@@ -18,6 +18,9 @@ a \code{list}, it will be looped as a \code{list} and returned with \code{unlist
 \item{collapse}{(\code{string} or \code{NULL})\cr collapse character used to separate segments of words that
 have been split and should be pasted together. This is usually done internally with \code{"\\n"} to update
 the wrapping along with other internal values.}
+
+\item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 }
 \value{
 A string if \code{str} is one element and if \code{collapse = NULL}. Otherwise, a list of elements

@@ -3,8 +3,63 @@
 NULL
 ## https://www.ietf.org/rfc/rfc0678.txt
 
-## This assumes fixed font size, monospaced font
+times_font_name <- function() {
+  plat <- .Platform$OS.type
+  switch(plat,
+    "unix" = "Times",
+    "windows" = "Times New Roman"
+  )
+}
 
+#' Font size specification
+#'
+#' @param font_family (`character(1)`)\cr font family to use during
+#'   string width and lines-per-page calculations. You can specify
+#'   "Times New Roman" as "Times" or "serif", regardless of OS.
+#'   Beyond that, see `family` entry in [graphics::par()]
+#'   for details.
+#' @param font_size (`numeric(1)`)\cr font size to use during string width
+#'   calculations and lines-per-page calculations.
+#' @param lineheight (`numeric(1)`)\cr line height to use during
+#'   lines-per-page calculations.
+#'
+#' @details Passing the output of this constructor
+#' to the rendering or pagination machinery defines
+#' a font for use when calculating word wrapping and pagination.
+#'
+#' @note Specifying font in this way to, e.g., [export_as_txt()] or
+#' [toString()] will not affect the font size of the output, as these
+#' are both raw text formats. [export_as_pdf()] will use the specified font.
+#'
+#' @seealso [nchar_ttype()], [toString()], [`pagination_algo`], [export_as_pdf()]
+#'
+#' @examples
+#' fspec <- font_spec("Courier", 8, 1)
+#'
+#' lets <- paste(letters, collapse = "")
+#'
+#' nchar_ttype(lets, fspec)
+#'
+#' fspec2 <- font_spec("Times", 8, 1)
+#'
+#' nchar_ttype(lets, fspec2)
+#'
+#' @export
+font_spec <- function(font_family = "Courier",
+                      font_size = 8,
+                      lineheight = 1) {
+  if (font_family %in% c("Times New Roman", "Times", "serif")) {
+    font_family <- times_font_name()
+  }
+  structure(
+    list(
+      family = font_family,
+      size = font_size,
+      lineheight = lineheight
+    ),
+    class = c("font_spec", "list")
+  )
+}
 std_cpi <- 10L
 std_lpi <- 6L
 
@@ -96,23 +151,16 @@ page_dim <- function(page_type) {
 #' font_lcpi(font_size = 8, lineheight = 1.1)
 #'
 #' @keywords internal
-font_lcpi <- function(font_family = "Courier", font_size = 8, lineheight = 1) {
-  tmppdf <- tempfile(fileext = ".pdf")
-  pdf(tmppdf)
-  on.exit(dev.off())
-  grid.newpage()
-  gp <- gpar(fontfamily = font_family, fontsize = font_size, lineheight = lineheight)
-  pushViewport(plotViewport(gp = gp))
-  if (convertWidth(unit(1, "strwidth", "."), "inches", valueOnly = TRUE) !=
-    convertWidth(unit(1, "strwidth", "M"), "inches", valueOnly = TRUE)) { # nolint
-    stop(
-      "The font family you selected - ",
-      font_family,
-      " - does not appear to be monospaced. This is not supported."
-    )
+font_lcpi <- function(font_family = "Courier",
+                      font_size = 8,
+                      lineheight = 1,
+                      fontspec = font_spec(font_family, font_size, lineheight)) {
+  new_dev <- open_font_dev(fontspec)
+  if (new_dev) {
+    on.exit(close_font_dev())
   }
   list(
-    cpi = 1 / convertWidth(unit(1, "strwidth", "h"), "inches", valueOnly = TRUE),
+    cpi = 1 / convertWidth(unit(1, "strwidth", " "), "inches", valueOnly = TRUE),
     lpi = convertHeight(unit(1, "inches"), "lines", valueOnly = TRUE)
   )
 }
@@ -121,6 +169,7 @@ marg_order <- c("bottom", "left", "top", "right")
 
 #' Determine lines per page (LPP) and characters per page (CPP) based on font and page type
 #'
+#' @inheritParams open_font_dev
 #' @param page_type (`string`)\cr name of a page type. See [`page_types`]. Ignored
 #'   when `pg_width` and `pg_height` are set directly.
 #' @param landscape (`flag`)\cr whether the dimensions of `page_type` should be
@@ -155,7 +204,8 @@ page_lcpp <- function(page_type = page_types(),
                       lineheight = 1,
                       margins = c(top = .5, bottom = .5, left = .75, right = .75),
                       pg_width = NULL,
-                      pg_height = NULL) {
+                      pg_height = NULL,
+                      fontspec = font_spec(font_family, font_size, lineheight)) {
   if (is.null(page_type)) {
     page_type <- page_types()[1]
   } else {
@@ -170,11 +220,7 @@ page_lcpp <- function(page_type = page_types(),
   if (any(is.na(margins))) {
     stop("margins argument must have names 'bottom', 'left', 'top' and 'right'.")
   }
-  lcpi <- font_lcpi(
-    font_family = font_family,
-    font_size = font_size,
-    lineheight = lineheight
-  )
+  lcpi <- font_lcpi(fontspec = fontspec)
 
   wdpos <- ifelse(landscape, 2, 1)
   pg_width <- pg_width %||% pg_dim_names[[page_type]][wdpos]
@@ -187,6 +233,35 @@ page_lcpp <- function(page_type = page_types(),
     cpp = floor(lcpi[["cpi"]] * pg_width),
     lpp = floor(lcpi[["lpi"]] * pg_height)
   )
+}
+
+.open_fdev_is_monospace <- function() {
+  if (!font_dev_state$open) {
+    stop(
+      ".open_fdev_is_monospace called when font dev state is not open. ",
+      "This shouldn't happen, please contact the maintainers."
+    )
+  }
+  font_dev_state$ismonospace
+}
+
+## safe wrapper around .open_fdev_is_monospace
+is_monospace <- function(font_family = "Courier",
+                         font_size = 8,
+                         lineheight = 1,
+                         fontspec = font_spec(
+                           font_family,
+                           font_size,
+                           lineheight
+                         )) {
+  if (is.null(fontspec)) {
+    return(TRUE)
+  }
+  new_dev <- open_font_dev(fontspec)
+  if (new_dev) {
+    on.exit(close_font_dev())
+  }
+  .open_fdev_is_monospace()
 }
 
 ## pg_types <- list(

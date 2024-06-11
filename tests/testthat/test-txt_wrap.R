@@ -377,3 +377,87 @@ test_that("max_width is handled correctly as expected", {
     inset = 1, colwidths = c(10, 20, 30), col_gap = 2
   ), 65)
 })
+
+test_that("wrapping works with truetype font", {
+  fspec <- font_spec("Times", 9, 1.2)
+  expect_true(is_monospace(font_family = "Courier"))
+  open_font_dev(fspec)
+  expect_false(is_monospace(fspec))
+
+  ## do the basics work
+  orig1 <- "NATIVE"
+  wrp1a <- wrap_string(orig1, 4, fontspec = fspec)
+  expect_equal(
+    wrp1a,
+    c("N", "A", "TI", "V", "E")
+  )
+
+
+  ## will it break within a word if it needs to?
+  wrp2a <- wrap_string(orig1, 10, fontspec = fspec)
+  expect_equal(
+    wrp2a,
+    c(
+      "NATI", # 8.968 spaces wide
+      "VE"
+    )
+  ) # 5.332 spaces wide
+
+  ## will it break within a word if there are some spaces, too
+
+  orig2 <- "some SPACESAREHEREHAHAHAHAHAH"
+  wrp2a <- wrap_string(orig2, 20, fontspec = fspec)
+  expect_equal(
+    wrp2a,
+    c(
+      "some SPAC",
+      "ESAREHE",
+      "REHAHAH",
+      "AHAHAH"
+    )
+  )
+  nctt2a <- nchar_ttype(wrp2a, fspec, raw = TRUE)
+  expect_true(all(head(nctt2a, -1) > 15) && ## none of the wraps are too small
+    all(nctt2a <= 20)) ## all wraps are good in the end # nolint
+})
+
+
+test_that("misc font device related test coverage", {
+  fspec <- font_spec("Times", 8, 1.2)
+  expect_silent(open_font_dev(fspec))
+  expect_silent(close_font_dev())
+
+  ## font device plays nice with other devices
+  open_font_dev(fspec)
+  ## a challenger approaches!!
+  filpdf <- tempfile("ohnoes", fileext = ".pdf")
+  pdf(filpdf)
+  my_pdf_dev <- dev.cur()
+  expect_warning(
+    open_font_dev(fspec),
+    "formatters is switching to the font state graphics device "
+  )
+  expect_silent(open_font_dev(fspec))
+  expect_true(my_pdf_dev %in% dev.list())
+  close_font_dev()
+  expect_true(my_pdf_dev %in% dev.list())
+  dev.off(my_pdf_dev)
+
+  ## cover both debugging and non-raw nchar_ttype for non-monospace
+  expect_message(debug_font_dev())
+  ## use anon function to make sure the stack dump works even in that case
+  expect_message((function() {
+    nchar_ttype("hi", font_spec("Times"))
+  })(), "START font dev debugging dump")
+  expect_message(undebug_font_dev())
+
+  expect_error(get_space_width())
+  expect_error(.open_fdev_is_monospace())
+  expect_true(is_monospace(NULL))
+  expect_false(open_font_dev(NULL))
+  expect_error(wrap_string_ttype("ahahahahahaha", 5, wordbreak_ok = FALSE))
+  expect_identical(nchar_ttype("hiya", NULL), nchar("hiya"))
+  expect_error(.open_fdev_is_monospace())
+  expect_true(is_monospace(font_spec()))
+  expect_false(is_monospace(font_spec("Times")))
+})
