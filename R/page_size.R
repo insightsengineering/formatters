@@ -4,11 +4,9 @@ NULL
 ## https://www.ietf.org/rfc/rfc0678.txt
 
 times_font_name <- function() {
-  plat <- .Platform$OS.type
-  switch(plat,
-    "unix" = "Times",
-    "windows" = "Times New Roman"
-  )
+  ## I thought this was going to be OS specific
+  ## but it seems like it's not...
+  "Times"
 }
 
 #' Font size specification
