@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">formatters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.8</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,6 +41,7 @@
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.2-rc1">v0.5.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1-rc1">v0.5.1-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0-rc1">v0.5.0-rc1</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.8">v0.5.8</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.7">v0.5.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.6">v0.5.6</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.5">v0.5.5</a>
@@ -92,6 +93,7 @@
 <span>  <span class="va">aligns</span>,</span>
 <span>  <span class="va">formats</span>,</span>
 <span>  <span class="va">row_info</span>,</span>
+<span>  colpaths <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  line_grouping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">NROW</a></span><span class="op">(</span><span class="va">strings</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  ref_fnotes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">nlines_header</span>,</span>
@@ -110,7 +112,9 @@
 <span>  col_gap <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  table_inset <span class="op">=</span> <span class="fl">0L</span>,</span>
 <span>  colwidths <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  indent_size <span class="op">=</span> <span class="fl">2</span></span>
+<span>  indent_size <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  fontspec <span class="op">=</span> <span class="fu"><a href="font_spec.html">font_spec</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  rep_cols <span class="op">=</span> <span class="fl">0L</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -142,6 +146,11 @@ information for each element. Must be repeated to match placeholders in <code>st
 <dt>row_info</dt>
 <dd><p>(<code>data.frame</code>)<br> data frame with row-information necessary for pagination (see
 <code><a href="basic_pagdf.html">basic_pagdf()</a></code> for more details).</p></dd>
+
+
+<dt>colpaths</dt>
+<dd><p>(<code>list</code> or <code>NULL</code>)<br><code>NULL</code>, or a list of paths to each leaf column,
+for use during horizontal pagination.</p></dd>
 
 
 <dt>line_grouping</dt>
@@ -230,6 +239,15 @@ equal to <code>ncol(strings)</code>.</p></dd>
 <dt>indent_size</dt>
 <dd><p>(<code>numeric(1)</code>)<br> number of spaces to be used per level of indent (if supported by
 the relevant method). Defaults to 2.</p></dd>
+
+
+<dt>fontspec</dt>
+<dd><p>(<code>font_spec</code>)<br> a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by <code><a href="font_spec.html">font_spec()</a></code>.</p></dd>
+
+
+<dt>rep_cols</dt>
+<dd><p>(<code>numeric(1)</code>)<br> number of columns to be repeated as context during horizontal pagination.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -1744,10 +1762,46 @@ only be called by <code>matrix_form</code> custom methods, and almost never from
 <span class="r-out co"><span class="r-pr">#&gt;</span>         rnms Sepal.Length  Sepal.Width Petal.Length  Petal.Width      Species </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            3           12           11           12           11           10 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fontspec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $family</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Courier"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $size</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $lineheight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "font_spec" "list"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $num_rep_cols</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ref_fnote_df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] row_path  col_path  row       col       symbol    ref_index msg      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [8] nlines   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $col_info</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   label name abs_rownumber path pos_in_siblings n_siblings self_extent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1    1             1   NA               0          0          12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     2    2             2   NA               0          0          11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     3    3             3   NA               0          0          12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     4    4             4   NA               0          0          11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     5    5             5   NA               0          0          10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   par_extent reprint_inds node_class indent nrowrefs ncellrefs nreflines</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   force_page page_title trailing_sep ref_info_df</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"nrow_header")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>

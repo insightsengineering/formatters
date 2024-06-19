@@ -14,7 +14,7 @@ pagination info data.frame."><meta property="og:image" content="https://insights
     
     <a class="navbar-brand me-2" href="../index.html">formatters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.8</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,6 +45,7 @@ pagination info data.frame."><meta property="og:image" content="https://insights
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.2-rc1">v0.5.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1-rc1">v0.5.1-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0-rc1">v0.5.0-rc1</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.8">v0.5.8</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.7">v0.5.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.6">v0.5.6</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.5">v0.5.5</a>
@@ -102,7 +103,9 @@ pagination info <code>data.frame</code>.</p>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  row <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  have_col_fnotes <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  div_height <span class="op">=</span> <span class="fl">1L</span></span>
+<span>  div_height <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  col_gap <span class="op">=</span> <span class="fl">3L</span>,</span>
+<span>  <span class="va">has_rowlabels</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -158,6 +161,15 @@ referential footnotes.</p></dd>
 <dt>div_height</dt>
 <dd><p>(<code>numeric(1)</code>)<br> the height of the divider line when the associated object is rendered.
 Defaults to <code>1</code>.</p></dd>
+
+
+<dt>col_gap</dt>
+<dd><p>(<code>numeric(1)</code>)<br> width of gap between columns, in same units as extent in <code>pagdf</code> (spaces
+under a particular font specification).</p></dd>
+
+
+<dt>has_rowlabels</dt>
+<dd><p>(<code>logical(1)</code>)<br> whether the object being paginated has row labels.</p></dd>
 
 </dl></div>
     <div class="section level2">

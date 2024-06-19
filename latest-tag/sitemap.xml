@@ -79,6 +79,9 @@
     <loc>https://insightsengineering.github.io/formatters/reference/font_lcpi.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/formatters/reference/font_spec.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/formatters/reference/format_value.html</loc>
   </url>
   <url>
@@ -112,10 +115,16 @@
     <loc>https://insightsengineering.github.io/formatters/reference/mpf_to_rtf.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/formatters/reference/nchar_ttype.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/formatters/reference/nlines.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/formatters/reference/num_rep_cols.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/formatters/reference/open_font_dev.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/formatters/reference/padstr.html</loc>
@@ -188,5 +197,8 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/formatters/reference/wrap_string.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/formatters/reference/wrap_string_ttype.html</loc>
   </url>
 </urlset>

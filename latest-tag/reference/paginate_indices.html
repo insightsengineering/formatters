@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">formatters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.8</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,6 +41,7 @@
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.2-rc1">v0.5.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1-rc1">v0.5.1-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0-rc1">v0.5.0-rc1</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.8">v0.5.8</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.7">v0.5.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.6">v0.5.6</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.5">v0.5.5</a>
@@ -99,7 +100,7 @@
 <span>  lpp <span class="op">=</span> <span class="cn">NA_integer_</span>,</span>
 <span>  cpp <span class="op">=</span> <span class="cn">NA_integer_</span>,</span>
 <span>  min_siblings <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>  nosplitin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  nosplitin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>rows <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  colwidths <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  tf_wrap <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  max_width <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -107,6 +108,7 @@
 <span>  pg_size_spec <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  rep_cols <span class="op">=</span> <span class="fu"><a href="num_rep_cols.html">num_rep_cols</a></span><span class="op">(</span><span class="va">obj</span><span class="op">)</span>,</span>
 <span>  col_gap <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  fontspec <span class="op">=</span> <span class="fu"><a href="font_spec.html">font_spec</a></span><span class="op">(</span><span class="va">font_family</span>, <span class="va">font_size</span>, <span class="va">lineheight</span><span class="op">)</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -131,7 +133,8 @@
 <span>  pg_size_spec <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  page_num <span class="op">=</span> <span class="fu"><a href="default_page_number.html">default_page_number</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  rep_cols <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  col_gap <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  col_gap <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  fontspec <span class="op">=</span> <span class="fu"><a href="font_spec.html">font_spec</a></span><span class="op">(</span><span class="va">font_family</span>, <span class="va">font_size</span>, <span class="va">lineheight</span><span class="op">)</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -149,14 +152,15 @@
 <span>  cpp <span class="op">=</span> <span class="cn">NA_integer_</span>,</span>
 <span>  min_siblings <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  nosplitin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  colwidths <span class="op">=</span> <span class="fu"><a href="propose_column_widths.html">propose_column_widths</a></span><span class="op">(</span><span class="fu"><a href="matrix_form.html">matrix_form</a></span><span class="op">(</span><span class="va">obj</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  colwidths <span class="op">=</span> <span class="fu"><a href="propose_column_widths.html">propose_column_widths</a></span><span class="op">(</span><span class="fu"><a href="matrix_form.html">matrix_form</a></span><span class="op">(</span><span class="va">obj</span>, <span class="cn">TRUE</span><span class="op">)</span>, fontspec <span class="op">=</span> <span class="va">fontspec</span><span class="op">)</span>,</span>
 <span>  tf_wrap <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  max_width <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  indent_size <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  pg_size_spec <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  rep_cols <span class="op">=</span> <span class="fu"><a href="num_rep_cols.html">num_rep_cols</a></span><span class="op">(</span><span class="va">obj</span><span class="op">)</span>,</span>
-<span>  col_gap <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  col_gap <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  fontspec <span class="op">=</span> <span class="fu"><a href="font_spec.html">font_spec</a></span><span class="op">(</span><span class="va">font_family</span>, <span class="va">font_size</span>, <span class="va">lineheight</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -256,7 +260,13 @@ Defaults to 0.</p></dd>
 
 
 <dt>col_gap</dt>
-<dd><p>(<code>numeric(1)</code>)<br> currently ignored.</p></dd>
+<dd><p>(<code>numeric(1)</code>)<br> The number of spaces to be placed between columns
+in the rendered table (and assumed for horizontal pagination).</p></dd>
+
+
+<dt>fontspec</dt>
+<dd><p>(<code>font_spec</code>)<br> a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by <code><a href="font_spec.html">font_spec()</a></code>.</p></dd>
 
 
 <dt>verbose</dt>
@@ -557,10 +567,43 @@ contexts either, as this clashes with those systems' capture of messages.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> rnms  mpg  cyl disp   hp </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   19    4    3    5    3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fontspec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $family</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Courier"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $size</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $lineheight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "font_spec" "list"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $num_rep_cols</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ref_fnote_df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] row_path  col_path  row       col       symbol    ref_index msg      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [8] nlines   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $col_info</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   label name abs_rownumber path pos_in_siblings n_siblings self_extent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1    1             1   NA               0          0           4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     2    2             2   NA               0          0           3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     3    3             3   NA               0          0           5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     4    4             4   NA               0          0           3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   par_extent reprint_inds node_class indent nrowrefs ncellrefs nreflines</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   force_page page_title trailing_sep ref_info_df</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"nrow_header")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
@@ -756,10 +799,46 @@ contexts either, as this clashes with those systems' capture of messages.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> rnms drat   wt qsec   vs   am </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   19    4    5    5    2    2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fontspec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $family</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Courier"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $size</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $lineheight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "font_spec" "list"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $num_rep_cols</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ref_fnote_df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] row_path  col_path  row       col       symbol    ref_index msg      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [8] nlines   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $col_info</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   label name abs_rownumber path pos_in_siblings n_siblings self_extent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     5    5             5   NA               0          0           4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     6    6             6   NA               0          0           5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7     7    7             7   NA               0          0           5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8     8    8             8   NA               0          0           2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9     9    9             9   NA               0          0           2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   par_extent reprint_inds node_class indent nrowrefs ncellrefs nreflines</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   force_page page_title trailing_sep ref_info_df</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"nrow_header")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
@@ -955,10 +1034,37 @@ contexts either, as this clashes with those systems' capture of messages.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> rnms gear carb </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   19    4    4 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fontspec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $family</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Courier"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $size</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $lineheight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "font_spec" "list"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $num_rep_cols</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ref_fnote_df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] row_path  col_path  row       col       symbol    ref_index msg      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [8] nlines   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $col_info</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    label name abs_rownumber path pos_in_siblings n_siblings self_extent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10    10   10            10   NA               0          0           4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11    11   11            11   NA               0          0           4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    par_extent reprint_inds node_class indent nrowrefs ncellrefs nreflines</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    force_page page_title trailing_sep ref_info_df</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"nrow_header")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
@@ -1168,10 +1274,43 @@ contexts either, as this clashes with those systems' capture of messages.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> rnms  mpg  cyl disp   hp </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   19    4    3    5    3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fontspec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $family</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Courier"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $size</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $lineheight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "font_spec" "list"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $num_rep_cols</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ref_fnote_df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] row_path  col_path  row       col       symbol    ref_index msg      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [8] nlines   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $col_info</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   label name abs_rownumber path pos_in_siblings n_siblings self_extent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1    1             1   NA               0          0           4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     2    2             2   NA               0          0           3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     3    3             3   NA               0          0           5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     4    4             4   NA               0          0           3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   par_extent reprint_inds node_class indent nrowrefs ncellrefs nreflines</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   force_page page_title trailing_sep ref_info_df</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"nrow_header")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
@@ -1381,10 +1520,46 @@ contexts either, as this clashes with those systems' capture of messages.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> rnms drat   wt qsec   vs   am </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   19    4    5    5    2    2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fontspec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $family</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Courier"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $size</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $lineheight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "font_spec" "list"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $num_rep_cols</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ref_fnote_df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] row_path  col_path  row       col       symbol    ref_index msg      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [8] nlines   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $col_info</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   label name abs_rownumber path pos_in_siblings n_siblings self_extent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     5    5             5   NA               0          0           4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     6    6             6   NA               0          0           5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7     7    7             7   NA               0          0           5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8     8    8             8   NA               0          0           2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9     9    9             9   NA               0          0           2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   par_extent reprint_inds node_class indent nrowrefs ncellrefs nreflines</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   force_page page_title trailing_sep ref_info_df</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"nrow_header")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
@@ -1594,10 +1769,37 @@ contexts either, as this clashes with those systems' capture of messages.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> rnms gear carb </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   19    4    4 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fontspec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $family</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Courier"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $size</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $lineheight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "font_spec" "list"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $num_rep_cols</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ref_fnote_df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] row_path  col_path  row       col       symbol    ref_index msg      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [8] nlines   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $col_info</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    label name abs_rownumber path pos_in_siblings n_siblings self_extent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10    10   10            10   NA               0          0           4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11    11   11            11   NA               0          0           4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    par_extent reprint_inds node_class indent nrowrefs ncellrefs nreflines</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    force_page page_title trailing_sep ref_info_df</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"nrow_header")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
@@ -1730,10 +1932,43 @@ contexts either, as this clashes with those systems' capture of messages.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> rnms  mpg  cyl disp   hp </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   19    4    3    5    3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fontspec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $family</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Courier"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $size</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $lineheight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "font_spec" "list"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $num_rep_cols</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ref_fnote_df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] row_path  col_path  row       col       symbol    ref_index msg      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [8] nlines   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $col_info</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   label name abs_rownumber path pos_in_siblings n_siblings self_extent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1    1             1   NA               0          0           4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     2    2             2   NA               0          0           3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     3    3             3   NA               0          0           5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     4    4             4   NA               0          0           3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   par_extent reprint_inds node_class indent nrowrefs ncellrefs nreflines</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   force_page page_title trailing_sep ref_info_df</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"nrow_header")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
@@ -1866,10 +2101,46 @@ contexts either, as this clashes with those systems' capture of messages.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> rnms drat   wt qsec   vs   am </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   19    4    5    5    2    2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fontspec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $family</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Courier"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $size</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $lineheight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "font_spec" "list"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $num_rep_cols</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ref_fnote_df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] row_path  col_path  row       col       symbol    ref_index msg      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [8] nlines   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $col_info</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   label name abs_rownumber path pos_in_siblings n_siblings self_extent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     5    5             5   NA               0          0           4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     6    6             6   NA               0          0           5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7     7    7             7   NA               0          0           5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8     8    8             8   NA               0          0           2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9     9    9             9   NA               0          0           2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   par_extent reprint_inds node_class indent nrowrefs ncellrefs nreflines</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   force_page page_title trailing_sep ref_info_df</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"nrow_header")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
@@ -2002,10 +2273,37 @@ contexts either, as this clashes with those systems' capture of messages.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> rnms gear carb </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   19    4    4 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fontspec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $family</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Courier"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $size</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $lineheight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "font_spec" "list"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $num_rep_cols</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ref_fnote_df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] row_path  col_path  row       col       symbol    ref_index msg      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [8] nlines   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $col_info</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    label name abs_rownumber path pos_in_siblings n_siblings self_extent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10    10   10            10   NA               0          0           4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11    11   11            11   NA               0          0           4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    par_extent reprint_inds node_class indent nrowrefs ncellrefs nreflines</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11          0                   stuff      0        0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    force_page page_title trailing_sep ref_info_df</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11      FALSE       &lt;NA&gt;         &lt;NA&gt;            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"nrow_header")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
@@ -2031,26 +2329,35 @@ contexts either, as this clashes with those systems' capture of messages.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Adjusted characters per page: 33 [original: 52, table inset: 0, row labels: 19]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ========= COLUMN-WISE: Checking possible pagination for page 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 11 column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 74 chars (11 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected 11 columns require 107 chars, while only 52 are available. </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 74 chars (11 cols), rep. cols: 0 chars (0 cols), tot. colgap: 33 chars].</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 10 column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 67 chars (10 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected 10 columns require 97 chars, while only 52 are available. </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 67 chars (10 cols), rep. cols: 0 chars (0 cols), tot. colgap: 30 chars].</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 9 column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 60 chars (9 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected 9 columns require 87 chars, while only 52 are available. </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 60 chars (9 cols), rep. cols: 0 chars (0 cols), tot. colgap: 27 chars].</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 8 column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 55 chars (8 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected 8 columns require 79 chars, while only 52 are available. </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 55 chars (8 cols), rep. cols: 0 chars (0 cols), tot. colgap: 24 chars].</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 7 column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 50 chars (7 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected 7 columns require 71 chars, while only 52 are available. </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 50 chars (7 cols), rep. cols: 0 chars (0 cols), tot. colgap: 21 chars].</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 6 column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 42 chars (6 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected 6 columns require 60 chars, while only 52 are available. </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 42 chars (6 cols), rep. cols: 0 chars (0 cols), tot. colgap: 18 chars].</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 5 column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 34 chars (5 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected 5 columns require 49 chars, while only 52 are available. </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 34 chars (5 cols), rep. cols: 0 chars (0 cols), tot. colgap: 15 chars].</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 4 column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   OK [27 chars]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ========= COLUMN-WISE: Checking possible pagination for page 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 5 and 11 column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 47 chars (7 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected 7 columns require 68 chars, while only 52 are available. </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 47 chars (7 cols), rep. cols: 0 chars (0 cols), tot. colgap: 21 chars].</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 5 and 10 column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 40 chars (6 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected 6 columns require 58 chars, while only 52 are available. </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 40 chars (6 cols), rep. cols: 0 chars (0 cols), tot. colgap: 18 chars].</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 5 and 9 column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   OK [33 chars]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ========= COLUMN-WISE: Checking possible pagination for page 3</span>
@@ -2132,17 +2439,17 @@ contexts either, as this clashes with those systems' capture of messages.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $col_diagnostics</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    abs_colnumber self_extent pag_attempted final_pag_result</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1              1           7         FALSE             &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2              2           6         FALSE             &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3              3           8         FALSE             &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4              4           6         FALSE             &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5              5           7         FALSE             &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6              6           8         FALSE             &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7              7           8         FALSE             &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8              8           5         FALSE             &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9              9           5         FALSE             &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10            10           7         FALSE             &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11            11           7         FALSE             &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1              1           4         FALSE             &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2              2           3         FALSE             &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3              3           5         FALSE             &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4              4           3         FALSE             &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5              5           4         FALSE             &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6              6           5         FALSE             &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7              7           5         FALSE             &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8              8           2         FALSE             &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9              9           2         FALSE             &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10            10           4         FALSE             &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11            11           4         FALSE             &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">clws</span> <span class="op">&lt;-</span> <span class="fu"><a href="propose_column_widths.html">propose_column_widths</a></span><span class="op">(</span><span class="va">mpf</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">clws</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">floor</a></span><span class="op">(</span><span class="va">clws</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">/</span> <span class="fl">3</span><span class="op">)</span></span></span>
@@ -2292,15 +2599,20 @@ contexts either, as this clashes with those systems' capture of messages.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Adjusted characters per page: 46 [original: 52, table inset: 0, row labels: 6]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ========= COLUMN-WISE: Checking possible pagination for page 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 11 column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 74 chars (11 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected 11 columns require 107 chars, while only 52 are available. </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 74 chars (11 cols), rep. cols: 0 chars (0 cols), tot. colgap: 33 chars].</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 10 column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 67 chars (10 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected 10 columns require 97 chars, while only 52 are available. </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 67 chars (10 cols), rep. cols: 0 chars (0 cols), tot. colgap: 30 chars].</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 9 column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 60 chars (9 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected 9 columns require 87 chars, while only 52 are available. </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 60 chars (9 cols), rep. cols: 0 chars (0 cols), tot. colgap: 27 chars].</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 8 column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 55 chars (8 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected 8 columns require 79 chars, while only 52 are available. </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 55 chars (8 cols), rep. cols: 0 chars (0 cols), tot. colgap: 24 chars].</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 7 column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected columns require 50 chars (7 cols).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   FAIL: selected 7 columns require 71 chars, while only 52 are available. </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>         details: [raw: 50 chars (7 cols), rep. cols: 0 chars (0 cols), tot. colgap: 21 chars].</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> -&gt; Attempting pagination between 1 and 6 column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   OK [42 chars]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ========= COLUMN-WISE: Checking possible pagination for page 2</span>

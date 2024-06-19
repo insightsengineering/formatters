@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">formatters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.8</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,6 +41,7 @@
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.2-rc1">v0.5.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1-rc1">v0.5.1-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0-rc1">v0.5.0-rc1</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.8">v0.5.8</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.7">v0.5.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.6">v0.5.6</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.5">v0.5.5</a>
@@ -94,7 +95,10 @@
 <span>  pg_height <span class="op">=</span> <span class="fu"><a href="page_types.html">page_dim</a></span><span class="op">(</span><span class="va">page_type</span><span class="op">)</span><span class="op">[</span><span class="kw">if</span> <span class="op">(</span><span class="va">landscape</span><span class="op">)</span> <span class="fl">1</span> <span class="kw">else</span> <span class="fl">2</span><span class="op">]</span>,</span>
 <span>  landscape <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  margins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">4</span><span class="op">)</span>,</span>
+<span>  font_family <span class="op">=</span> <span class="st">"Courier"</span>,</span>
 <span>  font_size <span class="op">=</span> <span class="fl">8</span>,</span>
+<span>  lineheight <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  fontspec <span class="op">=</span> <span class="fu"><a href="font_spec.html">font_spec</a></span><span class="op">(</span><span class="va">font_family</span>, <span class="va">font_size</span>, <span class="va">lineheight</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -134,8 +138,22 @@ inverted for landscape orientation. Defaults to <code>FALSE</code>, ignored when
 margins and <code>.75</code> for both horizontal margins.</p></dd>
 
 
+<dt>font_family</dt>
+<dd><p>(<code>string</code>)<br> name of a font family. An error will be thrown
+if the family named is not monospaced. Defaults to <code>"Courier"</code>.</p></dd>
+
+
 <dt>font_size</dt>
 <dd><p>(<code>numeric(1)</code>)<br> font size. Defaults to <code>12</code>.</p></dd>
+
+
+<dt>lineheight</dt>
+<dd><p>(<code>numeric(1)</code>)<br> line height. Defaults to <code>1</code>.</p></dd>
+
+
+<dt>fontspec</dt>
+<dd><p>(<code>font_spec</code>)<br> a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by <code><a href="font_spec.html">font_spec()</a></code>.</p></dd>
 
 
 <dt>...</dt>

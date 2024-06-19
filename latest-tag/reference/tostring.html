@@ -20,7 +20,7 @@ max_width), and horizontal separator character (e.g. hsep = "+").'><meta propert
     
     <a class="navbar-brand me-2" href="../index.html">formatters</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.8</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,6 +51,7 @@ max_width), and horizontal separator character (e.g. hsep = "+").'><meta propert
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.2-rc1">v0.5.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.1-rc1">v0.5.1-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.0-rc1">v0.5.0-rc1</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.8">v0.5.8</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.7">v0.5.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.6">v0.5.6</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/formatters/v0.5.5">v0.5.5</a>
@@ -110,7 +111,9 @@ and relative wrapping (<code>width</code>), title and footer wrapping (<code>tf_
 <span>  tf_wrap <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  max_width <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  col_gap <span class="op">=</span> <span class="fu"><a href="mpf_accessors.html">mf_colgap</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
-<span>  hsep <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  hsep <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  fontspec <span class="op">=</span> <span class="fu"><a href="font_spec.html">font_spec</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  ttype_ok <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -149,6 +152,17 @@ used. Parameter is ignored if <code>tf_wrap = FALSE</code>.</p></dd>
 <dd><p>(<code>string</code>)<br> character to repeat to create header/body separator line. If
 <code>NULL</code>, the object value will be used. If <code>" "</code>, an empty separator will be printed. See
 <code><a href="default_horizontal_sep.html">default_hsep()</a></code> for more information.</p></dd>
+
+
+<dt>fontspec</dt>
+<dd><p>(<code>font_spec</code>)<br> a font_spec object specifying the font information to use for
+calculating string widths and heights, as returned by <code><a href="font_spec.html">font_spec()</a></code>.</p></dd>
+
+
+<dt>ttype_ok</dt>
+<dd><p>(<code>logical(1)</code>)<br> should truetype (non-monospace) fonts be
+allowed via <code>fontspec</code>. Defaults to <code>FALSE</code>. This parameter is primarily
+for internal testing and generally should not be set by end users.</p></dd>
 
 </dl></div>
     <div class="section level2">
