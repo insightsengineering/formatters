@@ -1,3 +1,5 @@
+## formatters 0.5.8.9000
+
 ## formatters 0.5.8
 
 * Added `TrueType` font support to pagination and word-wrapping machinery by @gmbecker.
