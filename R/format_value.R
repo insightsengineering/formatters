@@ -184,7 +184,7 @@ sprintf_format <- function(format) {
 #' @aliases rounding
 round_fmt <- function(x, digits, na_str = "NA") {
   if (!is.na(digits) && digits < 0) {
-    stop("round_fmt currentlyd does not support non-missing values of digits <0")
+    stop("round_fmt currently does not support non-missing values of digits < 0")
   }
   if (is.na(x)) {
     na_str
@@ -282,14 +282,14 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
       3
     } else {
       stop(
-        "unknown format label: ", format,
-        ". use list_valid_format_labels() to get a list of all formats"
+        "Unknown format label: '", format,
+        "'. Run `list_valid_format_labels()` to get a list of all available formats."
       )
     }
     if (format != "xx" && length(x) != l) {
       stop(
-        "cell <", paste(x), "> and format ",
-        format, " are of different length"
+        "Cell contents <", paste(x, collapse = ", "), "> and format '",
+        format, "' are of different lengths (", length(x), " vs ", l, ")."
       )
     }
     if (length(na_str) < sum(is.na(x))) {
