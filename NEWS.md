@@ -4,6 +4,7 @@
 
 * Added `TrueType` font support to pagination and word-wrapping machinery by @gmbecker.
 * Fixed a bug where `col_gap` was not correctly taken into account during horizontal pagination (#249) by @gmbecker.
+* Improved clarity of error messages returned by `format_value`.
 
 ## formatters 0.5.7
 
