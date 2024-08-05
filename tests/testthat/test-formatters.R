@@ -312,11 +312,16 @@ test_that("formats work", {
   expect_identical(format_value(c(500), "(N=xx)"), "(N=500)")
 
   ## errors
+  expect_error(format_value(5.1, "abcd"), "Unknown format label")
+  expect_error(
+    format_value(5.1, "xx - xx"),
+    "<5.1> and format 'xx - xx' are of different lengths \\(1 vs 2\\)"
+  )
+  expect_error(
+    format_value(c(5.1, 2, 3), "xx - xx"),
+    "<5.1, 2, 3> and format 'xx - xx' are of different lengths \\(3 vs 2\\)"
+  )
 
-  expect_error(format_value(5.1, "abcd"), "unknown format label")
-  expect_error(format_value(5.1, "xx - xx"), "are of different length")
-
-  expect_error(format_value(c(5.1, 2, 3), "xx - xx"), "are of different length")
   ## handling NAs
 
   results <- vapply(forms[["1d"]], function(fmt) format_value(NA, format = fmt), "")
