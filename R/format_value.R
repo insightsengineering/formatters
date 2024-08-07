@@ -271,7 +271,9 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
     na_str[is.na(na_str)] <- "NA"
   }
   if (length(na_str) == 1) {
-    na_str <- array(na_str, dim = length(x))
+    if (!all(is.na(x))) {
+      na_str <- array(na_str, dim = length(x))
+    }
   } else { # length(na_str) > 1
     tmp_na_str <- array("NA", dim = length(x))
     tmp_na_str[is.na(x)] <- na_str[seq(sum(is.na(x)))]
@@ -408,7 +410,7 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
     )
   }
   # Check that probably never happens as it is almost always already text
-  txt[is.na(txt)] <- na_str
+  txt[is.na(txt)] <- na_str[1]
 
 
   if (output == "ascii") {

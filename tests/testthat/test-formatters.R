@@ -329,16 +329,16 @@ test_that("formats work", {
 
   expect_true(all(justnastr))
 
-  expect_identical(
+  expect_equal(
     format_value(NA, "xx.", na_str = "-"),
     "-"
   )
-  expect_identical(
+  expect_equal(
     format_value(NA, "xx", na_str = "-"),
     "-"
   )
 
-  expect_identical(
+  expect_equal(
     format_value(c(1, NA), "xx"),
     c("1", "NA")
   )
