@@ -14,7 +14,8 @@ apply to \code{x}.}
 
 \item{output}{(\code{string})\cr output type.}
 
-\item{na_str}{(\code{string})\cr string to display when the value of \code{x} is missing. Defaults to \code{"NA"}.}
+\item{na_str}{(\code{character})\cr character vector to display when the values of \code{x} are missing.
+If only one string is provided, it is applied for all missing values. Defaults to \code{"NA"}.}
 }
 \value{
 Formatted text representing the cell \code{x}.
@@ -23,14 +24,16 @@ Formatted text representing the cell \code{x}.
 Converts a (possibly compound) value into a string using the \code{format} information
 }
 \details{
-A length-zero value for \code{na_str} will be interpreted as \code{"NA"}, as will any
-missing values within a non-length-zero \code{na_str} vector.
+A length-zero value for \code{na_str} will be interpreted as \code{"NA"}.
 }
 \examples{
 x <- format_value(pi, format = "xx.xx")
 x
 
 format_value(x, output = "ascii")
+
+# na_str works with multiple values
+format_value(c(NA, 1, NA), format = "xx.x (xx.x - xx.x)", na_str = c("NE", "<missing>"))
 
 }
 \seealso{
