@@ -1,13 +1,12 @@
 ## formatters 0.5.8.9002
+* Fixed bug in `format_value` that caused multiple `NA` values to be associated with the wrong `na_str` values.
 
 ## formatters 0.5.8
-
 * Added `TrueType` font support to pagination and word-wrapping machinery by @gmbecker.
 * Fixed a bug where `col_gap` was not correctly taken into account during horizontal pagination (#249) by @gmbecker.
 * Improved clarity of error messages returned by `format_value`.
 
 ## formatters 0.5.7
-
 * Added `lifecycle` badge files for documentation.
 * Fixed a bug causing recursive appending of page number text during pagination.
 * Deprecated `width`, `height` and `fontsize` arguments of `export_as_pdf()` using `lifecycle` package.

@@ -329,16 +329,16 @@ test_that("formats work", {
 
   expect_true(all(justnastr))
 
-  expect_identical(
+  expect_equal(
     format_value(NA, "xx.", na_str = "-"),
     "-"
   )
-  expect_identical(
+  expect_equal(
     format_value(NA, "xx", na_str = "-"),
     "-"
   )
 
-  expect_identical(
+  expect_equal(
     format_value(c(1, NA), "xx"),
     c("1", "NA")
   )
@@ -924,4 +924,25 @@ test_that("fmt_config works as expected", {
   expect_silent(obj_format(x) <- function() {})
   expect_silent(obj_na_str(x) <- "something wrong")
   expect_silent(obj_align(x) <- "something wrong")
+})
+
+# regression tests -------------------------------------------------------------
+test_that("na_str works when having multiple NAs and multiple values to be changed", {
+  # Regression test from #308
+  expect_identical(
+    format_value(c(1, 1, NA), format = "xx.x (xx.x - xx.x)", na_str = "NE"),
+    "1.0 (1.0 - NE)"
+  )
+  expect_identical(
+    format_value(c(1, NA, NA), format = "xx.x (xx.x - xx.x)", na_str = "NE"),
+    "1.0 (NE - NE)"
+  )
+  expect_identical(
+    format_value(c(NA, 1, NA), format = "xx.x (xx.x - xx.x)", na_str = c("NE", "<missing>")),
+    "NE (1.0 - <missing>)"
+  )
+  expect_identical(
+    format_value(c(NA, 1, NA), format = "xx.x (xx.x - xx.x)", na_str = letters[seq(5)]),
+    "a (1.0 - b)"
+  )
 })

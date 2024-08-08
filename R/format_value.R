@@ -233,11 +233,11 @@ sep_2d_helper <- function(x, dig1, dig2, sep, na_str, wrap = NULL) {
 #' @param x (`ANY`)\cr the value to be formatted.
 #' @param format (`string` or `function`)\cr the format label (string) or formatter function to
 #'   apply to `x`.
-#' @param na_str (`string`)\cr string to display when the value of `x` is missing. Defaults to `"NA"`.
+#' @param na_str (`character`)\cr character vector to display when the values of `x` are missing.
+#'   If only one string is provided, it is applied for all missing values. Defaults to `"NA"`.
 #' @param output (`string`)\cr output type.
 #'
-#' @details A length-zero value for `na_str` will be interpreted as `"NA"`, as will any
-#' missing values within a non-length-zero `na_str` vector.
+#' @details A length-zero value for `na_str` will be interpreted as `"NA"`.
 #'
 #' @return Formatted text representing the cell `x`.
 #'
@@ -249,6 +249,9 @@ sep_2d_helper <- function(x, dig1, dig2, sep, na_str, wrap = NULL) {
 #'
 #' format_value(x, output = "ascii")
 #'
+#' # na_str works with multiple values
+#' format_value(c(NA, 1, NA), format = "xx.x (xx.x - xx.x)", na_str = c("NE", "<missing>"))
+#'
 #' @export
 format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str = "NA") {
   ## if(is(x, "CellValue"))
@@ -259,13 +262,26 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
   }
 
   output <- match.arg(output)
+
+  # Checks for NAs in the input
   if (length(na_str) == 0) {
     na_str <- "NA"
   }
   if (any(is.na(na_str))) {
     na_str[is.na(na_str)] <- "NA"
   }
-  ## format <- if (!missing(format)) format else obj_format(x)
+  if (length(na_str) == 1) {
+    if (!all(is.na(x))) {
+      na_str <- array(na_str, dim = length(x))
+    }
+  } else { # length(na_str) > 1
+    tmp_na_str <- array("NA", dim = length(x))
+    tmp_na_str[is.na(x)] <- na_str[seq(sum(is.na(x)))]
+    na_str <- tmp_na_str
+  }
+  # if (length(na_str) < sum(is.na(x))) { # not a fun of vec recycling
+  #   na_str <- rep(na_str, length.out = sum(is.na(x)))
+  # }
 
   txt <- if (all(is.na(x)) && length(na_str) == 1L) {
     na_str
@@ -291,9 +307,6 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
         "Cell contents <", paste(x, collapse = ", "), "> and format '",
         format, "' are of different lengths (", length(x), " vs ", l, ")."
       )
-    }
-    if (length(na_str) < sum(is.na(x))) {
-      na_str <- rep(na_str, length.out = sum(is.na(x)))
     }
     switch(format,
       "xx" = as.character(x),
@@ -396,7 +409,10 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
       paste("format string", format, "not found")
     )
   }
-  txt[is.na(txt)] <- na_str
+  # Check that probably never happens as it is almost always already text
+  txt[is.na(txt)] <- na_str[1]
+
+
   if (output == "ascii") {
     txt
   } else if (output == "html") {
