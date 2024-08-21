@@ -1,8 +1,9 @@
 test_that("matrix_form works with and without indentation", {
-  iris_output <- iris %>%
-    group_by(Species) %>%
-    summarize("all obs" = round(mean(Petal.Length), 2)) %>%
-    mutate("Petal.Length" = "Mean")
+  iris_output <- dplyr::summarize(dplyr::group_by(iris, Species),
+    "all obs" = round(mean(Petal.Length), 2)
+  )
+  iris_output <- dplyr::mutate(iris_output, "Petal.Length" = "Mean")
+
   mf <- basic_matrix_form(iris_output,
     indent_rownames = TRUE,
     split_labels = "Species", data_labels = "Petal.Length"

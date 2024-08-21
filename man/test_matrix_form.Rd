@@ -87,7 +87,7 @@ mform <- basic_matrix_form(mtcars)
 cat(toString(mform))
 
 # Advanced test case with label rows
-if (interactive()) {
+if (require("dplyr")) {
   library(dplyr)
   iris_output <- iris \%>\%
     group_by(Species) \%>\%

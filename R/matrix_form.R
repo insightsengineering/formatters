@@ -895,7 +895,7 @@ mf_has_rlabels <- function(mf) ncol(mf$strings) > mf_ncol(mf)
 #' cat(toString(mform))
 #'
 #' # Advanced test case with label rows
-#' if (interactive()) {
+#' if (require("dplyr")) {
 #'   library(dplyr)
 #'   iris_output <- iris %>%
 #'     group_by(Species) %>%
