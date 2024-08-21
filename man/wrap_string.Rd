@@ -28,12 +28,12 @@ A string if \code{str} is one element and if \code{collapse = NULL}. Otherwise, 
 }
 \description{
 Core wrapping functionality that preserves whitespace. Newline character \code{"\\n"} is not supported
-by core functionality \code{\link[stringi:stri_wrap]{stringi::stri_wrap()}}. This is usually solved beforehand by \code{\link[=matrix_form]{matrix_form()}}.
+by core functionality \code{\link[=stri_wrap]{stri_wrap()}}. This is usually solved beforehand by \code{\link[=matrix_form]{matrix_form()}}.
 If the width is smaller than any large word, these will be truncated after \code{width} characters. If
 the split leaves trailing groups of empty spaces, they will be dropped.
 }
 \details{
-Word wrapping happens similarly to \code{\link[stringi:stri_wrap]{stringi::stri_wrap()}} with the following difference: individual
+Word wrapping happens similarly to \code{\link[=stri_wrap]{stri_wrap()}} with the following difference: individual
 words which are longer than \code{max_width} are broken up in a way that fits with other word wrapping.
 }
 \section{Functions}{
