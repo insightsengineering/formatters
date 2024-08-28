@@ -214,6 +214,7 @@ test_that("exporting lists of tables and listings works", {
   expect_true(file.exists(tmpf))
   file.remove(tmpf)
 
+  skip_if_not_installed("r2rtf")
   # export_as_rtf
   tmpf <- tempfile(fileext = ".rtf")
   output <- export_as_rtf(bmf, file = tmpf, page_num = "page {i} of {n}", cpp = 70)
