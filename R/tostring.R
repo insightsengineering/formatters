@@ -391,7 +391,7 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap, fontspec, expan
   correct_indentation <- vapply(seq_along(mf_lgrp), function(xx) {
     grouping <- mf_lgrp[xx]
     if (nzchar(real_indent[grouping])) {
-      has_correct_indentation <- stri_detect(
+      has_correct_indentation <- stringi::stri_detect(
         mf_str[xx, 1],
         regex = paste0("^", real_indent[grouping])
       )
@@ -434,7 +434,7 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap, fontspec, expan
       # Update also the widths!!
       if (do_what[1] == "remove") {
         cell_widths_mat[ii, 1] <- cell_widths_mat[ii, 1] - nchar(real_indent[grp])
-        mfs[ii, 1] <- stri_replace(lbl_row[ii], "", regex = paste0("^", real_indent[grp]))
+        mfs[ii, 1] <- stringi::stri_replace(lbl_row[ii], "", regex = paste0("^", real_indent[grp]))
       } else if (do_what[1] == "add") {
         mfs[ii, 1] <- paste0(real_indent[grp], lbl_row[ii])
       } else {
@@ -990,7 +990,7 @@ new_line_warning <- function(str_v) {
 #' Wrap a string to a precise width
 #'
 #' Core wrapping functionality that preserves whitespace. Newline character `"\n"` is not supported
-#' by core functionality [stri_wrap()]. This is usually solved beforehand by [matrix_form()].
+#' by core functionality [stringi::stri_wrap()]. This is usually solved beforehand by [matrix_form()].
 #' If the width is smaller than any large word, these will be truncated after `width` characters. If
 #' the split leaves trailing groups of empty spaces, they will be dropped.
 #'
@@ -1002,7 +1002,7 @@ new_line_warning <- function(str_v) {
 #'   have been split and should be pasted together. This is usually done internally with `"\n"` to update
 #'   the wrapping along with other internal values.
 #'
-#' @details Word wrapping happens similarly to [stri_wrap()] with the following difference: individual
+#' @details Word wrapping happens similarly to [stringi::stri_wrap()] with the following difference: individual
 #'   words which are longer than `max_width` are broken up in a way that fits with other word wrapping.
 #'
 #' @return A string if `str` is one element and if `collapse = NULL`. Otherwise, a list of elements
@@ -1108,7 +1108,7 @@ wrap_string <- function(str, width, collapse = NULL, fontspec = font_spec()) {
   if (w < 1) {
     return(str)
   }
-  stri_wrap(str,
+  stringi::stri_wrap(str,
     width = w,
     normalize = FALSE, # keeps spaces
     simplify = TRUE, # If FALSE makes it a list with str elements
@@ -1225,7 +1225,7 @@ force_split_words_by <- function(ret, width) {
       wrd_i <- ret[ii]
       init_v <- seq(1, nchar(wrd_i), by = width)
       end_v <- c(init_v[-1] - 1, nchar(wrd_i))
-      str_v_tmp <- stri_sub(wrd_i, from = init_v, to = end_v)
+      str_v_tmp <- stringi::stri_sub(wrd_i, from = init_v, to = end_v)
       ret_tmp <- c(ret_tmp, str_v_tmp[!grepl("^\\s+$", str_v_tmp) & nzchar(str_v_tmp)])
     } else {
       ret_tmp <- c(ret_tmp, ret[ii])
