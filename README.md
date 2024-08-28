@@ -19,52 +19,39 @@
 [![Open Issues](https://img.shields.io/github/issues-raw/insightsengineering/formatters?color=red\&label=open%20issues)](https://github.com/insightsengineering/formatters/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
 <!-- end badges -->
 
-The `formatters` package provides two core pieces of functionality, both
-related to ASCII rendering:
+The `formatters` package provides two core pieces of functionality, both related to ASCII rendering:
 
-1. `format_value` provides the ability to format single- and
-   multi-valued elements into ASCII display-ready strings
-2. the `matrix_form` framework provides generics for implementing ASCII
-   rendering support for display tables
+1. `format_value` provides the ability to format single- and multi-valued elements into ASCII display-ready strings
+2. the `matrix_form` framework provides generics for implementing ASCII rendering support for display tables
 
 Both of these feature sets are used in the `rtables` package.
 
 ## Motivation
 
-The core motivation for `formatters` is the rendering of reporting
-tables into ASCII. In this context a "value" is the raw content that to
-appear in a single table cell. Most commonly this is a numeric vector of
-length 1, 2 or – occasionally – 3.
+The core motivation for `formatters` is the rendering of reporting tables into ASCII. In this context a "value" is the raw content that to appear in a single table cell. Most commonly this is a numeric vector of length 1, 2 or – occasionally – 3.
 
 ## Installation
 
-`formatters` is available on CRAN and you can install the latest released
-version with:
+`formatters` is available on CRAN and you can install the latest released version with:
 
 ``` r
 install.packages("formatters")
 ```
 
-or you can install the latest development version directly from GitHub
-with:
+or you can install the latest development version directly from GitHub with:
 
 ``` r
-remotes::install_github("insightsengineering/formatters")
+# install.packages("pak")
+pak::pak("insightsengineering/formatters")
 ```
 
-Note that you might need to set your `GITHUB_PAT` environment variable in
-order to be able to install from GitHub.
+Packaged releases (both those on CRAN and those between official CRAN releases) can be found in the [releases list](https://github.com/insightsengineering/formatters/releases).
 
-Packaged releases (both those on CRAN and those between official CRAN
-releases) can be found in the [releases
-list](https://github.com/insightsengineering/formatters/releases).
+To understand how to use this package, please refer to the [Introduction to `formatters`](https://insightsengineering.github.io/formatters/latest-tag/articles/formatters.html) article, which provides multiple examples of code implementation.
 
 ## Format labels
 
-`formatters` ships with a large number of pre-defined formats
-appropriate for rendering values into ASCII strings. These existing
-formats are specified by their labels. We can see the list of these by
-calling the `list_valid_format_labels` function:
+`formatters` ships with a large number of pre-defined formats appropriate for rendering values into ASCII strings. These existing formats are specified by their labels. We can see the list of these by calling the `list_valid_format_labels` function:
 
 ```R
 list_valid_format_labels()
@@ -95,11 +82,7 @@ attr(,"info")
 [1] "xx does not modify the element, and xx. rounds a number to 0 digits"
 ```
 
-Each of these labels describes how the incoming (possibly
-multi-element) raw value will be formatted. `xx` indicates that an
-element of the value will be printed as is, with no modification. `xx.`
-indicates that a numeric value element will be rounded to 0 decimal
-places, `xx.x` indicates rounding to 1 decimal place, etc.
+Each of these labels describes how the incoming (possibly multi-element) raw value will be formatted. `xx` indicates that an element of the value will be printed as is, with no modification. `xx.` indicates that a numeric value element will be rounded to 0 decimal places, `xx.x` indicates rounding to 1 decimal place, etc.
 
 ## Formatting values
 
@@ -117,22 +100,13 @@ format_value(c(1.2355, 2.6789), "(xx.xx, xx.xx)")
 
 ## Table Rendering Framework
 
-__Advanced Usage Only__ These features are supported, and in fact are
-used in `rtables` and the experimental `rlistings`. That said, the API
-is currently very low-level and tailored to what `rtables` and
-`rlistings` need. How useful this is to other table frameworks may vary.
+__Advanced Usage Only__ These features are supported, and in fact are used in `rtables` and the experimental `rlistings`. That said, the API is currently very low-level and tailored to what `rtables` and `rlistings` need. How useful this is to other table frameworks may vary.
 
-The second major piece of functionality in `formatters` is the ability
-to render tables into ASCII (and thus directly to the terminal) based on
-a so-called `MatrixPrintForm` representation of the table.
+The second major piece of functionality in `formatters` is the ability to render tables into ASCII (and thus directly to the terminal) based on a so-called `MatrixPrintForm` representation of the table.
 
-To hook up `rtables`-style ASCII display for your tables, it suffices to
-export a method for the exported `matrix_form` generic `formatters`
-provides. This method must return a `MatrixPrintForm` object
-representing your table.
+To hook up `rtables`-style ASCII display for your tables, it suffices to export a method for the exported `matrix_form` generic `formatters` provides. This method must return a `MatrixPrintForm` object representing your table.
 
-We can build a baby example method for `data.frames` to illustrate this
-process:
+We can build a baby example method for `data.frames` to illustrate this process:
 
 ```R
 ## pagdfrow supports a large number of pieces of information regarding
