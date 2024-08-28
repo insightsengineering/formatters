@@ -19,7 +19,7 @@ test_that("toString works with and without indentation", {
       B = `mean_petal_length.B`,
       C = `mean_petal_length.C`
     ) %>%
-    mutate("Petal.Length" = "Mean")
+    dplyr::mutate("Petal.Length" = "Mean")
 
   mf <- basic_matrix_form(iris_output,
     indent_rownames = TRUE,
