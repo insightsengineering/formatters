@@ -894,19 +894,21 @@ mf_has_rlabels <- function(mf) ncol(mf$strings) > mf_ncol(mf)
 #' mform <- basic_matrix_form(mtcars)
 #' cat(toString(mform))
 #'
+#' @examples
+#'
 #' # Advanced test case with label rows
-#' if (require("dplyr")) {
-#'   library(dplyr)
-#'   iris_output <- iris %>%
-#'     group_by(Species) %>%
-#'     summarize("all obs" = round(mean(Petal.Length), 2)) %>%
-#'     mutate("DataRow_label" = "Mean")
-#'   mf <- basic_matrix_form(iris_output,
-#'     indent_rownames = TRUE,
-#'     split_labels = "Species", data_labels = "DataRow_label"
-#'   )
-#'   cat(toString(mf))
-#' }
+#' @examplesIf require("dplyr")
+#' library(dplyr)
+#' iris_output <- iris %>%
+#'   group_by(Species) %>%
+#'   summarize("all obs" = round(mean(Petal.Length), 2)) %>%
+#'   mutate("DataRow_label" = "Mean")
+#' mf <- basic_matrix_form(iris_output,
+#'   indent_rownames = TRUE,
+#'   split_labels = "Species", data_labels = "DataRow_label"
+#' )
+#' cat(toString(mf))
+#'
 #'
 #' @name test_matrix_form
 #' @export

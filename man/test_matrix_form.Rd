@@ -86,20 +86,21 @@ respects the default formats for a listing object.
 mform <- basic_matrix_form(mtcars)
 cat(toString(mform))
 
-# Advanced test case with label rows
-if (require("dplyr")) {
-  library(dplyr)
-  iris_output <- iris \%>\%
-    group_by(Species) \%>\%
-    summarize("all obs" = round(mean(Petal.Length), 2)) \%>\%
-    mutate("DataRow_label" = "Mean")
-  mf <- basic_matrix_form(iris_output,
-    indent_rownames = TRUE,
-    split_labels = "Species", data_labels = "DataRow_label"
-  )
-  cat(toString(mf))
-}
 
+# Advanced test case with label rows
+\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+library(dplyr)
+iris_output <- iris \%>\%
+  group_by(Species) \%>\%
+  summarize("all obs" = round(mean(Petal.Length), 2)) \%>\%
+  mutate("DataRow_label" = "Mean")
+mf <- basic_matrix_form(iris_output,
+  indent_rownames = TRUE,
+  split_labels = "Species", data_labels = "DataRow_label"
+)
+cat(toString(mf))
+
+\dontshow{\}) # examplesIf}
 mform <- basic_listing_mf(mtcars)
 cat(toString(mform))
 
