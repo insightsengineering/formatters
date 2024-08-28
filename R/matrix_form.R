@@ -909,7 +909,6 @@ mf_has_rlabels <- function(mf) ncol(mf$strings) > mf_ncol(mf)
 #' )
 #' cat(toString(mf))
 #'
-#'
 #' @name test_matrix_form
 #' @export
 basic_matrix_form <- function(df,
