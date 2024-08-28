@@ -1,4 +1,6 @@
 test_that("basic_listing_mf respect core modifications from table matrix_form", {
+  skip_if_not_installed("dplyr")
+
   mtcars_rn <- mtcars %>% dplyr::mutate("rnms" = rownames(mtcars))
   expect_silent(lmf <- basic_listing_mf(mtcars_rn, keycols = c("vs", "gear")))
 
@@ -99,7 +101,7 @@ test_that("listings are correctly paginated when a wrapping happens on non-domin
   )
 
   expect_true(all(
-    sapply(pgs, function(x) strsplit(toString(x), "\n")[[1]] %>% length() <= 5)
+    sapply(pgs, function(x) length(strsplit(toString(x), "\n")[[1]]) <= 5)
   ))
   expect_silent(sapply(pgs, function(x) toString(x)))
 
@@ -127,7 +129,9 @@ test_that("listings are correctly paginated when a wrapping happens on non-domin
   pgs <- paginate_to_mpfs(lst, colwidths = c(30, 15, 12), lpp = 8)
 
   expect_true(all(
-    sapply(pgs, function(x) strsplit(toString(x), "\n")[[1]] %>% length() <= 8)
+    sapply(pgs, function(x) {
+      length(strsplit(toString(x), "\n")[[1]]) <= 8
+    })
   ))
   expect_silent(null <- sapply(pgs, function(x) toString(x)))
 })

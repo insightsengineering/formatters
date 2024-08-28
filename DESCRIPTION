@@ -26,7 +26,8 @@ Imports:
     checkmate (>= 2.1.0),
     grid,
     htmltools (>= 0.5.3),
-    lifecycle (>= 0.2.0)
+    lifecycle (>= 0.2.0),
+    stringi (>= 1.7.12)
 Suggests:
     dplyr (>= 1.0.9),
     gt (>= 0.10.0),
@@ -34,11 +35,11 @@ Suggests:
     knitr (>= 1.42),
     r2rtf (>= 0.3.2),
     rmarkdown (>= 2.23),
-    stringi (>= 1.6),
     testthat (>= 3.0.4),
     withr (>= 2.0.0)
 VignetteBuilder:
-    knitr
+    knitr,
+    rmarkdown
 Config/Needs/verdepcheck: mllg/checkmate, rstudio/htmltools,
     r-lib/lifecycle, tidyverse/dplyr, rstudio/gt, hughjonesd/huxtable,
     yihui/knitr, Merck/r2rtf, rstudio/rmarkdown, gagolews/stringi,

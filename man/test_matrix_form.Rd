@@ -86,6 +86,7 @@ respects the default formats for a listing object.
 mform <- basic_matrix_form(mtcars)
 cat(toString(mform))
 
+\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # Advanced test case with label rows
 library(dplyr)
 iris_output <- iris \%>\%
@@ -97,7 +98,7 @@ mf <- basic_matrix_form(iris_output,
   split_labels = "Species", data_labels = "DataRow_label"
 )
 cat(toString(mf))
-
+\dontshow{\}) # examplesIf}
 mform <- basic_listing_mf(mtcars)
 cat(toString(mform))
 
