@@ -99,7 +99,6 @@ mf <- basic_matrix_form(iris_output,
   split_labels = "Species", data_labels = "DataRow_label"
 )
 cat(toString(mf))
-
 \dontshow{\}) # examplesIf}
 mform <- basic_listing_mf(mtcars)
 cat(toString(mform))
