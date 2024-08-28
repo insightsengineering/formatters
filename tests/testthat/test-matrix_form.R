@@ -1,4 +1,6 @@
 test_that("matrix_form works with and without indentation", {
+  skip_if_not_installed("dplyr")
+
   iris_output <- dplyr::summarize(dplyr::group_by(iris, Species),
     "all obs" = round(mean(Petal.Length), 2)
   )

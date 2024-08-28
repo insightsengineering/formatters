@@ -73,13 +73,13 @@ test_that("exporters work", {
   )
 
   ## export_as_rtf rudimentary coverage
-  if (requireNamespace("r2rtf")) {
-    fil4 <- tempfile(fileext = ".rtf")
-    export_as_rtf(dfmf, file = fil4)
-    expect_true(file.exists(fil4))
-    if (file.exists("Rplots.pdf")) {
-      file.remove("Rplots.pdf") # coming probably from rtf::
-    }
+  skip_if_not_installed("r2rtf")
+
+  fil4 <- tempfile(fileext = ".rtf")
+  export_as_rtf(dfmf, file = fil4)
+  expect_true(file.exists(fil4))
+  if (file.exists("Rplots.pdf")) {
+    file.remove("Rplots.pdf") # coming probably from rtf::
   }
 })
 

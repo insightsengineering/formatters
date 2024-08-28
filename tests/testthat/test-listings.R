@@ -1,4 +1,6 @@
 test_that("basic_listing_mf respect core modifications from table matrix_form", {
+  skip_if_not_installed("dplyr")
+
   mtcars_rn <- dplyr::mutate(mtcars, "rnms" = rownames(mtcars))
   expect_silent(lmf <- basic_listing_mf(mtcars_rn, keycols = c("vs", "gear")))
 
