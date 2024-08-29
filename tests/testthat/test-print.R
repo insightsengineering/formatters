@@ -1,4 +1,6 @@
 test_that("toString works with and without indentation", {
+  require("dplyr", quietly = TRUE)
+
   skip_if_not_installed("dplyr")
 
   set.seed(1)
