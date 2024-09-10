@@ -1,5 +1,10 @@
 ## formatters 0.5.8.9006
 * Fixed bug in `format_value` that caused multiple `NA` values to be associated with the wrong `na_str` values.
+* In `format_value`, pass the parameter `na_str` to the formatting function when the format used is a formatting function.  
+* Add 2 xx-style `rtables` formatting functions with which you have the option to control the `rounding` method. The 2 functions are named `format_xx_sas` and `format_xx_r`.
+* Add 4 `rtables` formatting functions for presentation of `count and percentages` or `count, denominator and percentages` with which you have the option to control the `rounding` method, with special consideration of . The 4 functions are named `format_r_count_fraction`, `format_sas_count_fraction`, `format_r_count_denom_fraction`, `format_sas_count_denom_fraction`. These functions are alternatives to `tern` formatting functions `format_count_fraction`, `format_count_fraction_fixed_dp`.
+
+
 
 ## formatters 0.5.8
 * Added `TrueType` font support to pagination and word-wrapping machinery by @gmbecker.

@@ -53,6 +53,7 @@ RoxygenNote: 7.3.2
 Collate:
     'data.R'
     'format_value.R'
+    'formats_xx.R'
     'matrix_form.R'
     'generics.R'
     'labels.R'

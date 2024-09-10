@@ -274,7 +274,7 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
     if (!all(is.na(x))) {
       na_str <- array(na_str, dim = length(x))
     }
-  } else { # length(na_str) > 1
+  } else if (length(na_str) < length(x)) {
     tmp_na_str <- array("NA", dim = length(x))
     tmp_na_str[is.na(x)] <- na_str[seq(sum(is.na(x)))]
     na_str <- tmp_na_str
@@ -288,7 +288,12 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
   } else if (is.null(format)) {
     toString(x)
   } else if (is.function(format)) {
-    format(x, output = output)
+    format_args <- names(formals(format))
+    if ("na_str" %in% format_args) {
+      format(x, output = output, na_str = na_str)
+    } else {
+      format(x, output = output)
+    }
   } else if (is.character(format)) {
     l <- if (format %in% formats_1d) {
       1
