@@ -943,6 +943,6 @@ test_that("na_str works when having multiple NAs and multiple values to be chang
   )
   expect_identical(
     format_value(c(NA, 1, NA), format = "xx.x (xx.x - xx.x)", na_str = letters[seq(5)]),
-    "a (1.0 - b)"
+    "a (1.0 - c)"
   )
 })
