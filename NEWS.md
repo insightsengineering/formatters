@@ -1,3 +1,5 @@
+## formatters 0.5.9.9000
+
 ## formatters 0.5.9
 * Fixed bug in `format_value` that caused multiple `NA` values to be associated with the wrong `na_str` values.
 
