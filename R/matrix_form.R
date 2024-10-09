@@ -381,8 +381,8 @@ mf_update_cinfo <- function(mf, colwidths = NULL, rep_cols = NULL) {
     # empty listing
     if (is_listing && length(mf$listing_keycols) == 1 && length(r_colwidths) - nrepcols < 1) {
       cinfo$par_extent <- 0
-    # listing with all key columns
-    } else if (is_listing && mf_ncol(mf) == length(mf$listing_keycols)) {
+      # listing with all key columns
+    } else if (!is.null(mf$listing_keycols) && mf_ncol(mf) == length(mf$listing_keycols)) {
       cinfo$par_extent <- cumsum(c(0, cinfo$self_extent[seq_len(nrepcols - 1)]))
     } else {
       cinfo$par_extent <- cumsum(c(0, cinfo$self_extent[seq_len(nrepcols)], rep(0, length(r_colwidths) - nrepcols - 1)))
