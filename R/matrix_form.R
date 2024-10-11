@@ -376,7 +376,18 @@ mf_update_cinfo <- function(mf, colwidths = NULL, rep_cols = NULL) {
     cinfo$self_extent <- r_colwidths
     nrepcols <- num_rep_cols(mf)
     rep_seq <- seq_len(nrepcols)
-    cinfo$par_extent <- cumsum(c(0, cinfo$self_extent[seq_len(nrepcols)], rep(0, length(r_colwidths) - nrepcols - 1)))
+    is_listing <- !is.null(mf$listing_keycols)
+
+    # empty listing
+    if (is_listing && length(mf$listing_keycols) == 1 && length(r_colwidths) - nrepcols < 1) {
+      cinfo$par_extent <- 0
+      # listing with all key columns
+    } else if (is_listing && mf_ncol(mf) == length(mf$listing_keycols)) {
+      cinfo$par_extent <- cumsum(c(0, cinfo$self_extent[seq_len(nrepcols - 1)]))
+    } else {
+      cinfo$par_extent <- cumsum(c(0, cinfo$self_extent[seq_len(nrepcols)], rep(0, length(r_colwidths) - nrepcols - 1)))
+    }
+
     cinfo$reprint_inds <- I(lapply(seq_len(NROW(cinfo)), function(i) rep_seq[rep_seq < i]))
     mf_cinfo(mf) <- cinfo
   }
