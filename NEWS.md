@@ -1,4 +1,4 @@
-## formatters 0.5.9.9002
+## formatters 0.5.9.9003
 * Fixed a bug in `mf_update_cinfo` causing an error when `export_as_txt` was applied to empty listings.
 
 ## formatters 0.5.9
