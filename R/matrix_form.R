@@ -29,7 +29,12 @@ mform_handle_newlines <- function(matform) {
     # removes it from the header (temporary) - done so the header can be top aligned
     strmat[nl_inds_header, 1] <- ""
 
-    # remove empty strings and assign topleft to add back
+    # remove top empty strings (because they are not topleft) and assign topleft to add back
+    if (any(nzchar(tl))) { # needed if ever has_top_left is true but only empties
+      # values that are "" before topleft information
+      to_remove <- seq(which(nzchar(tl))[1] - 1)
+      tl <- tl[-to_remove]
+    }
     topleft_has_nl_char <- any(grepl("\n", tl))
     tl_to_add_back <- strsplit(paste0(tl, collapse = "\n"), split = "\n", fixed = TRUE)[[1]]
     tl_how_many_nl <- length(tl_to_add_back)
