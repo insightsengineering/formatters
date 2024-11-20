@@ -30,7 +30,6 @@ mform_handle_newlines <- function(matform) {
     strmat[nl_inds_header, 1] <- ""
 
     # remove empty strings and assign topleft to add back
-    tl <- tl[nzchar(tl)] # we are not interested in initial "" but we cover initial \n
     topleft_has_nl_char <- any(grepl("\n", tl))
     tl_to_add_back <- strsplit(paste0(tl, collapse = "\n"), split = "\n", fixed = TRUE)[[1]]
     tl_how_many_nl <- length(tl_to_add_back)
@@ -64,7 +63,6 @@ mform_handle_newlines <- function(matform) {
       )
     }
   )
-
 
   # Correction for the case where there are more lines for topleft material than for cols
   if (has_topleft && (sum(row_nlines[hdr_inds]) < tl_how_many_nl)) {
@@ -132,7 +130,6 @@ mform_handle_newlines <- function(matform) {
   prov_footer(matform) <- .quick_handle_nl(prov_footer(matform))
 
   # xxx \n in page titles are not working atm (I think)
-
   matform
 }
 

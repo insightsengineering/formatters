@@ -30,30 +30,3 @@ test_that("matrix_form works with and without indentation", {
   expect_equal(mf_no_indent$row_info$indent, rep(0, nrow(mf$row_info)))
   expect_equal(mf$row_info$indent, c(0, 1, 0, 1, 0, 1))
 })
-
-test_that("matrix_form is prepared correctly for printing when there is topleft information and new lines", {
-  # Regression test for #942 in {rtables}
-  ex_adsl_tmp <- ex_adsl[ex_adsl$ARM %in% c("A: Drug X", "B: Placebo"), ]
-
-  # Convert ARM to a factor with the desired levels
-  ex_adsl_tmp$ARM <- factor(ex_adsl_tmp$ARM, levels = c("A: \n\nDrug X", "B: \nPlacebo"))
-
-  test_tbl <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    split_rows_by("STRATA1", split_fun = keep_split_levels("A")) %>%
-    summarize_row_groups() %>%
-    build_table(ex_adsl_tmp)
-  top_left(test_tbl) <- "aaaaaaaaaa"
-
-  expect_silent(printed_out <- strsplit(toString(matrix_form(test_tbl, TRUE)), "\n")[[1]])
-  expect_equal(
-    printed_out,
-    c(
-      "               A:             ",
-      "                         B:   ",
-      "aaaaaaaaaa   Drug X    Placebo",
-      "——————————————————————————————",
-      "A            0 (NA%)   0 (NA%)"
-    )
-  )
-})
