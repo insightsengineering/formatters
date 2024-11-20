@@ -30,7 +30,7 @@ mform_handle_newlines <- function(matform) {
     strmat[nl_inds_header, 1] <- ""
 
     # remove top empty strings (because they are not topleft) and assign topleft to add back
-    if (any(nzchar(tl))) { # needed if ever has_top_left is true but only empties
+    if (any(nzchar(tl)) && length(tl) > 1) { # needed if ever has_top_left is true but only empties
       # values that are "" before topleft information
       to_remove <- seq(which(nzchar(tl))[1] - 1)
       tl <- tl[-to_remove]
