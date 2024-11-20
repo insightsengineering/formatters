@@ -487,7 +487,7 @@ test_that("matrix_form is prepared correctly for printing when there is topleft 
   bmf$has_topleft <- TRUE
   bmf$aligns[, 1] <- "left"
 
-  expect_equal(bmf$strings[, 1], c("", "","aaaaaaaaaa", "", "b", "A"))
+  expect_equal(bmf$strings[, 1], c("", "", "aaaaaaaaaa", "", "b", "A"))
 
   expect_silent(printed_out <- strsplit(toString(bmf, hsep = "-"), "\n")[[1]])
   expect_equal(
