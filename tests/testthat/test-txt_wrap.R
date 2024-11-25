@@ -461,3 +461,45 @@ test_that("misc font device related test coverage", {
   expect_true(is_monospace(font_spec()))
   expect_false(is_monospace(font_spec("Times")))
 })
+
+test_that("matrix_form is prepared correctly for printing when there is topleft information and new lines", {
+  # Regression test for #942 in {rtables}
+  fake_data <- data.frame("A", 0, 0)
+  colnames(fake_data) <- c("aaaaaaaaaa", "A: \n\nDrug X", "B: \nPlacebo")
+  bmf <- basic_matrix_form(fake_data, ignore_rownames = TRUE)
+  bmf$has_topleft <- TRUE
+
+  expect_silent(printed_out <- strsplit(toString(bmf, hsep = "-"), "\n")[[1]])
+  expect_equal(
+    printed_out,
+    c(
+      "               A:            ",
+      "                        B:   ",
+      "aaaaaaaaaa   Drug X   Placebo",
+      "-----------------------------",
+      "    A          0         0   "
+    )
+  )
+
+  # Another test for complex topleft information
+  colnames(fake_data) <- c("\n\naaaaaaaaaa\n\nb", "A: \n\nDrug X", "B: \nPlacebo")
+  bmf <- basic_matrix_form(fake_data, ignore_rownames = TRUE)
+  bmf$has_topleft <- TRUE
+  bmf$aligns[, 1] <- "left"
+
+  expect_equal(bmf$strings[, 1], c("", "", "aaaaaaaaaa", "", "b", "A"))
+
+  expect_silent(printed_out <- strsplit(toString(bmf, hsep = "-"), "\n")[[1]])
+  expect_equal(
+    printed_out,
+    c(
+      "                             ",
+      "                             ",
+      "aaaaaaaaaa     A:            ",
+      "                        B:   ",
+      "b            Drug X   Placebo",
+      "-----------------------------",
+      "A              0         0   "
+    )
+  )
+})

@@ -17,18 +17,27 @@ mform_handle_newlines <- function(matform) {
   spamat <- mf_spans(matform)
   alimat <- mf_aligns(matform)
   nr_header <- mf_nrheader(matform)
-  nl_inds_header <- seq(1, mf_nlheader(matform))
-  hdr_inds <- 1:nr_header
+  nl_inds_header <- seq(mf_nlheader(matform))
+  hdr_inds <- seq(nr_header)
 
   # hack that is necessary only if top-left is bottom aligned (default)
   topleft_has_nl_char <- FALSE
   if (has_topleft) {
+    # extract topleft info
     tl <- strmat[nl_inds_header, 1, drop = TRUE]
+
+    # removes it from the header (temporary) - done so the header can be top aligned
     strmat[nl_inds_header, 1] <- ""
-    tl <- tl[nzchar(tl)] # we are not interested in initial "" but we cover initial \n
+
+    # remove top empty strings (because they are not topleft) and assign topleft to add back
+    if (any(nzchar(tl)) && length(tl) > 1) { # needed if ever has_top_left is true but only empties
+      # values that are "" before topleft information
+      to_remove <- seq(which(nzchar(tl))[1] - 1)
+      tl <- tl[-to_remove]
+    }
     topleft_has_nl_char <- any(grepl("\n", tl))
     tl_to_add_back <- strsplit(paste0(tl, collapse = "\n"), split = "\n", fixed = TRUE)[[1]]
-    how_many_nl <- length(tl_to_add_back)
+    tl_how_many_nl <- length(tl_to_add_back)
   }
 
   # pre-proc in case of wrapping and \n
@@ -44,7 +53,7 @@ mform_handle_newlines <- function(matform) {
   # because we don't care about wrapping here we're counting lines
   # TODO probably better if we had a nlines_nowrap fun to be more explicit
 
-  row_nlines <- apply(
+  row_nlines <- apply( # tells how many nlines for each row
     strmat,
     1,
     function(x) {
@@ -60,10 +69,9 @@ mform_handle_newlines <- function(matform) {
     }
   )
 
-
   # Correction for the case where there are more lines for topleft material than for cols
-  if (has_topleft && (sum(row_nlines[nl_inds_header]) < how_many_nl)) {
-    row_nlines[1] <- row_nlines[1] + how_many_nl - sum(row_nlines[nl_inds_header])
+  if (has_topleft && (sum(row_nlines[hdr_inds]) < tl_how_many_nl)) {
+    row_nlines[1] <- row_nlines[1] + tl_how_many_nl - sum(row_nlines[hdr_inds])
   }
 
   # There is something to change
@@ -95,8 +103,8 @@ mform_handle_newlines <- function(matform) {
     )
 
     if (has_topleft) {
-      starts_from_ind <- if (sum(row_nlines[hdr_inds]) - how_many_nl > 0) {
-        sum(row_nlines[hdr_inds]) - how_many_nl
+      starts_from_ind <- if (sum(row_nlines[hdr_inds]) - tl_how_many_nl > 0) {
+        sum(row_nlines[hdr_inds]) - tl_how_many_nl
       } else {
         0
       }
@@ -127,7 +135,6 @@ mform_handle_newlines <- function(matform) {
   prov_footer(matform) <- .quick_handle_nl(prov_footer(matform))
 
   # xxx \n in page titles are not working atm (I think)
-
   matform
 }
 
