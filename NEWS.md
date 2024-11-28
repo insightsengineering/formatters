@@ -2,6 +2,7 @@
 * Fixed a bug in `mf_update_cinfo` causing an error when `export_as_txt` was applied to empty listings.
 * Fixed a bug in `mform_handle_newlines` that did not allow printing to console a table that has top left information, new lines in the column names and contained only one row.
 * Fixed a bug in `mform_handle_newlines` that did not allow for empty strings to be present in top left information.
+* Fixed a bug with top left information not being printed when more lines are present than header lines.
 
 ## formatters 0.5.9
 * Fixed bug in `format_value` that caused multiple `NA` values to be associated with the wrong `na_str` values.
