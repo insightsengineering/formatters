@@ -22,10 +22,12 @@ mform_handle_newlines <- function(matform) {
 
   # hack that is necessary only if top-left is bottom aligned (default)
   topleft_has_nl_char <- FALSE
-  if (has_topleft) {
-    # extract topleft info
-    tl <- strmat[nl_inds_header, 1, drop = TRUE]
 
+  # Exract top-left information
+  tl <- strmat[nl_inds_header, 1, drop = TRUE]
+  has_topleft <- has_topleft && any(nzchar(tl)) # update topleft info if there is any
+
+  if (has_topleft) {
     # removes it from the header (temporary) - done so the header can be top aligned
     strmat[nl_inds_header, 1] <- ""
 
