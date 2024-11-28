@@ -34,10 +34,8 @@ mform_handle_newlines <- function(matform) {
     # remove top empty strings (because they are not topleft) and assign topleft to add back
     if (any(!nzchar(tl)) && length(tl) > 1) { # needed if ever has_top_left is true but only empties
       # values that are "" before topleft information
-      which_is_fist_nzchar <- which(nzchar(tl))[1] - 1
-      if (length(which_is_fist_nzchar) == 1 && which_is_fist_nzchar > 1) { # Extra safe
-        tl <- tl[-seq(which_is_fist_nzchar)]
-      }
+      which_is_fist_nzchar <- which(nzchar(tl))[1]
+      tl <- tl[-(seq(which_is_fist_nzchar) - 1)] # -1 because we take out "" from beginning
     }
     topleft_has_nl_char <- any(grepl("\n", tl))
     tl_to_add_back <- strsplit(paste0(tl, collapse = "\n"), split = "\n", fixed = TRUE)[[1]]
