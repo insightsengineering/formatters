@@ -503,3 +503,23 @@ test_that("matrix_form is prepared correctly for printing when there is topleft 
     )
   )
 })
+
+testthat::test_that("topleft information works also when it takes more space than header", {
+  # Regression test for issue #327
+  fake_data <- data.frame("A", 0, 0)
+  colnames(fake_data) <- c("a\na\na", "A: Drug X", "B: Placebo")
+  bmf <- basic_matrix_form(fake_data, ignore_rownames = TRUE)
+  bmf$has_topleft <- TRUE
+
+  expect_silent(printed_out <- strsplit(toString(bmf, hsep = "-"), "\n")[[1]])
+  expect_equal(
+    printed_out,
+    c(
+      "a                         ",
+      "a                         ",
+      "a   A: Drug X   B: Placebo",
+      "--------------------------",
+      "A       0           0     "
+    )
+  )
+})
