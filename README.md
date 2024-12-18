@@ -1,4 +1,4 @@
-# formatters <a href='https://github.com/insightsengineering/formatters'><img src="man/figures/logo.png" align="right" alt="" width="180"></a>
+# formatters <a href='https://github.com/insightsengineering/formatters'><img src="man/figures/logo.svg" align="right" alt="" width="180"></a>
 
 <!-- start badges -->
 [![Check 🛠](https://github.com/insightsengineering/formatters/actions/workflows/check.yaml/badge.svg)](https://insightsengineering.github.io/formatters/main/unit-test-report/)
