@@ -60,9 +60,7 @@ export_as_txt <- function(x,
                           page_num = default_page_number(),
                           fontspec = font_spec(font_family, font_size, lineheight),
                           col_gap = 3) {
-
-  
-  paginate <- isTRUE(list(...)$paginate)                          
+                       
   # Processing lists of tables or listings
   if (.is_list_of_tables_or_listings(x)) {
     if (isFALSE(paginate)) {
@@ -412,6 +410,7 @@ export_as_rtf <- function(x,
                           lineheight = 1,
                           fontspec = font_spec(font_family, font_size, lineheight),
                           ...) {
+  paginate <- isTRUE(list(...)$paginate)
   # Processing lists of tables or listings
   if (.is_list_of_tables_or_listings(x)) {
     if (isFALSE(paginate)) {
