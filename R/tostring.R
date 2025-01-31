@@ -607,6 +607,7 @@ calc_str_adj <- function(str, fontspec) {
 #'
 #' @inheritParams MatrixPrintForm
 #' @inheritParams open_font_dev
+#' @inheritParams format_value
 #' @param widths (`numeric` or  `NULL`)\cr Proposed widths for the columns of `x`. The expected
 #'   length of this numeric vector can be retrieved with `ncol(x) + 1` as the column of row names
 #'   must also be considered.
@@ -644,7 +645,8 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   col_gap = mf_colgap(x),
                                                   hsep = NULL,
                                                   fontspec = font_spec(),
-                                                  ttype_ok = FALSE) {
+                                                  ttype_ok = FALSE,
+                                                  round_type = c("iec", "sas")) {
   checkmate::assert_flag(tf_wrap)
 
   ## we are going to use the pdf device and grid to understand the actual
@@ -660,7 +662,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
       "If you truly want this behavior please set ttype_ok = TRUE in the call to toString/export_as_txt/export_as_pdf"
     )
   }
-  mat <- matrix_form(x, indent_rownames = TRUE, fontspec = fontspec)
+  mat <- matrix_form(x, indent_rownames = TRUE, fontspec = fontspec, round_type = round_type)
 
   # Check for \n in mat strings -> if there are any, matrix_form did not work
   if (any(grepl("\n", mf_strings(mat)))) {
@@ -694,7 +696,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
   # if cells are decimal aligned, run propose column widths
   # if the provided widths is less than proposed width, return an error
   if (any_dec_align(mf_aligns(mat))) {
-    aligned <- propose_column_widths(x, fontspec = fontspec)
+    aligned <- propose_column_widths(x, fontspec = fontspec, round_type = round_type)
 
     # catch any columns that require widths more than what is provided
     if (!is.null(widths)) {
@@ -716,7 +718,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
   # Column widths are fixed here
   if (is.null(widths)) {
     # if mf does not have widths -> propose them
-    widths <- mf_col_widths(x) %||% propose_column_widths(x, fontspec = fontspec)
+    widths <- mf_col_widths(x) %||% propose_column_widths(x, fontspec = fontspec, round_type = round_type)
   } else {
     mf_col_widths(x) <- widths
   }
@@ -1375,14 +1377,15 @@ spans_to_viscell <- function(spans) {
 #' @export
 propose_column_widths <- function(x,
                                   indent_size = 2,
-                                  fontspec = font_spec()) {
+                                  fontspec = font_spec(),
+                                  round_type = c("iec", "sas")) {
   new_dev <- open_font_dev(fontspec)
   if (new_dev) {
     on.exit(close_font_dev())
   }
 
   if (!is(x, "MatrixPrintForm")) {
-    x <- matrix_form(x, indent_rownames = TRUE, indent_size = indent_size, fontspec = fontspec)
+    x <- matrix_form(x, indent_rownames = TRUE, indent_size = indent_size, fontspec = fontspec, round_type = round_type)
   }
   body <- mf_strings(x)
   spans <- mf_spans(x)

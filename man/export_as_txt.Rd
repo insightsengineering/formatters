@@ -31,7 +31,8 @@ export_as_txt(
   page_break = "\\\\s\\\\n",
   page_num = default_page_number(),
   fontspec = font_spec(font_family, font_size, lineheight),
-  col_gap = 3
+  col_gap = 3,
+  round_type = c("iec", "sas")
 )
 }
 \arguments{

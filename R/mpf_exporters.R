@@ -59,7 +59,8 @@ export_as_txt <- function(x,
                           page_break = "\\s\\n",
                           page_num = default_page_number(),
                           fontspec = font_spec(font_family, font_size, lineheight),
-                          col_gap = 3) {
+                          col_gap = 3,
+                          round_type = c("iec", "sas")) {
   # Processing lists of tables or listings
   if (.is_list_of_tables_or_listings(x)) {
     if (isFALSE(paginate)) {
@@ -94,11 +95,12 @@ export_as_txt <- function(x,
       rep_cols = rep_cols,
       page_num = page_num,
       fontspec = fontspec,
-      col_gap = col_gap
+      col_gap = col_gap,
+      round_type = round_type
     )
   } else {
-    mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec, col_gap = col_gap)
-    mf_col_widths(mf) <- colwidths %||% propose_column_widths(mf, fontspec = fontspec)
+    mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec, col_gap = col_gap, round_type = round_type)
+    mf_col_widths(mf) <- colwidths %||% propose_column_widths(mf, fontspec = fontspec, round_type = round_type)
     pages <- list(mf)
   }
 
@@ -176,11 +178,11 @@ prep_header_line <- function(mf, i) {
 ##   )
 ## }
 
-mpf_to_dfbody <- function(mpf, colwidths, fontspec) {
-  mf <- matrix_form(mpf, indent_rownames = TRUE, fontspec = fontspec)
+mpf_to_dfbody <- function(mpf, colwidths, fontspec, round_type = c("iec", "sas")) {
+  mf <- matrix_form(mpf, indent_rownames = TRUE, fontspec = fontspec, round_type = round_type)
   nlr <- mf_nlheader(mf)
   if (is.null(colwidths)) {
-    colwidths <- propose_column_widths(mf, fontspec = fontspec)
+    colwidths <- propose_column_widths(mf, fontspec = fontspec, round_type = round_type)
   }
   mf$strings[1:nlr, 1] <- ifelse(nzchar(mf$strings[1:nlr, 1, drop = TRUE]),
     mf$strings[1:nlr, 1, drop = TRUE],
@@ -222,6 +224,7 @@ mpf_to_rtf <- function(mpf,
                        font_size = 8,
                        lineheight = 1,
                        fontspec = font_spec(font_family, font_size, lineheight),
+                       round_type = round_type,
                        ...) {
   if (!requireNamespace("r2rtf")) {
     stop("RTF export requires the 'r2rtf' package, please install it.")
@@ -229,17 +232,17 @@ mpf_to_rtf <- function(mpf,
   if (fontspec$family != "Courier") {
     stop("Experimental RTF export does not currently support fonts other than Courier")
   }
-  mpf <- matrix_form(mpf, indent_rownames = TRUE, fontspec = fontspec)
+  mpf <- matrix_form(mpf, indent_rownames = TRUE, fontspec = fontspec, round_type = round_type)
   nlr <- mf_nlheader(mpf)
   if (is.null(colwidths)) {
-    colwidths <- propose_column_widths(mpf, fontspec = fontspec)
+    colwidths <- propose_column_widths(mpf, fontspec = fontspec, round_type = round_type)
   }
   mpf$strings[1:nlr, 1] <- ifelse(nzchar(mpf$strings[1:nlr, 1, drop = TRUE]),
     mpf$strings[1:nlr, 1, drop = TRUE],
     strrep(" ", colwidths)
   )
 
-  myfakedf <- mpf_to_dfbody(mpf, colwidths, fontspec = fontspec)
+  myfakedf <- mpf_to_dfbody(mpf, colwidths, fontspec = fontspec, round_type = round_type)
 
   rtfpg <- r2rtf::rtf_page(myfakedf,
     width = pg_width,
@@ -551,7 +554,8 @@ export_as_pdf <- function(x,
                           max_width = NULL,
                           colwidths = NULL,
                           fontspec = font_spec(font_family, font_size, lineheight),
-                          ttype_ok = FALSE) {
+                          ttype_ok = FALSE,
+                          round_type = c("iec", "sas")) {
   ## this has to happen at the very beginning before the first use of fontspec
   ## which happens in the default value of colwidths. yay lazy evaluation...
   if (missing(font_size) && !missing(fontsize)) {
@@ -627,10 +631,11 @@ export_as_pdf <- function(x,
       indent_size = indent_size,
       verbose = FALSE,
       rep_cols = rep_cols,
-      page_num = page_num
+      page_num = page_num,
+      round_type = round_type
     )
   } else {
-    mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec)
+    mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec, round_type = round_type)
     mf_col_widths(mf) <- colwidths %||% propose_column_widths(mf, fontspec = fontspec)
     tbls <- list(mf)
   }

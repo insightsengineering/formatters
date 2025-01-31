@@ -15,7 +15,8 @@ toString(x, ...)
   col_gap = mf_colgap(x),
   hsep = NULL,
   fontspec = font_spec(),
-  ttype_ok = FALSE
+  ttype_ok = FALSE,
+  round_type = c("iec", "sas")
 )
 }
 \arguments{
