@@ -22,6 +22,10 @@ apply to \code{x}.}
 
 \item{na_str}{(\code{character})\cr character vector to display when the values of \code{x} are missing.
 If only one string is provided, it is applied for all missing values. Defaults to \code{"NA"}.}
+
+\item{round_type}{(\code{"iec"} or \code{"sas"})\cr the type of rounding to perform. iec,
+the default, peforms rounding compliant with IEC 60559 (see details), while
+sas performs nearest-value rounding consistent with rounding within SAS.}
 }
 \value{
 Formatted text representing the cell \code{x}.
