@@ -5,7 +5,7 @@
 \alias{rounding}
 \title{Round and prepare a value for display}
 \usage{
-round_fmt(x, digits, na_str = "NA")
+round_fmt(x, digits, na_str = "NA", round_type = c("iec", "sas"))
 }
 \arguments{
 \item{x}{(\code{numeric(1)})\cr value to format.}
@@ -14,6 +14,10 @@ round_fmt(x, digits, na_str = "NA")
 character value with no rounding.}
 
 \item{na_str}{(\code{string})\cr the value to return if \code{x} is \code{NA}.}
+
+\item{round_type}{(\code{"iec"} or \code{"sas"})\cr the type of rounding to perform. iec,
+the default, peforms rounding compliant with IEC 60559 (see details), while
+sas performs nearest-value rounding consistent with rounding within SAS.}
 }
 \value{
 A character value representing the value after rounding, containing any trailing zeros
@@ -24,9 +28,10 @@ This function is used within \code{\link[=format_value]{format_value()}} to prep
 cells for formatting and display.
 }
 \details{
-This function combines the rounding behavior of R's standards-compliant \code{\link[=round]{round()}}
-function (see the Details section of that documentation) with the strict decimal display
-of \code{\link[=sprintf]{sprintf()}}. The exact behavior is as follows:
+This function combines rounding behavior with the strict decimal display of
+\code{\link[=sprintf]{sprintf()}}. By default, R's standards-compliant \code{\link[=round]{round()}}
+function (see the Details section of that documentation) is used. The exact
+behavior is as follows:
 
 \enumerate{
 \item{If \code{x} is \code{NA}, the value of \code{na_str} is returned.}
@@ -52,6 +57,8 @@ round_fmt(.395, digits = 2)
 round_fmt(NA, digits = 1)
 round_fmt(NA, digits = 1, na_str = "-")
 round_fmt(2.765923, digits = NA)
+round_fmt(0.845, digits = 2)
+round_fmt(0.845, digits = 2, round_type = "sas")
 
 }
 \seealso{

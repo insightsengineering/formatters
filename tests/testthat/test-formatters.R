@@ -926,6 +926,28 @@ test_that("fmt_config works as expected", {
   expect_silent(obj_align(x) <- "something wrong")
 })
 
+
+# optional sas-style rounding
+tricky_val <- 0.845
+
+expect_identical(format_value(tricky_val, "xx.xx"),
+                 "0.84")
+expect_identical(format_value(tricky_val, "xx.xx", round_type = "sas"),
+                 "0.85")
+
+format_fun_rtype <- function(x, output, round_type) round_type
+
+expect_identical(format_value(tricky_val, format_fun_rtype), "iec")
+expect_identical(format_value(tricky_val, format_fun_rtype, round_type = "sas"),
+                 "sas")
+
+# passing down na_str
+
+format_fun_na_str <- function(x, na_str) na_str
+expect_identical(format_value(tricky_val, format_fun_na_str), "NA")
+expect_identical(format_value(tricky_val, format_fun_na_str, na_str = "-"), "-")
+
+
 # regression tests -------------------------------------------------------------
 test_that("na_str works when having multiple NAs and multiple values to be changed", {
   # Regression test from #308

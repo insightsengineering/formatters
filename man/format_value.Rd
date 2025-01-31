@@ -4,7 +4,13 @@
 \alias{format_value}
 \title{Converts a (possibly compound) value into a string using the \code{format} information}
 \usage{
-format_value(x, format = NULL, output = c("ascii", "html"), na_str = "NA")
+format_value(
+  x,
+  format = NULL,
+  output = c("ascii", "html"),
+  na_str = "NA",
+  round_type = c("iec", "sas")
+)
 }
 \arguments{
 \item{x}{(\code{ANY})\cr the value to be formatted.}

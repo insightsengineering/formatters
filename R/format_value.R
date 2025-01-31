@@ -1,3 +1,22 @@
+fun_takes <- function(f, nm) {
+  nm %in% names(formals(f))
+}
+
+call_format_fun <- function(f,
+                            value,
+                            na_str,
+                            round_type,
+                            output) {
+
+  args <- c(
+    list(value),
+    if (fun_takes(f, "na_str")) list(na_str = na_str),
+    if (fun_takes(f, "round_type")) list(round_type = round_type),
+    if (fun_takes(f, "output")) list(output = output)
+  )
+  do.call(f, args)
+}
+
 formats_1d <- c(
   "xx", "xx.", "xx.x", "xx.xx", "xx.xxx", "xx.xxxx",
   "xx%", "xx.%", "xx.x%", "xx.xx%", "xx.xxx%", "(N=xx)", "N=xx", ">999.9", ">999.99",
@@ -144,11 +163,15 @@ sprintf_format <- function(format) {
 #' @param digits (`numeric(1)`)\cr number of digits to round to, or `NA` to convert to a
 #'   character value with no rounding.
 #' @param na_str (`string`)\cr the value to return if `x` is `NA`.
+#' @param round_type (`"iec"` or `"sas"`)\cr the type of rounding to perform. iec,
+#'   the default, peforms rounding compliant with IEC 60559 (see details), while
+#'   sas performs nearest-value rounding consistent with rounding within SAS.
 #'
 #' @details
-#' This function combines the rounding behavior of R's standards-compliant [round()]
-#' function (see the Details section of that documentation) with the strict decimal display
-#' of [sprintf()]. The exact behavior is as follows:
+#' This function combines rounding behavior with the strict decimal display of
+#' [sprintf()]. By default, R's standards-compliant [round()]
+#' function (see the Details section of that documentation) is used. The exact
+#' behavior is as follows:
 #'
 #' \enumerate{
 #'   \item{If `x` is `NA`, the value of `na_str` is returned.}
@@ -179,11 +202,14 @@ sprintf_format <- function(format) {
 #' round_fmt(NA, digits = 1)
 #' round_fmt(NA, digits = 1, na_str = "-")
 #' round_fmt(2.765923, digits = NA)
+#' round_fmt(0.845, digits = 2)
+#' round_fmt(0.845, digits = 2, round_type = "sas")
 #'
 #' @export
 #' @aliases rounding
-round_fmt <- function(x, digits, na_str = "NA") {
-  if (!is.na(digits) && digits < 0) {
+round_fmt <- function(x, digits, na_str = "NA", round_type = c("iec", "sas")) {
+  round_type = match.arg(round_type)
+ if (!is.na(digits) && digits < 0) {
     stop("round_fmt currently does not support non-missing values of digits < 0")
   }
   if (is.na(x)) {
@@ -191,12 +217,35 @@ round_fmt <- function(x, digits, na_str = "NA") {
   } else if (is.na(digits)) {
     paste0(x)
   } else {
+    rndx <- switch(round_type,
+      iec = round(x, digits),
+      sas = round_sas(x, digits)
+    )
     sprfmt <- paste0("%.", digits, "f")
-    sprintf(fmt = sprfmt, round(x, digits = digits))
+    sprintf(fmt = sprfmt, rndx)
   }
 }
 
-val_pct_helper <- function(x, dig1, dig2, na_str, pct = TRUE) {
+## https://stackoverflow.com/questions/12688717/round-up-from-5
+
+#' @inheritParams round_fmt
+#' 
+round_sas <- function(x,
+                     digits = 0) {
+
+  # perform SAS rounding ----------------------------------------------------
+  posneg <- sign(x)
+  z <- abs(x) * 10^digits
+  z <- z + 0.5 + sqrt(.Machine$double.eps)
+  z <- trunc(z)
+  z <- z / 10^digits
+  z <- z * posneg
+  ## return numeric vector of rounded values
+  z
+}
+
+
+val_pct_helper <- function(x, dig1, dig2, na_str, pct = TRUE, round_type = c("iec", "sas")) {
   if (pct) {
     x[2] <- x[2] * 100
   }
@@ -204,15 +253,15 @@ val_pct_helper <- function(x, dig1, dig2, na_str, pct = TRUE) {
     na_str <- rep(na_str, 2)
   }
   paste0(
-    round_fmt(x[1], digits = dig1, na_str = na_str[1]),
+    round_fmt(x[1], digits = dig1, na_str = na_str[1], round_type = round_type),
     " (",
-    round_fmt(x[2], digits = dig2, na_str = na_str[2]),
+    round_fmt(x[2], digits = dig2, na_str = na_str[2], round_type = round_type),
     if (pct) "%", ")"
   )
 }
 
-sep_2d_helper <- function(x, dig1, dig2, sep, na_str, wrap = NULL) {
-  ret <- paste(mapply(round_fmt, x = x, digits = c(dig1, dig2), na_str = na_str),
+sep_2d_helper <- function(x, dig1, dig2, sep, na_str, wrap = NULL, round_type = c("iec", "sas")) {
+  ret <- paste(mapply(round_fmt, x = x, digits = c(dig1, dig2), na_str = na_str, round_type = round_type),
     collapse = sep
   )
   if (!is.null(wrap)) {
@@ -253,7 +302,7 @@ sep_2d_helper <- function(x, dig1, dig2, sep, na_str, wrap = NULL) {
 #' format_value(c(NA, 1, NA), format = "xx.x (xx.x - xx.x)", na_str = c("NE", "<missing>"))
 #'
 #' @export
-format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str = "NA") {
+format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str = "NA", round_type = c("iec", "sas")) {
   ## if(is(x, "CellValue"))
   ##     x = x[[1]]
 
@@ -262,6 +311,7 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
   }
 
   output <- match.arg(output)
+  round_type <- match.arg(round_type)
 
   # Checks for NAs in the input
   if (length(na_str) == 0) {
@@ -272,10 +322,11 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
   }
   if (length(na_str) == 1) {
     if (!all(is.na(x))) {
-      na_str <- array(na_str, dim = length(x))
+      ## array adds an unneeded dim attribute which causes problems
+      na_str <- rep(na_str, length(x))
     }
   } else { # length(na_str) > 1
-    tmp_na_str <- array("NA", dim = length(x))
+    tmp_na_str <- rep("NA", length(x))
     tmp_na_str[is.na(x)] <- na_str[seq(sum(is.na(x)))]
     na_str <- tmp_na_str
   }
@@ -288,7 +339,7 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
   } else if (is.null(format)) {
     toString(x)
   } else if (is.function(format)) {
-    format(x, output = output)
+    call_format_fun(f = format, value = x, na_str = na_str, round_type = round_type, output = output)
   } else if (is.character(format)) {
     l <- if (format %in% formats_1d) {
       1
@@ -310,76 +361,83 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
     }
     switch(format,
       "xx" = as.character(x),
-      "xx." = round_fmt(x, digits = 0, na_str = na_str),
-      "xx.x" = round_fmt(x, digits = 1, na_str = na_str),
-      "xx.xx" = round_fmt(x, digits = 2, na_str = na_str),
-      "xx.xxx" = round_fmt(x, digits = 3, na_str = na_str),
-      "xx.xxxx" = round_fmt(x, digits = 4, na_str = na_str),
-      "xx%" = paste0(round_fmt(x * 100, digits = NA, na_str = na_str), "%"),
-      "xx.%" = paste0(round_fmt(x * 100, digits = 0, na_str = na_str), "%"),
-      "xx.x%" = paste0(round_fmt(x * 100, digits = 1, na_str = na_str), "%"),
-      "xx.xx%" = paste0(round_fmt(x * 100, digits = 2, na_str = na_str), "%"),
-      "xx.xxx%" = paste0(round_fmt(x * 100, digits = 3, na_str = na_str), "%"),
-      "(N=xx)" = paste0("(N=", round_fmt(x, digits = NA, na_str = na_str), ")"),
-      "N=xx" = paste0("N=", round_fmt(x, digits = NA, na_str = na_str)),
-      ">999.9" = ifelse(x > 999.9, ">999.9", round_fmt(x, digits = 1, na_str = na_str)),
-      ">999.99" = ifelse(x > 999.99, ">999.99", round_fmt(x, digits = 2, na_str = na_str)),
-      "x.xxxx | (<0.0001)" = ifelse(x < 0.0001, "<0.0001", round_fmt(x, digits = 4, na_str = na_str)),
-      "xx / xx" = sep_2d_helper(x, dig1 = NA, dig2 = NA, sep = " / ", na_str = na_str),
-      "xx. / xx." = sep_2d_helper(x, dig1 = 0, dig2 = 0, sep = " / ", na_str = na_str),
-      "xx.x / xx.x" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = " / ", na_str = na_str),
-      "xx.xx / xx.xx" = sep_2d_helper(x, dig1 = 2, dig2 = 2, sep = " / ", na_str = na_str),
-      "xx.xxx / xx.xxx" = sep_2d_helper(x, dig1 = 3, dig2 = 3, sep = " / ", na_str = na_str),
-      "N=xx (xx%)" = paste0("N=", val_pct_helper(x, dig1 = NA, dig2 = NA, na_str = na_str)),
-      "xx (xx%)" = val_pct_helper(x, dig1 = NA, dig2 = NA, na_str = na_str),
-      "xx (xx.%)" = val_pct_helper(x, dig1 = NA, dig2 = 0, na_str = na_str),
-      "xx (xx.x%)" = val_pct_helper(x, dig1 = NA, dig2 = 1, na_str = na_str),
-      "xx (xx.xx%)" = val_pct_helper(x, dig1 = NA, dig2 = 2, na_str = na_str),
-      "xx. (xx.%)" = val_pct_helper(x, dig1 = 0, dig2 = 0, na_str = na_str),
-      "xx.x (xx.x%)" = val_pct_helper(x, dig1 = 1, dig2 = 1, na_str = na_str),
-      "xx.xx (xx.xx%)" = val_pct_helper(x, dig1 = 2, dig2 = 2, na_str = na_str),
+      "xx." = round_fmt(x, digits = 0, na_str = na_str, round_type = round_type),
+      "xx.x" = round_fmt(x, digits = 1, na_str = na_str, round_type = round_type),
+      "xx.xx" = round_fmt(x, digits = 2, na_str = na_str, round_type = round_type),
+      "xx.xxx" = round_fmt(x, digits = 3, na_str = na_str, round_type = round_type),
+      "xx.xxxx" = round_fmt(x, digits = 4, na_str = na_str, round_type = round_type),
+      "xx%" = paste0(round_fmt(x * 100, digits = NA, na_str = na_str, round_type = round_type), "%"),
+      "xx.%" = paste0(round_fmt(x * 100, digits = 0, na_str = na_str, round_type = round_type), "%"),
+      "xx.x%" = paste0(round_fmt(x * 100, digits = 1, na_str = na_str, round_type = round_type), "%"),
+      "xx.xx%" = paste0(round_fmt(x * 100, digits = 2, na_str = na_str, round_type = round_type), "%"),
+      "xx.xxx%" = paste0(round_fmt(x * 100, digits = 3, na_str = na_str, round_type = round_type), "%"),
+      "(N=xx)" = paste0("(N=", round_fmt(x, digits = NA, na_str = na_str, round_type = round_type), ")"),
+      "N=xx" = paste0("N=", round_fmt(x, digits = NA, na_str = na_str, round_type = round_type)),
+      ">999.9" = ifelse(x > 999.9, ">999.9", round_fmt(x, digits = 1, na_str = na_str, round_type = round_type)),
+      ">999.99" = ifelse(x > 999.99, ">999.99", round_fmt(x, digits = 2, na_str = na_str, round_type = round_type)),
+      "x.xxxx | (<0.0001)" = ifelse(x < 0.0001, "<0.0001", round_fmt(x, digits = 4, na_str = na_str, round_type = round_type)),
+      "xx / xx" = sep_2d_helper(x, dig1 = NA, dig2 = NA, sep = " / ", na_str = na_str, round_type = round_type),
+      "xx. / xx." = sep_2d_helper(x, dig1 = 0, dig2 = 0, sep = " / ", na_str = na_str, round_type = round_type),
+      "xx.x / xx.x" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = " / ", na_str = na_str, round_type = round_type),
+      "xx.xx / xx.xx" = sep_2d_helper(x, dig1 = 2, dig2 = 2, sep = " / ", na_str = na_str, round_type = round_type),
+      "xx.xxx / xx.xxx" = sep_2d_helper(x, dig1 = 3, dig2 = 3, sep = " / ", na_str = na_str, round_type = round_type),
+      "N=xx (xx%)" = paste0("N=", val_pct_helper(x, dig1 = NA, dig2 = NA, na_str = na_str, round_type = round_type)),
+      "xx (xx%)" = val_pct_helper(x, dig1 = NA, dig2 = NA, na_str = na_str, round_type = round_type),
+      "xx (xx.%)" = val_pct_helper(x, dig1 = NA, dig2 = 0, na_str = na_str, round_type = round_type),
+      "xx (xx.x%)" = val_pct_helper(x, dig1 = NA, dig2 = 1, na_str = na_str, round_type = round_type),
+      "xx (xx.xx%)" = val_pct_helper(x, dig1 = NA, dig2 = 2, na_str = na_str, round_type = round_type),
+      "xx. (xx.%)" = val_pct_helper(x, dig1 = 0, dig2 = 0, na_str = na_str, round_type = round_type),
+      "xx.x (xx.x%)" = val_pct_helper(x, dig1 = 1, dig2 = 1, na_str = na_str, round_type = round_type),
+      "xx.xx (xx.xx%)" = val_pct_helper(x, dig1 = 2, dig2 = 2, na_str = na_str, round_type = round_type),
       "(xx, xx)" = sep_2d_helper(x,
         dig1 = NA, dig2 = NA, sep = ", ",
-        na_str = na_str, wrap = c("(", ")")
+        na_str = na_str, wrap = c("(", ")"),
+        round_type = round_type
       ),
       "(xx., xx.)" = sep_2d_helper(x,
         dig1 = 0, dig2 = 0, sep = ", ",
-        na_str = na_str, wrap = c("(", ")")
+        na_str = na_str, wrap = c("(", ")"),
+        round_type = round_type
       ),
       "(xx.x, xx.x)" = sep_2d_helper(x,
         dig1 = 1, dig2 = 1, sep = ", ",
-        na_str = na_str, wrap = c("(", ")")
+        na_str = na_str, wrap = c("(", ")"),
+        round_type = round_type
       ),
       "(xx.xx, xx.xx)" = sep_2d_helper(x,
         dig1 = 2, dig2 = 2, sep = ", ",
-        na_str = na_str, wrap = c("(", ")")
+        na_str = na_str, wrap = c("(", ")"),
+        round_type = round_type
       ),
       "(xx.xxx, xx.xxx)" = sep_2d_helper(x,
         dig1 = 3, dig2 = 3, sep = ", ",
-        na_str = na_str, wrap = c("(", ")")
+        na_str = na_str, wrap = c("(", ")"),
+        round_type = round_type
       ),
       "(xx.xxxx, xx.xxxx)" = sep_2d_helper(x,
         dig1 = 4, dig2 = 4, sep = ", ",
-        na_str = na_str, wrap = c("(", ")")
+        na_str = na_str, wrap = c("(", ")"),
+        round_type = round_type
       ),
-      "xx - xx" = sep_2d_helper(x, dig1 = NA, dig2 = NA, sep = " - ", na_str = na_str),
-      "xx.x - xx.x" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = " - ", na_str = na_str),
-      "xx.xx - xx.xx" = sep_2d_helper(x, dig1 = 2, dig2 = 2, sep = " - ", na_str = na_str),
-      "xx (xx)" = val_pct_helper(x, dig1 = NA, dig2 = NA, na_str = na_str, pct = FALSE),
-      "xx. (xx.)" = val_pct_helper(x, dig1 = 0, dig2 = 0, na_str = na_str, pct = FALSE),
-      "xx.x (xx.x)" = val_pct_helper(x, dig1 = 1, dig2 = 1, na_str = na_str, pct = FALSE),
-      "xx.xx (xx.xx)" = val_pct_helper(x, dig1 = 2, dig2 = 2, na_str = na_str, pct = FALSE),
-      "xx (xx.)" = val_pct_helper(x, dig1 = NA, dig2 = 0, na_str = na_str, pct = FALSE),
-      "xx (xx.x)" = val_pct_helper(x, dig1 = NA, dig2 = 1, na_str = na_str, pct = FALSE),
-      "xx (xx.xx)" = val_pct_helper(x, dig1 = NA, dig2 = 2, na_str = na_str, pct = FALSE),
-      "xx.x, xx.x" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = ", ", na_str = na_str),
-      "xx.x to xx.x" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = " to ", na_str = na_str),
+      "xx - xx" = sep_2d_helper(x, dig1 = NA, dig2 = NA, sep = " - ", na_str = na_str, round_type = round_type),
+      "xx.x - xx.x" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = " - ", na_str = na_str, round_type = round_type),
+      "xx.xx - xx.xx" = sep_2d_helper(x, dig1 = 2, dig2 = 2, sep = " - ", na_str = na_str, round_type = round_type),
+      "xx (xx)" = val_pct_helper(x, dig1 = NA, dig2 = NA, na_str = na_str, pct = FALSE, round_type = round_type),
+      "xx. (xx.)" = val_pct_helper(x, dig1 = 0, dig2 = 0, na_str = na_str, pct = FALSE, round_type = round_type),
+      "xx.x (xx.x)" = val_pct_helper(x, dig1 = 1, dig2 = 1, na_str = na_str, pct = FALSE, round_type = round_type),
+      "xx.xx (xx.xx)" = val_pct_helper(x, dig1 = 2, dig2 = 2, na_str = na_str, pct = FALSE, round_type = round_type),
+      "xx (xx.)" = val_pct_helper(x, dig1 = NA, dig2 = 0, na_str = na_str, pct = FALSE, round_type = round_type),
+      "xx (xx.x)" = val_pct_helper(x, dig1 = NA, dig2 = 1, na_str = na_str, pct = FALSE, round_type = round_type),
+      "xx (xx.xx)" = val_pct_helper(x, dig1 = NA, dig2 = 2, na_str = na_str, pct = FALSE, round_type = round_type),
+      "xx.x, xx.x" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = ", ", na_str = na_str, round_type = round_type),
+      "xx.x to xx.x" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = " to ", na_str = na_str, round_type = round_type),
       "xx.xx (xx.xx - xx.xx)" = paste0(
         round_fmt(x[1], digits = 2, na_str = na_str[1]), " ",
         sep_2d_helper(x[2:3],
           dig1 = 2, dig2 = 2,
           sep = " - ", na_str = na_str[2:3],
-          wrap = c("(", ")")
+          wrap = c("(", ")"),
+          round_type = round_type
         )
       ),
       "xx. (xx. - xx.)" = paste0(
@@ -387,7 +445,8 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
         sep_2d_helper(x[2:3],
           dig1 = 0, dig2 = 0,
           sep = " - ", na_str = na_str[2:3],
-          wrap = c("(", ")")
+          wrap = c("(", ")"),
+          round_type = round_type
         )
       ),
       "xx.x (xx.x - xx.x)" = paste0(
@@ -395,7 +454,8 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
         sep_2d_helper(x[2:3],
           dig1 = 1, dig2 = 1,
           sep = " - ", na_str = na_str[2:3],
-          wrap = c("(", ")")
+          wrap = c("(", ")"),
+          round_type = round_type
         )
       ),
       "xx.xxx (xx.xxx - xx.xxx)" = paste0(
@@ -403,7 +463,8 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
         sep_2d_helper(x[2:3],
           dig1 = 3, dig2 = 3,
           sep = " - ", na_str = na_str[2:3],
-          wrap = c("(", ")")
+          wrap = c("(", ")"),
+          round_type = round_type
         )
       ),
       paste("format string", format, "not found")
