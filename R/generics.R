@@ -96,6 +96,7 @@ setMethod("make_row_df", "MatrixPrintForm", function(tt, colwidths = NULL, visib
 #' it is useful to map the `rtable` to an in-between state with the formatted cells in a matrix form.
 #'
 #' @inheritParams make_row_df
+#' @inheritParams format_value
 #' @param obj (`ANY`)\cr object to be transformed into a ready-to-render form (a [`MatrixPrintForm`] object).
 #' @param indent_rownames (`flag`)\cr if `TRUE`, the row names column in the `strings` matrix of `obj`
 #'   will have indented row names (strings pre-fixed).
@@ -122,7 +123,8 @@ setGeneric("matrix_form", function(obj,
                                    expand_newlines = TRUE,
                                    indent_size = 2,
                                    fontspec = NULL,
-                                   col_gap = NULL) {
+                                   col_gap = NULL,
+                                   round_type = c("iec", "sas")) {
   standardGeneric("matrix_form")
 })
 
@@ -134,7 +136,8 @@ setMethod("matrix_form", "MatrixPrintForm", function(obj,
                                                      expand_newlines = TRUE,
                                                      indent_size = 2,
                                                      fontspec = NULL,
-                                                     col_gap = NULL) {
+                                                     col_gap = NULL,
+                                                     round_type = c("iec", "sas")) {
   if (!is.null(fontspec)) {
     mf_fontspec(obj) <- fontspec
   }

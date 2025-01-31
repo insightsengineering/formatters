@@ -588,11 +588,12 @@ vert_pag_indices <- function(obj,
                              verbose = FALSE,
                              rep_cols = 0L,
                              fontspec,
-                             nosplitin = character()) {
+                             nosplitin = character(),
+                             round_type = c("iec", "sas")) {
   if (is.list(nosplitin)) {
     nosplitin <- nosplitin[["cols"]]
   }
-  mf <- matrix_form(obj, indent_rownames = TRUE, fontspec = fontspec)
+  mf <- matrix_form(obj, indent_rownames = TRUE, fontspec = fontspec, round_type = round_type)
   clwds <- colwidths %||% propose_column_widths(mf, fontspec = fontspec)
   if (is.null(mf_cinfo(mf))) { ## like always, ugh.
     mf <- mpf_infer_cinfo(mf, colwidths = clwds, rep_cols = rep_cols, fontspec = fontspec)
@@ -998,6 +999,7 @@ paginate_indices <- function(obj,
                              rep_cols = num_rep_cols(obj),
                              col_gap = 3,
                              fontspec = font_spec(font_family, font_size, lineheight),
+                             round_type = c("iec", "sas"),
                              verbose = FALSE) {
   ## this preserves backwards compatibility
   ## could start deprecation cycle of char input
@@ -1031,9 +1033,9 @@ paginate_indices <- function(obj,
 
   ## order is annoying here, since we won't actually need the mpf if
   ## we run into forced pagination, but life is short and this should work fine.
-  mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec)
+  mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec, round_type = round_type)
   if (is.null(colwidths)) {
-    colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf, fontspec = fontspec)
+    colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf, fontspec = fontspec, round_type = round_type)
   } else {
     mf_col_widths(mpf) <- colwidths
   }
@@ -1139,6 +1141,7 @@ paginate_indices <- function(obj,
       cpp = pg_size_spec$cpp, colwidths = colwidths,
       rep_cols = rep_cols, fontspec = fontspec,
       nosplitin = nosplitin[["cols"]],
+      round_type = round_type,
       verbose = verbose
     )
   }
@@ -1176,6 +1179,7 @@ paginate_to_mpfs <- function(obj,
                              # col_gap = 3, # this could be change in default - breaking change
                              col_gap = 3,
                              fontspec = font_spec(font_family, font_size, lineheight),
+                             round_type = c("iec", "sas"),
                              verbose = FALSE) {
   newdev <- open_font_dev(fontspec)
   if (newdev) {
@@ -1216,7 +1220,7 @@ paginate_to_mpfs <- function(obj,
     prov_footer(obj) <- c(prov_footer(obj), page_num)
   }
 
-  mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec)
+  mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec, round_type = round_type)
   # For listings, keycols are mandatory rep_num_cols
   if (is.null(rep_cols)) {
     rep_cols <- num_rep_cols(obj)
@@ -1230,7 +1234,7 @@ paginate_to_mpfs <- function(obj,
 
   # Checking colwidths
   if (is.null(colwidths)) {
-    colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf, fontspec = fontspec)
+    colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf, fontspec = fontspec, round_type = round_type)
   } else {
     cur_ncol <- ncol(mpf)
     if (!.is_listing_mf(mpf)) {
@@ -1299,7 +1303,8 @@ paginate_to_mpfs <- function(obj,
       fontspec = fontspec,
       verbose = verbose,
       rep_cols = rep_cols,
-      page_num = page_num
+      page_num = page_num,
+      round_type = round_type
     )
     return(deep_pag)
   } else if (has_page_title(fpags[[1]])) {
@@ -1307,10 +1312,10 @@ paginate_to_mpfs <- function(obj,
   }
 
   ## we run into forced pagination, but life is short and this should work fine.
-  mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec)
+  mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec, round_type = round_type)
   num_rep_cols(mpf) <- rep_cols
   if (is.null(colwidths)) {
-    colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf, fontspec = fontspec)
+    colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf, fontspec = fontspec, round_type = round_type)
   }
   mf_col_widths(mpf) <- colwidths
   mf_colgap(mpf) <- col_gap
@@ -1336,7 +1341,8 @@ paginate_to_mpfs <- function(obj,
     rep_cols = rep_cols,
     verbose = verbose,
     col_gap = col_gap,
-    fontspec = fontspec
+    fontspec = fontspec,
+    round_type = round_type
   )
 
   pagmats <- lapply(page_indices$pag_row_indices, function(ii) {
@@ -1460,7 +1466,7 @@ diagnose_pagination <- function(obj,
                                 cpp = NA_integer_,
                                 min_siblings = 2,
                                 nosplitin = character(),
-                                colwidths = propose_column_widths(matrix_form(obj, TRUE), fontspec = fontspec),
+                                colwidths = propose_column_widths(matrix_form(obj, TRUE, round_type = round_type), fontspec = fontspec, round_type = round_type),
                                 tf_wrap = FALSE,
                                 max_width = NULL,
                                 indent_size = 2,
@@ -1473,6 +1479,7 @@ diagnose_pagination <- function(obj,
                                   font_size,
                                   lineheight
                                 ),
+                                round_type = c("iec", "sas"),
                                 ...) {
   new_dev <- open_font_dev(fontspec)
   if (new_dev) {
@@ -1496,7 +1503,8 @@ diagnose_pagination <- function(obj,
       col_gap = col_gap,
       min_siblings = min_siblings,
       nosplitin = nosplitin,
-      fontspec = fontspec
+      fontspec = fontspec,
+      round_type = round_type
     ))
   }
 
@@ -1520,6 +1528,7 @@ diagnose_pagination <- function(obj,
           min_siblings = min_siblings,
           nosplitin = nosplitin,
           fontspec = fontspec,
+          round_type = round_type,
           verbose = TRUE
         )
       )

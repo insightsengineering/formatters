@@ -11,7 +11,8 @@ matrix_form(
   expand_newlines = TRUE,
   indent_size = 2,
   fontspec = NULL,
-  col_gap = NULL
+  col_gap = NULL,
+  round_type = c("iec", "sas")
 )
 
 \S4method{matrix_form}{MatrixPrintForm}(
@@ -20,7 +21,8 @@ matrix_form(
   expand_newlines = TRUE,
   indent_size = 2,
   fontspec = NULL,
-  col_gap = NULL
+  col_gap = NULL,
+  round_type = c("iec", "sas")
 )
 }
 \arguments{

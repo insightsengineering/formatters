@@ -30,7 +30,8 @@ export_as_pdf(
   max_width = NULL,
   colwidths = NULL,
   fontspec = font_spec(font_family, font_size, lineheight),
-  ttype_ok = FALSE
+  ttype_ok = FALSE,
+  round_type = c("iec", "sas")
 )
 }
 \arguments{

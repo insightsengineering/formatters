@@ -11,7 +11,8 @@ vert_pag_indices(
   verbose = FALSE,
   rep_cols = 0L,
   fontspec,
-  nosplitin = character()
+  nosplitin = character(),
+  round_type = c("iec", "sas")
 )
 }
 \arguments{
