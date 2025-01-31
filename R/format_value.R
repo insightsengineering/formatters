@@ -7,7 +7,6 @@ call_format_fun <- function(f,
                             na_str,
                             round_type,
                             output) {
-
   args <- c(
     list(value),
     if (fun_takes(f, "na_str")) list(na_str = na_str),
@@ -208,8 +207,8 @@ sprintf_format <- function(format) {
 #' @export
 #' @aliases rounding
 round_fmt <- function(x, digits, na_str = "NA", round_type = c("iec", "sas")) {
-  round_type = match.arg(round_type)
- if (!is.na(digits) && digits < 0) {
+  round_type <- match.arg(round_type)
+  if (!is.na(digits) && digits < 0) {
     stop("round_fmt currently does not support non-missing values of digits < 0")
   }
   if (is.na(x)) {
@@ -229,10 +228,9 @@ round_fmt <- function(x, digits, na_str = "NA", round_type = c("iec", "sas")) {
 ## https://stackoverflow.com/questions/12688717/round-up-from-5
 
 #' @inheritParams round_fmt
-#' 
+#'
 round_sas <- function(x,
-                     digits = 0) {
-
+                      digits = 0) {
   # perform SAS rounding ----------------------------------------------------
   posneg <- sign(x)
   z <- abs(x) * 10^digits
