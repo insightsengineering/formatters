@@ -50,6 +50,10 @@ if the family named is not monospaced. Defaults to \code{"Courier"}.}
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
 calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 
+\item{round_type}{(\code{"iec"} or \code{"sas"})\cr the type of rounding to perform. iec,
+the default, peforms rounding compliant with IEC 60559 (see details), while
+sas performs nearest-value rounding consistent with rounding within SAS.}
+
 \item{...}{additional parameters passed to individual methods.}
 }
 \value{

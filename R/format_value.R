@@ -277,6 +277,7 @@ sep_2d_helper <- function(x, dig1, dig2, sep, na_str, wrap = NULL, round_type = 
 
 #' Converts a (possibly compound) value into a string using the `format` information
 #'
+#' @inheritParams round_fmt
 #' @param x (`ANY`)\cr the value to be formatted.
 #' @param format (`string` or `function`)\cr the format label (string) or formatter function to
 #'   apply to `x`.

@@ -112,6 +112,10 @@ calculating string widths and heights, as returned by \code{\link[=font_spec]{fo
 
 \item{col_gap}{(\code{numeric(1)})\cr The number of spaces to be placed between columns
 in the rendered table (and assumed for horizontal pagination).}
+
+\item{round_type}{(\code{"iec"} or \code{"sas"})\cr the type of rounding to perform. iec,
+the default, peforms rounding compliant with IEC 60559 (see details), while
+sas performs nearest-value rounding consistent with rounding within SAS.}
 }
 \value{
 If \code{file} is \code{NULL}, the full paginated and concatenated string value is returned,
