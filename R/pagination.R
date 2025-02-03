@@ -568,6 +568,7 @@ pag_indices_inner <- function(pagdf,
 #'
 #' @inheritParams pag_indices_inner
 #' @inheritParams open_font_dev
+#' @inheritParams format_value
 #' @param obj (`ANY`)\cr object to be paginated. Must have a [matrix_form()] method.
 #' @param cpp (`numeric(1)`)\cr number of characters per page (width).
 #' @param colwidths (`numeric`)\cr vector of column widths (in characters) for use in vertical pagination.

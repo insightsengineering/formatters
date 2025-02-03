@@ -1364,6 +1364,7 @@ spans_to_viscell <- function(spans) {
 #' Row names are also considered a column for the output.
 #'
 #' @inheritParams open_font_dev
+#' @inheritParams format_value
 #' @param x (`ANY`)\cr a `MatrixPrintForm` object, or an object with a `matrix_form` method.
 #' @param indent_size (`numeric(1)`)\cr indent size, in characters. Ignored when `x` is already
 #'   a `MatrixPrintForm` object in favor of information there.
