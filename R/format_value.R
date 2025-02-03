@@ -431,7 +431,7 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
       "xx.x, xx.x" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = ", ", na_str = na_str, round_type = round_type),
       "xx.x to xx.x" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = " to ", na_str = na_str, round_type = round_type),
       "xx.xx (xx.xx - xx.xx)" = paste0(
-        round_fmt(x[1], digits = 2, na_str = na_str[1]), " ",
+        round_fmt(x[1], digits = 2, na_str = na_str[1], round_type = round_type), " ",
         sep_2d_helper(x[2:3],
           dig1 = 2, dig2 = 2,
           sep = " - ", na_str = na_str[2:3],
@@ -440,7 +440,7 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
         )
       ),
       "xx. (xx. - xx.)" = paste0(
-        round_fmt(x[1], digits = 0, na_str = na_str[1]), " ",
+        round_fmt(x[1], digits = 0, na_str = na_str[1], round_type = round_type), " ",
         sep_2d_helper(x[2:3],
           dig1 = 0, dig2 = 0,
           sep = " - ", na_str = na_str[2:3],
@@ -449,7 +449,7 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
         )
       ),
       "xx.x (xx.x - xx.x)" = paste0(
-        round_fmt(x[1], digits = 1, na_str = na_str[1]), " ",
+        round_fmt(x[1], digits = 1, na_str = na_str[1], round_type = round_type), " ",
         sep_2d_helper(x[2:3],
           dig1 = 1, dig2 = 1,
           sep = " - ", na_str = na_str[2:3],
@@ -458,7 +458,7 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
         )
       ),
       "xx.xxx (xx.xxx - xx.xxx)" = paste0(
-        round_fmt(x[1], digits = 3, na_str = na_str[1]), " ",
+        round_fmt(x[1], digits = 3, na_str = na_str[1], round_type = round_type), " ",
         sep_2d_helper(x[2:3],
           dig1 = 3, dig2 = 3,
           sep = " - ", na_str = na_str[2:3],
