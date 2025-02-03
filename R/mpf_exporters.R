@@ -99,7 +99,15 @@ export_as_txt <- function(x,
       round_type = round_type
     )
   } else {
-    mf <- matrix_form(x, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec, col_gap = col_gap, round_type = round_type)
+    mf <- matrix_form(
+      x,
+      TRUE,
+      TRUE,
+      indent_size = indent_size,
+      fontspec = fontspec,
+      col_gap = col_gap,
+      round_type = round_type
+    )
     mf_col_widths(mf) <- colwidths %||% propose_column_widths(mf, fontspec = fontspec, round_type = round_type)
     pages <- list(mf)
   }

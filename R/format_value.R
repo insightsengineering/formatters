@@ -374,7 +374,10 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
       "N=xx" = paste0("N=", round_fmt(x, digits = NA, na_str = na_str, round_type = round_type)),
       ">999.9" = ifelse(x > 999.9, ">999.9", round_fmt(x, digits = 1, na_str = na_str, round_type = round_type)),
       ">999.99" = ifelse(x > 999.99, ">999.99", round_fmt(x, digits = 2, na_str = na_str, round_type = round_type)),
-      "x.xxxx | (<0.0001)" = ifelse(x < 0.0001, "<0.0001", round_fmt(x, digits = 4, na_str = na_str, round_type = round_type)),
+      "x.xxxx | (<0.0001)" = ifelse(x < 0.0001, "<0.0001",
+        round_fmt(x, digits = 4, na_str = na_str,
+                  round_type = round_type)
+      ),
       "xx / xx" = sep_2d_helper(x, dig1 = NA, dig2 = NA, sep = " / ", na_str = na_str, round_type = round_type),
       "xx. / xx." = sep_2d_helper(x, dig1 = 0, dig2 = 0, sep = " / ", na_str = na_str, round_type = round_type),
       "xx.x / xx.x" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = " / ", na_str = na_str, round_type = round_type),

@@ -10,6 +10,7 @@
 #' (like [`MatrixPrintForm`]).
 #'
 #' @inheritParams open_font_dev
+#' @inheritParams format_value
 #' @param tt (`ANY`)\cr object representing the table-like object to be summarized.
 #' @param visible_only (`flag`)\cr should only visible aspects of the table structure be reflected
 #'   in this summary. Defaults to `TRUE`. May not be supported by all methods.
@@ -66,7 +67,8 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
                                    nsibs = NA_integer_,
                                    max_width = NULL,
                                    fontspec = font_spec(),
-                                   col_gap = 3L) {
+                                   col_gap = 3L,
+                                   round_type = c("iec", "sas")) {
   standardGeneric("make_row_df")
 })
 
@@ -82,7 +84,8 @@ setMethod("make_row_df", "MatrixPrintForm", function(tt, colwidths = NULL, visib
                                                      nsibs = NA_integer_,
                                                      max_width = NULL,
                                                      fontspec = font_spec(),
-                                                     col_gap = mf_colgap(tt) %||% 3L) {
+                                                     col_gap = mf_colgap(tt) %||% 3L,
+                                                     round_type = c("iec", "sas")) {
   msg <- paste0(
     "make_row_df can be used only on {rtables} table objects, and not on `matrix_form`-",
     "generated objects (MatrixPrintForm)."
