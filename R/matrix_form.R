@@ -94,6 +94,7 @@ mform_handle_newlines <- function(matform) {
       ),
       expand_mat_rows(strmat[-1 * hdr_inds, , drop = FALSE], row_nlines[-hdr_inds])
     )
+    colnames(newstrmat) <- colnames(strmat)
 
     newfrmmat <- rbind(
       expand_mat_rows(
