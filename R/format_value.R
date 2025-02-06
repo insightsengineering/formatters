@@ -31,7 +31,8 @@ formats_2d <- c(
   "xx - xx", "xx.x - xx.x", "xx.xx - xx.xx",
   "xx (xx)", "xx. (xx.)", "xx.x (xx.x)", "xx.xx (xx.xx)",
   "xx (xx.)", "xx (xx.x)", "xx (xx.xx)",
-  "xx.x, xx.x",
+  "xx. (xx.x)", "xx.x (xx.xx)", "xx.xx (xx.xxx)",
+  "xx, xx", "xx.x, xx.x", "xx.xx, xx.xx",
   "xx.x to xx.x"
 )
 
@@ -39,7 +40,10 @@ formats_3d <- c(
   "xx. (xx. - xx.)",
   "xx.x (xx.x - xx.x)",
   "xx.xx (xx.xx - xx.xx)",
-  "xx.xxx (xx.xxx - xx.xxx)"
+  "xx.xxx (xx.xxx - xx.xxx)",
+  "xx / xx (xx.%)",
+  "xx / xx (xx.x%)",
+  "xx / xx (xx.xx%)"
 )
 
 #' List of currently supported formats and vertical alignments
@@ -433,7 +437,12 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
       "xx (xx.)" = val_pct_helper(x, dig1 = NA, dig2 = 0, na_str = na_str, pct = FALSE, round_type = round_type),
       "xx (xx.x)" = val_pct_helper(x, dig1 = NA, dig2 = 1, na_str = na_str, pct = FALSE, round_type = round_type),
       "xx (xx.xx)" = val_pct_helper(x, dig1 = NA, dig2 = 2, na_str = na_str, pct = FALSE, round_type = round_type),
+      "xx. (xx.x)" = val_pct_helper(x, dig1 = 0, dig2 = 1, na_str = na_str, pct = FALSE, round_type = round_type),
+      "xx.x (xx.xx)" = val_pct_helper(x, dig1 = 1, dig2 = 2, na_str = na_str, pct = FALSE, round_type = round_type),
+      "xx.xx (xx.xxx)" = val_pct_helper(x, dig1 = 2, dig2 = 3, na_str = na_str, pct = FALSE, round_type = round_type),
+      "xx, xx" = sep_2d_helper(x, dig1 = NA, dig2 = NA, sep = ", ", na_str = na_str, round_type = round_type),
       "xx.x, xx.x" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = ", ", na_str = na_str, round_type = round_type),
+      "xx.xx, xx.xx" = sep_2d_helper(x, dig1 = 2, dig2 = 2, sep = ", ", na_str = na_str, round_type = round_type),
       "xx.x to xx.x" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = " to ", na_str = na_str, round_type = round_type),
       "xx.xx (xx.xx - xx.xx)" = paste0(
         round_fmt(x[1], digits = 2, na_str = na_str[1], round_type = round_type), " ",
@@ -471,8 +480,31 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
           round_type = round_type
         )
       ),
-      paste("format string", format, "not found")
-    )
+      "xx / xx (xx.%)" = paste0(
+        sep_2d_helper(x[1:2], dig1 = NA, dig2 = NA, sep = " / ", round_type = round_type, na_str = na_str[1:2]), " ",
+        paste0("(",
+          format_value(x[3], format = "xx.%", output = "ascii", na_str = na_str[3], round_type = round_type),
+          ")"
+        )
+      ),
+      "xx / xx (xx.x%)" = paste0(
+        sep_2d_helper(x[1:2], dig1 = NA, dig2 = NA, sep = " / ", round_type = round_type, na_str = na_str[1:2]), " ",
+        paste0("(",
+          format_value(x[3], format = "xx.x%", output = "ascii", na_str = na_str[3], round_type = round_type),
+          ")"
+        )
+      ),
+      "xx / xx (xx.xx%)" = paste0(
+        sep_2d_helper(x[1:2], dig1 = NA, dig2 = NA, sep = " / ", round_type = round_type, na_str = na_str[1:2]), " ",
+        paste0("(",
+          format_value(x[3], format = "xx.xx%", output = "ascii", na_str = na_str[3], round_type = round_type),
+          ")"
+        )
+      ),
+      ## we already checked for label validity so this can only happen when something is
+      ## added to the valid labels list but left unimplemented.
+      stop(paste("valid format string", format, "not implemented")) # nocov
+    ) 
   }
   # Check that probably never happens as it is almost always already text
   txt[is.na(txt)] <- na_str[1]

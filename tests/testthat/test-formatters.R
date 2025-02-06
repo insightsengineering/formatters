@@ -32,6 +32,13 @@ test_that("formats work", {
 
   res <- sapply(forms, function(vc) all(sapply(vc, is_valid_format)))
   expect_true(all(res))
+  basicvals <- c(1.5, 2.8324, 1000.2343)
+
+  ## smoke test, all listed formats do *something*.
+  ## *** each format requires at least one specific value test below ***
+  expect_silent(sapply(forms[[1]], function(fmt) format_value(basicvals[1], fmt)))
+  expect_silent(sapply(forms[[2]], function(fmt) format_value(basicvals[1:2], fmt)))
+  expect_silent(sapply(forms[[3]], function(fmt) format_value(basicvals, fmt)))
 
   ## core formatter tests for format strings
 
@@ -271,8 +278,33 @@ test_that("formats work", {
   )
 
   expect_identical(
+    format_value(values, format = "xx. (xx.x)"),
+    paste0(5, " (7.9)")
+  )
+
+  expect_identical(
+    format_value(values, format = "xx.x (xx.xx)"),
+    "5.1 (7.89)"
+  )
+
+  expect_identical(
+    format_value(values, format = "xx.xx (xx.xxx)"),
+    "5.12 (7.891)"
+  )
+
+  expect_identical(
+    format_value(c(5, 7), format = "xx, xx"),
+    "5, 7"
+  )
+
+  expect_identical(
     format_value(values, format = "xx.x, xx.x"),
     "5.1, 7.9"
+  )
+
+  expect_identical(
+    format_value(values, format = "xx.xx, xx.xx"),
+    "5.12, 7.89"
   )
 
   expect_identical(
@@ -298,6 +330,23 @@ test_that("formats work", {
   expect_identical(
     format_value(c(values, 10.1235), format = "xx.xxx (xx.xxx - xx.xxx)"),
     "5.123 (7.891 - 10.124)"
+  )
+
+  ## numerator denominator fraction
+  ndfvals <- c(3456, 10000, .3456)
+  expect_identical(
+    format_value(ndfvals, "xx / xx (xx.%)"),
+    "3456 / 10000 (35%)"
+  )
+ 
+  expect_identical(
+    format_value(ndfvals, "xx / xx (xx.x%)"),
+    "3456 / 10000 (34.6%)"
+  )
+
+  expect_identical(
+    format_value(ndfvals, "xx / xx (xx.xx%)"),
+    "3456 / 10000 (34.56%)"
   )
 
   expect_identical(format_value(NULL, "xx"), "")
@@ -926,32 +975,79 @@ test_that("fmt_config works as expected", {
   expect_silent(obj_align(x) <- "something wrong")
 })
 
+make_pat_part <- function(bef = "xx", digs, pct = FALSE) {
+  digchar <- substr(bef, 1, 1)
+  ret <- paste0(bef, "[.]", strrep(digchar, digs))
+  if (pct)
+    ret <- paste0(ret, "[%]")
+  else
+    ret <- paste0(ret,  "([^%", digchar, "]|$)")
+  ret
+}
+sas_relevant_fmts <- function(fmts, digs, flip = FALSE) {
+  pat <- paste0(
+    "(", make_pat_part("xx", digs), "|",
+    make_pat_part("999", digs), "|",
+    if (digs >= 2) make_pat_part("xx", digs - 2, pct = TRUE) else "NEVERMATCH",
+    ")"
+  )
+  inds <- grep(pat, fmts)
+  if (flip)
+    fmts[-inds]
+  else
+    fmts[inds]
+}
 
-# optional sas-style rounding
-tricky_val <- 0.845
+sas_iec_disagree <- function(fmt, val) format_value(val, fmt) != format_value(val, fmt, round_type = "sas")
 
-expect_identical(
-  format_value(tricky_val, "xx.xx"),
-  "0.84"
-)
-expect_identical(
-  format_value(tricky_val, "xx.xx", round_type = "sas"),
-  "0.85"
-)
+tricky_vals <- c(8.5, 7.05, 7.845, 7.0005)
+test_that("sas-style rounding works", {
+  ## optional sas-style rounding
+ 
+    
+  expect_identical(
+    format_value(tricky_vals[3], "xx.xx"),
+    "7.84"
+  )
+  expect_identical(
+    format_value(tricky_vals[3], "xx.xx", round_type = "sas"),
+    "7.85"
+  )
+
+  forms <- list_valid_format_labels()
+  for (fmtset in 1:3) {
+    for (digs in 0:3) {
+      fmts <- sas_relevant_fmts(forms[[fmtset]], digs)
+      innerval <- rep(tricky_vals[digs + 1], fmtset)
+      ## formats that should have rounding differences do have them
+      expect_true(all(vapply(fmts, sas_iec_disagree, TRUE, val = innerval)))
+      ofmts <- sas_relevant_fmts(forms[[fmtset]], digs, flip = TRUE)
+      ## formats that should not have rounding differences don't have them
+      expect_false(any(vapply(ofmts, sas_iec_disagree, TRUE, val = innerval)))
+    }
+  }
+  
+})
 
 format_fun_rtype <- function(x, output, round_type) round_type
 
-expect_identical(format_value(tricky_val, format_fun_rtype), "iec")
+expect_identical(format_value(tricky_vals[1], format_fun_rtype), "iec")
 expect_identical(
-  format_value(tricky_val, format_fun_rtype, round_type = "sas"),
+  format_value(tricky_vals[1], format_fun_rtype, round_type = "sas"),
   "sas"
 )
 
 # passing down na_str
 
 format_fun_na_str <- function(x, na_str) na_str
-expect_identical(format_value(tricky_val, format_fun_na_str), "NA")
-expect_identical(format_value(tricky_val, format_fun_na_str, na_str = "-"), "-")
+expect_identical(format_value(tricky_vals[1], format_fun_na_str), "NA")
+expect_identical(format_value(tricky_vals[1], format_fun_na_str, na_str = "-"), "-")
+
+
+# silly check_align coverage
+expect_true(check_aligns(list_valid_aligns()))
+expect_error(check_aligns("fake"))
+expect_error(check_aligns(c(NA_character_, "right")))
 
 
 # regression tests -------------------------------------------------------------
