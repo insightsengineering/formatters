@@ -482,21 +482,24 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
       ),
       "xx / xx (xx.%)" = paste0(
         sep_2d_helper(x[1:2], dig1 = NA, dig2 = NA, sep = " / ", round_type = round_type, na_str = na_str[1:2]), " ",
-        paste0("(",
+        paste0(
+          "(",
           format_value(x[3], format = "xx.%", output = "ascii", na_str = na_str[3], round_type = round_type),
           ")"
         )
       ),
       "xx / xx (xx.x%)" = paste0(
         sep_2d_helper(x[1:2], dig1 = NA, dig2 = NA, sep = " / ", round_type = round_type, na_str = na_str[1:2]), " ",
-        paste0("(",
+        paste0(
+          "(",
           format_value(x[3], format = "xx.x%", output = "ascii", na_str = na_str[3], round_type = round_type),
           ")"
         )
       ),
       "xx / xx (xx.xx%)" = paste0(
         sep_2d_helper(x[1:2], dig1 = NA, dig2 = NA, sep = " / ", round_type = round_type, na_str = na_str[1:2]), " ",
-        paste0("(",
+        paste0(
+          "(",
           format_value(x[3], format = "xx.xx%", output = "ascii", na_str = na_str[3], round_type = round_type),
           ")"
         )
@@ -504,7 +507,7 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
       ## we already checked for label validity so this can only happen when something is
       ## added to the valid labels list but left unimplemented.
       stop(paste("valid format string", format, "not implemented")) # nocov
-    ) 
+    )
   }
   # Check that probably never happens as it is almost always already text
   txt[is.na(txt)] <- na_str[1]

@@ -338,7 +338,7 @@ test_that("formats work", {
     format_value(ndfvals, "xx / xx (xx.%)"),
     "3456 / 10000 (35%)"
   )
- 
+
   expect_identical(
     format_value(ndfvals, "xx / xx (xx.x%)"),
     "3456 / 10000 (34.6%)"
@@ -978,10 +978,11 @@ test_that("fmt_config works as expected", {
 make_pat_part <- function(bef = "xx", digs, pct = FALSE) {
   digchar <- substr(bef, 1, 1)
   ret <- paste0(bef, "[.]", strrep(digchar, digs))
-  if (pct)
+  if (pct) {
     ret <- paste0(ret, "[%]")
-  else
-    ret <- paste0(ret,  "([^%", digchar, "]|$)")
+  } else {
+    ret <- paste0(ret, "([^%", digchar, "]|$)")
+  }
   ret
 }
 sas_relevant_fmts <- function(fmts, digs, flip = FALSE) {
@@ -992,10 +993,11 @@ sas_relevant_fmts <- function(fmts, digs, flip = FALSE) {
     ")"
   )
   inds <- grep(pat, fmts)
-  if (flip)
+  if (flip) {
     fmts[-inds]
-  else
+  } else {
     fmts[inds]
+  }
 }
 
 sas_iec_disagree <- function(fmt, val) format_value(val, fmt) != format_value(val, fmt, round_type = "sas")
@@ -1003,8 +1005,8 @@ sas_iec_disagree <- function(fmt, val) format_value(val, fmt) != format_value(va
 tricky_vals <- c(8.5, 7.05, 7.845, 7.0005)
 test_that("sas-style rounding works", {
   ## optional sas-style rounding
- 
-    
+
+
   expect_identical(
     format_value(tricky_vals[3], "xx.xx"),
     "7.84"
@@ -1026,7 +1028,6 @@ test_that("sas-style rounding works", {
       expect_false(any(vapply(ofmts, sas_iec_disagree, TRUE, val = innerval)))
     }
   }
-  
 })
 
 format_fun_rtype <- function(x, output, round_type) round_type
