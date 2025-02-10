@@ -8,7 +8,7 @@
 \usage{
 default_rounding()
 
-set_default_rounding(round_type = "ise")
+set_default_rounding(round_type = c("iec", "sas"))
 }
 \arguments{
 \item{round_type}{(\code{string})\cr single character value to set the default rounding type. It can be
