@@ -61,7 +61,7 @@ set_default_hsep <- function(hsep_char) {
 #' set_default_rounding("sas")
 #' default_rounding()
 #'
-#' @name default_rounding_type
+#' @name default_rounding
 #' @export
 default_rounding <- function() {
   formatters_default_rounding <- getOption("formatters_default_rounding")
@@ -74,7 +74,7 @@ default_rounding <- function() {
   rounding
 }
 
-#' @name default_rounding_type
+#' @name default_rounding
 #' @export
 set_default_rounding <- function(round_type = c("iec", "sas")) {
   round_type <- round_type[1]
