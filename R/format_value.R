@@ -213,8 +213,8 @@ round_fmt <- function(x, digits, na_str = "NA") {
     paste0(x)
   } else {
     rndx <- switch(default_rounding(),
-                   iec = round(x, digits),
-                   sas = round_sas(x, digits)
+      iec = round(x, digits),
+      sas = round_sas(x, digits)
     )
     sprfmt <- paste0("%.", digits, "f")
     sprintf(fmt = sprfmt, rndx)
