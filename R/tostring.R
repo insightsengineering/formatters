@@ -205,55 +205,6 @@ gpar_from_fspec <- function(fontspec) {
 
 font_dev_is_open <- function() font_dev_state$open
 
-#' Default horizontal separator
-#'
-#' The default horizontal separator character which can be displayed in the current
-#' charset for use in rendering table-like objects.
-#'
-#' @param hsep_char (`string`)\cr character that will be set in the R environment
-#'   options as the default horizontal separator. Must be a single character. Use
-#'   `getOption("formatters_default_hsep")` to get its current value (`NULL` if not set).
-#'
-#' @return unicode 2014 (long dash for generating solid horizontal line) if in a
-#'   locale that uses a UTF character set, otherwise an ASCII hyphen with a
-#'   once-per-session warning.
-#'
-#' @examples
-#' default_hsep()
-#' set_default_hsep("o")
-#' default_hsep()
-#'
-#' @name default_horizontal_sep
-#' @export
-default_hsep <- function() {
-  system_default_hsep <- getOption("formatters_default_hsep")
-
-  if (is.null(system_default_hsep)) {
-    if (any(grepl("^UTF", utils::localeToCharset()))) {
-      hsep <- "\u2014"
-    } else {
-      if (interactive()) {
-        warning(
-          "Detected non-UTF charset. Falling back to '-' ",
-          "as default header/body separator. This warning ",
-          "will only be shown once per R session."
-        ) # nocov
-      } # nocov
-      hsep <- "-" # nocov
-    }
-  } else {
-    hsep <- system_default_hsep
-  }
-  hsep
-}
-
-#' @name default_horizontal_sep
-#' @export
-set_default_hsep <- function(hsep_char) {
-  checkmate::assert_character(hsep_char, n.chars = 1, len = 1, null.ok = TRUE)
-  options("formatters_default_hsep" = hsep_char)
-}
-
 .calc_cell_widths <- function(mat, colwidths, col_gap) {
   spans <- mat$spans
   keep_mat <- mat$display

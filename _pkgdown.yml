@@ -104,6 +104,7 @@ reference:
       - ifnotlen0
       - table_inset
       - default_horizontal_sep
+      - default_rounding
       - mf_strings
       - page_lcpp
       - page_types
