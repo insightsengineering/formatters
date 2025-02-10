@@ -24,9 +24,10 @@ This function is used within \code{\link[=format_value]{format_value()}} to prep
 cells for formatting and display.
 }
 \details{
-This function combines the rounding behavior of R's standards-compliant \code{\link[=round]{round()}}
-function (see the Details section of that documentation) with the strict decimal display
-of \code{\link[=sprintf]{sprintf()}}. The exact behavior is as follows:
+This function combines rounding behavior with the strict decimal display of
+\code{\link[=sprintf]{sprintf()}}. By default, R's standards-compliant \code{\link[=round]{round()}}
+function (see the Details section of that documentation) is used. The exact
+behavior is as follows:
 
 \enumerate{
 \item{If \code{x} is \code{NA}, the value of \code{na_str} is returned.}
@@ -34,6 +35,9 @@ of \code{\link[=sprintf]{sprintf()}}. The exact behavior is as follows:
 \item{If \code{x} and \code{digits} are both non-NA, \code{\link[=round]{round()}} is called first, and then \code{\link[=sprintf]{sprintf()}}
 is used to convert the rounded value to a character with the appropriate number of trailing
 zeros enforced.}
+\item{If you need to change the type of rounding to perform, please use \code{set_default_rounding(round_type)}.
+With \code{round_type = "iec"}, the default, rounding is compliant with IEC 60559 (see details), while
+\code{round_type = "sas"} performs nearest-value rounding consistent with rounding within SAS.}
 }
 }
 \note{
@@ -44,7 +48,7 @@ This behavior will differ from \code{as.character(round(x, digits = digits))} in
 not at least \code{digits} significant digits after the decimal that remain after rounding. It \emph{may} differ from
 \code{sprintf("\\\%.Nf", x)} for values ending in \code{5} after the decimal place on many popular operating systems
 due to \code{round}'s stricter adherence to the IEC 60559 standard, particularly for R versions > 4.0.0 (see
-warning in \code{\link[=round]{round()}} documentation).
+warning in \code{\link[=round]{round()}} documentation). For changing the rounding behavior, see \code{set_default_rounding()}.
 }
 \examples{
 round_fmt(0, digits = 3)
@@ -55,5 +59,5 @@ round_fmt(2.765923, digits = NA)
 
 }
 \seealso{
-\code{\link[=format_value]{format_value()}}, \code{\link[=round]{round()}}, \code{\link[=sprintf]{sprintf()}}
+\code{\link[=set_default_rounding]{set_default_rounding()}}, \code{\link[=format_value]{format_value()}}, \code{\link[=round]{round()}}, \code{\link[=sprintf]{sprintf()}}
 }

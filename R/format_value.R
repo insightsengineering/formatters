@@ -1,3 +1,20 @@
+fun_takes <- function(f, nm) {
+  nm %in% names(formals(f))
+}
+
+call_format_fun <- function(f,
+                            value,
+                            na_str,
+                            output) {
+  args <- c(
+    list(value),
+    if (fun_takes(f, "na_str")) list(na_str = na_str),
+    if (fun_takes(f, "output")) list(output = output)
+  )
+  do.call(f, args)
+}
+
+
 formats_1d <- c(
   "xx", "xx.", "xx.x", "xx.xx", "xx.xxx", "xx.xxxx",
   "xx%", "xx.%", "xx.x%", "xx.xx%", "xx.xxx%", "(N=xx)", "N=xx", ">999.9", ">999.99",
@@ -146,9 +163,10 @@ sprintf_format <- function(format) {
 #' @param na_str (`string`)\cr the value to return if `x` is `NA`.
 #'
 #' @details
-#' This function combines the rounding behavior of R's standards-compliant [round()]
-#' function (see the Details section of that documentation) with the strict decimal display
-#' of [sprintf()]. The exact behavior is as follows:
+#' This function combines rounding behavior with the strict decimal display of
+#' [sprintf()]. By default, R's standards-compliant [round()]
+#' function (see the Details section of that documentation) is used. The exact
+#' behavior is as follows:
 #'
 #' \enumerate{
 #'   \item{If `x` is `NA`, the value of `na_str` is returned.}
@@ -156,6 +174,9 @@ sprintf_format <- function(format) {
 #'   \item{If `x` and `digits` are both non-NA, [round()] is called first, and then [sprintf()]
 #'     is used to convert the rounded value to a character with the appropriate number of trailing
 #'     zeros enforced.}
+#'   \item{If you need to change the type of rounding to perform, please use `set_default_rounding(round_type)`.
+#'     With `round_type = "iec"`, the default, rounding is compliant with IEC 60559 (see details), while
+#'     `round_type = "sas"` performs nearest-value rounding consistent with rounding within SAS.}
 #' }
 #'
 #' @return A character value representing the value after rounding, containing any trailing zeros
@@ -169,9 +190,9 @@ sprintf_format <- function(format) {
 #' not at least `digits` significant digits after the decimal that remain after rounding. It *may* differ from
 #' `sprintf("\%.Nf", x)` for values ending in `5` after the decimal place on many popular operating systems
 #' due to `round`'s stricter adherence to the IEC 60559 standard, particularly for R versions > 4.0.0 (see
-#' warning in [round()] documentation).
+#' warning in [round()] documentation). For changing the rounding behavior, see `set_default_rounding()`.
 #'
-#' @seealso [format_value()], [round()], [sprintf()]
+#' @seealso [set_default_rounding()], [format_value()], [round()], [sprintf()]
 #'
 #' @examples
 #' round_fmt(0, digits = 3)
@@ -191,9 +212,26 @@ round_fmt <- function(x, digits, na_str = "NA") {
   } else if (is.na(digits)) {
     paste0(x)
   } else {
+    rndx <- switch(default_rounding(),
+                   iec = round(x, digits),
+                   sas = round_sas(x, digits)
+    )
     sprfmt <- paste0("%.", digits, "f")
-    sprintf(fmt = sprfmt, round(x, digits = digits))
+    sprintf(fmt = sprfmt, rndx)
   }
+}
+
+## https://stackoverflow.com/questions/12688717/round-up-from-5
+round_sas <- function(x, digits = 0) {
+  # perform SAS rounding
+  posneg <- sign(x)
+  z <- abs(x) * 10^digits
+  z <- z + 0.5 + sqrt(.Machine$double.eps)
+  z <- trunc(z)
+  z <- z / 10^digits
+  z <- z * posneg
+  ## return numeric vector of rounded values
+  z
 }
 
 val_pct_helper <- function(x, dig1, dig2, na_str, pct = TRUE) {
@@ -272,10 +310,11 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
   }
   if (length(na_str) == 1) {
     if (!all(is.na(x))) {
-      na_str <- array(na_str, dim = length(x))
+      ## array adds an unneeded dim attribute which causes problems
+      na_str <- rep(na_str, length(x))
     }
   } else { # length(na_str) > 1
-    tmp_na_str <- array("NA", dim = length(x))
+    tmp_na_str <- rep("NA", length(x))
     tmp_na_str[is.na(x)] <- na_str[seq(sum(is.na(x)))]
     na_str <- tmp_na_str
   }
@@ -288,7 +327,7 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
   } else if (is.null(format)) {
     toString(x)
   } else if (is.function(format)) {
-    format(x, output = output)
+    call_format_fun(f = format, value = x, na_str = na_str, output = output)
   } else if (is.character(format)) {
     l <- if (format %in% formats_1d) {
       1

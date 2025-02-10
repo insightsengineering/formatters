@@ -1,5 +1,7 @@
 ## formatters 0.5.10.9001
 * Fixed a bug in `mform_handle_newlines` that caused string matrix column names to be removed. This prevented paginated listing key column info from being repeated when vertically spanning multiple pages.
+* Fixed handling for `format_value(format = fun())` for cases where a custom function is used.
+* Added handling for rounding types. Specifically, `default_rounding()` and `get_default_rounding()` now allow for setting and getting the rounding type for `format_value()`.
 
 ## formatters 0.5.10
 * Fixed a bug in `mf_update_cinfo` causing an error when `export_as_txt` was applied to empty listings.

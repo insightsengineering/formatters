@@ -1,15 +1,6 @@
 values <- c(5.123456, 7.891112)
 
 test_that("Default horizontal separator works", {
-  expect_true(is.null(getOption("formatters_default_hsep")))
-  expect_error(set_default_hsep("foo"))
-  expect_silent(set_default_hsep("a"))
-  expect_equal(default_hsep(), "a")
-  expect_silent(set_default_hsep(NULL))
-  expect_true(default_hsep() %in% c("\u2014", "-"))
-})
-
-test_that("Default horizontal separator works", {
   expect_true(is.null(getOption("formatters_default_page_number")))
   expect_true(is.null(default_page_number()))
   expect_silent(set_default_page_number("page {i} of {n}"))

@@ -47,6 +47,43 @@ set_default_hsep <- function(hsep_char) {
   options("formatters_default_hsep" = hsep_char)
 }
 
+#' Default rounding type
+#'
+#' The default rounding type for numeric values in any formatting outputs like [format_value()].
+#'
+#' @param round_type (`string`)\cr single character value to set the default rounding type. It can be
+#'   either `"iec"` or `"sas"` for IEC 60559 or SAS rounding (nearest-value rounding), respectively.
+#'
+#' @return The default rounding type (`"iec"` if not set).
+#'
+#' @examples
+#' default_rounding()
+#' set_default_rounding("sas")
+#' default_rounding()
+#'
+#' @name default_rounding_type
+#' @export
+default_rounding <- function() {
+  formatters_default_rounding <- getOption("formatters_default_rounding")
+
+  rounding <- if (is.null(formatters_default_rounding)) {
+    "iec"
+  } else {
+    formatters_default_rounding
+  }
+  rounding
+}
+
+#' @name default_rounding_type
+#' @export
+set_default_rounding <- function(round_type = c("iec", "sas")) {
+  round_type <- round_type[1]
+  checkmate::assert_character(round_type, len = 1, null.ok = TRUE)
+  checkmate::assert_choice(round_type, c("iec", "sas"), null.ok = TRUE)
+  options("formatters_default_rounding" = round_type)
+}
+
+
 #' Default page number format
 #'
 #' If set, the default page number string will appear on the bottom right of
