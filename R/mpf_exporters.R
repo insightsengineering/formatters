@@ -60,7 +60,6 @@ export_as_txt <- function(x,
                           page_num = default_page_number(),
                           fontspec = font_spec(font_family, font_size, lineheight),
                           col_gap = 3) {
-                       
   # Processing lists of tables or listings
   if (.is_list_of_tables_or_listings(x)) {
     if (isFALSE(paginate)) {
