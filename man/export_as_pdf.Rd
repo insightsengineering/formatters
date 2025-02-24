@@ -30,7 +30,8 @@ export_as_pdf(
   max_width = NULL,
   colwidths = NULL,
   fontspec = font_spec(font_family, font_size, lineheight),
-  ttype_ok = FALSE
+  ttype_ok = FALSE,
+  round_type = c("iec", "sas")
 )
 }
 \arguments{
@@ -107,6 +108,10 @@ calculating string widths and heights, as returned by \code{\link[=font_spec]{fo
 \item{ttype_ok}{(\code{logical(1)})\cr should truetype (non-monospace) fonts be
 allowed via \code{fontspec}. Defaults to \code{FALSE}. This parameter is primarily
 for internal testing and generally should not be set by end users.}
+
+\item{round_type}{(\code{"iec"} or \code{"sas"})\cr the type of rounding to perform. iec,
+the default, peforms rounding compliant with IEC 60559 (see details), while
+sas performs nearest-value rounding consistent with rounding within SAS.}
 }
 \description{
 The PDF output from this function is based on the ASCII output created with \code{\link[=toString]{toString()}}.
