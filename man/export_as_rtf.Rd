@@ -17,6 +17,7 @@ export_as_rtf(
   font_size = 8,
   lineheight = 1,
   fontspec = font_spec(font_family, font_size, lineheight),
+  paginate = TRUE,
   ...
 )
 }
@@ -52,6 +53,9 @@ if the family named is not monospaced. Defaults to \code{"Courier"}.}
 
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
 calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
+
+\item{paginate}{(\code{flag})\cr whether pagination should be performed. Defaults to \code{TRUE}
+if page size is specified (including the default).}
 
 \item{...}{additional parameters passed to \code{\link[=paginate_to_mpfs]{paginate_to_mpfs()}}.}
 }

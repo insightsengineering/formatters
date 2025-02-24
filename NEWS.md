@@ -1,5 +1,6 @@
 ## formatters 0.5.10.9001
 * Fixed a bug in `mform_handle_newlines` that caused string matrix column names to be removed. This prevented paginated listing key column info from being repeated when vertically spanning multiple pages.
+* Minor bug fix with the `paginate` argument in the `export_as_rtf` function.
 
 ## formatters 0.5.10
 * Fixed a bug in `mf_update_cinfo` causing an error when `export_as_txt` was applied to empty listings.
