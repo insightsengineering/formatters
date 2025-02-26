@@ -408,6 +408,7 @@ export_as_rtf <- function(x,
                           font_size = 8,
                           lineheight = 1,
                           fontspec = font_spec(font_family, font_size, lineheight),
+                          paginate = TRUE,
                           ...) {
   # Processing lists of tables or listings
   if (.is_list_of_tables_or_listings(x)) {
