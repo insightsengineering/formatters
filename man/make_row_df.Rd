@@ -19,7 +19,8 @@ make_row_df(
   nsibs = NA_integer_,
   max_width = NULL,
   fontspec = font_spec(),
-  col_gap = 3L
+  col_gap = 3L,
+  round_type = c("iec", "sas")
 )
 
 \S4method{make_row_df}{MatrixPrintForm}(
@@ -36,7 +37,8 @@ make_row_df(
   nsibs = NA_integer_,
   max_width = NULL,
   fontspec = font_spec(),
-  col_gap = mf_colgap(tt) \%||\% 3L
+  col_gap = mf_colgap(tt) \%||\% 3L,
+  round_type = c("iec", "sas")
 )
 }
 \arguments{
@@ -70,6 +72,10 @@ calculating string widths and heights, as returned by \code{\link[=font_spec]{fo
 
 \item{col_gap}{(\code{numeric(1)})\cr the gap to be assumed between columns, in number of spaces with
 font specified by \code{fontspec}.}
+
+\item{round_type}{(\code{"iec"} or \code{"sas"})\cr the type of rounding to perform. iec,
+the default, peforms rounding compliant with IEC 60559 (see details), while
+sas performs nearest-value rounding consistent with rounding within SAS.}
 }
 \value{
 A \code{data.frame} of row/column-structure information used by the pagination machinery.

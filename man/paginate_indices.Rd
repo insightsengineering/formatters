@@ -30,6 +30,7 @@ paginate_indices(
   rep_cols = num_rep_cols(obj),
   col_gap = 3,
   fontspec = font_spec(font_family, font_size, lineheight),
+  round_type = c("iec", "sas"),
   verbose = FALSE
 )
 
@@ -56,6 +57,7 @@ paginate_to_mpfs(
   rep_cols = NULL,
   col_gap = 3,
   fontspec = font_spec(font_family, font_size, lineheight),
+  round_type = c("iec", "sas"),
   verbose = FALSE
 )
 
@@ -73,7 +75,8 @@ diagnose_pagination(
   cpp = NA_integer_,
   min_siblings = 2,
   nosplitin = character(),
-  colwidths = propose_column_widths(matrix_form(obj, TRUE), fontspec = fontspec),
+  colwidths = propose_column_widths(matrix_form(obj, TRUE, round_type = round_type),
+    fontspec = fontspec, round_type = round_type),
   tf_wrap = FALSE,
   max_width = NULL,
   indent_size = 2,
@@ -82,6 +85,7 @@ diagnose_pagination(
   col_gap = 3,
   verbose = FALSE,
   fontspec = font_spec(font_family, font_size, lineheight),
+  round_type = c("iec", "sas"),
   ...
 )
 }
@@ -145,6 +149,10 @@ in the rendered table (and assumed for horizontal pagination).}
 
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
 calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
+
+\item{round_type}{(\code{"iec"} or \code{"sas"})\cr the type of rounding to perform. iec,
+the default, peforms rounding compliant with IEC 60559 (see details), while
+sas performs nearest-value rounding consistent with rounding within SAS.}
 
 \item{verbose}{(\code{flag})\cr whether additional informative messages about the search for
 pagination breaks should be shown. Defaults to \code{FALSE}.}

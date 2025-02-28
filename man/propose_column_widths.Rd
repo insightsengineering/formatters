@@ -4,7 +4,12 @@
 \alias{propose_column_widths}
 \title{Propose column widths based on the \code{MatrixPrintForm} of an object}
 \usage{
-propose_column_widths(x, indent_size = 2, fontspec = font_spec())
+propose_column_widths(
+  x,
+  indent_size = 2,
+  fontspec = font_spec(),
+  round_type = c("iec", "sas")
+)
 }
 \arguments{
 \item{x}{(\code{ANY})\cr a \code{MatrixPrintForm} object, or an object with a \code{matrix_form} method.}
@@ -14,6 +19,10 @@ a \code{MatrixPrintForm} object in favor of information there.}
 
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
 calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
+
+\item{round_type}{(\code{"iec"} or \code{"sas"})\cr the type of rounding to perform. iec,
+the default, peforms rounding compliant with IEC 60559 (see details), while
+sas performs nearest-value rounding consistent with rounding within SAS.}
 }
 \value{
 A vector of column widths based on the content of \code{x} for use in printing and pagination.

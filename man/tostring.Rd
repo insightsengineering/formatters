@@ -15,7 +15,8 @@ toString(x, ...)
   col_gap = mf_colgap(x),
   hsep = NULL,
   fontspec = font_spec(),
-  ttype_ok = FALSE
+  ttype_ok = FALSE,
+  round_type = c("iec", "sas")
 )
 }
 \arguments{
@@ -46,6 +47,10 @@ calculating string widths and heights, as returned by \code{\link[=font_spec]{fo
 \item{ttype_ok}{(\code{logical(1)})\cr should truetype (non-monospace) fonts be
 allowed via \code{fontspec}. Defaults to \code{FALSE}. This parameter is primarily
 for internal testing and generally should not be set by end users.}
+
+\item{round_type}{(\code{"iec"} or \code{"sas"})\cr the type of rounding to perform. iec,
+the default, peforms rounding compliant with IEC 60559 (see details), while
+sas performs nearest-value rounding consistent with rounding within SAS.}
 }
 \value{
 A character string containing the ASCII rendering of the table-like object represented by \code{x}.

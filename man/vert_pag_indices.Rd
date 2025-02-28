@@ -11,7 +11,8 @@ vert_pag_indices(
   verbose = FALSE,
   rep_cols = 0L,
   fontspec,
-  nosplitin = character()
+  nosplitin = character(),
+  round_type = c("iec", "sas")
 )
 }
 \arguments{
@@ -32,6 +33,10 @@ calculating string widths and heights, as returned by \code{\link[=font_spec]{fo
 
 \item{nosplitin}{(\code{character})\cr list of names of subtables where page breaks are not allowed, regardless of other
 considerations. Defaults to none.}
+
+\item{round_type}{(\code{"iec"} or \code{"sas"})\cr the type of rounding to perform. iec,
+the default, peforms rounding compliant with IEC 60559 (see details), while
+sas performs nearest-value rounding consistent with rounding within SAS.}
 }
 \value{
 A \code{list} partitioning the vector of column indices into subsets for 1 or more horizontally paginated pages.

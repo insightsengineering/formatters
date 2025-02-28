@@ -10,6 +10,7 @@
 #' (like [`MatrixPrintForm`]).
 #'
 #' @inheritParams open_font_dev
+#' @inheritParams format_value
 #' @param tt (`ANY`)\cr object representing the table-like object to be summarized.
 #' @param visible_only (`flag`)\cr should only visible aspects of the table structure be reflected
 #'   in this summary. Defaults to `TRUE`. May not be supported by all methods.
@@ -66,7 +67,8 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
                                    nsibs = NA_integer_,
                                    max_width = NULL,
                                    fontspec = font_spec(),
-                                   col_gap = 3L) {
+                                   col_gap = 3L,
+                                   round_type = c("iec", "sas")) {
   standardGeneric("make_row_df")
 })
 
@@ -82,7 +84,8 @@ setMethod("make_row_df", "MatrixPrintForm", function(tt, colwidths = NULL, visib
                                                      nsibs = NA_integer_,
                                                      max_width = NULL,
                                                      fontspec = font_spec(),
-                                                     col_gap = mf_colgap(tt) %||% 3L) {
+                                                     col_gap = mf_colgap(tt) %||% 3L,
+                                                     round_type = c("iec", "sas")) {
   msg <- paste0(
     "make_row_df can be used only on {rtables} table objects, and not on `matrix_form`-",
     "generated objects (MatrixPrintForm)."
@@ -96,6 +99,7 @@ setMethod("make_row_df", "MatrixPrintForm", function(tt, colwidths = NULL, visib
 #' it is useful to map the `rtable` to an in-between state with the formatted cells in a matrix form.
 #'
 #' @inheritParams make_row_df
+#' @inheritParams format_value
 #' @param obj (`ANY`)\cr object to be transformed into a ready-to-render form (a [`MatrixPrintForm`] object).
 #' @param indent_rownames (`flag`)\cr if `TRUE`, the row names column in the `strings` matrix of `obj`
 #'   will have indented row names (strings pre-fixed).
@@ -122,7 +126,8 @@ setGeneric("matrix_form", function(obj,
                                    expand_newlines = TRUE,
                                    indent_size = 2,
                                    fontspec = NULL,
-                                   col_gap = NULL) {
+                                   col_gap = NULL,
+                                   round_type = c("iec", "sas")) {
   standardGeneric("matrix_form")
 })
 
@@ -134,7 +139,8 @@ setMethod("matrix_form", "MatrixPrintForm", function(obj,
                                                      expand_newlines = TRUE,
                                                      indent_size = 2,
                                                      fontspec = NULL,
-                                                     col_gap = NULL) {
+                                                     col_gap = NULL,
+                                                     round_type = c("iec", "sas")) {
   if (!is.null(fontspec)) {
     mf_fontspec(obj) <- fontspec
   }
