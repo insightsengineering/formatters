@@ -398,7 +398,7 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap, fontspec, expan
       return(has_correct_indentation || !nzchar(mf_str[xx, 1])) # "" is still an ok indentation
     }
     # Cases where no indent are true by definition
-    return(TRUE)
+    TRUE
   }, logical(1))
 
   if (any(!correct_indentation)) {
