@@ -72,7 +72,7 @@ library(testthat)
 # This version now ensures its output has the exact same row order as the original function.
 .compress_mat_datatable <- function(mat, line_grouping, collapse_method = c("nl", "unique")) {
   dt <- as.data.table(mat)
-  dt[, `:=` (group_col = line_grouping)]
+  dt[, `:=`(group_col = line_grouping)]
 
   # The `by` operation sorts the groups by default.
   # We will reorder the result later to match the original function's output order.
@@ -127,7 +127,7 @@ frmat[sample(length(frmat), size = n_rows * 0.1)] <- ""
 cat("--- Verifying 'nl' method results are identical ---\n")
 res_orig_nl <- .compress_mat_original(strmat, line_grouping, "nl")
 res_base_nl <- .compress_mat_base_R(strmat, line_grouping, "nl")
-res_dt_nl   <- .compress_mat_datatable(strmat, line_grouping, "nl")
+res_dt_nl <- .compress_mat_datatable(strmat, line_grouping, "nl")
 
 test_that("Optimized 'nl' methods match original", {
   # Set attributes to NULL as they are not needed and can differ.
@@ -143,7 +143,7 @@ cat("Verification successful.\n\n")
 cat("--- Verifying 'unique' method results are identical ---\n")
 res_orig_unique <- .compress_mat_original(frmat, line_grouping, "unique")
 res_base_unique <- .compress_mat_base_R(frmat, line_grouping, "unique")
-res_dt_unique   <- .compress_mat_datatable(frmat, line_grouping, "unique")
+res_dt_unique <- .compress_mat_datatable(frmat, line_grouping, "unique")
 
 test_that("Optimized 'unique' methods match original", {
   attributes(res_orig_unique) <- NULL
@@ -160,8 +160,8 @@ cat("Verification successful.\n\n")
 cat("--- Benchmarking 'nl' (newline) method ---\n")
 bm_nl <- microbenchmark(
   original = .compress_mat_original(strmat, line_grouping, "nl"),
-  base_R   = .compress_mat_base_R(strmat, line_grouping, "nl"),
-  datatable= .compress_mat_datatable(strmat, line_grouping, "nl"),
+  base_R = .compress_mat_base_R(strmat, line_grouping, "nl"),
+  datatable = .compress_mat_datatable(strmat, line_grouping, "nl"),
   times = 10L
 )
 print(bm_nl)
@@ -169,8 +169,8 @@ print(bm_nl)
 cat("\n\n--- Benchmarking 'unique' method ---\n")
 bm_unique <- microbenchmark(
   original = .compress_mat_original(frmat, line_grouping, "unique"),
-  base_R   = .compress_mat_base_R(frmat, line_grouping, "unique"),
-  datatable= .compress_mat_datatable(frmat, line_grouping, "unique"),
+  base_R = .compress_mat_base_R(frmat, line_grouping, "unique"),
+  datatable = .compress_mat_datatable(frmat, line_grouping, "unique"),
   times = 10L
 )
 print(bm_unique)
