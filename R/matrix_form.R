@@ -143,9 +143,9 @@ mform_handle_newlines <- function(matform) {
 
 .quick_handle_nl <- function(str_v) {
   if (any(grepl("\n", str_v))) {
-    return(unlist(strsplit(str_v, "\n", fixed = TRUE)))
+    unlist(strsplit(str_v, "\n", fixed = TRUE))
   } else {
-    return(str_v)
+    str_v
   }
 }
 

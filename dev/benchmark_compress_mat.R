@@ -1,3 +1,7 @@
+# Davide Garolini 12.06.2025
+# Dev script to benchmark the performance of different implementations of the
+# .compress_mat function.
+
 # Ensure required packages are installed and loaded
 if (!require("microbenchmark")) install.packages("microbenchmark")
 if (!require("data.table")) install.packages("data.table")
