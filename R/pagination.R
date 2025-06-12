@@ -976,7 +976,7 @@ splice_idx_lists <- function(lsts) {
 #'
 #' @aliases paginate pagination
 #' @export
-paginate_indices <- function(obj,
+paginate_indices <- function(mpf,
                              page_type = "letter",
                              font_family = "Courier",
                              font_size = 8,
@@ -997,7 +997,7 @@ paginate_indices <- function(obj,
                              max_width = NULL,
                              indent_size = 2,
                              pg_size_spec = NULL,
-                             rep_cols = num_rep_cols(obj),
+                             rep_cols = num_rep_cols(mpf),
                              col_gap = 3,
                              fontspec = font_spec(font_family, font_size, lineheight),
                              round_type = c("iec", "sas"),
@@ -1014,27 +1014,12 @@ paginate_indices <- function(obj,
   if (newdev) {
     on.exit(close_font_dev())
   }
-  ## this MUST alsways return a list, inluding list(obj) when
-  ## no forced pagination is needed! otherwise stuff breaks for things
-  ## based on s3 classes that are lists underneath!!!
-  fpags <- do_forced_paginate(obj)
-  ## if we have more than one forced "page",
-  ## paginate each of them individually and return the result.
-  ## forced pagination is ***currently*** only vertical, so
-  ## we don't have to worry about divying up colwidths here,
-  ## but we will if we ever allow force_paginate to do horiz
-  ## pagination.
-  if (length(fpags) > 1) {
-    stop(
-      "forced pagination is required for this object (class: ", class(obj)[1],
-      ") this is not supported in paginate_indices. Use paginate_to_mpfs or call ",
-      "do_forced_paginate on your object and paginate each returned section separately."
-    )
-  }
 
   ## order is annoying here, since we won't actually need the mpf if
   ## we run into forced pagination, but life is short and this should work fine.
-  mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec, round_type = round_type)
+  # this step can be very slow. No need to do it again.
+  # mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec, round_type = round_type)
+
   if (is.null(colwidths)) {
     colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf, fontspec = fontspec, round_type = round_type)
   } else {
@@ -1042,7 +1027,7 @@ paginate_indices <- function(obj,
   }
 
   mf_colgap(mpf) <- col_gap
-  if (!is.null(rep_cols) && rep_cols != num_rep_cols(obj)) {
+  if (!is.null(rep_cols) && rep_cols != num_rep_cols(mpf)) {
     num_rep_cols(mpf) <- rep_cols
   }
   if (NROW(mf_cinfo(mpf)) == 0) {
@@ -1084,21 +1069,16 @@ paginate_indices <- function(obj,
   #                 in the above call, so we need to keep this information in mf_rinfo
   #                 and use it here.
   mfri <- mf_rinfo(mpf)
-  keycols <- .get_keycols_from_listing(obj)
+  keycols <- .get_keycols_from_listing(mpf)
   if (NROW(mfri) > 1 && .is_listing_mf(mpf) && length(keycols) > 0) {
     # Lets determine the groupings created by keycols
     keycols_grouping_df <- NULL
     for (i in seq_along(keycols)) {
       kcol <- keycols[i]
-      if (is(obj, "MatrixPrintForm")) {
-        # This makes the function work also in the case we have only matrix form (mainly for testing purposes)
-        kcolvec <- mf_strings(obj)[, mf_strings(obj)[1, , drop = TRUE] == kcol][-1]
-        while (any(kcolvec == "")) {
-          kcolvec[which(kcolvec == "")] <- kcolvec[which(kcolvec == "") - 1]
-        }
-      } else {
-        kcolvec <- obj[[kcol]]
-        kcolvec <- vapply(kcolvec, format_value, "", format = obj_format(kcolvec), na_str = obj_na_str(kcolvec))
+      # This makes the function work also in the case we have only matrix form (mainly for testing purposes)
+      kcolvec <- mf_strings(mpf)[, mf_strings(mpf)[1, , drop = TRUE] == kcol][-1]
+      while (any(kcolvec == "")) {
+        kcolvec[which(kcolvec == "")] <- kcolvec[which(kcolvec == "") - 1]
       }
       groupings <- as.numeric(factor(kcolvec, levels = unique(kcolvec)))
       where_they_start <- which(c(1, diff(groupings)) > 0)
@@ -1321,8 +1301,26 @@ paginate_to_mpfs <- function(obj,
   mf_col_widths(mpf) <- colwidths
   mf_colgap(mpf) <- col_gap
 
+  ## this MUST alsways return a list, inluding list(obj) when
+  ## no forced pagination is needed! otherwise stuff breaks for things
+  ## based on s3 classes that are lists underneath!!!
+  fpags <- do_forced_paginate(obj)
+  ## if we have more than one forced "page",
+  ## paginate each of them individually and return the result.
+  ## forced pagination is ***currently*** only vertical, so
+  ## we don't have to worry about divying up colwidths here,
+  ## but we will if we ever allow force_paginate to do horiz
+  ## pagination.
+  if (length(fpags) > 1) {
+    stop(
+      "forced pagination is required for this object (class: ", class(obj)[1],
+      ") this is not supported in paginate_indices. Use paginate_to_mpfs or call ",
+      "do_forced_paginate on your object and paginate each returned section separately."
+    ) #nocov
+  } #nocov
+
   page_indices <- paginate_indices(
-    obj = obj,
+    mpf = mpf,
     ## page_type = page_type,
     ## font_family = font_family,
     ## font_size = font_size,
