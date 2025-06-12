@@ -27,7 +27,7 @@ paginate_indices(
   max_width = NULL,
   indent_size = 2,
   pg_size_spec = NULL,
-  rep_cols = num_rep_cols(obj),
+  rep_cols = num_rep_cols(mpf),
   col_gap = 3,
   fontspec = font_spec(font_family, font_size, lineheight),
   round_type = c("iec", "sas"),
