@@ -569,7 +569,7 @@ pag_indices_inner <- function(pagdf,
 #' @inheritParams pag_indices_inner
 #' @inheritParams open_font_dev
 #' @inheritParams format_value
-#' @param obj (`ANY`)\cr object to be paginated. Must have a [matrix_form()] method.
+#' @param mf (`MatrixPrintForm`)\cr object to be paginated.
 #' @param cpp (`numeric(1)`)\cr number of characters per page (width).
 #' @param colwidths (`numeric`)\cr vector of column widths (in characters) for use in vertical pagination.
 #' @param rep_cols (`numeric(1)`)\cr number of *columns* (not including row labels) to be repeated on every page.
@@ -583,7 +583,7 @@ pag_indices_inner <- function(pagdf,
 #' lapply(colpaginds, function(j) mtcars[, j, drop = FALSE])
 #'
 #' @export
-vert_pag_indices <- function(obj,
+vert_pag_indices <- function(mf,
                              cpp = 40,
                              colwidths = NULL,
                              verbose = FALSE,
@@ -594,7 +594,7 @@ vert_pag_indices <- function(obj,
   if (is.list(nosplitin)) {
     nosplitin <- nosplitin[["cols"]]
   }
-  mf <- matrix_form(obj, indent_rownames = TRUE, fontspec = fontspec, round_type = round_type)
+  # mf <- matrix_form(obj, indent_rownames = TRUE, fontspec = fontspec, round_type = round_type)
   clwds <- colwidths %||% propose_column_widths(mf, fontspec = fontspec)
   if (is.null(mf_cinfo(mf))) { ## like always, ugh.
     mf <- mpf_infer_cinfo(mf, colwidths = clwds, rep_cols = rep_cols, fontspec = fontspec)
@@ -1290,16 +1290,15 @@ paginate_to_mpfs <- function(obj,
     return(deep_pag)
   } else if (has_page_title(fpags[[1]])) {
     obj <- fpags[[1]]
+    ## we run into forced pagination, but life is short and this should work fine.
+    mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec, round_type = round_type)
+    num_rep_cols(mpf) <- rep_cols
+    if (is.null(colwidths)) {
+      colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf, fontspec = fontspec, round_type = round_type)
+    }
+    mf_col_widths(mpf) <- colwidths
+    mf_colgap(mpf) <- col_gap
   }
-
-  ## we run into forced pagination, but life is short and this should work fine.
-  mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec, round_type = round_type)
-  num_rep_cols(mpf) <- rep_cols
-  if (is.null(colwidths)) {
-    colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf, fontspec = fontspec, round_type = round_type)
-  }
-  mf_col_widths(mpf) <- colwidths
-  mf_colgap(mpf) <- col_gap
 
   ## this MUST alsways return a list, inluding list(obj) when
   ## no forced pagination is needed! otherwise stuff breaks for things
