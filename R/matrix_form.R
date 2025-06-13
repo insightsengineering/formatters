@@ -44,11 +44,13 @@ mform_handle_newlines <- function(matform) {
 
   # pre-proc in case of wrapping and \n
   line_grouping <- mf_lgrouping(matform)
-  strmat <- .compress_mat(strmat, line_grouping, "nl")
-  frmmat <- .compress_mat(frmmat, line_grouping, "unique") # never not unique
-  spamat <- .compress_mat(spamat, line_grouping, "unique")
-  alimat <- .compress_mat(alimat, line_grouping, "unique")
-  line_grouping <- unique(line_grouping)
+  if (any(duplicated(line_grouping))) {
+    strmat <- .compress_mat(strmat, line_grouping, "nl")
+    frmmat <- .compress_mat(frmmat, line_grouping, "unique") # never not unique
+    spamat <- .compress_mat(spamat, line_grouping, "unique")
+    alimat <- .compress_mat(alimat, line_grouping, "unique")
+    line_grouping <- unique(line_grouping)
+  }
 
   # nlines detects if there is a newline character
   # colwidths = NULL, max_width = NULL, fontspec = NULL
