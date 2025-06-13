@@ -1315,8 +1315,8 @@ paginate_to_mpfs <- function(obj,
       "forced pagination is required for this object (class: ", class(obj)[1],
       ") this is not supported in paginate_indices. Use paginate_to_mpfs or call ",
       "do_forced_paginate on your object and paginate each returned section separately."
-    ) #nocov
-  } #nocov
+    ) # nocov
+  } # nocov
 
   page_indices <- paginate_indices(
     mpf = mpf,
