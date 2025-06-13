@@ -9,7 +9,7 @@
 \title{Paginate a table-like object for rendering}
 \usage{
 paginate_indices(
-  mpf,
+  obj,
   page_type = "letter",
   font_family = "Courier",
   font_size = 8,
@@ -27,7 +27,7 @@ paginate_indices(
   max_width = NULL,
   indent_size = 2,
   pg_size_spec = NULL,
-  rep_cols = num_rep_cols(mpf),
+  rep_cols = num_rep_cols(obj),
   col_gap = 3,
   fontspec = font_spec(font_family, font_size, lineheight),
   round_type = c("iec", "sas"),
@@ -90,6 +90,8 @@ diagnose_pagination(
 )
 }
 \arguments{
+\item{obj}{(\code{ANY})\cr object to be paginated. Must have a \code{\link[=matrix_form]{matrix_form()}} method.}
+
 \item{page_type}{(\code{string})\cr name of a page type. See \code{\link{page_types}}. Ignored
 when \code{pg_width} and \code{pg_height} are set directly.}
 

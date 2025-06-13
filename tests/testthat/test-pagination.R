@@ -287,8 +287,7 @@ test_that("pagination works", {
   expect_true(all(resnls <= 36))
   expect_equal(resnls[4], 36)
 
-  # HERE paginate_indices(dfmf2) should throw "forced pagination is required for this object",
-  # but this test needs a lot more computing time for long listings -> removed
+  expect_error(paginate_indices(dfmf2), "forced pagination is required for this object")
   ## diagnose_pagination smoke test coverage
   ## actual functionality cannot be tested because it relies on capturing
   ## the message stream which testthat is already doing and

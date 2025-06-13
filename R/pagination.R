@@ -951,6 +951,7 @@ splice_idx_lists <- function(lsts) {
 #' @inheritParams page_lcpp
 #' @inheritParams toString
 #' @inheritParams propose_column_widths
+#' @param obj (`ANY`)\cr object to be paginated. Must have a [matrix_form()] method.
 #' @param lpp (`numeric(1)` or `NULL`)\cr lines per page. If `NA` (the default), this is calculated automatically
 #'   based on the specified page size). `NULL` indicates no vertical pagination should occur.
 #' @param cpp (`numeric(1)` or `NULL`)\cr width (in characters) per page. If `NA` (the default), this is calculated
@@ -976,7 +977,7 @@ splice_idx_lists <- function(lsts) {
 #'
 #' @aliases paginate pagination
 #' @export
-paginate_indices <- function(mpf,
+paginate_indices <- function(obj,
                              page_type = "letter",
                              font_family = "Courier",
                              font_size = 8,
@@ -997,7 +998,7 @@ paginate_indices <- function(mpf,
                              max_width = NULL,
                              indent_size = 2,
                              pg_size_spec = NULL,
-                             rep_cols = num_rep_cols(mpf),
+                             rep_cols = num_rep_cols(obj),
                              col_gap = 3,
                              fontspec = font_spec(font_family, font_size, lineheight),
                              round_type = c("iec", "sas"),
@@ -1015,10 +1016,29 @@ paginate_indices <- function(mpf,
     on.exit(close_font_dev())
   }
 
+
+  ## this MUST alsways return a list, inluding list(obj) when
+  ## no forced pagination is needed! otherwise stuff breaks for things
+  ## based on s3 classes that are lists underneath!!!
+  fpags <- do_forced_paginate(obj)
+  ## if we have more than one forced "page",
+  ## paginate each of them individually and return the result.
+  ## forced pagination is ***currently*** only vertical, so
+  ## we don't have to worry about divying up colwidths here,
+  ## but we will if we ever allow force_paginate to do horiz
+  ## pagination.
+  if (length(fpags) > 1) {
+    stop(
+      "forced pagination is required for this object (class: ", class(obj)[1],
+      ") this is not supported in paginate_indices. Use paginate_to_mpfs or call ",
+      "do_forced_paginate on your object and paginate each returned section separately."
+    )
+  }
+
   ## order is annoying here, since we won't actually need the mpf if
   ## we run into forced pagination, but life is short and this should work fine.
-  # this step can be very slow. No need to do it again.
-  # mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec, round_type = round_type)
+  # this step can be very slow. No need to do it internally
+  mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec, round_type = round_type)
 
   if (is.null(colwidths)) {
     colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf, fontspec = fontspec, round_type = round_type)
@@ -1306,26 +1326,8 @@ paginate_to_mpfs <- function(obj,
     mf_colgap(mpf) <- col_gap
   }
 
-  ## this MUST alsways return a list, inluding list(obj) when
-  ## no forced pagination is needed! otherwise stuff breaks for things
-  ## based on s3 classes that are lists underneath!!!
-  fpags <- do_forced_paginate(obj)
-  ## if we have more than one forced "page",
-  ## paginate each of them individually and return the result.
-  ## forced pagination is ***currently*** only vertical, so
-  ## we don't have to worry about divying up colwidths here,
-  ## but we will if we ever allow force_paginate to do horiz
-  ## pagination.
-  if (length(fpags) > 1) {
-    stop(
-      "forced pagination is required for this object (class: ", class(obj)[1],
-      ") this is not supported in paginate_indices. Use paginate_to_mpfs or call ",
-      "do_forced_paginate on your object and paginate each returned section separately."
-    ) # nocov
-  } # nocov
-
   page_indices <- paginate_indices(
-    mpf = mpf,
+    obj = mpf,
     ## page_type = page_type,
     ## font_family = font_family,
     ## font_size = font_size,
