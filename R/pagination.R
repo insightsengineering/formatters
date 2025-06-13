@@ -1063,22 +1063,28 @@ paginate_indices <- function(mpf,
 
   ## this wraps the cell contents AND shoves referential footnote
   ## info into mf_rinfo(mpf)
-  mpf <- do_cell_fnotes_wrap(mpf, colwidths, max_width, tf_wrap = tf_wrap, fontspec = fontspec)
+  ori_mpf <- mpf # used for pulling right split labels
+  mpf <- do_cell_fnotes_wrap(ori_mpf, colwidths, max_width, tf_wrap = tf_wrap, fontspec = fontspec)
 
   # rlistings note: if there is a wrapping in a keycol, it is not calculated correctly
   #                 in the above call, so we need to keep this information in mf_rinfo
   #                 and use it here.
   mfri <- mf_rinfo(mpf)
   keycols <- .get_keycols_from_listing(mpf)
+  seq_nrh <- seq_len(mf_nrheader(mpf))
   if (NROW(mfri) > 1 && .is_listing_mf(mpf) && length(keycols) > 0) {
     # Lets determine the groupings created by keycols
     keycols_grouping_df <- NULL
     for (i in seq_along(keycols)) {
       kcol <- keycols[i]
       # This makes the function work also in the case we have only matrix form (mainly for testing purposes)
-      kcolvec <- mf_strings(mpf)[, mf_strings(mpf)[1, , drop = TRUE] == kcol][-1]
-      while (any(kcolvec == "")) {
-        kcolvec[which(kcolvec == "")] <- kcolvec[which(kcolvec == "") - 1]
+      kcolvec <- mf_strings(ori_mpf)[, mf_strings(ori_mpf)[1, , drop = TRUE] == kcol][-seq_nrh]
+
+      # if the keycol is not present, we just use the previous one
+      for (j in seq_along(kcolvec)) {
+        if (j > 1 && kcolvec[j] == "") {
+          kcolvec[j] <- kcolvec[j - 1]
+        }
       }
       groupings <- as.numeric(factor(kcolvec, levels = unique(kcolvec)))
       where_they_start <- which(c(1, diff(groupings)) > 0)
