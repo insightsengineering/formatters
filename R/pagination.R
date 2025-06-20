@@ -1098,7 +1098,8 @@ paginate_indices <- function(obj,
     for (i in seq_along(keycols)) {
       kcol <- keycols[i]
       # This makes the function work also in the case we have only matrix form (mainly for testing purposes)
-      kcolvec <- mf_strings(ori_mpf)[, mf_strings(ori_mpf)[1, , drop = TRUE] == kcol][-seq_nrh]
+      ori_mpf_colnames <- names(mf_strings(ori_mpf)[1, , drop = TRUE])
+      kcolvec <- mf_strings(ori_mpf)[, ori_mpf_colnames == kcol][-seq_nrh]
 
       # if the keycol is not present, we just use the previous one
       for (j in seq_along(kcolvec)) {
