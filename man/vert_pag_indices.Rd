@@ -5,7 +5,7 @@
 \title{Find column indices for vertical pagination}
 \usage{
 vert_pag_indices(
-  obj,
+  mf,
   cpp = 40,
   colwidths = NULL,
   verbose = FALSE,
@@ -16,7 +16,7 @@ vert_pag_indices(
 )
 }
 \arguments{
-\item{obj}{(\code{ANY})\cr object to be paginated. Must have a \code{\link[=matrix_form]{matrix_form()}} method.}
+\item{mf}{(\code{MatrixPrintForm})\cr object to be paginated.}
 
 \item{cpp}{(\code{numeric(1)})\cr number of characters per page (width).}
 
