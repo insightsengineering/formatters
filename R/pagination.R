@@ -1091,7 +1091,7 @@ paginate_indices <- function(obj,
   #                 and use it here.
   mfri <- mf_rinfo(mpf)
   keycols <- .get_keycols_from_listing(mpf)
-  seq_nrh <- seq_len(mf_nrheader(mpf))
+  seq_nrh <- seq_len(mf_nlheader(ori_mpf)) # for Removal of header lines
   if (NROW(mfri) > 1 && .is_listing_mf(mpf) && length(keycols) > 0) {
     # Lets determine the groupings created by keycols
     keycols_grouping_df <- NULL
