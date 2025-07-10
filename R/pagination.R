@@ -569,7 +569,7 @@ pag_indices_inner <- function(pagdf,
 #' @inheritParams pag_indices_inner
 #' @inheritParams open_font_dev
 #' @inheritParams format_value
-#' @param obj (`ANY`)\cr object to be paginated. Must have a [matrix_form()] method.
+#' @param mf (`MatrixPrintForm`)\cr object to be paginated.
 #' @param cpp (`numeric(1)`)\cr number of characters per page (width).
 #' @param colwidths (`numeric`)\cr vector of column widths (in characters) for use in vertical pagination.
 #' @param rep_cols (`numeric(1)`)\cr number of *columns* (not including row labels) to be repeated on every page.
@@ -583,7 +583,7 @@ pag_indices_inner <- function(pagdf,
 #' lapply(colpaginds, function(j) mtcars[, j, drop = FALSE])
 #'
 #' @export
-vert_pag_indices <- function(obj,
+vert_pag_indices <- function(mf,
                              cpp = 40,
                              colwidths = NULL,
                              verbose = FALSE,
@@ -594,7 +594,7 @@ vert_pag_indices <- function(obj,
   if (is.list(nosplitin)) {
     nosplitin <- nosplitin[["cols"]]
   }
-  mf <- matrix_form(obj, indent_rownames = TRUE, fontspec = fontspec, round_type = round_type)
+  # mf <- matrix_form(obj, indent_rownames = TRUE, fontspec = fontspec, round_type = round_type)
   clwds <- colwidths %||% propose_column_widths(mf, fontspec = fontspec)
   if (is.null(mf_cinfo(mf))) { ## like always, ugh.
     mf <- mpf_infer_cinfo(mf, colwidths = clwds, rep_cols = rep_cols, fontspec = fontspec)
@@ -951,6 +951,7 @@ splice_idx_lists <- function(lsts) {
 #' @inheritParams page_lcpp
 #' @inheritParams toString
 #' @inheritParams propose_column_widths
+#' @param obj (`ANY`)\cr object to be paginated. Must have a [matrix_form()] method.
 #' @param lpp (`numeric(1)` or `NULL`)\cr lines per page. If `NA` (the default), this is calculated automatically
 #'   based on the specified page size). `NULL` indicates no vertical pagination should occur.
 #' @param cpp (`numeric(1)` or `NULL`)\cr width (in characters) per page. If `NA` (the default), this is calculated
@@ -1014,6 +1015,8 @@ paginate_indices <- function(obj,
   if (newdev) {
     on.exit(close_font_dev())
   }
+
+
   ## this MUST alsways return a list, inluding list(obj) when
   ## no forced pagination is needed! otherwise stuff breaks for things
   ## based on s3 classes that are lists underneath!!!
@@ -1034,7 +1037,9 @@ paginate_indices <- function(obj,
 
   ## order is annoying here, since we won't actually need the mpf if
   ## we run into forced pagination, but life is short and this should work fine.
+  # this step can be very slow. No need to do it internally
   mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec, round_type = round_type)
+
   if (is.null(colwidths)) {
     colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf, fontspec = fontspec, round_type = round_type)
   } else {
@@ -1042,7 +1047,7 @@ paginate_indices <- function(obj,
   }
 
   mf_colgap(mpf) <- col_gap
-  if (!is.null(rep_cols) && rep_cols != num_rep_cols(obj)) {
+  if (!is.null(rep_cols) && rep_cols != num_rep_cols(mpf)) {
     num_rep_cols(mpf) <- rep_cols
   }
   if (NROW(mf_cinfo(mpf)) == 0) {
@@ -1078,27 +1083,29 @@ paginate_indices <- function(obj,
 
   ## this wraps the cell contents AND shoves referential footnote
   ## info into mf_rinfo(mpf)
-  mpf <- do_cell_fnotes_wrap(mpf, colwidths, max_width, tf_wrap = tf_wrap, fontspec = fontspec)
+  ori_mpf <- mpf # used for pulling right split labels
+  mpf <- do_cell_fnotes_wrap(ori_mpf, colwidths, max_width, tf_wrap = tf_wrap, fontspec = fontspec)
 
   # rlistings note: if there is a wrapping in a keycol, it is not calculated correctly
   #                 in the above call, so we need to keep this information in mf_rinfo
   #                 and use it here.
   mfri <- mf_rinfo(mpf)
-  keycols <- .get_keycols_from_listing(obj)
+  keycols <- .get_keycols_from_listing(mpf)
+  seq_nrh <- seq_len(mf_nlheader(ori_mpf)) # for Removal of header lines
   if (NROW(mfri) > 1 && .is_listing_mf(mpf) && length(keycols) > 0) {
     # Lets determine the groupings created by keycols
     keycols_grouping_df <- NULL
     for (i in seq_along(keycols)) {
       kcol <- keycols[i]
-      if (is(obj, "MatrixPrintForm")) {
-        # This makes the function work also in the case we have only matrix form (mainly for testing purposes)
-        kcolvec <- mf_strings(obj)[, mf_strings(obj)[1, , drop = TRUE] == kcol][-1]
-        while (any(kcolvec == "")) {
-          kcolvec[which(kcolvec == "")] <- kcolvec[which(kcolvec == "") - 1]
+      # This makes the function work also in the case we have only matrix form (mainly for testing purposes)
+      ori_mpf_colnames <- names(mf_strings(ori_mpf)[1, , drop = TRUE])
+      kcolvec <- mf_strings(ori_mpf)[, ori_mpf_colnames == kcol][-seq_nrh]
+
+      # if the keycol is not present, we just use the previous one
+      for (j in seq_along(kcolvec)) {
+        if (j > 1 && kcolvec[j] == "") {
+          kcolvec[j] <- kcolvec[j - 1]
         }
-      } else {
-        kcolvec <- obj[[kcol]]
-        kcolvec <- vapply(kcolvec, format_value, "", format = obj_format(kcolvec), na_str = obj_na_str(kcolvec))
       }
       groupings <- as.numeric(factor(kcolvec, levels = unique(kcolvec)))
       where_they_start <- which(c(1, diff(groupings)) > 0)
@@ -1310,19 +1317,18 @@ paginate_to_mpfs <- function(obj,
     return(deep_pag)
   } else if (has_page_title(fpags[[1]])) {
     obj <- fpags[[1]]
+    ## we run into forced pagination, but life is short and this should work fine.
+    mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec, round_type = round_type)
+    num_rep_cols(mpf) <- rep_cols
+    if (is.null(colwidths)) {
+      colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf, fontspec = fontspec, round_type = round_type)
+    }
+    mf_col_widths(mpf) <- colwidths
+    mf_colgap(mpf) <- col_gap
   }
-
-  ## we run into forced pagination, but life is short and this should work fine.
-  mpf <- matrix_form(obj, TRUE, TRUE, indent_size = indent_size, fontspec = fontspec, round_type = round_type)
-  num_rep_cols(mpf) <- rep_cols
-  if (is.null(colwidths)) {
-    colwidths <- mf_col_widths(mpf) %||% propose_column_widths(mpf, fontspec = fontspec, round_type = round_type)
-  }
-  mf_col_widths(mpf) <- colwidths
-  mf_colgap(mpf) <- col_gap
 
   page_indices <- paginate_indices(
-    obj = obj,
+    obj = mpf,
     ## page_type = page_type,
     ## font_family = font_family,
     ## font_size = font_size,
