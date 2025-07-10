@@ -1,4 +1,4 @@
-## formatters 0.5.11.9000
+## formatters 0.5.11.9001
 * Optimized pagination sub-routines to avoid `matrix_form()` calls when not needed.
 * Optimized pagination sub-routine `.compress_mat()` to reduce computing time for long listings. 
 
