@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.926451187335092" branch-rate="0" lines-covered="2809" lines-valid="3032" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-06-20 11:56:56.251927">
+<coverage line-rate="0.926451187335092" branch-rate="0" lines-covered="2809" lines-valid="3032" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-07-10 13:05:24.970139">
   <sources>
     <source>/__w/formatters/formatters/formatters</source>
   </sources>
@@ -1859,7 +1859,7 @@
             </method>
             <method name="mf_lgrouping" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="584" hits="5821" branch="false"/>
+                <line number="584" hits="5870" branch="false"/>
               </lines>
             </method>
             <method name="mf_rfnotes" signature="" line-rate="1" branch-rate="0" complexity="0">
@@ -1869,7 +1869,7 @@
             </method>
             <method name="mf_nlheader" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="592" hits="2734" branch="false"/>
+                <line number="592" hits="2783" branch="false"/>
               </lines>
             </method>
             <method name="mf_nrheader" signature="" line-rate="1" branch-rate="0" complexity="0">
@@ -2729,9 +2729,9 @@
             <line number="571" hits="4717" branch="false"/>
             <line number="575" hits="1573" branch="false"/>
             <line number="580" hits="265" branch="false"/>
-            <line number="584" hits="5821" branch="false"/>
+            <line number="584" hits="5870" branch="false"/>
             <line number="588" hits="173" branch="false"/>
-            <line number="592" hits="2734" branch="false"/>
+            <line number="592" hits="2783" branch="false"/>
             <line number="596" hits="4709" branch="false"/>
             <line number="600" hits="365" branch="false"/>
             <line number="604" hits="7" branch="false"/>
