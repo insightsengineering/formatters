@@ -399,7 +399,6 @@ test_that("pag_num works in paginate_to_mpfs and export_as_txt", {
   expect_equal(pages_tst_exp, print_pg_tst)
 })
 
-
 test_that("colwidths and num_rep_cols work when using lists of tables and listings", {
   bmf <- basic_matrix_form(mtcars, ignore_rownames = TRUE)
   blmf <- basic_listing_mf(mtcars, keycols = c("vs", "gear"))
@@ -451,4 +450,56 @@ test_that("rep_cols works as intended for listings and tables", {
   out <- strsplit_unlist(export_as_txt(blmf, rep_cols = 1, cpp = 70))
   expect_true(grepl(out[51], pattern = "vs")) # vs is repeated
   expect_false(grepl(out[51], pattern = "gear")) # gear is NOT repeated
+})
+
+test_that("pagination works with listings and newlines", {
+  mtcars2 <- mtcars[1:4, ]
+  mtcars2$vs[2] <- "a\nb\nc"
+  mtcars2$mpg[4] <- "A\nB\nC"
+  blmf <- basic_listing_mf(mtcars2, keycols = c("vs", "gear"))
+
+  expected_output <- c(
+    "main title",
+    "sub",
+    "titles",
+    "",
+    "——————————————————————————————————————————————————————————————————————",
+    "vs   gear   mpg    cyl   disp   hp    drat    wt     qsec    am   carb",
+    "——————————————————————————————————————————————————————————————————————",
+    "             B                                                        ",
+    "             C                                                        ",
+    "0     4      21     6    160    110   3.9    2.62    16.46   1     4  ",
+    "1     3      A      6    258    110   3.08   3.215   19.44   0     1  ",
+    "——————————————————————————————————————————————————————————————————————",
+    "",
+    "main",
+    "  footer",
+    "",
+    "prov footer",
+    "\\s\\nmain title",
+    "sub",
+    "titles",
+    "",
+    "——————————————————————————————————————————————————————————————————————",
+    "vs   gear   mpg    cyl   disp   hp    drat    wt     qsec    am   carb",
+    "——————————————————————————————————————————————————————————————————————",
+    "1     4     22.8    4    108    93    3.85   2.32    18.61   1     1  ",
+    "a     4      21     6    160    110   3.9    2.875   17.02   1     4  ",
+    "b                                                                     ",
+    "c                                                                     ",
+    "——————————————————————————————————————————————————————————————————————",
+    "",
+    "main",
+    "  footer",
+    "",
+    "prov footer"
+  )
+
+  expect_warning(
+    actual_output <- strsplit(export_as_txt(blmf, lpp = 17), "\n")[[1]],
+    "There are empty key columns in the listing"
+  )
+
+  # Check that the output matches the expected output
+  expect_equal(actual_output, expected_output)
 })
