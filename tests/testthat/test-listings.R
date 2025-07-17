@@ -101,7 +101,7 @@ test_that("listings are correctly paginated when a wrapping happens on non-domin
   )
 
   expect_true(all(
-    sapply(pgs, function(x) length(strsplit(toString(x), "\n")[[1]]) <= 5)
+    sapply(pgs, function(x) length(strsplit(toString(x), "\n")[[1]])) <= 5
   ))
   expect_silent(sapply(pgs, function(x) toString(x)))
 

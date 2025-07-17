@@ -1090,8 +1090,9 @@ paginate_indices <- function(obj,
   #                 in the above call, so we need to keep this information in mf_rinfo
   #                 and use it here.
   mfri <- mf_rinfo(mpf)
+  ori_mfri <- mf_rinfo(ori_mpf) # no wrapping but yes wrapping of \n (see later)
   keycols <- .get_keycols_from_listing(mpf)
-  seq_nrh <- seq_len(mf_nlheader(ori_mpf)) # for Removal of header lines
+  seq_nrh <- seq_len(mf_nlheader(mpf)) # for Removal of header lines
   if (NROW(mfri) > 1 && .is_listing_mf(mpf) && length(keycols) > 0) {
     # Lets determine the groupings created by keycols
     keycols_grouping_df <- NULL
@@ -1108,15 +1109,15 @@ paginate_indices <- function(obj,
         }
       }
 
-      # if there is already a self_extent (e.g. wrapping from \n), we take it into account
-      if (any(mfri$self_extent > 1)) {
-        init_groupings <- lapply(seq(1, nrow(mfri)), function(ii) rep(ii, mfri$self_extent[ii])) |>
+      # # if there is already a self_extent (e.g. wrapping from \n), we take it into account
+      if (any(ori_mfri$self_extent > 1)) {
+        init_groupings <- lapply(seq(1, nrow(ori_mfri)), function(ii) rep(ii, ori_mfri$self_extent[ii])) |>
           unlist()
-        new_kcolvec <- rep(NA_character_, nrow(mfri))
+        new_kcolvec <- rep("", nrow(ori_mfri))
 
         # collapse the keycolvec by the initial groupings (here "" on keycols derives from \n in other cols)
-        for (j in unique(init_groupings)) {
-          new_kcolvec[j] <- paste0(kcolvec[init_groupings == j], collapse = "\n")
+        for (uj in unique(init_groupings)) {
+          new_kcolvec[uj] <- paste0(kcolvec[init_groupings == uj], collapse = "\n")
         }
         kcolvec <- new_kcolvec
       }
