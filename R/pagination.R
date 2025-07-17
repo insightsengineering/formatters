@@ -458,8 +458,8 @@ find_pag <- function(pagdf,
       "Context-relevant additional ", ifelse(row, "header/footers lines", "fixed column characters"),
       ": ", context_lpp_or_cpp, "\n",
       ifelse(row,
-             paste("Limit of allowed row lines per page:", rlpp, "\n"),
-             paste("Check the minimum allowed column characters per page in the last FAIL(ed) attempt. \n")
+        paste("Limit of allowed row lines per page:", rlpp, "\n"),
+        paste("Check the minimum allowed column characters per page in the last FAIL(ed) attempt. \n")
       ),
       "Note: take a look at the last FAIL(ed) attempt above to see what went wrong. It could be, for example, ",
       "that the inserted column width induces some wrapping, hence the inserted number of lines (lpp) is not enough."
@@ -617,14 +617,14 @@ vert_pag_indices <- function(mf,
     )
   }
   res <- pag_indices_inner(mf_cinfo(mf),
-                           rlpp = rcpp, lpp_or_cpp = cpp, context_lpp_or_cpp = cpp - rcpp,
-                           # cpp - sum(clwds[seq_len(rep_cols)]),
-                           verbose = verbose,
-                           min_siblings = 1,
-                           nosplitin = nosplitin,
-                           row = FALSE,
-                           col_gap = mf_colgap(mf),
-                           has_rowlabels = mf_has_rlabels(mf)
+    rlpp = rcpp, lpp_or_cpp = cpp, context_lpp_or_cpp = cpp - rcpp,
+    # cpp - sum(clwds[seq_len(rep_cols)]),
+    verbose = verbose,
+    min_siblings = 1,
+    nosplitin = nosplitin,
+    row = FALSE,
+    col_gap = mf_colgap(mf),
+    has_rowlabels = mf_has_rlabels(mf)
   )
   res
 }
@@ -721,10 +721,10 @@ basic_pagdf <- function(rnames,
                         paths = lapply(rnames, function(x) c(parent_path, x)),
                         fontspec = font_spec()) {
   rws <- mapply(pagdfrow,
-                nm = rnames, lab = labs, extent = extents,
-                rclass = rclass, rnum = rnums, pth = paths,
-                MoreArgs = list(fontspec = fontspec),
-                SIMPLIFY = FALSE, nsibs = 1, sibpos = 1
+    nm = rnames, lab = labs, extent = extents,
+    rclass = rclass, rnum = rnums, pth = paths,
+    MoreArgs = list(fontspec = fontspec),
+    SIMPLIFY = FALSE, nsibs = 1, sibpos = 1
   )
   res <- do.call(rbind.data.frame, rws)
   res$n_siblings <- nrow(res)
@@ -1488,7 +1488,7 @@ diagnose_pagination <- function(obj,
                                 min_siblings = 2,
                                 nosplitin = character(),
                                 colwidths = propose_column_widths(matrix_form(obj, TRUE, round_type = round_type),
-                                                                  fontspec = fontspec, round_type = round_type
+                                  fontspec = fontspec, round_type = round_type
                                 ),
                                 tf_wrap = FALSE,
                                 max_width = NULL,
