@@ -1107,6 +1107,20 @@ paginate_indices <- function(obj,
           kcolvec[j] <- kcolvec[j - 1]
         }
       }
+
+      # if there is already a self_extent (e.g. wrapping from \n), we take it into account
+      if (any(mfri$self_extent > 1)) {
+        init_groupings <- lapply(seq(1, nrow(mfri)), function(ii) rep(ii, mfri$self_extent[ii])) |>
+          unlist()
+        new_kcolvec <- rep(NA_character_, nrow(mfri))
+
+        # collapse the keycolvec by the initial groupings (here "" on keycols derives from \n in other cols)
+        for (j in unique(init_groupings)) {
+          new_kcolvec[j] <- paste0(kcolvec[init_groupings == j], collapse = "\n")
+        }
+        kcolvec <- new_kcolvec
+      }
+
       groupings <- as.numeric(factor(kcolvec, levels = unique(kcolvec)))
       where_they_start <- which(c(1, diff(groupings)) > 0)
       keycols_grouping_df <- cbind(
