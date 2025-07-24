@@ -1092,7 +1092,7 @@ paginate_indices <- function(obj,
   mfri <- mf_rinfo(mpf)
   ori_mfri <- mf_rinfo(ori_mpf) # no wrapping but yes wrapping of \n (see later)
   keycols <- .get_keycols_from_listing(mpf)
-  seq_nrh <- seq_len(mf_nlheader(ori_mfri)) # for Removal of header lines
+  seq_nrh <- seq_len(mf_nlheader(ori_mpf)) # for Removal of header lines
   if (NROW(mfri) > 1 && .is_listing_mf(mpf) && length(keycols) > 0) {
     # Lets determine the groupings created by keycols
     keycols_grouping_df <- NULL
