@@ -1,6 +1,7 @@
 ## formatters 0.5.11.9001
 * Optimized pagination sub-routines to avoid `matrix_form()` calls when not needed.
-* Optimized pagination sub-routine `.compress_mat()` to reduce computing time for long listings. 
+* Optimized pagination sub-routine `.compress_mat()` to reduce computing time for long listings.
+* Fixed bug in pagination of listings caused by newlines in column values.
 
 ## formatters 0.5.11
 * Fixed a bug in `mform_handle_newlines` that caused string matrix column names to be removed. This prevented paginated listing key column info from being repeated when vertically spanning multiple pages.
