@@ -41,7 +41,7 @@ Suggests:
     processx (>= 3.8.4),
     r2rtf (>= 0.3.2),
     rmarkdown (>= 2.23),
-    testthat (>= 3.0.4),
+    testthat (>= 3.2.1.1),
     withr (>= 2.0.0)
 VignetteBuilder:
     knitr,
