@@ -37,7 +37,7 @@ Suggests:
     gt (>= 0.10.0),
     huxtable (>= 2.0.0),
     knitr (>= 1.42),
-    r2rtf (>= 0.3.2),
+    r2rtf (>= 1.2.0),
     rmarkdown (>= 2.23),
     testthat (>= 3.0.4),
     withr (>= 2.0.0)
