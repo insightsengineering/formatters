@@ -33,6 +33,7 @@ Imports:
     lifecycle (>= 0.2.0),
     stringi (>= 1.7.12)
 Suggests:
+    digest (>= 0.6.37),
     dplyr (>= 1.0.9),
     gt (>= 0.10.0),
     huxtable (>= 2.0.0),
