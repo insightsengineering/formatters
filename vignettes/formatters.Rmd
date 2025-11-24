@@ -157,5 +157,5 @@ matrix_form.data.frame <- function(df) {
   )
 }
 
-cat(toString(matrix_form.data.frame(mtcars)))
+print(matrix_form.data.frame(mtcars))
 ```
