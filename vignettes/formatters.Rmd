@@ -13,23 +13,8 @@ editor_options:
     wrap: 72
 ---
 
-```{r, include = FALSE}
-# Change: suggested_dependent_pkgs <- c("")
-suggested_dependent_pkgs <- character(0) # Use an empty vector
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  eval = all(vapply(
-    suggested_dependent_pkgs,
-    requireNamespace,
-    logical(1),
-    quietly = TRUE
-  ))
-)
-```
-
-```{r, echo=FALSE, message=FALSE}
-knitr::opts_chunk$set(comment = "#")
+```{r, echo=FALSE}
+knitr::opts_chunk$set(comment = "")
 library(formatters)
 ```
 
@@ -157,5 +142,5 @@ matrix_form.data.frame <- function(df) {
   )
 }
 
-print(matrix_form.data.frame(mtcars))
+cat(toString(matrix_form.data.frame(mtcars)))
 ```
