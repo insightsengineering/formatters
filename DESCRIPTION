@@ -37,10 +37,10 @@ Suggests:
     dplyr (>= 1.0.9),
     gt (>= 0.10.0),
     huxtable (>= 2.0.0),
-    knitr (>= 1.42),
+    knitr (>= 1.50),
     processx (>= 3.8.4),
     r2rtf (>= 0.3.2),
-    rmarkdown (>= 2.23),
+    rmarkdown (>= 2.28),
     sass (>= 0.4.9),
     testthat (>= 3.2.1.1),
     withr (>= 2.0.0)
