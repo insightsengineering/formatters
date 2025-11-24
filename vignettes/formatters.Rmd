@@ -13,8 +13,22 @@ editor_options:
     wrap: 72
 ---
 
-```{r, echo=FALSE}
-knitr::opts_chunk$set(comment = "")
+```{r, include = FALSE}
+suggested_dependent_pkgs <- c("dplyr")
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = all(vapply(
+    suggested_dependent_pkgs,
+    requireNamespace,
+    logical(1),
+    quietly = TRUE
+  ))
+)
+```
+
+```{r, echo=FALSE, message=FALSE}
+knitr::opts_chunk$set(comment = "#")
 library(formatters)
 ```
 
