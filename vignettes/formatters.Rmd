@@ -14,7 +14,8 @@ editor_options:
 ---
 
 ```{r, include = FALSE}
-suggested_dependent_pkgs <- c("")
+# Change: suggested_dependent_pkgs <- c("")
+suggested_dependent_pkgs <- character(0) # Use an empty vector
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
