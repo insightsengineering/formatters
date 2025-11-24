@@ -29,7 +29,7 @@ Depends:
 Imports:
     checkmate (>= 2.1.0),
     grid,
-    htmltools (>= 0.5.3),
+    htmltools (>= 0.5.8.1),
     lifecycle (>= 0.2.0),
     stringi (>= 1.7.12)
 Suggests:
