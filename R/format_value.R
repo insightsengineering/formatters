@@ -19,7 +19,8 @@ call_format_fun <- function(f,
 formats_1d <- c(
   "xx", "xx.", "xx.x", "xx.xx", "xx.xxx", "xx.xxxx",
   "xx%", "xx.%", "xx.x%", "xx.xx%", "xx.xxx%", "(N=xx)", "N=xx", ">999.9", ">999.99",
-  "x.xxxx | (<0.0001)"
+  "x.xxxx | (<0.0001)",
+  "default"
 )
 
 formats_2d <- c(
@@ -356,6 +357,13 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
         "'. Run `list_valid_format_labels()` to get a list of all available formats."
       )
     }
+
+    ## by the time we get here, "default" should give identical
+    ## behavior to "xx", so no need for a new code path
+    if (identical(format, "default")) {
+      format <- "xx"
+    }
+
     if (format != "xx" && length(x) != l) {
       stop(
         "Cell contents <", paste(x, collapse = ", "), "> and format '",

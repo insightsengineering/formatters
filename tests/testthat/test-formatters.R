@@ -48,6 +48,11 @@ test_that("formats work", {
   )
 
   expect_identical(
+    format_value(values[1], format = "xx"),
+    format_value(values[1], format = "default")
+  )
+
+  expect_identical(
     format_value(values[1], format = "xx."),
     "5"
   )
@@ -349,7 +354,19 @@ test_that("formats work", {
     "3456 / 10000 (34.56%)"
   )
 
+  expect_identical(
+    format_value(ndfvals, "xx"),
+    format_value(ndfvals, "default")
+  )
+
+  expect_identical(
+    format_value(values, "xx"),
+    format_value(values, "default")
+  )
+
   expect_identical(format_value(NULL, "xx"), "")
+
+  expect_identical(format_value(NULL, "default"), "")
 
   expect_identical(
     format_value(5.123, "xx.x", output = "html"),
@@ -389,6 +406,16 @@ test_that("formats work", {
 
   expect_equal(
     format_value(c(1, NA), "xx"),
+    c("1", "NA")
+  )
+
+  expect_equal(
+    format_value(NA, "default", na_str = "-"),
+    "-"
+  )
+
+  expect_equal(
+    format_value(c(1, NA), "default"),
     c("1", "NA")
   )
 
@@ -835,6 +862,7 @@ test_that("Decimal alignment: a specific case with larger widths", {
 test_that("All supported 1d format cases of decimal alignment", {
   hard_c_formats <- list_valid_format_labels()$`1d`
   hard_c <- sapply(hard_c_formats, gsub, pattern = "x", replacement = "1")
+  hard_c["default"] <- hard_c["xx"]
   lhc <- length(hard_c)
   reduced_df <- mtcars[seq_len(lhc), c(1, 6, 7)]
   rownames(reduced_df) <- letters[seq_len(lhc)]
@@ -877,7 +905,8 @@ test_that("All supported 1d format cases of decimal alignment", {
     "m        N=11                              N=11     right  ",
     "n        >999.9           >999.9                  dec_left ",
     "o        >999.99          >999.99                 dec_left ",
-    "p   1.1111 | (<0.0001)     1.1111 | (<0.0001)       right  "
+    "p   1.1111 | (<0.0001)     1.1111 | (<0.0001)       right  ",
+    "q          11            11                         left   "
   )
   expect_identical(res_dec, expected)
 })
