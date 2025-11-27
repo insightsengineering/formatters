@@ -2,6 +2,9 @@
 * Optimized pagination sub-routines to avoid `matrix_form()` calls when not needed.
 * Optimized pagination sub-routine `.compress_mat()` to reduce computing time for long listings.
 * Fixed bug in pagination of listings caused by newlines in column values.
+* Added new `round_type` method, `iec_mod`. Combined all allowed values for round_type into `valid_round_type` object.
+* Modified the behavior for `round_type` = `sas` for negative value that rounds to zero, by not displaying the negative sign.
+* New generic `getter` and `setter` for `round_type` (`obj_round_type` and `obj_round_type<-`).
 
 ## formatters 0.5.11
 * Fixed a bug in `mform_handle_newlines` that caused string matrix column names to be removed. This prevented paginated listing key column info from being repeated when vertically spanning multiple pages.
