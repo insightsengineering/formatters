@@ -68,7 +68,8 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
                                    max_width = NULL,
                                    fontspec = font_spec(),
                                    col_gap = 3L,
-                                   round_type = c("iec", "sas")) {
+                                   round_type = valid_round_type) {
+  round_type <- match.arg(round_type)
   standardGeneric("make_row_df")
 })
 
@@ -85,7 +86,7 @@ setMethod("make_row_df", "MatrixPrintForm", function(tt, colwidths = NULL, visib
                                                      max_width = NULL,
                                                      fontspec = font_spec(),
                                                      col_gap = mf_colgap(tt) %||% 3L,
-                                                     round_type = c("iec", "sas")) {
+                                                     round_type = valid_round_type) {
   msg <- paste0(
     "make_row_df can be used only on {rtables} table objects, and not on `matrix_form`-",
     "generated objects (MatrixPrintForm)."
@@ -127,7 +128,7 @@ setGeneric("matrix_form", function(obj,
                                    indent_size = 2,
                                    fontspec = NULL,
                                    col_gap = NULL,
-                                   round_type = c("iec", "sas")) {
+                                   round_type = valid_round_type) {
   standardGeneric("matrix_form")
 })
 
@@ -140,7 +141,7 @@ setMethod("matrix_form", "MatrixPrintForm", function(obj,
                                                      indent_size = 2,
                                                      fontspec = NULL,
                                                      col_gap = NULL,
-                                                     round_type = c("iec", "sas")) {
+                                                     round_type = valid_round_type) {
   if (!is.null(fontspec)) {
     mf_fontspec(obj) <- fontspec
   }
@@ -737,3 +738,20 @@ setMethod(
     obj
   }
 )
+
+
+# obj_round_type ---------------------------------------------------------------
+#' @export
+setGeneric("obj_round_type", function(obj) standardGeneric("obj_round_type"))
+
+#' @export
+setMethod(
+  "obj_round_type", "MatrixPrintForm", function(obj) obj@round_type
+)
+
+# obj_round_type setter ---------------------------------------------------------------
+#' @export
+setGeneric("obj_round_type<-", function(obj, value) standardGeneric("obj_round_type<-"))
+
+
+

@@ -646,8 +646,9 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   hsep = NULL,
                                                   fontspec = font_spec(),
                                                   ttype_ok = FALSE,
-                                                  round_type = c("iec", "sas")) {
+                                                  round_type = valid_round_type) {
   checkmate::assert_flag(tf_wrap)
+  round_type <- match.arg(round_type)
 
   ## we are going to use the pdf device and grid to understand the actual
   ## print width of things given our font family and font size
@@ -1379,7 +1380,9 @@ spans_to_viscell <- function(spans) {
 propose_column_widths <- function(x,
                                   indent_size = 2,
                                   fontspec = font_spec(),
-                                  round_type = c("iec", "sas")) {
+                                  round_type = valid_round_type) {
+  round_type <- match.arg(round_type)
+
   new_dev <- open_font_dev(fontspec)
   if (new_dev) {
     on.exit(close_font_dev())

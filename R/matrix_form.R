@@ -325,7 +325,9 @@ MatrixPrintForm <- function(strings = NULL,
                             colwidths = NULL,
                             indent_size = 2,
                             fontspec = font_spec(),
-                            rep_cols = 0L) {
+                            rep_cols = 0L,
+                            round_type = valid_round_type) {
+  round_type <- match.arg(round_type)
   display <- disp_from_spans(spans)
 
   ncs <- if (has_rowlabs) ncol(strings) - 1 else ncol(strings)
@@ -353,7 +355,8 @@ MatrixPrintForm <- function(strings = NULL,
       indent_size = indent_size,
       col_widths = colwidths,
       fontspec = fontspec,
-      num_rep_cols = rep_cols
+      num_rep_cols = rep_cols,
+      round_type = round_type
     ),
     nrow_header = nrow_header,
     ncols = ncs,
