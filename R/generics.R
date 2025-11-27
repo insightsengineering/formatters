@@ -764,6 +764,3 @@ setMethod(
 #' @param value The new rounding type of the object (see [round_fmt()] for details)
 #' @export
 setGeneric("obj_round_type<-", function(obj, value) standardGeneric("obj_round_type<-"))
-
-
-
