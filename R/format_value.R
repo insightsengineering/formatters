@@ -19,7 +19,8 @@ call_format_fun <- function(f,
 formats_1d <- c(
   "xx", "xx.", "xx.x", "xx.xx", "xx.xxx", "xx.xxxx",
   "xx%", "xx.%", "xx.x%", "xx.xx%", "xx.xxx%", "(N=xx)", "N=xx", ">999.9", ">999.99",
-  "x.xxxx | (<0.0001)"
+  "x.xxxx | (<0.0001)",
+  "default"
 )
 
 formats_2d <- c(
@@ -51,6 +52,12 @@ formats_3d <- c(
 #' @description We support `xx` style format labels grouped by 1d, 2d, and 3d.
 #' Currently valid format labels cannot be added dynamically. Format functions
 #' must be used for special cases.
+#'
+#' @note The format label 'default' behaves identically to 'xx' when
+#'     formatting values. It can be used in upstream code (e.g.,
+#'     `rtables` layout creation) to indicate that a value should
+#'     inherit its formatting behavior from a parent structure, if
+#'     possible.
 #'
 #' @return
 #' * `list_valid_format_labels()` returns a nested list, with elements listing the supported 1d, 2d,
@@ -356,6 +363,13 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
         "'. Run `list_valid_format_labels()` to get a list of all available formats."
       )
     }
+
+    ## by the time we get here, "default" should give identical
+    ## behavior to "xx", so no need for a new code path
+    if (identical(format, "default")) {
+      format <- "xx"
+    }
+
     if (format != "xx" && length(x) != l) {
       stop(
         "Cell contents <", paste(x, collapse = ", "), "> and format '",
