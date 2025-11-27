@@ -31,7 +31,8 @@ MatrixPrintForm(
   colwidths = NULL,
   indent_size = 2,
   fontspec = font_spec(),
-  rep_cols = 0L
+  rep_cols = 0L,
+  round_type = valid_round_type
 )
 }
 \arguments{
