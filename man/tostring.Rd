@@ -48,7 +48,8 @@ calculating string widths and heights, as returned by \code{\link[=font_spec]{fo
 allowed via \code{fontspec}. Defaults to \code{FALSE}. This parameter is primarily
 for internal testing and generally should not be set by end users.}
 
-\item{round_type}{(\code{"iec"}, \code{"iec_mod"} or \code{"sas"})\cr the type of rounding to perform. See \code{\link[=round_fmt]{round_fmt()}} for details.}
+\item{round_type}{(\code{"iec"}, \code{"iec_mod"} or \code{"sas"})\cr the type of rounding to perform.
+See \code{\link[=round_fmt]{round_fmt()}} for details.}
 }
 \value{
 A character string containing the ASCII rendering of the table-like object represented by \code{x}.

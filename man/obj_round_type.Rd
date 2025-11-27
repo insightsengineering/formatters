@@ -2,10 +2,13 @@
 % Please edit documentation in R/generics.R
 \name{obj_round_type}
 \alias{obj_round_type}
+\alias{obj_round_type,MatrixPrintForm-method}
 \alias{obj_round_type<-}
 \title{Rounding Type}
 \usage{
 obj_round_type(obj)
+
+\S4method{obj_round_type}{MatrixPrintForm}(obj)
 
 obj_round_type(obj) <- value
 }

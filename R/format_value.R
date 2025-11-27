@@ -157,6 +157,7 @@ sprintf_format <- function(format) {
   }
 }
 
+#' @rdname round_fmt
 #' @export
 valid_round_type <- c("iec", "iec_mod", "sas")
 

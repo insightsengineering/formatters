@@ -754,6 +754,7 @@ setMethod(
 #' @export
 setGeneric("obj_round_type", function(obj) standardGeneric("obj_round_type"))
 
+#' @rdname obj_round_type
 #' @export
 setMethod(
   "obj_round_type", "MatrixPrintForm", function(obj) obj@round_type

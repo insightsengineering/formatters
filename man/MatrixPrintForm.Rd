@@ -112,7 +112,8 @@ calculating string widths and heights, as returned by \code{\link[=font_spec]{fo
 
 \item{rep_cols}{(\code{numeric(1)})\cr number of columns to be repeated as context during horizontal pagination.}
 
-\item{round_type}{(\code{"iec"}, \code{"iec_mod"} or \code{"sas"})\cr the type of rounding to perform. See \code{\link[=round_fmt]{round_fmt()}} for details.}
+\item{round_type}{(\code{"iec"}, \code{"iec_mod"} or \code{"sas"})\cr the type of rounding to perform.
+See \code{\link[=round_fmt]{round_fmt()}} for details.}
 }
 \value{
 An object of class \code{MatrixPrintForm}. Currently this is implemented as an S3 class inheriting
