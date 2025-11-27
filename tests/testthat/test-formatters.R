@@ -1016,6 +1016,23 @@ test_that("sas-style rounding works", {
     "7.85"
   )
 
+  expect_identical(
+    format_value(-0.001, "xx.xx", round_type = "iec"),
+    "-0.00"
+  )
+
+  expect_identical(
+    format_value(-0.001, "xx.xx", round_type = "sas"),
+    "0.00"
+  )
+
+  expect_identical(
+    format_value(-0.001, "xx.xx", round_type = "iec_mod"),
+    "0.00"
+  )
+
+
+
   forms <- list_valid_format_labels()
   for (fmtset in 1:3) {
     for (digs in 0:3) {
