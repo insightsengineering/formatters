@@ -1032,7 +1032,6 @@ test_that("sas-style rounding works", {
   )
 
 
-
   forms <- list_valid_format_labels()
   for (fmtset in 1:3) {
     for (digs in 0:3) {

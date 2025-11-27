@@ -260,7 +260,7 @@ round_sas <- function(x,
 #' @inheritParams round_fmt
 #'
 round_iec_mod <- function(x,
-                      digits = 0) {
+                          digits = 0) {
   # perform default rounding ----------------------------------------------------
   posneg <- sign(x)
   z <- round(abs(x), digits)

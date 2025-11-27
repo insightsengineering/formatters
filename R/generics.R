@@ -752,6 +752,3 @@ setMethod(
 # obj_round_type setter ---------------------------------------------------------------
 #' @export
 setGeneric("obj_round_type<-", function(obj, value) standardGeneric("obj_round_type<-"))
-
-
-
