@@ -22,6 +22,13 @@ list_valid_aligns()
 - `list_valid_aligns()` returns a character vector of valid vertical
   alignments.
 
+## Note
+
+The format label 'default' behaves identically to 'xx' when formatting
+values. It can be used in upstream code (e.g., `rtables` layout
+creation) to indicate that a value should inherit its formatting
+behavior from a parent structure, if possible.
+
 ## Examples
 
 ``` r
@@ -32,7 +39,7 @@ list_valid_format_labels()
 #>  [7] "xx%"                "xx.%"               "xx.x%"             
 #> [10] "xx.xx%"             "xx.xxx%"            "(N=xx)"            
 #> [13] "N=xx"               ">999.9"             ">999.99"           
-#> [16] "x.xxxx | (<0.0001)"
+#> [16] "x.xxxx | (<0.0001)" "default"           
 #> 
 #> $`2d`
 #>  [1] "xx / xx"            "xx. / xx."          "xx.x / xx.x"       

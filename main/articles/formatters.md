@@ -43,7 +43,7 @@ list_valid_format_labels()
      [7] "xx%"                "xx.%"               "xx.x%"             
     [10] "xx.xx%"             "xx.xxx%"            "(N=xx)"            
     [13] "N=xx"               ">999.9"             ">999.99"           
-    [16] "x.xxxx | (<0.0001)"
+    [16] "x.xxxx | (<0.0001)" "default"           
 
     $`2d`
      [1] "xx / xx"            "xx. / xx."          "xx.x / xx.x"       

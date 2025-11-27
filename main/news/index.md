@@ -1,6 +1,6 @@
 # Changelog
 
-## formatters 0.5.11.9003
+## formatters 0.5.11.9004
 
 - Optimized pagination sub-routines to avoid
   [`matrix_form()`](https://insightsengineering.github.io/formatters/reference/matrix_form.md)
@@ -9,6 +9,8 @@
   time for long listings.
 - Fixed bug in pagination of listings caused by newlines in column
   values.
+- Added `"default"` format label which will behave like `"xx"` but can
+  inherit formatting from parent structures in upstream code.
 
 ## formatters 0.5.11
 
@@ -364,4 +366,4 @@ CRAN release: 2022-03-29
 
 - Add `formats` argument to matrix_form informal class/constructor for
   use in
-  [`rtables::table_shell`](https://insightsengineering.github.io/rtables/latest-release/reference/table_shell.html)
+  [`rtables::table_shell`](https://insightsengineering.github.io/rtables/latest-tag/reference/table_shell.html)
