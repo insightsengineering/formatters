@@ -741,6 +741,16 @@ setMethod(
 
 
 # obj_round_type ---------------------------------------------------------------
+
+#' Rounding Type
+#'
+#' When called on a table-like object using the formatters framework, this method returns the
+#' rounding type of the object.
+#'
+#' @param obj (`ANY`)\cr a table-like object.
+#'
+#' @return The rounding type of the object (see [round_fmt()] for details).
+#' @rdname obj_round_type
 #' @export
 setGeneric("obj_round_type", function(obj) standardGeneric("obj_round_type"))
 
@@ -750,6 +760,8 @@ setMethod(
 )
 
 # obj_round_type setter ---------------------------------------------------------------
+#' @rdname obj_round_type
+#' @param value The new rounding type of the object (see [round_fmt()] for details)
 #' @export
 setGeneric("obj_round_type<-", function(obj, value) standardGeneric("obj_round_type<-"))
 
