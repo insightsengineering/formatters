@@ -25,6 +25,13 @@ We support \code{xx} style format labels grouped by 1d, 2d, and 3d.
 Currently valid format labels cannot be added dynamically. Format functions
 must be used for special cases.
 }
+\note{
+The format label 'default' behaves identically to 'xx' when
+formatting values. It can be used in upstream code (e.g.,
+\code{rtables} layout creation) to indicate that a value should
+inherit its formatting behavior from a parent structure, if
+possible.
+}
 \examples{
 list_valid_format_labels()
 
