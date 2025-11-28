@@ -260,6 +260,8 @@ disp_from_spans <- function(spans) {
 #' @param indent_size (`numeric(1)`)\cr number of spaces to be used per level of indent (if supported by
 #'   the relevant method). Defaults to 2.
 #' @param rep_cols (`numeric(1)`)\cr number of columns to be repeated as context during horizontal pagination.
+#' @param round_type (`"iec"`, `"iec_mod"` or `"sas"`)\cr the type of rounding to perform.
+#' See [round_fmt()] for details.
 #'
 #' @return An object of class `MatrixPrintForm`. Currently this is implemented as an S3 class inheriting
 #'   from list with the following elements:
@@ -325,7 +327,9 @@ MatrixPrintForm <- function(strings = NULL,
                             colwidths = NULL,
                             indent_size = 2,
                             fontspec = font_spec(),
-                            rep_cols = 0L) {
+                            rep_cols = 0L,
+                            round_type = valid_round_type) {
+  round_type <- match.arg(round_type)
   display <- disp_from_spans(spans)
 
   ncs <- if (has_rowlabs) ncol(strings) - 1 else ncol(strings)
@@ -353,7 +357,8 @@ MatrixPrintForm <- function(strings = NULL,
       indent_size = indent_size,
       col_widths = colwidths,
       fontspec = fontspec,
-      num_rep_cols = rep_cols
+      num_rep_cols = rep_cols,
+      round_type = round_type
     ),
     nrow_header = nrow_header,
     ncols = ncs,
