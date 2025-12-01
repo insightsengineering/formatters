@@ -4,9 +4,9 @@
 
 .get_first_element_of_object <- function(x) {
   if (is(x, "list")) {
-    return(x[[1]])
+    x[[1]]
   } else {
-    return(x)
+    x
   }
 }
 
