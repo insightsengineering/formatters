@@ -12,7 +12,7 @@ vert_pag_indices(
   rep_cols = 0L,
   fontspec,
   nosplitin = character(),
-  round_type = valid_round_type
+  round_type = obj_round_type(mf)
 )
 }
 \arguments{

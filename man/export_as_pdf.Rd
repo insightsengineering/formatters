@@ -31,7 +31,7 @@ export_as_pdf(
   colwidths = NULL,
   fontspec = font_spec(font_family, font_size, lineheight),
   ttype_ok = FALSE,
-  round_type = valid_round_type
+  round_type = obj_round_type(x)
 )
 }
 \arguments{

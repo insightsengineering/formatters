@@ -60,8 +60,7 @@ export_as_txt <- function(x,
                           page_num = default_page_number(),
                           fontspec = font_spec(font_family, font_size, lineheight),
                           col_gap = 3,
-                          round_type = valid_round_type) {
-  round_type <- match.arg(round_type)
+                          round_type = obj_round_type(x)) {
   # Processing lists of tables or listings
   if (.is_list_of_tables_or_listings(x)) {
     if (isFALSE(paginate)) {
@@ -187,8 +186,7 @@ prep_header_line <- function(mf, i) {
 ##   )
 ## }
 
-mpf_to_dfbody <- function(mpf, colwidths, fontspec, round_type = valid_round_type) {
-  round_type <- match.arg(round_type)
+mpf_to_dfbody <- function(mpf, colwidths, fontspec, round_type = obj_round_type(mpf)) {
   mf <- matrix_form(mpf, indent_rownames = TRUE, fontspec = fontspec, round_type = round_type)
   nlr <- mf_nlheader(mf)
   if (is.null(colwidths)) {
@@ -234,7 +232,7 @@ mpf_to_rtf <- function(mpf,
                        font_size = 8,
                        lineheight = 1,
                        fontspec = font_spec(font_family, font_size, lineheight),
-                       round_type = round_type,
+                       round_type = obj_round_type(mpf),
                        ...) {
   if (!requireNamespace("r2rtf")) {
     stop("RTF export requires the 'r2rtf' package, please install it.")
@@ -422,9 +420,8 @@ export_as_rtf <- function(x,
                           lineheight = 1,
                           fontspec = font_spec(font_family, font_size, lineheight),
                           paginate = TRUE,
-                          round_type = valid_round_type,
+                          round_type = obj_round_type(x),
                           ...) {
-  round_type <- match.arg(round_type)
   # Processing lists of tables or listings
   if (.is_list_of_tables_or_listings(x)) {
     if (isFALSE(paginate)) {
@@ -569,8 +566,7 @@ export_as_pdf <- function(x,
                           colwidths = NULL,
                           fontspec = font_spec(font_family, font_size, lineheight),
                           ttype_ok = FALSE,
-                          round_type = valid_round_type) {
-  round_type <- match.arg(round_type)
+                          round_type = obj_round_type(x)) {
   ## this has to happen at the very beginning before the first use of fontspec
   ## which happens in the default value of colwidths. yay lazy evaluation...
   if (missing(font_size) && !missing(fontsize)) {

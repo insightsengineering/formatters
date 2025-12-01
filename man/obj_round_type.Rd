@@ -24,3 +24,8 @@ The rounding type of the object (see \code{\link[=round_fmt]{round_fmt()}} for d
 When called on a table-like object using the formatters framework, this method returns the
 rounding type of the object.
 }
+\note{
+The setter method should only be created/used for pre-MatrixPrintForm objects,
+as resetting the rounding type after rounding occurs (which is during MPF creation)
+will not effect output when printing/exporting.
+}

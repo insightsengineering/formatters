@@ -30,7 +30,7 @@ paginate_indices(
   rep_cols = num_rep_cols(obj),
   col_gap = 3,
   fontspec = font_spec(font_family, font_size, lineheight),
-  round_type = valid_round_type,
+  round_type = obj_round_type(obj),
   verbose = FALSE
 )
 
@@ -57,7 +57,7 @@ paginate_to_mpfs(
   rep_cols = NULL,
   col_gap = 3,
   fontspec = font_spec(font_family, font_size, lineheight),
-  round_type = valid_round_type,
+  round_type = obj_round_type(obj),
   verbose = FALSE
 )
 
@@ -85,7 +85,7 @@ diagnose_pagination(
   col_gap = 3,
   verbose = FALSE,
   fontspec = font_spec(font_family, font_size, lineheight),
-  round_type = valid_round_type,
+  round_type = obj_round_type(obj),
   ...
 )
 }

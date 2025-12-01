@@ -20,7 +20,7 @@ make_row_df(
   max_width = NULL,
   fontspec = font_spec(),
   col_gap = 3L,
-  round_type = valid_round_type
+  round_type = obj_round_type(tt)
 )
 
 \S4method{make_row_df}{MatrixPrintForm}(
@@ -38,7 +38,7 @@ make_row_df(
   max_width = NULL,
   fontspec = font_spec(),
   col_gap = mf_colgap(tt) \%||\% 3L,
-  round_type = valid_round_type
+  round_type = obj_round_type(tt)
 )
 }
 \arguments{

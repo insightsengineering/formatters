@@ -18,7 +18,7 @@ export_as_rtf(
   lineheight = 1,
   fontspec = font_spec(font_family, font_size, lineheight),
   paginate = TRUE,
-  round_type = valid_round_type,
+  round_type = obj_round_type(x),
   ...
 )
 }

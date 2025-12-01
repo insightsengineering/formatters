@@ -590,8 +590,7 @@ vert_pag_indices <- function(mf,
                              rep_cols = 0L,
                              fontspec,
                              nosplitin = character(),
-                             round_type = valid_round_type) {
-  round_type <- match.arg(round_type)
+                             round_type = obj_round_type(mf)) {
   if (is.list(nosplitin)) {
     nosplitin <- nosplitin[["cols"]]
   }
@@ -1002,9 +1001,8 @@ paginate_indices <- function(obj,
                              rep_cols = num_rep_cols(obj),
                              col_gap = 3,
                              fontspec = font_spec(font_family, font_size, lineheight),
-                             round_type = valid_round_type,
+                             round_type = obj_round_type(obj),
                              verbose = FALSE) {
-  round_type <- match.arg(round_type)
   ## this preserves backwards compatibility
   ## could start deprecation cycle of char input
   if (is.character(nosplitin)) {
@@ -1203,9 +1201,8 @@ paginate_to_mpfs <- function(obj,
                              # col_gap = 3, # this could be change in default - breaking change
                              col_gap = 3,
                              fontspec = font_spec(font_family, font_size, lineheight),
-                             round_type = valid_round_type,
+                             round_type = obj_round_type(obj),
                              verbose = FALSE) {
-  round_type <- match.arg(round_type)
   newdev <- open_font_dev(fontspec)
   if (newdev) {
     on.exit(close_font_dev())
@@ -1505,9 +1502,8 @@ diagnose_pagination <- function(obj,
                                   font_size,
                                   lineheight
                                 ),
-                                round_type = valid_round_type,
+                                round_type = obj_round_type(obj),
                                 ...) {
-  round_type <- match.arg(round_type)
   new_dev <- open_font_dev(fontspec)
   if (new_dev) {
     on.exit(close_font_dev())

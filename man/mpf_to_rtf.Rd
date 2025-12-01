@@ -16,7 +16,7 @@ mpf_to_rtf(
   font_size = 8,
   lineheight = 1,
   fontspec = font_spec(font_family, font_size, lineheight),
-  round_type = round_type,
+  round_type = obj_round_type(mpf),
   ...
 )
 }

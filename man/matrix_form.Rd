@@ -12,7 +12,7 @@ matrix_form(
   indent_size = 2,
   fontspec = NULL,
   col_gap = NULL,
-  round_type = valid_round_type
+  round_type = obj_round_type(obj)
 )
 
 \S4method{matrix_form}{MatrixPrintForm}(
@@ -22,7 +22,7 @@ matrix_form(
   indent_size = 2,
   fontspec = NULL,
   col_gap = NULL,
-  round_type = valid_round_type
+  round_type = obj_round_type(obj)
 )
 }
 \arguments{

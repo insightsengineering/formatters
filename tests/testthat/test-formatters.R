@@ -1116,3 +1116,23 @@ test_that("na_str works when having multiple NAs and multiple values to be chang
     "a (1.0 - b)"
   )
 })
+
+test_that("Methods for obj_round_type", {
+  inputdf <- mtcars
+  obj_format(inputdf$wt) <- "xx.xx"
+  dfmf <- basic_matrix_form(inputdf)
+  dfmf2 <- basic_matrix_form(inputdf, round_type = "sas")
+
+  expect_identical(obj_round_type(dfmf), "iec")
+  expect_identical(obj_round_type(dfmf2), "sas")
+
+  # check actual rounding
+  df_iec <- dfmf$strings[1+(1:nrow(inputdf)),"wt"]
+  df_sas <- dfmf2$strings[1+(1:nrow(inputdf)),"wt"]
+
+  fmt_iec <- sapply(inputdf[,"wt"], function(x) format_value(x, format = "xx.xx", round_type = "iec"))
+  fmt_sas <- sapply(inputdf[,"wt"], function(x) format_value(x, format = "xx.xx", round_type = "sas"))
+  expect_identical(df_iec, fmt_iec)
+  expect_identical(df_sas, fmt_sas)
+
+})
