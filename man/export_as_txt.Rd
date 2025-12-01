@@ -32,7 +32,7 @@ export_as_txt(
   page_num = default_page_number(),
   fontspec = font_spec(font_family, font_size, lineheight),
   col_gap = 3,
-  round_type = obj_round_type(x)
+  round_type = obj_round_type(.get_first_element_of_object(x))
 )
 }
 \arguments{

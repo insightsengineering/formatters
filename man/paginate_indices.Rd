@@ -57,7 +57,7 @@ paginate_to_mpfs(
   rep_cols = NULL,
   col_gap = 3,
   fontspec = font_spec(font_family, font_size, lineheight),
-  round_type = obj_round_type(obj),
+  round_type = obj_round_type(.get_first_element_of_object(obj)),
   verbose = FALSE
 )
 
