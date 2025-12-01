@@ -1127,12 +1127,11 @@ test_that("Methods for obj_round_type", {
   expect_identical(obj_round_type(dfmf2), "sas")
 
   # check actual rounding
-  df_iec <- dfmf$strings[1+(1:nrow(inputdf)),"wt"]
-  df_sas <- dfmf2$strings[1+(1:nrow(inputdf)),"wt"]
+  df_iec <- dfmf$strings[1 + (1:nrow(inputdf)), "wt"]
+  df_sas <- dfmf2$strings[1 + (1:nrow(inputdf)), "wt"]
 
-  fmt_iec <- sapply(inputdf[,"wt"], function(x) format_value(x, format = "xx.xx", round_type = "iec"))
-  fmt_sas <- sapply(inputdf[,"wt"], function(x) format_value(x, format = "xx.xx", round_type = "sas"))
+  fmt_iec <- sapply(inputdf[, "wt"], function(x) format_value(x, format = "xx.xx", round_type = "iec"))
+  fmt_sas <- sapply(inputdf[, "wt"], function(x) format_value(x, format = "xx.xx", round_type = "sas"))
   expect_identical(df_iec, fmt_iec)
   expect_identical(df_sas, fmt_sas)
-
 })

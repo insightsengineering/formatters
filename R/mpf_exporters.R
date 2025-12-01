@@ -3,8 +3,11 @@
 }
 
 .get_first_element_of_object <- function(x) {
-  if (is(x, "list")) return (x[[1]])
-  else return (x)
+  if (is(x, "list")) {
+    return(x[[1]])
+  } else {
+    return(x)
+  }
 }
 
 #' Export a table-like object to plain (ASCII) text with page breaks
