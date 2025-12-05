@@ -1,6 +1,6 @@
 Package: formatters
 Title: ASCII Formatting for Values and Tables
-Version: 0.5.11.9005
+Version: 0.5.12
 Date: 2025-12-05
 Authors@R: c(
     person("Gabriel", "Becker", , "gabembecker@gmail.com", role = "aut",
