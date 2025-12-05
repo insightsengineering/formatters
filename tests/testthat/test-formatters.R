@@ -1045,6 +1045,22 @@ test_that("sas-style rounding works", {
     "7.85"
   )
 
+  expect_identical(
+    format_value(-0.001, "xx.xx", round_type = "iec"),
+    "-0.00"
+  )
+
+  expect_identical(
+    format_value(-0.001, "xx.xx", round_type = "sas"),
+    "0.00"
+  )
+
+  expect_identical(
+    format_value(-0.001, "xx.xx", round_type = "iec_mod"),
+    "0.00"
+  )
+
+
   forms <- list_valid_format_labels()
   for (fmtset in 1:3) {
     for (digs in 0:3) {
@@ -1099,4 +1115,44 @@ test_that("na_str works when having multiple NAs and multiple values to be chang
     format_value(c(NA, 1, NA), format = "xx.x (xx.x - xx.x)", na_str = letters[seq(5)]),
     "a (1.0 - b)"
   )
+})
+
+test_that("Methods for obj_round_type", {
+  inputdf <- mtcars
+  obj_format(inputdf$wt) <- "xx.xx"
+  dfmf <- basic_matrix_form(inputdf)
+  dfmf2 <- basic_matrix_form(inputdf, round_type = "sas")
+
+  expect_identical(obj_round_type(dfmf), "iec")
+  expect_identical(obj_round_type(dfmf2), "sas")
+
+  # check actual rounding
+  df_iec <- dfmf$strings[1 + seq_len(nrow(inputdf)), "wt"]
+  df_sas <- dfmf2$strings[1 + seq_len(nrow(inputdf)), "wt"]
+
+  fmt_iec <- sapply(inputdf[, "wt"], function(x) format_value(x, format = "xx.xx", round_type = "iec"))
+  fmt_sas <- sapply(inputdf[, "wt"], function(x) format_value(x, format = "xx.xx", round_type = "sas"))
+  expect_identical(df_iec, fmt_iec)
+  expect_identical(df_sas, fmt_sas)
+})
+
+test_that("Methods for obj_round_type on list object", {
+  inputdf <- mtcars
+  obj_format(inputdf$wt) <- "xx.xx"
+
+  bmf <- basic_matrix_form(inputdf, round_type = "sas")
+  blmf <- basic_listing_mf(inputdf, keycols = c("vs", "gear"), round_type = "sas")
+  l_mf <- list(bmf, blmf)
+
+  expect_identical(obj_round_type(l_mf), "sas")
+
+  # test setter
+  # current object is list of MatrixPrintForm class, round_type cannot not be updated here
+  # as rounding occurs during creation of MatrixPrintForm object
+  l_mf_iec <- l_mf
+  expect_error(
+    obj_round_type(l_mf_iec) <- "iec",
+    "Cannot alter round type on a `MatrixPrintForm` object"
+  )
+  # test of setter for list of listing_obj will be included in rlistings instead
 })

@@ -60,7 +60,7 @@ export_as_txt <- function(x,
                           page_num = default_page_number(),
                           fontspec = font_spec(font_family, font_size, lineheight),
                           col_gap = 3,
-                          round_type = c("iec", "sas")) {
+                          round_type = obj_round_type(x)) {
   # Processing lists of tables or listings
   if (.is_list_of_tables_or_listings(x)) {
     if (isFALSE(paginate)) {
@@ -186,7 +186,7 @@ prep_header_line <- function(mf, i) {
 ##   )
 ## }
 
-mpf_to_dfbody <- function(mpf, colwidths, fontspec, round_type = c("iec", "sas")) {
+mpf_to_dfbody <- function(mpf, colwidths, fontspec, round_type = obj_round_type(mpf)) {
   mf <- matrix_form(mpf, indent_rownames = TRUE, fontspec = fontspec, round_type = round_type)
   nlr <- mf_nlheader(mf)
   if (is.null(colwidths)) {
@@ -232,7 +232,7 @@ mpf_to_rtf <- function(mpf,
                        font_size = 8,
                        lineheight = 1,
                        fontspec = font_spec(font_family, font_size, lineheight),
-                       round_type = round_type,
+                       round_type = obj_round_type(mpf),
                        ...) {
   if (!requireNamespace("r2rtf")) {
     stop("RTF export requires the 'r2rtf' package, please install it.")
@@ -420,6 +420,7 @@ export_as_rtf <- function(x,
                           lineheight = 1,
                           fontspec = font_spec(font_family, font_size, lineheight),
                           paginate = TRUE,
+                          round_type = obj_round_type(x),
                           ...) {
   # Processing lists of tables or listings
   if (.is_list_of_tables_or_listings(x)) {
@@ -464,6 +465,7 @@ export_as_rtf <- function(x,
     margins = c(bottom = 0, left = 0, top = 0, right = 0),
     lineheight = 1.25,
     colwidths = colwidths,
+    round_type = round_type,
     ...
   )
 
@@ -474,7 +476,8 @@ export_as_rtf <- function(x,
       pg_width = pg_width,
       pg_height = pg_height,
       font_size = fontspec$size,
-      margins = c(top = 0, left = 0, bottom = 0, right = 0)
+      margins = c(top = 0, left = 0, bottom = 0, right = 0),
+      round_type = round_type
     ))
   })
   restxt <- paste(
@@ -563,7 +566,7 @@ export_as_pdf <- function(x,
                           colwidths = NULL,
                           fontspec = font_spec(font_family, font_size, lineheight),
                           ttype_ok = FALSE,
-                          round_type = c("iec", "sas")) {
+                          round_type = obj_round_type(x)) {
   ## this has to happen at the very beginning before the first use of fontspec
   ## which happens in the default value of colwidths. yay lazy evaluation...
   if (missing(font_size) && !missing(fontsize)) {

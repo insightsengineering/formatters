@@ -164,6 +164,10 @@ sprintf_format <- function(format) {
   }
 }
 
+#' @rdname round_fmt
+#' @export
+valid_round_type <- c("iec", "iec_mod", "sas")
+
 #' Round and prepare a value for display
 #'
 #' This function is used within [format_value()] to prepare numeric values within
@@ -173,9 +177,14 @@ sprintf_format <- function(format) {
 #' @param digits (`numeric(1)`)\cr number of digits to round to, or `NA` to convert to a
 #'   character value with no rounding.
 #' @param na_str (`string`)\cr the value to return if `x` is `NA`.
-#' @param round_type (`"iec"` or `"sas"`)\cr the type of rounding to perform. iec,
-#'   the default, peforms rounding compliant with IEC 60559 (see details), while
-#'   sas performs nearest-value rounding consistent with rounding within SAS.
+#' @param round_type (`string`)\cr .
+#' \cr The type of rounding to perform. Allowed values: (`"iec"`, `"iec_mod"` or `"sas"`)
+#' \cr iec, the default, and iec_mod performs rounding compliant with IEC 60559
+#'   (see notes in [round_fmt()]), while
+#'   sas performs nearest-value rounding consistent with rounding within SAS.\cr
+#'   In addition, the rounding of a negative number that rounds to zero will be presented as 0
+#'   (with the appropriate number of trailing zeros) for both `sas` and `iec_mod`,
+#'   while for `iec`, it will be presented as -0 (with the appropriate number of trailing zeros).
 #'
 #' @details
 #' This function combines rounding behavior with the strict decimal display of
@@ -214,10 +223,13 @@ sprintf_format <- function(format) {
 #' round_fmt(2.765923, digits = NA)
 #' round_fmt(0.845, digits = 2)
 #' round_fmt(0.845, digits = 2, round_type = "sas")
+#' round_fmt(-0.001, digits = 2, round_type = "iec")
+#' round_fmt(-0.001, digits = 2, round_type = "sas")
+#' round_fmt(-0.001, digits = 2, round_type = "iec_mod")
 #'
 #' @export
 #' @aliases rounding
-round_fmt <- function(x, digits, na_str = "NA", round_type = c("iec", "sas")) {
+round_fmt <- function(x, digits, na_str = "NA", round_type = valid_round_type) {
   round_type <- match.arg(round_type)
   if (!is.na(digits) && digits < 0) {
     stop("round_fmt currently does not support non-missing values of digits < 0")
@@ -229,6 +241,7 @@ round_fmt <- function(x, digits, na_str = "NA", round_type = c("iec", "sas")) {
   } else {
     rndx <- switch(round_type,
       iec = round(x, digits),
+      iec_mod = round_iec_mod(x, digits),
       sas = round_sas(x, digits)
     )
     sprfmt <- paste0("%.", digits, "f")
@@ -248,13 +261,28 @@ round_sas <- function(x,
   z <- z + 0.5 + sqrt(.Machine$double.eps)
   z <- trunc(z)
   z <- z / 10^digits
-  z <- z * posneg
+  # only include sign when rounded value is not zero
+  if (z != 0) z <- z * posneg
+  ## return numeric vector of rounded values
+  z
+}
+
+#' @inheritParams round_fmt
+#'
+round_iec_mod <- function(x,
+                          digits = 0) {
+  # perform default rounding ----------------------------------------------------
+  posneg <- sign(x)
+  z <- round(abs(x), digits)
+  # only include sign when rounded value is not zero
+  if (z != 0) z <- z * posneg
   ## return numeric vector of rounded values
   z
 }
 
 
-val_pct_helper <- function(x, dig1, dig2, na_str, pct = TRUE, round_type = c("iec", "sas")) {
+val_pct_helper <- function(x, dig1, dig2, na_str, pct = TRUE, round_type = valid_round_type) {
+  round_type <- match.arg(round_type)
   if (pct) {
     x[2] <- x[2] * 100
   }
@@ -269,7 +297,8 @@ val_pct_helper <- function(x, dig1, dig2, na_str, pct = TRUE, round_type = c("ie
   )
 }
 
-sep_2d_helper <- function(x, dig1, dig2, sep, na_str, wrap = NULL, round_type = c("iec", "sas")) {
+sep_2d_helper <- function(x, dig1, dig2, sep, na_str, wrap = NULL, round_type = valid_round_type) {
+  round_type <- match.arg(round_type)
   ret <- paste(mapply(round_fmt, x = x, digits = c(dig1, dig2), na_str = na_str, round_type = round_type),
     collapse = sep
   )
@@ -312,7 +341,7 @@ sep_2d_helper <- function(x, dig1, dig2, sep, na_str, wrap = NULL, round_type = 
 #' format_value(c(NA, 1, NA), format = "xx.x (xx.x - xx.x)", na_str = c("NE", "<missing>"))
 #'
 #' @export
-format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str = "NA", round_type = c("iec", "sas")) {
+format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str = "NA", round_type = valid_round_type) {
   ## if(is(x, "CellValue"))
   ##     x = x[[1]]
 
