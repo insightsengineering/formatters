@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.927781392322707" branch-rate="0" lines-covered="2852" lines-valid="3074" branches-covered="0" branches-valid="0" complexity="0" version="3.6.5" timestamp="2025-12-05 21:24:55.908461">
+<coverage line-rate="0.927781392322707" branch-rate="0" lines-covered="2852" lines-valid="3074" branches-covered="0" branches-valid="0" complexity="0" version="3.6.5" timestamp="2025-12-05 23:10:11.482701">
   <sources>
     <source>/__w/formatters/formatters/formatters</source>
   </sources>
@@ -6405,7 +6405,7 @@
                 <line number="1099" hits="68" branch="false"/>
                 <line number="1102" hits="32588" branch="false"/>
                 <line number="1103" hits="32119" branch="false"/>
-                <line number="1106" hits="469" branch="false"/>
+                <line number="1106" hits="32588" branch="false"/>
               </lines>
             </method>
             <method name=".go_stri_wrap" signature="" line-rate="0.888888888888889" branch-rate="0" complexity="0">
@@ -7276,7 +7276,7 @@
             <line number="1099" hits="68" branch="false"/>
             <line number="1102" hits="32588" branch="false"/>
             <line number="1103" hits="32119" branch="false"/>
-            <line number="1106" hits="469" branch="false"/>
+            <line number="1106" hits="32588" branch="false"/>
             <line number="1110" hits="32799" branch="false"/>
             <line number="1111" hits="0" branch="false"/>
             <line number="1113" hits="32799" branch="false"/>
