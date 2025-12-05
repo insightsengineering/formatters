@@ -31,7 +31,8 @@ MatrixPrintForm(
   colwidths = NULL,
   indent_size = 2,
   fontspec = font_spec(),
-  rep_cols = 0L
+  rep_cols = 0L,
+  round_type = valid_round_type
 )
 }
 \arguments{
@@ -110,6 +111,10 @@ the relevant method). Defaults to 2.}
 calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 
 \item{rep_cols}{(\code{numeric(1)})\cr number of columns to be repeated as context during horizontal pagination.}
+
+\item{round_type}{(\code{string})\cr
+The type of rounding to perform. Allowed values: (\code{"iec"}, \code{"iec_mod"} or \code{"sas"})
+See \code{\link[=round_fmt]{round_fmt()}} for details.}
 }
 \value{
 An object of class \code{MatrixPrintForm}. Currently this is implemented as an S3 class inheriting

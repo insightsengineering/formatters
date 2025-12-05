@@ -16,7 +16,7 @@ mpf_to_rtf(
   font_size = 8,
   lineheight = 1,
   fontspec = font_spec(font_family, font_size, lineheight),
-  round_type = round_type,
+  round_type = obj_round_type(mpf),
   ...
 )
 }
@@ -50,9 +50,9 @@ if the family named is not monospaced. Defaults to \code{"Courier"}.}
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
 calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 
-\item{round_type}{(\code{"iec"} or \code{"sas"})\cr the type of rounding to perform. iec,
-the default, peforms rounding compliant with IEC 60559 (see details), while
-sas performs nearest-value rounding consistent with rounding within SAS.}
+\item{round_type}{(\code{string})\cr
+The type of rounding to perform. Allowed values: (\code{"iec"}, \code{"iec_mod"} or \code{"sas"})
+See \code{\link[=round_fmt]{round_fmt()}} for details.}
 
 \item{...}{additional parameters passed to individual methods.}
 }

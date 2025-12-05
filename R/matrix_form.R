@@ -260,6 +260,9 @@ disp_from_spans <- function(spans) {
 #' @param indent_size (`numeric(1)`)\cr number of spaces to be used per level of indent (if supported by
 #'   the relevant method). Defaults to 2.
 #' @param rep_cols (`numeric(1)`)\cr number of columns to be repeated as context during horizontal pagination.
+#' @param round_type (`string`)\cr
+#' The type of rounding to perform. Allowed values: (`"iec"`, `"iec_mod"` or `"sas"`)
+#' See [round_fmt()] for details.
 #'
 #' @return An object of class `MatrixPrintForm`. Currently this is implemented as an S3 class inheriting
 #'   from list with the following elements:
@@ -325,7 +328,9 @@ MatrixPrintForm <- function(strings = NULL,
                             colwidths = NULL,
                             indent_size = 2,
                             fontspec = font_spec(),
-                            rep_cols = 0L) {
+                            rep_cols = 0L,
+                            round_type = valid_round_type) {
+  round_type <- match.arg(round_type)
   display <- disp_from_spans(spans)
 
   ncs <- if (has_rowlabs) ncol(strings) - 1 else ncol(strings)
@@ -353,7 +358,8 @@ MatrixPrintForm <- function(strings = NULL,
       indent_size = indent_size,
       col_widths = colwidths,
       fontspec = fontspec,
-      num_rep_cols = rep_cols
+      num_rep_cols = rep_cols,
+      round_type = round_type
     ),
     nrow_header = nrow_header,
     ncols = ncs,
@@ -915,6 +921,9 @@ mf_has_rlabels <- function(mf) ncol(mf$strings) > mf_ncol(mf)
 #' @param num_rep_cols (`numeric(1)`)\cr Number of columns to be treated as repeating columns.
 #'   Defaults to `0` for `basic_matrix_form` and `length(keycols)` for
 #'   `basic_listing_mf`. Note repeating columns are separate from row labels if present.
+#' @param round_type (`string`)\cr
+#' The type of rounding to perform. Allowed values: (`"iec"`, `"iec_mod"` or `"sas"`)
+#' See [round_fmt()] for details.
 #'
 #' @return A valid `MatrixPrintForm` object representing `df` that is ready for
 #'   ASCII rendering.
@@ -950,7 +959,8 @@ basic_matrix_form <- function(df,
                               fontspec = font_spec(),
                               split_labels = NULL,
                               data_labels = NULL,
-                              num_rep_cols = 0L) {
+                              num_rep_cols = 0L,
+                              round_type = valid_round_type) {
   checkmate::assert_data_frame(df)
   checkmate::assert_flag(indent_rownames)
   checkmate::assert_character(parent_path, null.ok = TRUE)
@@ -958,6 +968,7 @@ basic_matrix_form <- function(df,
   checkmate::assert_flag(add_decoration)
   checkmate::assert_character(split_labels, null.ok = TRUE)
   checkmate::assert_character(data_labels, null.ok = TRUE)
+  round_type <- match.arg(round_type)
 
   # Some defaults
   row_classes <- "DataRow" # Default for all rows
@@ -1016,7 +1027,7 @@ basic_matrix_form <- function(df,
   bodystrs <- mapply(function(x, coli_fmt) {
     coli_fmt[coli_fmt == "-"] <- "xx"
     sapply(seq_along(x), function(y) {
-      format_value(x[y], format = coli_fmt[y])
+      format_value(x[y], format = coli_fmt[y], round_type = round_type)
     })
   }, x = df, coli_fmt = fmts)
 
@@ -1111,7 +1122,8 @@ basic_matrix_form <- function(df,
     fontspec = fontspec,
     col_gap = 3,
     indent_size = indent_size,
-    rep_cols = num_rep_cols
+    rep_cols = num_rep_cols,
+    round_type = round_type
   )
 
   # Check for ncols
@@ -1146,7 +1158,9 @@ basic_matrix_form <- function(df,
 basic_listing_mf <- function(df,
                              keycols = names(df)[1],
                              add_decoration = TRUE,
-                             fontspec = font_spec()) {
+                             fontspec = font_spec(),
+                             round_type = valid_round_type) {
+  round_type <- match.arg(round_type)
   checkmate::assert_data_frame(df)
   checkmate::assert_subset(keycols, colnames(df))
 
@@ -1156,7 +1170,8 @@ basic_listing_mf <- function(df,
     ignore_rownames = TRUE,
     add_decoration = add_decoration,
     num_rep_cols = length(keycols),
-    fontspec = fontspec
+    fontspec = fontspec,
+    round_type = round_type
   )
 
   # keycols addition to MatrixPrintForm (should happen in the constructor)

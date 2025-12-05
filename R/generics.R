@@ -68,7 +68,7 @@ setGeneric("make_row_df", function(tt, colwidths = NULL, visible_only = TRUE,
                                    max_width = NULL,
                                    fontspec = font_spec(),
                                    col_gap = 3L,
-                                   round_type = c("iec", "sas")) {
+                                   round_type = obj_round_type(tt)) {
   standardGeneric("make_row_df")
 })
 
@@ -85,7 +85,7 @@ setMethod("make_row_df", "MatrixPrintForm", function(tt, colwidths = NULL, visib
                                                      max_width = NULL,
                                                      fontspec = font_spec(),
                                                      col_gap = mf_colgap(tt) %||% 3L,
-                                                     round_type = c("iec", "sas")) {
+                                                     round_type = obj_round_type(tt)) {
   msg <- paste0(
     "make_row_df can be used only on {rtables} table objects, and not on `matrix_form`-",
     "generated objects (MatrixPrintForm)."
@@ -127,7 +127,7 @@ setGeneric("matrix_form", function(obj,
                                    indent_size = 2,
                                    fontspec = NULL,
                                    col_gap = NULL,
-                                   round_type = c("iec", "sas")) {
+                                   round_type = obj_round_type(obj)) {
   standardGeneric("matrix_form")
 })
 
@@ -140,7 +140,7 @@ setMethod("matrix_form", "MatrixPrintForm", function(obj,
                                                      indent_size = 2,
                                                      fontspec = NULL,
                                                      col_gap = NULL,
-                                                     round_type = c("iec", "sas")) {
+                                                     round_type = obj_round_type(obj)) {
   if (!is.null(fontspec)) {
     mf_fontspec(obj) <- fontspec
   }
@@ -737,3 +737,66 @@ setMethod(
     obj
   }
 )
+
+
+# obj_round_type ---------------------------------------------------------------
+
+#' Rounding Type
+#'
+#' When called on a table-like object using the formatters framework, this method returns the
+#' rounding type of the object.
+#'
+#' @param obj (`ANY`)\cr a table-like object.
+#'
+#' @return The rounding type of the object (see [round_fmt()] for details).
+#' @rdname obj_round_type
+#' @export
+setGeneric("obj_round_type", function(obj) standardGeneric("obj_round_type"))
+
+#' @rdname obj_round_type
+#' @export
+setMethod(
+  "obj_round_type", "MatrixPrintForm", function(obj) obj$round_type
+)
+
+#' @rdname obj_round_type
+#' @export
+setMethod("obj_round_type", "list", function(obj) {
+  if (!.is_list_of_tables_or_listings(obj)) {
+    stop("got a list that doesn't appear to contain (only) tables or listings")
+  }
+  obj_round_type(obj[[1]])
+})
+
+# obj_round_type setter ---------------------------------------------------------------
+#' @rdname obj_round_type
+#' @param value The new rounding type of the object (see [round_fmt()] for details)
+#' @note The setter method should only be created/used for pre-MatrixPrintForm objects,
+#' as resetting the rounding type after rounding occurs (which is during MPF creation)
+#' will not effect output when printing/exporting.
+#' @export
+setGeneric("obj_round_type<-", function(obj, value) standardGeneric("obj_round_type<-"))
+
+#' @rdname obj_round_type
+#' @export
+setMethod("obj_round_type<-", "list", function(obj, value) {
+  if (!.is_list_of_tables_or_listings(obj)) {
+    stop("got a list that doesn't appear to contain (only) tables or listings")
+  }
+  obj <- lapply(obj, function(x) {
+    obj_round_type(x) <- value
+    x
+  })
+  obj
+})
+
+#' @rdname obj_round_type
+#' @export
+#' @note round_type cannot not be updated on a `MatrixPrintForm` object
+#' as rounding occurs during creation of MatrixPrintForm object
+setMethod("obj_round_type<-", "MatrixPrintForm", function(obj, value) {
+  stop(
+    "Cannot alter round type on a `MatrixPrintForm` object as it was ",
+    "constructed after rounding occurred."
+  )
+})

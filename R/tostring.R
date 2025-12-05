@@ -445,7 +445,7 @@ do_cell_fnotes_wrap <- function(mat, widths, max_width, tf_wrap, fontspec, expan
     }
   }
   # Final return
-  return(list("mfs" = mfs, "cell_widths_mat" = cell_widths_mat))
+  list("mfs" = mfs, "cell_widths_mat" = cell_widths_mat)
 }
 
 ## take a character vector and return whether the value is
@@ -646,7 +646,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
                                                   hsep = NULL,
                                                   fontspec = font_spec(),
                                                   ttype_ok = FALSE,
-                                                  round_type = c("iec", "sas")) {
+                                                  round_type = obj_round_type(x)) {
   checkmate::assert_flag(tf_wrap)
 
   ## we are going to use the pdf device and grid to understand the actual
@@ -902,7 +902,7 @@ setMethod("toString", "MatrixPrintForm", function(x,
       stop("max_width must be NULL, a numeric value, or \"auto\".")
     }
   }
-  return(max_width)
+  max_width
 }
 
 .do_inset <- function(x, inset) {
@@ -1100,10 +1100,10 @@ wrap_string <- function(str, width, collapse = NULL, fontspec = font_spec()) {
   }
 
   if (!is.null(collapse)) {
-    return(paste0(ret, collapse = collapse))
+    ret <- paste0(ret, collapse = collapse)
   }
 
-  return(ret)
+  ret
 }
 
 .go_stri_wrap <- function(str, w) {
@@ -1379,7 +1379,7 @@ spans_to_viscell <- function(spans) {
 propose_column_widths <- function(x,
                                   indent_size = 2,
                                   fontspec = font_spec(),
-                                  round_type = c("iec", "sas")) {
+                                  round_type = obj_round_type(x)) {
   new_dev <- open_font_dev(fontspec)
   if (new_dev) {
     on.exit(close_font_dev())
