@@ -795,6 +795,8 @@ setMethod("obj_round_type<-", "list", function(obj, value) {
 #' @note round_type cannot not be updated on a `MatrixPrintForm` object
 #' as rounding occurs during creation of MatrixPrintForm object
 setMethod("obj_round_type<-", "MatrixPrintForm", function(obj, value) {
-  message("'obj_round_type<-' should not be applied on class `MatrixPrintForm`")
-  obj
+  stop(
+    "Cannot alter round type on a `MatrixPrintForm` object as it was ",
+    "constructed after rounding occurred."
+  )
 })
