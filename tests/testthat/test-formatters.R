@@ -1150,11 +1150,11 @@ test_that("Methods for obj_round_type on list object", {
   # current object is list of MatrixPrintForm class, round_type cannot not be updated here
   # as rounding occurs during creation of MatrixPrintForm object
   l_mf_iec <- l_mf
-  expect_message(obj_round_type(l_mf_iec) <- "iec",
-                 "'obj_round_type<-' should not be applied on class `MatrixPrintForm`")
+  expect_message(
+    obj_round_type(l_mf_iec) <- "iec",
+    "'obj_round_type<-' should not be applied on class `MatrixPrintForm`"
+  )
   expect_identical(obj_round_type(l_mf_iec), "sas")
 
   # test of setter for list of listing_obj will be included in rlistings instead
-
-
 })
