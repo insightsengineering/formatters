@@ -11,7 +11,7 @@ format_value(
   format = NULL,
   output = c("ascii", "html"),
   na_str = "NA",
-  round_type = c("iec", "sas")
+  round_type = valid_round_type
 )
 ```
 
@@ -41,10 +41,19 @@ format_value(
 
 - round_type:
 
-  (`"iec"` or `"sas"`)  
-  the type of rounding to perform. iec, the default, peforms rounding
-  compliant with IEC 60559 (see details), while sas performs
-  nearest-value rounding consistent with rounding within SAS.
+  (`string`)  
+  .  
+  The type of rounding to perform. Allowed values: (`"iec"`, `"iec_mod"`
+  or `"sas"`)  
+  iec, the default, and iec_mod performs rounding compliant with IEC
+  60559 (see notes in
+  [`round_fmt()`](https://insightsengineering.github.io/formatters/reference/round_fmt.md)),
+  while sas performs nearest-value rounding consistent with rounding
+  within SAS.  
+  In addition, the rounding of a negative number that rounds to zero
+  will be presented as 0 (with the appropriate number of trailing zeros)
+  for both `sas` and `iec_mod`, while for `iec`, it will be presented as
+  -0 (with the appropriate number of trailing zeros).
 
 ## Value
 

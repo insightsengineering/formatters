@@ -250,7 +250,8 @@ Functions related to applying formats to values
   Converts a (possibly compound) value into a string using the `format`
   information
 
-- [`round_fmt()`](https://insightsengineering.github.io/formatters/reference/round_fmt.md)
+- [`valid_round_type`](https://insightsengineering.github.io/formatters/reference/round_fmt.md)
+  [`round_fmt()`](https://insightsengineering.github.io/formatters/reference/round_fmt.md)
   : Round and prepare a value for display
 
 - [`is_valid_format()`](https://insightsengineering.github.io/formatters/reference/check_formats.md)
@@ -416,6 +417,9 @@ Functions for assigning labels to variables in data
   [`obj_align()`](https://insightsengineering.github.io/formatters/reference/lab_name.md)
   [`` `obj_align<-`() ``](https://insightsengineering.github.io/formatters/reference/lab_name.md)
   : Label, name, and format accessor generics
+- [`obj_round_type()`](https://insightsengineering.github.io/formatters/reference/obj_round_type.md)
+  [`` `obj_round_type<-`() ``](https://insightsengineering.github.io/formatters/reference/obj_round_type.md)
+  : Rounding Type
 
 ## Data
 

@@ -15,14 +15,16 @@ basic_matrix_form(
   fontspec = font_spec(),
   split_labels = NULL,
   data_labels = NULL,
-  num_rep_cols = 0L
+  num_rep_cols = 0L,
+  round_type = valid_round_type
 )
 
 basic_listing_mf(
   df,
   keycols = names(df)[1],
   add_decoration = TRUE,
-  fontspec = font_spec()
+  fontspec = font_spec(),
+  round_type = valid_round_type
 )
 ```
 
@@ -90,6 +92,14 @@ basic_listing_mf(
   Number of columns to be treated as repeating columns. Defaults to `0`
   for `basic_matrix_form` and `length(keycols)` for `basic_listing_mf`.
   Note repeating columns are separate from row labels if present.
+
+- round_type:
+
+  (`string`)  
+  The type of rounding to perform. Allowed values: (`"iec"`, `"iec_mod"`
+  or `"sas"`) See
+  [`round_fmt()`](https://insightsengineering.github.io/formatters/reference/round_fmt.md)
+  for details.
 
 - keycols:
 

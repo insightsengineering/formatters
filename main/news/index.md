@@ -1,6 +1,6 @@
 # Changelog
 
-## formatters 0.5.11.9004
+## formatters 0.5.11.9005
 
 - Optimized pagination sub-routines to avoid
   [`matrix_form()`](https://insightsengineering.github.io/formatters/reference/matrix_form.md)
@@ -9,8 +9,19 @@
   time for long listings.
 - Fixed bug in pagination of listings caused by newlines in column
   values.
-- Added `"default"` format label which will behave like `"xx"` but can
-  inherit formatting from parent structures in upstream code.
+- Added `"default"` format label which behaves like `"xx"` in
+  `format_value` but indicates formatting behavior can be inherited from
+  parent structures in upstream code.
+- `round_type = "sas"` no longer displays a negative sign when negative
+  values are rounded to zero.
+- Added new `round_type`, `"iec_mod"`. Provides IEC style rounding but
+  will not display negative sign when rounding to zero.
+- New exported `valid_round_type` object for use as default value/with
+  `match.arg` in upstream packages.
+- New `obj_round_type` and `obj_round_type<-` generics for objects which
+  carry around a round_type.
+- Updated default round type value to retrieve the object’s round type
+  for all generics and relevant methods which accept round_type.
 
 ## formatters 0.5.11
 

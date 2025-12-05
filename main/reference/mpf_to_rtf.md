@@ -17,7 +17,7 @@ mpf_to_rtf(
   font_size = 8,
   lineheight = 1,
   fontspec = font_spec(font_family, font_size, lineheight),
-  round_type = round_type,
+  round_type = obj_round_type(mpf),
   ...
 )
 ```
@@ -90,10 +90,11 @@ mpf_to_rtf(
 
 - round_type:
 
-  (`"iec"` or `"sas"`)  
-  the type of rounding to perform. iec, the default, peforms rounding
-  compliant with IEC 60559 (see details), while sas performs
-  nearest-value rounding consistent with rounding within SAS.
+  (`string`)  
+  The type of rounding to perform. Allowed values: (`"iec"`, `"iec_mod"`
+  or `"sas"`) See
+  [`round_fmt()`](https://insightsengineering.github.io/formatters/reference/round_fmt.md)
+  for details.
 
 - ...:
 

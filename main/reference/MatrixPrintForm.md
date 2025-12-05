@@ -33,7 +33,8 @@ MatrixPrintForm(
   colwidths = NULL,
   indent_size = 2,
   fontspec = font_spec(),
-  rep_cols = 0L
+  rep_cols = 0L,
+  round_type = valid_round_type
 )
 ```
 
@@ -203,6 +204,14 @@ MatrixPrintForm(
   (`numeric(1)`)  
   number of columns to be repeated as context during horizontal
   pagination.
+
+- round_type:
+
+  (`string`)  
+  The type of rounding to perform. Allowed values: (`"iec"`, `"iec_mod"`
+  or `"sas"`) See
+  [`round_fmt()`](https://insightsengineering.github.io/formatters/reference/round_fmt.md)
+  for details.
 
 ## Value
 
@@ -1749,6 +1758,9 @@ basic_matrix_form(iris) # calls matrix_form which calls this constructor
 #> 
 #> $num_rep_cols
 #> [1] 0
+#> 
+#> $round_type
+#> [1] "iec"
 #> 
 #> $ref_fnote_df
 #> [1] row_path  col_path  row       col       symbol    ref_index msg      
