@@ -260,7 +260,8 @@ disp_from_spans <- function(spans) {
 #' @param indent_size (`numeric(1)`)\cr number of spaces to be used per level of indent (if supported by
 #'   the relevant method). Defaults to 2.
 #' @param rep_cols (`numeric(1)`)\cr number of columns to be repeated as context during horizontal pagination.
-#' @param round_type (`"iec"`, `"iec_mod"` or `"sas"`)\cr the type of rounding to perform.
+#' @param round_type (`string`)\cr
+#' The type of rounding to perform. Allowed values: (`"iec"`, `"iec_mod"` or `"sas"`)
 #' See [round_fmt()] for details.
 #'
 #' @return An object of class `MatrixPrintForm`. Currently this is implemented as an S3 class inheriting
@@ -920,7 +921,8 @@ mf_has_rlabels <- function(mf) ncol(mf$strings) > mf_ncol(mf)
 #' @param num_rep_cols (`numeric(1)`)\cr Number of columns to be treated as repeating columns.
 #'   Defaults to `0` for `basic_matrix_form` and `length(keycols)` for
 #'   `basic_listing_mf`. Note repeating columns are separate from row labels if present.
-#' @param round_type (`"iec"`, `"iec_mod"` or `"sas"`)\cr the type of rounding to perform.
+#' @param round_type (`string`)\cr
+#' The type of rounding to perform. Allowed values: (`"iec"`, `"iec_mod"` or `"sas"`)
 #' See [round_fmt()] for details.
 #'
 #' @return A valid `MatrixPrintForm` object representing `df` that is ready for

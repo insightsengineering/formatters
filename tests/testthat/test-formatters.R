@@ -1135,3 +1135,26 @@ test_that("Methods for obj_round_type", {
   expect_identical(df_iec, fmt_iec)
   expect_identical(df_sas, fmt_sas)
 })
+
+test_that("Methods for obj_round_type on list object", {
+  inputdf <- mtcars
+  obj_format(inputdf$wt) <- "xx.xx"
+
+  bmf <- basic_matrix_form(inputdf, round_type = "sas")
+  blmf <- basic_listing_mf(inputdf, keycols = c("vs", "gear"), round_type = "sas")
+  l_mf <- list(bmf, blmf)
+
+  expect_identical(obj_round_type(l_mf), "sas")
+
+  # test setter
+  # current object is list of MatrixPrintForm class, round_type cannot not be updated here
+  # as rounding occurs during creation of MatrixPrintForm object
+  l_mf_iec <- l_mf
+  expect_message(obj_round_type(l_mf_iec) <- "iec",
+                 "'obj_round_type<-' should not be applied on class `MatrixPrintForm`")
+  expect_identical(obj_round_type(l_mf_iec), "sas")
+
+  # test of setter for list of listing_obj will be included in rlistings instead
+
+
+})

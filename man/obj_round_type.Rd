@@ -3,14 +3,23 @@
 \name{obj_round_type}
 \alias{obj_round_type}
 \alias{obj_round_type,MatrixPrintForm-method}
+\alias{obj_round_type,list-method}
 \alias{obj_round_type<-}
+\alias{obj_round_type<-,list-method}
+\alias{obj_round_type<-,MatrixPrintForm-method}
 \title{Rounding Type}
 \usage{
 obj_round_type(obj)
 
 \S4method{obj_round_type}{MatrixPrintForm}(obj)
 
+\S4method{obj_round_type}{list}(obj)
+
 obj_round_type(obj) <- value
+
+\S4method{obj_round_type}{list}(obj) <- value
+
+\S4method{obj_round_type}{MatrixPrintForm}(obj) <- value
 }
 \arguments{
 \item{obj}{(\code{ANY})\cr a table-like object.}
@@ -28,4 +37,7 @@ rounding type of the object.
 The setter method should only be created/used for pre-MatrixPrintForm objects,
 as resetting the rounding type after rounding occurs (which is during MPF creation)
 will not effect output when printing/exporting.
+
+round_type cannot not be updated on a \code{MatrixPrintForm} object
+as rounding occurs during creation of MatrixPrintForm object
 }

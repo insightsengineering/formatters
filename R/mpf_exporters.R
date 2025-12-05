@@ -2,14 +2,6 @@
   !(is.null(page_type) && is.null(pg_width) && is.null(pg_height) && is.null(cpp) && is.null(lpp))
 }
 
-.get_first_element_of_object <- function(x) {
-  if (is(x, "list")) {
-    x[[1]]
-  } else {
-    x
-  }
-}
-
 #' Export a table-like object to plain (ASCII) text with page breaks
 #'
 #' This function converts `x` to a `MatrixPrintForm` object via [matrix_form()], paginates it
@@ -68,7 +60,7 @@ export_as_txt <- function(x,
                           page_num = default_page_number(),
                           fontspec = font_spec(font_family, font_size, lineheight),
                           col_gap = 3,
-                          round_type = obj_round_type(.get_first_element_of_object(x))) {
+                          round_type = obj_round_type(x)) {
   # Processing lists of tables or listings
   if (.is_list_of_tables_or_listings(x)) {
     if (isFALSE(paginate)) {
@@ -428,7 +420,7 @@ export_as_rtf <- function(x,
                           lineheight = 1,
                           fontspec = font_spec(font_family, font_size, lineheight),
                           paginate = TRUE,
-                          round_type = obj_round_type(.get_first_element_of_object(x)),
+                          round_type = obj_round_type(x),
                           ...) {
   # Processing lists of tables or listings
   if (.is_list_of_tables_or_listings(x)) {
@@ -574,7 +566,7 @@ export_as_pdf <- function(x,
                           colwidths = NULL,
                           fontspec = font_spec(font_family, font_size, lineheight),
                           ttype_ok = FALSE,
-                          round_type = obj_round_type(.get_first_element_of_object(x))) {
+                          round_type = obj_round_type(x)) {
   ## this has to happen at the very beginning before the first use of fontspec
   ## which happens in the default value of colwidths. yay lazy evaluation...
   if (missing(font_size) && !missing(fontsize)) {

@@ -31,7 +31,7 @@ export_as_pdf(
   colwidths = NULL,
   fontspec = font_spec(font_family, font_size, lineheight),
   ttype_ok = FALSE,
-  round_type = obj_round_type(.get_first_element_of_object(x))
+  round_type = obj_round_type(x)
 )
 }
 \arguments{
@@ -109,8 +109,10 @@ calculating string widths and heights, as returned by \code{\link[=font_spec]{fo
 allowed via \code{fontspec}. Defaults to \code{FALSE}. This parameter is primarily
 for internal testing and generally should not be set by end users.}
 
-\item{round_type}{(\code{"iec"}, \code{"iec_mod"} or \code{"sas"})\cr the type of rounding to perform. iec,
-the default, and iec_mod peforms rounding compliant with IEC 60559 (see notes in \code{\link[=round_fmt]{round_fmt()}}), while
+\item{round_type}{(\code{string})\cr .
+\cr The type of rounding to perform. Allowed values: (\code{"iec"}, \code{"iec_mod"} or \code{"sas"})
+\cr iec, the default, and iec_mod performs rounding compliant with IEC 60559
+(see notes in \code{\link[=round_fmt]{round_fmt()}}), while
 sas performs nearest-value rounding consistent with rounding within SAS.\cr
 In addition, the rounding of a negative number that rounds to zero will be presented as 0
 (with the appropriate number of trailing zeros) for both \code{sas} and \code{iec_mod},

@@ -759,6 +759,15 @@ setMethod(
   "obj_round_type", "MatrixPrintForm", function(obj) obj$round_type
 )
 
+#' @rdname obj_round_type
+#' @export
+setMethod("obj_round_type", "list", function(obj) {
+  if (!.is_list_of_tables_or_listings(obj)) {
+    stop("got a list that doesn't appear to contain (only) tables or listings")
+  }
+  obj_round_type(obj[[1]])
+})
+
 # obj_round_type setter ---------------------------------------------------------------
 #' @rdname obj_round_type
 #' @param value The new rounding type of the object (see [round_fmt()] for details)
@@ -767,3 +776,25 @@ setMethod(
 #' will not effect output when printing/exporting.
 #' @export
 setGeneric("obj_round_type<-", function(obj, value) standardGeneric("obj_round_type<-"))
+
+#' @rdname obj_round_type
+#' @export
+setMethod("obj_round_type<-", "list", function(obj, value) {
+  if (!.is_list_of_tables_or_listings(obj)) {
+    stop("got a list that doesn't appear to contain (only) tables or listings")
+  }
+  obj <- lapply(obj, function(x) {
+    obj_round_type(x) <- value
+    x
+  })
+  obj
+})
+
+#' @rdname obj_round_type
+#' @export
+#' @note round_type cannot not be updated on a `MatrixPrintForm` object
+#' as rounding occurs during creation of MatrixPrintForm object
+setMethod("obj_round_type<-", "MatrixPrintForm", function(obj, value) {
+  message("'obj_round_type<-' should not be applied on class `MatrixPrintForm`")
+  obj
+})

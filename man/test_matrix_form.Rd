@@ -60,7 +60,8 @@ for more information.}
 Defaults to \code{0} for \code{basic_matrix_form} and \code{length(keycols)} for
 \code{basic_listing_mf}. Note repeating columns are separate from row labels if present.}
 
-\item{round_type}{(\code{"iec"}, \code{"iec_mod"} or \code{"sas"})\cr the type of rounding to perform.
+\item{round_type}{(\code{string})\cr
+The type of rounding to perform. Allowed values: (\code{"iec"}, \code{"iec_mod"} or \code{"sas"})
 See \code{\link[=round_fmt]{round_fmt()}} for details.}
 
 \item{keycols}{(\code{character})\cr a vector of \code{df} column names that are printed first and for which

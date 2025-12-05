@@ -177,8 +177,10 @@ valid_round_type <- c("iec", "iec_mod", "sas")
 #' @param digits (`numeric(1)`)\cr number of digits to round to, or `NA` to convert to a
 #'   character value with no rounding.
 #' @param na_str (`string`)\cr the value to return if `x` is `NA`.
-#' @param round_type (`"iec"`, `"iec_mod"` or `"sas"`)\cr the type of rounding to perform. iec,
-#'   the default, and iec_mod peforms rounding compliant with IEC 60559 (see notes in [round_fmt()]), while
+#' @param round_type (`string`)\cr .
+#' \cr The type of rounding to perform. Allowed values: (`"iec"`, `"iec_mod"` or `"sas"`)
+#' \cr iec, the default, and iec_mod performs rounding compliant with IEC 60559
+#'   (see notes in [round_fmt()]), while
 #'   sas performs nearest-value rounding consistent with rounding within SAS.\cr
 #'   In addition, the rounding of a negative number that rounds to zero will be presented as 0
 #'   (with the appropriate number of trailing zeros) for both `sas` and `iec_mod`,

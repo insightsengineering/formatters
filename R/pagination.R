@@ -1201,7 +1201,7 @@ paginate_to_mpfs <- function(obj,
                              # col_gap = 3, # this could be change in default - breaking change
                              col_gap = 3,
                              fontspec = font_spec(font_family, font_size, lineheight),
-                             round_type = obj_round_type(.get_first_element_of_object(obj)),
+                             round_type = obj_round_type(obj),
                              verbose = FALSE) {
   newdev <- open_font_dev(fontspec)
   if (newdev) {

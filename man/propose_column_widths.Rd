@@ -20,8 +20,10 @@ a \code{MatrixPrintForm} object in favor of information there.}
 \item{fontspec}{(\code{font_spec})\cr a font_spec object specifying the font information to use for
 calculating string widths and heights, as returned by \code{\link[=font_spec]{font_spec()}}.}
 
-\item{round_type}{(\code{"iec"}, \code{"iec_mod"} or \code{"sas"})\cr the type of rounding to perform. iec,
-the default, and iec_mod peforms rounding compliant with IEC 60559 (see notes in \code{\link[=round_fmt]{round_fmt()}}), while
+\item{round_type}{(\code{string})\cr .
+\cr The type of rounding to perform. Allowed values: (\code{"iec"}, \code{"iec_mod"} or \code{"sas"})
+\cr iec, the default, and iec_mod performs rounding compliant with IEC 60559
+(see notes in \code{\link[=round_fmt]{round_fmt()}}), while
 sas performs nearest-value rounding consistent with rounding within SAS.\cr
 In addition, the rounding of a negative number that rounds to zero will be presented as 0
 (with the appropriate number of trailing zeros) for both \code{sas} and \code{iec_mod},
