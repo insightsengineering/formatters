@@ -1,7 +1,4 @@
-## formatters 0.5.11.9005
-* Optimized pagination sub-routines to avoid `matrix_form()` calls when not needed.
-* Optimized pagination sub-routine `.compress_mat()` to reduce computing time for long listings.
-* Fixed bug in pagination of listings caused by newlines in column values.
+## formatters 0.5.12
 * Added `"default"` format label which behaves like `"xx"` in `format_value` but indicates formatting behavior can be inherited from parent structures in upstream code.
 * `round_type = "sas"` no longer displays a negative sign when negative values are rounded to zero.
 * Added new `round_type`, `"iec_mod"`. Provides IEC style rounding but will not display negative sign when rounding to zero.
