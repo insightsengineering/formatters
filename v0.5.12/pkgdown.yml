@@ -1,0 +1,9 @@
+pandoc: 3.7.0.2
+pkgdown: 2.2.0
+pkgdown_sha: ~
+articles:
+  formatters: formatters.html
+last_built: 2025-12-08T10:58Z
+urls:
+  reference: https://insightsengineering.github.io/formatters/reference
+  article: https://insightsengineering.github.io/formatters/articles

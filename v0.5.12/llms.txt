@@ -1,0 +1,558 @@
+# formatters
+
+[![Check
+🛠](https://github.com/insightsengineering/formatters/actions/workflows/check.yaml/badge.svg)](https://insightsengineering.github.io/formatters/main/unit-test-report/)
+[![Docs
+📚](https://github.com/insightsengineering/formatters/actions/workflows/docs.yaml/badge.svg)](https://insightsengineering.github.io/formatters/)
+[![Code Coverage
+📔](https://raw.githubusercontent.com/insightsengineering/formatters/_xml_coverage_reports/data/main/badge.svg)](https://insightsengineering.github.io/formatters/main/coverage-report/)
+
+![GitHub
+forks](https://img.shields.io/github/forks/insightsengineering/formatters?style=social)![GitHub
+repo
+stars](https://img.shields.io/github/stars/insightsengineering/formatters?style=social)
+
+![GitHub commit
+activity](https://img.shields.io/github/commit-activity/m/insightsengineering/formatters)![GitHub
+contributors](https://img.shields.io/github/contributors/insightsengineering/formatters)![GitHub
+last
+commit](https://img.shields.io/github/last-commit/insightsengineering/formatters)![GitHub
+pull
+requests](https://img.shields.io/github/issues-pr/insightsengineering/formatters)![GitHub
+repo
+size](https://img.shields.io/github/repo-size/insightsengineering/formatters)![GitHub
+language
+count](https://img.shields.io/github/languages/count/insightsengineering/formatters)[![Project
+Status: Active – The project has reached a stable, usable state and is
+being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Current
+Version](https://img.shields.io/github/r-package/v/insightsengineering/formatters/main?color=purple&label=package%20version)](https://github.com/insightsengineering/formatters/tree/main)
+[![Open
+Issues](https://img.shields.io/github/issues-raw/insightsengineering/formatters?color=red&label=open%20issues)](https://github.com/insightsengineering/formatters/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
+
+The `formatters` package provides two core pieces of functionality, both
+related to ASCII rendering:
+
+1.  `format_value` provides the ability to format single- and
+    multi-valued elements into ASCII display-ready strings
+2.  the `matrix_form` framework provides generics for implementing ASCII
+    rendering support for display tables
+
+Both of these feature sets are used in the `rtables` package.
+
+## Motivation
+
+The core motivation for `formatters` is the rendering of reporting
+tables into ASCII. In this context a “value” is the raw content that to
+appear in a single table cell. Most commonly this is a numeric vector of
+length 1, 2 or – occasionally – 3.
+
+## Installation
+
+`formatters` is available on CRAN and you can install the latest
+released version with:
+
+``` r
+install.packages("formatters")
+```
+
+or you can install the latest development version directly from GitHub
+with:
+
+``` r
+# install.packages("pak")
+pak::pak("insightsengineering/formatters")
+```
+
+Packaged releases (both those on CRAN and those between official CRAN
+releases) can be found in the [releases
+list](https://github.com/insightsengineering/formatters/releases).
+
+To understand how to use this package, please refer to the [Introduction
+to
+`formatters`](https://insightsengineering.github.io/formatters/latest-tag/articles/formatters.html)
+article, which provides multiple examples of code implementation.
+
+## Format labels
+
+`formatters` ships with a large number of pre-defined formats
+appropriate for rendering values into ASCII strings. These existing
+formats are specified by their labels. We can see the list of these by
+calling the `list_valid_format_labels` function:
+
+``` r
+list_valid_format_labels()
+
+$`1d`
+ [1] "xx"                 "xx."                "xx.x"
+ [4] "xx.xx"              "xx.xxx"             "xx.xxxx"
+ [7] "xx%"                "xx.%"               "xx.x%"
+[10] "xx.xx%"             "xx.xxx%"            "(N=xx)"
+[13] ">999.9"             ">999.99"            "x.xxxx | (<0.0001)"
+
+$`2d`
+ [1] "xx / xx"            "xx. / xx."          "xx.x / xx.x"
+ [4] "xx.xx / xx.xx"      "xx.xxx / xx.xxx"    "xx (xx%)"
+ [7] "xx (xx.%)"          "xx (xx.x%)"         "xx (xx.xx%)"
+[10] "xx. (xx.%)"         "xx.x (xx.x%)"       "xx.xx (xx.xx%)"
+[13] "(xx, xx)"           "(xx., xx.)"         "(xx.x, xx.x)"
+[16] "(xx.xx, xx.xx)"     "(xx.xxx, xx.xxx)"   "(xx.xxxx, xx.xxxx)"
+[19] "xx - xx"            "xx.x - xx.x"        "xx.xx - xx.xx"
+[22] "xx (xx)"            "xx. (xx.)"          "xx.x (xx.x)"
+[25] "xx.xx (xx.xx)"      "xx (xx.)"           "xx (xx.x)"
+[28] "xx (xx.xx)"         "xx.x, xx.x"         "xx.x to xx.x"
+
+$`3d`
+[1] "xx.xx (xx.xx - xx.xx)"
+
+attr(,"info")
+[1] "xx does not modify the element, and xx. rounds a number to 0 digits"
+```
+
+Each of these labels describes how the incoming (possibly multi-element)
+raw value will be formatted. `xx` indicates that an element of the value
+will be printed as is, with no modification. `xx.` indicates that a
+numeric value element will be rounded to 0 decimal places, `xx.x`
+indicates rounding to 1 decimal place, etc.
+
+## Formatting values
+
+Values are formatted via calls to `format_value`, like so:
+
+``` r
+format_value(5.1235, format = "xx.xx")
+
+[1] "5.12"
+
+format_value(c(1.2355, 2.6789), "(xx.xx, xx.xx)")
+
+[1] "(1.24, 2.68)"
+```
+
+## Table Rendering Framework
+
+**Advanced Usage Only** These features are supported, and in fact are
+used in `rtables` and the experimental `rlistings`. That said, the API
+is currently very low-level and tailored to what `rtables` and
+`rlistings` need. How useful this is to other table frameworks may vary.
+
+The second major piece of functionality in `formatters` is the ability
+to render tables into ASCII (and thus directly to the terminal) based on
+a so-called `MatrixPrintForm` representation of the table.
+
+To hook up `rtables`-style ASCII display for your tables, it suffices to
+export a method for the exported `matrix_form` generic `formatters`
+provides. This method must return a `MatrixPrintForm` object
+representing your table.
+
+We can build a baby example method for `data.frames` to illustrate this
+process:
+
+``` r
+## pagdfrow supports a large number of pieces of information regarding
+## siblings and what information should be repeated after a pagination.
+## we ignore all that here and just give the absolutely crucial info:
+## nm (name), lab (label), rnum (absolute row position), pth ("path"),
+## extent (how many lines it takes up), rclass ("class of row")
+fake_pagdf_row <- function(i, rnms) {
+    nm <- rnms[i]
+    pagdfrow(nm = nm, lab = nm, rnum = i, pth = nm, extent = 1L,
+             rclass = "NA")
+}
+
+matrix_form.data.frame <- function(df) {
+    fmts <- lapply(df, function(x) if(is.null(obj_format(x))) "xx" else obj_format(x))
+
+    bodystrs <- mapply(function(x, fmt) {
+        sapply(x, format_value, format = fmt)
+    }, x = df, fmt = fmts)
+
+    rnms <- row.names(df)
+    if(is.null(rnms))
+        rnms <- as.character(seq_len(NROW(df)))
+
+    cnms <- names(df)
+
+    strings <- rbind(c("", cnms),
+                     cbind(rnms, bodystrs))
+
+    fnr <- nrow(strings)
+    fnc <- ncol(strings)
+
+    ## center alignment for column labels, left alignment for everything else
+    aligns <- rbind("center",
+                    matrix("left", nrow = NROW(df), ncol = fnc))
+    ## build up fake pagination df,
+    rowdf <- basic_pagdf(row.names(df))
+    MatrixPrintForm(strings = strings,
+                      aligns = aligns,
+                      spans = matrix(1, nrow = fnr, ncol = fnc),
+                      formats = NULL,
+                      row_info = rowdf,
+                      has_topleft = FALSE,
+                      nlines_header = 1,
+                      nrow_header = 1)
+}
+cat(toString(matrix_form.data.frame(mtcars)))
+
+                      mpg    cyl   disp    hp    drat    wt     qsec    vs   am   gear   carb
+—————————————————————————————————————————————————————————————————————————————————————————————
+Mazda RX4             21     6     160     110   3.9    2.62    16.46   0    1    4      4
+Mazda RX4 Wag         21     6     160     110   3.9    2.875   17.02   0    1    4      4
+Datsun 710            22.8   4     108     93    3.85   2.32    18.61   1    1    4      1
+Hornet 4 Drive        21.4   6     258     110   3.08   3.215   19.44   1    0    3      1
+Hornet Sportabout     18.7   8     360     175   3.15   3.44    17.02   0    0    3      2
+Valiant               18.1   6     225     105   2.76   3.46    20.22   1    0    3      1
+Duster 360            14.3   8     360     245   3.21   3.57    15.84   0    0    3      4
+Merc 240D             24.4   4     146.7   62    3.69   3.19    20      1    0    4      2
+Merc 230              22.8   4     140.8   95    3.92   3.15    22.9    1    0    4      2
+Merc 280              19.2   6     167.6   123   3.92   3.44    18.3    1    0    4      4
+Merc 280C             17.8   6     167.6   123   3.92   3.44    18.9    1    0    4      4
+Merc 450SE            16.4   8     275.8   180   3.07   4.07    17.4    0    0    3      3
+Merc 450SL            17.3   8     275.8   180   3.07   3.73    17.6    0    0    3      3
+Merc 450SLC           15.2   8     275.8   180   3.07   3.78    18      0    0    3      3
+Cadillac Fleetwood    10.4   8     472     205   2.93   5.25    17.98   0    0    3      4
+Lincoln Continental   10.4   8     460     215   3      5.424   17.82   0    0    3      4
+Chrysler Imperial     14.7   8     440     230   3.23   5.345   17.42   0    0    3      4
+Fiat 128              32.4   4     78.7    66    4.08   2.2     19.47   1    1    4      1
+Honda Civic           30.4   4     75.7    52    4.93   1.615   18.52   1    1    4      2
+Toyota Corolla        33.9   4     71.1    65    4.22   1.835   19.9    1    1    4      1
+Toyota Corona         21.5   4     120.1   97    3.7    2.465   20.01   1    0    3      1
+Dodge Challenger      15.5   8     318     150   2.76   3.52    16.87   0    0    3      2
+AMC Javelin           15.2   8     304     150   3.15   3.435   17.3    0    0    3      2
+Camaro Z28            13.3   8     350     245   3.73   3.84    15.41   0    0    3      4
+Pontiac Firebird      19.2   8     400     175   3.08   3.845   17.05   0    0    3      2
+Fiat X1-9             27.3   4     79      66    4.08   1.935   18.9    1    1    4      1
+Porsche 914-2         26     4     120.3   91    4.43   2.14    16.7    0    1    5      2
+Lotus Europa          30.4   4     95.1    113   3.77   1.513   16.9    1    1    5      2
+Ford Pantera L        15.8   8     351     264   4.22   3.17    14.5    0    1    5      4
+Ferrari Dino          19.7   6     145     175   3.62   2.77    15.5    0    1    5      6
+Maserati Bora         15     8     301     335   3.54   3.57    14.6    0    1    5      8
+Volvo 142E            21.4   4     121     109   4.11   2.78    18.6    1    1    4      2
+```
+
+# Package index
+
+## Formatters Overview
+
+- [`formatters`](https://insightsengineering.github.io/formatters/reference/formatters-package.md)
+  [`formatters-package`](https://insightsengineering.github.io/formatters/reference/formatters-package.md)
+  : formatters Package
+
+## Formatting Values
+
+Functions related to applying formats to values
+
+- [`format_value()`](https://insightsengineering.github.io/formatters/reference/format_value.md)
+  :
+
+  Converts a (possibly compound) value into a string using the `format`
+  information
+
+- [`valid_round_type`](https://insightsengineering.github.io/formatters/reference/round_fmt.md)
+  [`round_fmt()`](https://insightsengineering.github.io/formatters/reference/round_fmt.md)
+  : Round and prepare a value for display
+
+- [`is_valid_format()`](https://insightsengineering.github.io/formatters/reference/check_formats.md)
+  [`check_aligns()`](https://insightsengineering.github.io/formatters/reference/check_formats.md)
+  : Check if a format or alignment is supported
+
+- [`is.wholenumber()`](https://insightsengineering.github.io/formatters/reference/is.wholenumber.md)
+  : Check if a value is a whole number
+
+- [`list_valid_format_labels()`](https://insightsengineering.github.io/formatters/reference/list_formats.md)
+  [`list_valid_aligns()`](https://insightsengineering.github.io/formatters/reference/list_formats.md)
+  : List of currently supported formats and vertical alignments
+
+- [`sprintf_format()`](https://insightsengineering.github.io/formatters/reference/sprintf_format.md)
+  :
+
+  Specify text format via a `sprintf` format string
+
+- [`fmt_config()`](https://insightsengineering.github.io/formatters/reference/fmt_config.md)
+  : Format configuration
+
+## Generics Interface For Pagination
+
+Generics required for pagination machinery
+
+- [`make_row_df()`](https://insightsengineering.github.io/formatters/reference/make_row_df.md)
+  : Make row layout summary data frames for use during pagination
+- [`pagdfrow()`](https://insightsengineering.github.io/formatters/reference/pagdfrow.md)
+  : Create a row of a pagination data frame
+- [`nlines()`](https://insightsengineering.github.io/formatters/reference/nlines.md)
+  : Number of lines required to print a value
+- [`divider_height()`](https://insightsengineering.github.io/formatters/reference/divider_height.md)
+  : Divider height
+- [`main_title()`](https://insightsengineering.github.io/formatters/reference/title_footer.md)
+  [`` `main_title<-`() ``](https://insightsengineering.github.io/formatters/reference/title_footer.md)
+  [`subtitles()`](https://insightsengineering.github.io/formatters/reference/title_footer.md)
+  [`` `subtitles<-`() ``](https://insightsengineering.github.io/formatters/reference/title_footer.md)
+  [`page_titles()`](https://insightsengineering.github.io/formatters/reference/title_footer.md)
+  [`` `page_titles<-`() ``](https://insightsengineering.github.io/formatters/reference/title_footer.md)
+  [`main_footer()`](https://insightsengineering.github.io/formatters/reference/title_footer.md)
+  [`` `main_footer<-`() ``](https://insightsengineering.github.io/formatters/reference/title_footer.md)
+  [`prov_footer()`](https://insightsengineering.github.io/formatters/reference/title_footer.md)
+  [`` `prov_footer<-`() ``](https://insightsengineering.github.io/formatters/reference/title_footer.md)
+  [`all_footers()`](https://insightsengineering.github.io/formatters/reference/title_footer.md)
+  [`all_titles()`](https://insightsengineering.github.io/formatters/reference/title_footer.md)
+  : General title and footer accessors
+- [`num_rep_cols()`](https://insightsengineering.github.io/formatters/reference/num_rep_cols.md)
+  [`` `num_rep_cols<-`() ``](https://insightsengineering.github.io/formatters/reference/num_rep_cols.md)
+  : Number of repeated columns
+- [`do_forced_paginate()`](https://insightsengineering.github.io/formatters/reference/do_forced_paginate.md)
+  : Generic for performing "forced" pagination
+
+## Generics Interface for ASCII Rendering
+
+Generics required for rendering table-like object to ASCII
+
+- [`matrix_form()`](https://insightsengineering.github.io/formatters/reference/matrix_form.md)
+  :
+
+  Transform `rtable` to a list of matrices which can be used for
+  outputting
+
+- [`basic_matrix_form()`](https://insightsengineering.github.io/formatters/reference/test_matrix_form.md)
+  [`basic_listing_mf()`](https://insightsengineering.github.io/formatters/reference/test_matrix_form.md)
+  : Create spoof matrix form from a data frame
+
+## MatrixPrintForm
+
+Intermediate representation for ASCII table printing
+
+- [`MatrixPrintForm()`](https://insightsengineering.github.io/formatters/reference/MatrixPrintForm.md)
+  : Constructor for Matrix Print Form
+- [`MatrixPrintForm-class`](https://insightsengineering.github.io/formatters/reference/MatrixPrintForm_class.md)
+  : Class for Matrix Print Form
+
+## ASCII Rendering of MatrixPrintForm objects
+
+ASCII rendering-related functions which operate on MatrixPrintForm
+objects
+
+- [`toString()`](https://insightsengineering.github.io/formatters/reference/tostring.md)
+  : Transform objects into string representations
+
+- [`spans_to_viscell()`](https://insightsengineering.github.io/formatters/reference/spans_to_viscell.md)
+  : Transform a vector of spans (with duplication) into a visibility
+  vector
+
+- [`propose_column_widths()`](https://insightsengineering.github.io/formatters/reference/propose_column_widths.md)
+  :
+
+  Propose column widths based on the `MatrixPrintForm` of an object
+
+- [`decimal_align()`](https://insightsengineering.github.io/formatters/reference/decimal_align.md)
+  : Decimal alignment
+
+- [`list_valid_format_labels()`](https://insightsengineering.github.io/formatters/reference/list_formats.md)
+  [`list_valid_aligns()`](https://insightsengineering.github.io/formatters/reference/list_formats.md)
+  : List of currently supported formats and vertical alignments
+
+- [`padstr()`](https://insightsengineering.github.io/formatters/reference/padstr.md)
+  : Pad a string and align within string
+
+- [`spread_integer()`](https://insightsengineering.github.io/formatters/reference/spread_integer.md)
+  : Spread an integer to a given length
+
+- [`is.wholenumber()`](https://insightsengineering.github.io/formatters/reference/is.wholenumber.md)
+  : Check if a value is a whole number
+
+## Pagination
+
+- [`paginate_indices()`](https://insightsengineering.github.io/formatters/reference/paginate_indices.md)
+  [`paginate_to_mpfs()`](https://insightsengineering.github.io/formatters/reference/paginate_indices.md)
+  [`diagnose_pagination()`](https://insightsengineering.github.io/formatters/reference/paginate_indices.md)
+  : Paginate a table-like object for rendering
+- [`pagination_algo`](https://insightsengineering.github.io/formatters/reference/pagination_algo.md)
+  : Pagination
+- [`pag_indices_inner()`](https://insightsengineering.github.io/formatters/reference/pag_indices_inner.md)
+  : Find pagination indices from pagination info data frame
+- [`vert_pag_indices()`](https://insightsengineering.github.io/formatters/reference/vert_pag_indices.md)
+  : Find column indices for vertical pagination
+- [`pagdfrow()`](https://insightsengineering.github.io/formatters/reference/pagdfrow.md)
+  : Create a row of a pagination data frame
+- [`basic_pagdf()`](https://insightsengineering.github.io/formatters/reference/basic_pagdf.md)
+  : Basic/spoof pagination info data frame
+
+## Variable Labels
+
+Functions for assigning labels to variables in data
+
+- [`` `var_labels<-`() ``](https://insightsengineering.github.io/formatters/reference/var_labels-set.md)
+  :
+
+  Set label attributes of all variables in a `data.frame`
+
+- [`var_labels()`](https://insightsengineering.github.io/formatters/reference/var_labels.md)
+  :
+
+  Get label attributes of variables in a `data.frame`
+
+- [`var_labels_remove()`](https://insightsengineering.github.io/formatters/reference/var_labels_remove.md)
+  :
+
+  Remove variable labels of a `data.frame`
+
+- [`var_relabel()`](https://insightsengineering.github.io/formatters/reference/var_relabel.md)
+  :
+
+  Copy and change variable labels of a `data.frame`
+
+- [`with_label()`](https://insightsengineering.github.io/formatters/reference/with_label.md)
+  : Return an object with a label attribute
+
+## General Accessors
+
+- [`obj_name()`](https://insightsengineering.github.io/formatters/reference/lab_name.md)
+  [`` `obj_name<-`() ``](https://insightsengineering.github.io/formatters/reference/lab_name.md)
+  [`obj_label()`](https://insightsengineering.github.io/formatters/reference/lab_name.md)
+  [`` `obj_label<-`() ``](https://insightsengineering.github.io/formatters/reference/lab_name.md)
+  [`obj_format()`](https://insightsengineering.github.io/formatters/reference/lab_name.md)
+  [`` `obj_format<-`() ``](https://insightsengineering.github.io/formatters/reference/lab_name.md)
+  [`obj_na_str()`](https://insightsengineering.github.io/formatters/reference/lab_name.md)
+  [`` `obj_na_str<-`() ``](https://insightsengineering.github.io/formatters/reference/lab_name.md)
+  [`obj_align()`](https://insightsengineering.github.io/formatters/reference/lab_name.md)
+  [`` `obj_align<-`() ``](https://insightsengineering.github.io/formatters/reference/lab_name.md)
+  : Label, name, and format accessor generics
+- [`obj_round_type()`](https://insightsengineering.github.io/formatters/reference/obj_round_type.md)
+  [`` `obj_round_type<-`() ``](https://insightsengineering.github.io/formatters/reference/obj_round_type.md)
+  : Rounding Type
+
+## Data
+
+Data included with the package
+
+- [`ex_adsl`](https://insightsengineering.github.io/formatters/reference/cdisc_data.md)
+  [`ex_adae`](https://insightsengineering.github.io/formatters/reference/cdisc_data.md)
+  [`ex_adaette`](https://insightsengineering.github.io/formatters/reference/cdisc_data.md)
+  [`ex_adtte`](https://insightsengineering.github.io/formatters/reference/cdisc_data.md)
+  [`ex_adcm`](https://insightsengineering.github.io/formatters/reference/cdisc_data.md)
+  [`ex_adlb`](https://insightsengineering.github.io/formatters/reference/cdisc_data.md)
+  [`ex_admh`](https://insightsengineering.github.io/formatters/reference/cdisc_data.md)
+  [`ex_adqs`](https://insightsengineering.github.io/formatters/reference/cdisc_data.md)
+  [`ex_adrs`](https://insightsengineering.github.io/formatters/reference/cdisc_data.md)
+  [`ex_advs`](https://insightsengineering.github.io/formatters/reference/cdisc_data.md)
+  : Simulated CDISC-like data for examples
+- [`DM`](https://insightsengineering.github.io/formatters/reference/DM.md)
+  : DM data
+
+## Export
+
+Export into different object types
+
+- [`export_as_txt()`](https://insightsengineering.github.io/formatters/reference/export_as_txt.md)
+  : Export a table-like object to plain (ASCII) text with page breaks
+
+- [`export_as_rtf()`](https://insightsengineering.github.io/formatters/reference/export_as_rtf.md)
+  : Export as RTF
+
+- [`export_as_pdf()`](https://insightsengineering.github.io/formatters/reference/export_as_pdf.md)
+  : Export as PDF
+
+- [`mpf_to_rtf()`](https://insightsengineering.github.io/formatters/reference/mpf_to_rtf.md)
+  :
+
+  Transform `MatrixPrintForm` to RTF
+
+## Miscellany
+
+Other documented functions used by developers of this package
+
+- [`print(`*`<ANY>`*`)`](https://insightsengineering.github.io/formatters/reference/basemethods.md)
+  : Print
+
+- [`wrap_string()`](https://insightsengineering.github.io/formatters/reference/wrap_string.md)
+  [`wrap_txt()`](https://insightsengineering.github.io/formatters/reference/wrap_string.md)
+  : Wrap a string to a precise width
+
+- [`split_word_ttype()`](https://insightsengineering.github.io/formatters/reference/wrap_string_ttype.md)
+  [`wrap_string_ttype()`](https://insightsengineering.github.io/formatters/reference/wrap_string_ttype.md)
+  : wrap string given a Truetype font
+
+- [`` `%||%` ``](https://insightsengineering.github.io/formatters/reference/ifnotlen0.md)
+  :
+
+  `%||%` (if length-0) alternative operator
+
+- [`table_inset()`](https://insightsengineering.github.io/formatters/reference/table_inset.md)
+  [`` `table_inset<-`() ``](https://insightsengineering.github.io/formatters/reference/table_inset.md)
+  : Access or (recursively) set table inset
+
+- [`default_hsep()`](https://insightsengineering.github.io/formatters/reference/default_horizontal_sep.md)
+  [`set_default_hsep()`](https://insightsengineering.github.io/formatters/reference/default_horizontal_sep.md)
+  : Default horizontal separator
+
+- [`mf_strings()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`mf_spans()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`mf_aligns()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`mf_display()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`mf_formats()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`mf_rinfo()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`mf_cinfo()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`mf_has_topleft()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`mf_lgrouping()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`mf_rfnotes()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`mf_nlheader()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`mf_nrheader()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`mf_colgap()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`mf_fontspec()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`` `mf_fontspec<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`` `mf_strings<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`` `mf_spans<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`` `mf_aligns<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`` `mf_display<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`` `mf_formats<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`` `mf_rinfo<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`` `mf_cinfo<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`` `mf_lgrouping<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`` `mf_rfnotes<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`` `mf_nrheader<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`` `mf_colgap<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`mf_ncol()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`mf_nrow()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`` `mf_ncol<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`ncol(`*`<MatrixPrintForm>`*`)`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`mpf_has_rlabels()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`mf_has_rlabels()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  :
+
+  Getters and setters for aspects of `MatrixPrintForm` objects
+
+- [`page_lcpp()`](https://insightsengineering.github.io/formatters/reference/page_lcpp.md)
+  : Determine lines per page (LPP) and characters per page (CPP) based
+  on font and page type
+
+- [`page_types()`](https://insightsengineering.github.io/formatters/reference/page_types.md)
+  [`page_dim()`](https://insightsengineering.github.io/formatters/reference/page_types.md)
+  : Supported named page types
+
+- [`ref_df_row()`](https://insightsengineering.github.io/formatters/reference/ref_df_row.md)
+  : Create a row for a referential footnote information data frame
+
+- [`default_page_number()`](https://insightsengineering.github.io/formatters/reference/default_page_number.md)
+  [`set_default_page_number()`](https://insightsengineering.github.io/formatters/reference/default_page_number.md)
+  : Default page number format
+
+## Font support
+
+Functions related to font support for pagination
+
+- [`font_spec()`](https://insightsengineering.github.io/formatters/reference/font_spec.md)
+  : Font size specification
+- [`nchar_ttype()`](https://insightsengineering.github.io/formatters/reference/nchar_ttype.md)
+  : Calculate font-specific string width
+- [`open_font_dev()`](https://insightsengineering.github.io/formatters/reference/open_font_dev.md)
+  [`close_font_dev()`](https://insightsengineering.github.io/formatters/reference/open_font_dev.md)
+  [`debug_font_dev()`](https://insightsengineering.github.io/formatters/reference/open_font_dev.md)
+  [`undebug_font_dev()`](https://insightsengineering.github.io/formatters/reference/open_font_dev.md)
+  : Activate font state
+
+# Articles
+
+### All vignettes
+
+- [Introduction to the formatters
+  package](https://insightsengineering.github.io/formatters/articles/formatters.md):
