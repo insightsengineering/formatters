@@ -25,13 +25,13 @@ Source:
 [`DESCRIPTION`](https://github.com/insightsengineering/formatters/blob/main/DESCRIPTION)
 
 Becker G, Waddell A, Garolini D, de la Rua E, Zhu J (2025). *formatters:
-ASCII Formatting for Values and Tables*. R package version 0.5.11.9005,
+ASCII Formatting for Values and Tables*. R package version 0.5.12,
 <https://insightsengineering.github.io/formatters/>.
 
     @Manual{,
       title = {formatters: ASCII Formatting for Values and Tables},
       author = {Gabriel Becker and Adrian Waddell and Davide Garolini and Emily {de la Rua} and Joe Zhu},
       year = {2025},
-      note = {R package version 0.5.11.9005},
+      note = {R package version 0.5.12},
       url = {https://insightsengineering.github.io/formatters/},
     }

@@ -1,14 +1,7 @@
 # Changelog
 
-## formatters 0.5.11.9005
+## formatters 0.5.12
 
-- Optimized pagination sub-routines to avoid
-  [`matrix_form()`](https://insightsengineering.github.io/formatters/reference/matrix_form.md)
-  calls when not needed.
-- Optimized pagination sub-routine `.compress_mat()` to reduce computing
-  time for long listings.
-- Fixed bug in pagination of listings caused by newlines in column
-  values.
 - Added `"default"` format label which behaves like `"xx"` in
   `format_value` but indicates formatting behavior can be inherited from
   parent structures in upstream code.
