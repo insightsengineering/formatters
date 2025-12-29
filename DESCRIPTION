@@ -25,7 +25,7 @@ URL: https://insightsengineering.github.io/formatters/,
 BugReports: https://github.com/insightsengineering/formatters/issues
 Depends:
     methods,
-    R (>= 2.10)
+    R (>= 3.6.3)
 Imports:
     checkmate (>= 2.1.0),
     grid,
@@ -33,16 +33,13 @@ Imports:
     lifecycle (>= 0.2.0),
     stringi (>= 1.7.12)
 Suggests:
-    digest (>= 0.6.37),
-    dplyr (>= 1.0.9),
-    gt (>= 0.10.0),
-    huxtable (>= 2.0.0),
+    dplyr (>= 1.1.4),
+    gt (>= 0.10.1),
+    huxtable (>= 5.5.5),
     knitr (>= 1.50),
-    processx (>= 3.8.4),
-    r2rtf (>= 0.3.2),
+    r2rtf (>= 1.1.2),
     rmarkdown (>= 2.28),
-    sass (>= 0.4.9),
-    testthat (>= 3.2.1.1),
+    testthat (>= 3.3.0),
     withr (>= 2.0.0)
 VignetteBuilder:
     knitr,
