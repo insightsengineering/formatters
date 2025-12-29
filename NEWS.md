@@ -1,4 +1,4 @@
-## formatters 0.5.12.9000
+## formatters 0.5.12.9001
 
 ## formatters 0.5.12
 * Added `"default"` format label which behaves like `"xx"` in `format_value` but indicates formatting behavior can be inherited from parent structures in upstream code.
