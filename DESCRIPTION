@@ -5,7 +5,7 @@ Date: 2025-12-29
 Authors@R: c(
     person("Gabriel", "Becker", , "gabembecker@gmail.com", role = "aut",
            comment = "original creator of the package"),
-    person("Adrian", "Waddell", , "adrian.waddell@gene.com", role = "aut"),
+    person("Adrian", "Waddell", , "adrian.waddell@gmail.com", role = "aut"),
     person("Davide", "Garolini", , "davide.garolini@roche.com", role = "aut",
            comment = c(ORCID = "0000-0002-1445-1369")),
     person("Emily", "de la Rua", , "emilydelarua@gmail.com", role = "aut",
