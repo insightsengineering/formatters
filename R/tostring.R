@@ -1166,7 +1166,7 @@ wrap_string_ttype <- function(str,
 
   rawspls <- strsplit(str, "[[:space:]](?=[^[:space:]])", perl = TRUE)[[1]] # preserve all but one space
   nctt <- nchar_ttype(rawspls, fontspec, raw = TRUE)
-  pts <- which(cumsum(nctt) <= width)
+  pts <- which(cumsum(nctt) <= width -5)
   if (length(pts) == length(rawspls)) { ## no splitting needed
     return(str)
   } else if (length(pts) == 0) { ## no spaces, all one word, split it and keep going
