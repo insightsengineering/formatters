@@ -276,7 +276,7 @@ mpf_to_rtf <- function(mpf,
   }
 
   rtfpg <- r2rtf::rtf_body(rtfpg,
-    col_rel_width = colwidths,
+    col_rel_width = colwidths + 0.5,
     text_justification = c("l", rep("c", ncol(myfakedf) - 1)),
     text_format = "",
     text_font = 9,
