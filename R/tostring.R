@@ -271,7 +271,7 @@ set_default_hsep <- function(hsep_char) {
         nj <- spans[i, j]
         j <- if (nj > 1) {
           js <- seq(j, j + nj - 1)
-          cell_widths_mat[i, js] <- sum(cell_widths_mat[i, js]) + col_gap * (nj - 1)
+          cell_widths_mat[i, js] <- sum(cell_widths_mat[i, js]) + col_gap * (nj - 1) + 1
           j + nj
         } else {
           j + 1
