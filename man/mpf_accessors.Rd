@@ -16,6 +16,8 @@
 \alias{mf_colgap}
 \alias{mf_fontspec}
 \alias{mf_fontspec<-}
+\alias{mf_col_widths}
+\alias{mf_col_widths<-}
 \alias{mf_strings<-}
 \alias{mf_spans<-}
 \alias{mf_aligns<-}
@@ -64,6 +66,10 @@ mf_colgap(mf)
 mf_fontspec(mf)
 
 mf_fontspec(mf) <- value
+
+mf_col_widths(mf)
+
+mf_col_widths(mf) <- value
 
 mf_strings(mf) <- value
 
