@@ -21,30 +21,30 @@ nlines(x, colwidths = NULL, max_width = NULL, fontspec, col_gap = NULL)
 
 - x:
 
-  (`ANY`)  
+  (`ANY`)\
   the object to be printed.
 
 - colwidths:
 
-  (`numeric`)  
+  (`numeric`)\
   column widths (if necessary). Principally used in `rtables`' method.
 
 - max_width:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   width that strings should be wrapped to when determining how many
   lines they require.
 
 - fontspec:
 
-  (`font_spec`)  
+  (`font_spec`)\
   a font_spec object specifying the font information to use for
   calculating string widths and heights, as returned by
   [`font_spec()`](https://insightsengineering.github.io/formatters/reference/font_spec.md).
 
 - col_gap:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   width of gap between columns in number of spaces. Only used by methods
   which must calculate span widths after wrapping.
 

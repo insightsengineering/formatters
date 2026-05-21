@@ -18,7 +18,7 @@ do_forced_paginate(obj)
 
 - obj:
 
-  (`ANY`)  
+  (`ANY`)\
   object to be paginated. The `ANY` method simply returns a list of
   length one, containing `obj`.
 

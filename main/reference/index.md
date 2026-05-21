@@ -266,6 +266,8 @@ Other documented functions used by developers of this package
   [`mf_colgap()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
   [`mf_fontspec()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
   [`` `mf_fontspec<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`mf_col_widths()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`` `mf_col_widths<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
   [`` `mf_strings<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
   [`` `mf_spans<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
   [`` `mf_aligns<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)

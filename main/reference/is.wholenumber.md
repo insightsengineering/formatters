@@ -12,12 +12,12 @@ is.wholenumber(x, tol = .Machine$double.eps^0.5)
 
 - x:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   a numeric value.
 
 - tol:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   a precision tolerance.
 
 ## Value

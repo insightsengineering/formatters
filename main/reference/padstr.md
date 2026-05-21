@@ -12,25 +12,25 @@ padstr(x, n, just = list_valid_aligns(), fontspec = font_spec())
 
 - x:
 
-  (`string`)  
+  (`string`)\
   a string.
 
 - n:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   number of characters in the output string. If `n < nchar(x)`, an error
   is thrown.
 
 - just:
 
-  (`string`)  
+  (`string`)\
   text alignment justification to use. Defaults to `"center"`. Must be
   one of `"center"`, `"right"`, `"left"`, `"dec_right"`, `"dec_left"`,
   or `"decimal"`.
 
 - fontspec:
 
-  (`font_spec`)  
+  (`font_spec`)\
   a font_spec object specifying the font information to use for
   calculating string widths and heights, as returned by
   [`font_spec()`](https://insightsengineering.github.io/formatters/reference/font_spec.md).

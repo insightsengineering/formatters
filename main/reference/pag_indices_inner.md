@@ -27,19 +27,19 @@ pag_indices_inner(
 
 - pagdf:
 
-  (`data.frame`)  
+  (`data.frame`)\
   a pagination info `data.frame` as created by either `make_rows_df` or
   `make_cols_df`.
 
 - rlpp:
 
-  (`numeric`)  
+  (`numeric`)\
   maximum number of *row* lines per page (not including header
   materials), including (re)printed header and context rows.
 
 - lpp_or_cpp:
 
-  (`numeric`)  
+  (`numeric`)\
   total maximum number of *row* lines or content (column-wise
   characters) per page (including header materials and context rows).
   This is only for informative results with `verbose = TRUE`. It will
@@ -47,7 +47,7 @@ pag_indices_inner(
 
 - context_lpp_or_cpp:
 
-  (`numeric`)  
+  (`numeric`)\
   total number of context *row* lines or content (column-wise
   characters) per page (including header materials). Uses `NA` if not
   specified by the pagination machinery and is only for informative
@@ -55,50 +55,50 @@ pag_indices_inner(
 
 - min_siblings:
 
-  (`numeric`)  
+  (`numeric`)\
   minimum sibling rows which must appear on either side of pagination
   row for a mid-subtable split to be valid. Defaults to 2 for tables. It
   is automatically turned off (set to 0) for listings.
 
 - nosplitin:
 
-  (`character`)  
+  (`character`)\
   list of names of subtables where page breaks are not allowed,
   regardless of other considerations. Defaults to none.
 
 - verbose:
 
-  (`flag`)  
+  (`flag`)\
   whether additional informative messages about the search for
   pagination breaks should be shown. Defaults to `FALSE`.
 
 - row:
 
-  (`flag`)  
+  (`flag`)\
   whether pagination is happening in row space (`TRUE`, the default) or
   column space (`FALSE`).
 
 - have_col_fnotes:
 
-  (`flag`)  
+  (`flag`)\
   whether the table-like object being rendered has column-associated
   referential footnotes.
 
 - div_height:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   the height of the divider line when the associated object is rendered.
   Defaults to `1`.
 
 - col_gap:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   width of gap between columns, in same units as extent in `pagdf`
   (spaces under a particular font specification).
 
 - has_rowlabels:
 
-  (`logical(1)`)  
+  (`logical(1)`)\
   whether the object being paginated has row labels.
 
 ## Value

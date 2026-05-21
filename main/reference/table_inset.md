@@ -22,12 +22,12 @@ table_inset(obj) <- value
 
 - obj:
 
-  (`ANY`)  
+  (`ANY`)\
   object to get or (recursively if necessary) set table inset for.
 
 - value:
 
-  (`string`)  
+  (`string`)\
   string to use as new header/body separator.
 
 ## Value

@@ -22,12 +22,12 @@ nchar_ttype(
 
 - x:
 
-  (`character`)  
+  (`character`)\
   the string(s) to calculate width(s) for.
 
 - fontspec:
 
-  (`font_spec` or `NULL`)  
+  (`font_spec` or `NULL`)\
   if non-NULL, the font to use for the calculations (as returned by
   [`font_spec()`](https://insightsengineering.github.io/formatters/reference/font_spec.md)).
   Defaults to "Courier", which is a monospace font. If NULL, the width
@@ -35,13 +35,13 @@ nchar_ttype(
 
 - tol:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   the tolerance to use when determining if a multiple needs to be
   rounded up to the next integer. See Details.
 
 - raw:
 
-  (`logical(1)`)  
+  (`logical(1)`)\
   whether unrounded widths should be returned. Defaults to `FALSE`.
 
 ## Details

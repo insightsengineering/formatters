@@ -17,23 +17,23 @@ font_lcpi(
 
 - font_family:
 
-  (`string`)  
+  (`string`)\
   name of a font family. An error will be thrown if the family named is
   not monospaced. Defaults to `"Courier"`.
 
 - font_size:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   font size. Defaults to `12`.
 
 - lineheight:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   line height. Defaults to `1`.
 
 - fontspec:
 
-  (`font_spec`)  
+  (`font_spec`)\
   a font_spec object specifying the font information to use for
   calculating string widths and heights, as returned by
   [`font_spec()`](https://insightsengineering.github.io/formatters/reference/font_spec.md).

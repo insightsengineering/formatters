@@ -14,12 +14,12 @@ var_labels(x) <- value
 
 - x:
 
-  (`data.frame`)  
+  (`data.frame`)\
   a data frame object.
 
 - value:
 
-  (`character`)  
+  (`character`)\
   a vector of new variable labels. If any values are `NA`, the label for
   that variable is removed.
 

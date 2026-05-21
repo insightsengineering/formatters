@@ -12,12 +12,12 @@ a %||% b
 
 - a:
 
-  (`ANY`)  
+  (`ANY`)\
   element to select *only* if it is not of length 0.
 
 - b:
 
-  (`ANY`)  
+  (`ANY`)\
   element to select if `a` has length 0.
 
 ## Value

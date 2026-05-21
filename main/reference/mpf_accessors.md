@@ -38,6 +38,10 @@ mf_fontspec(mf)
 
 mf_fontspec(mf) <- value
 
+mf_col_widths(mf)
+
+mf_col_widths(mf) <- value
+
 mf_strings(mf) <- value
 
 mf_spans(mf) <- value
@@ -78,12 +82,12 @@ mf_has_rlabels(mf)
 
 - mf:
 
-  (`MatrixPrintForm`)  
+  (`MatrixPrintForm`)\
   a `MatrixPrintForm` object.
 
 - value:
 
-  (`ANY`)  
+  (`ANY`)\
   the new value for the component in question.
 
 - x:

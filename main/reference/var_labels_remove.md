@@ -12,7 +12,7 @@ var_labels_remove(x)
 
 - x:
 
-  (`data.frame`)  
+  (`data.frame`)\
   a `data.frame` object.
 
 ## Value

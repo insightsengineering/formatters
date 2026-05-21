@@ -21,43 +21,43 @@ ref_df_row(
 
 - row_path:
 
-  (`character`)  
+  (`character`)\
   row path (or `NA_character_` for none).
 
 - col_path:
 
-  (`character`)  
+  (`character`)\
   column path (or `NA_character_` for none).
 
 - row:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   integer position of the row.
 
 - col:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   integer position of the column.
 
 - symbol:
 
-  (`string`)  
+  (`string`)\
   symbol for the reference. `NA_character_` to use the `ref_index`
   automatically.
 
 - ref_index:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   index of the footnote, used for ordering even when symbol is not `NA`.
 
 - msg:
 
-  (`string`)  
+  (`string`)\
   the string message, not including the symbol portion (`{symbol} - `)
 
 - max_width:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   width that strings should be wrapped to when determining how many
   lines they require.
 

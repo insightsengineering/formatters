@@ -21,25 +21,25 @@ wrap_txt(str, width, collapse = NULL, fontspec = font_spec())
 
 - str:
 
-  (`string`, `character`, or `list`)  
+  (`string`, `character`, or `list`)\
   string to be wrapped. If it is a `vector` or a `list`, it will be
   looped as a `list` and returned with `unlist(use.names = FALSE)`.
 
 - width:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   width, in characters, that the text should be wrapped to.
 
 - collapse:
 
-  (`string` or `NULL`)  
+  (`string` or `NULL`)\
   collapse character used to separate segments of words that have been
   split and should be pasted together. This is usually done internally
   with `"\n"` to update the wrapping along with other internal values.
 
 - fontspec:
 
-  (`font_spec`)  
+  (`font_spec`)\
   a font_spec object specifying the font information to use for
   calculating string widths and heights, as returned by
   [`font_spec()`](https://insightsengineering.github.io/formatters/reference/font_spec.md).

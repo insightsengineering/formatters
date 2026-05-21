@@ -16,7 +16,7 @@ set_default_page_number(page_number)
 
 - page_number:
 
-  (`string`)  
+  (`string`)\
   single string value to set the page number format. It should be
   formatted similarly to the following format: `"page {i}/{n}"`. `{i}`
   will be replaced with the current page number, and `{n}` will be

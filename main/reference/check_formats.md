@@ -14,18 +14,18 @@ check_aligns(algn)
 
 - x:
 
-  (`string` or `function`)  
+  (`string` or `function`)\
   format string or an object returned by
   [`sprintf_format()`](https://insightsengineering.github.io/formatters/reference/sprintf_format.md)
 
 - stop_otherwise:
 
-  (`flag`)  
+  (`flag`)\
   whether an error should be thrown if `x` is not a valid format.
 
 - algn:
 
-  (`character`)  
+  (`character`)\
   a character vector that indicates the requested cell alignments.
 
 ## Value

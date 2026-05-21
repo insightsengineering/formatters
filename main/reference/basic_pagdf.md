@@ -22,46 +22,46 @@ basic_pagdf(
 
 - rnames:
 
-  (`character`)  
+  (`character`)\
   vector of row names.
 
 - labs:
 
-  (`character`)  
+  (`character`)\
   vector of row labels. Defaults to `rnames`.
 
 - rnums:
 
-  (`integer`)  
+  (`integer`)\
   vector of row numbers. Defaults to `seq_along(rnames)`.
 
 - extents:
 
-  (`integer`)  
+  (`integer`)\
   number of lines each row requires to print. Defaults to 1 for all
   rows.
 
 - rclass:
 
-  (`character`)  
+  (`character`)\
   class(es) for the rows. Defaults to `"DataRow"`.
 
 - parent_path:
 
-  (`string`)  
+  (`string`)\
   parent path that all rows should be "children of". Defaults to `NULL`,
   as usually this is not needed. It may be necessary to use `"root"`,
   for some specific scenarios.
 
 - paths:
 
-  (`list`)  
+  (`list`)\
   list of paths to the rows. Defaults to
   `lapply(rnames, function(x) c(parent_path, x))`.
 
 - fontspec:
 
-  (`font_spec`)  
+  (`font_spec`)\
   a font_spec object specifying the font information to use for
   calculating string widths and heights, as returned by
   [`font_spec()`](https://insightsengineering.github.io/formatters/reference/font_spec.md).

@@ -12,7 +12,7 @@ font_spec(font_family = "Courier", font_size = 8, lineheight = 1)
 
 - font_family:
 
-  (`character(1)`)  
+  (`character(1)`)\
   font family to use during string width and lines-per-page
   calculations. You can specify "Times New Roman" as "Times" or "serif",
   regardless of OS. Beyond that, see `family` entry in
@@ -20,13 +20,13 @@ font_spec(font_family = "Courier", font_size = 8, lineheight = 1)
 
 - font_size:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   font size to use during string width calculations and lines-per-page
   calculations.
 
 - lineheight:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   line height to use during lines-per-page calculations.
 
 ## Details

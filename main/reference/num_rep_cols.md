@@ -28,12 +28,12 @@ num_rep_cols(obj) <- value
 
 - obj:
 
-  (`ANY`)  
+  (`ANY`)\
   a table-like object.
 
 - value:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   the new number of columns to repeat.
 
 ## Value

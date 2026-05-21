@@ -14,12 +14,12 @@ var_labels(x, fill = FALSE)
 
 - x:
 
-  (`data.frame`)  
+  (`data.frame`)\
   a data frame object.
 
 - fill:
 
-  (`flag`)  
+  (`flag`)\
   whether variable names should be returned for variables for which the
   `label` attribute does not exist. If `FALSE`, these variables are
   filled with `NA`s instead.

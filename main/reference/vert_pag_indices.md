@@ -21,56 +21,56 @@ vert_pag_indices(
 
 - mf:
 
-  (`MatrixPrintForm`)  
+  (`MatrixPrintForm`)\
   object to be paginated.
 
 - cpp:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   number of characters per page (width).
 
 - colwidths:
 
-  (`numeric`)  
+  (`numeric`)\
   vector of column widths (in characters) for use in vertical
   pagination.
 
 - verbose:
 
-  (`flag`)  
+  (`flag`)\
   whether additional informative messages about the search for
   pagination breaks should be shown. Defaults to `FALSE`.
 
 - rep_cols:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   number of *columns* (not including row labels) to be repeated on every
   page. Defaults to 0.
 
 - fontspec:
 
-  (`font_spec`)  
+  (`font_spec`)\
   a font_spec object specifying the font information to use for
   calculating string widths and heights, as returned by
   [`font_spec()`](https://insightsengineering.github.io/formatters/reference/font_spec.md).
 
 - nosplitin:
 
-  (`character`)  
+  (`character`)\
   list of names of subtables where page breaks are not allowed,
   regardless of other considerations. Defaults to none.
 
 - round_type:
 
-  (`string`)  
-  .  
+  (`string`)\
+  .\
   The type of rounding to perform. Allowed values: (`"iec"`, `"iec_mod"`
-  or `"sas"`)  
+  or `"sas"`)\
   iec, the default, and iec_mod performs rounding compliant with IEC
   60559 (see notes in
   [`round_fmt()`](https://insightsengineering.github.io/formatters/reference/round_fmt.md)),
   while sas performs nearest-value rounding consistent with rounding
-  within SAS.  
+  within SAS.\
   In addition, the rounding of a negative number that rounds to zero
   will be presented as 0 (with the appropriate number of trailing zeros)
   for both `sas` and `iec_mod`, while for `iec`, it will be presented as

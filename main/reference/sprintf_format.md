@@ -12,7 +12,7 @@ sprintf_format(format)
 
 - format:
 
-  (`string`)  
+  (`string`)\
   a format string passed to
   [`sprintf()`](https://rdrr.io/r/base/sprintf.html).
 

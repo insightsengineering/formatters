@@ -47,79 +47,79 @@ export_as_txt(
 
 - x:
 
-  (`ANY`)  
+  (`ANY`)\
   a table-like object to export. Must have an applicable `matrix_form`
   method.
 
 - file:
 
-  (`string` or `NULL`)  
+  (`string` or `NULL`)\
   if non-`NULL`, the path to write a text file to containing `x`
   rendered as ASCII text.
 
 - page_type:
 
-  (`string`)  
+  (`string`)\
   name of a page type. See
   [`page_types`](https://insightsengineering.github.io/formatters/reference/page_types.md).
   Ignored when `pg_width` and `pg_height` are set directly.
 
 - landscape:
 
-  (`flag`)  
+  (`flag`)\
   whether the dimensions of `page_type` should be inverted for landscape
   orientation. Defaults to `FALSE`, ignored when `pg_width` and
   `pg_height` are set directly.
 
 - pg_width:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   page width in inches.
 
 - pg_height:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   page height in inches.
 
 - font_family:
 
-  (`string`)  
+  (`string`)\
   name of a font family. An error will be thrown if the family named is
   not monospaced. Defaults to `"Courier"`.
 
 - font_size:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   font size. Defaults to `12`.
 
 - lineheight:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   line height. Defaults to `1`.
 
 - margins:
 
-  (`numeric(4)`)  
+  (`numeric(4)`)\
   named numeric vector containing `"bottom"`, `"left"`, `"top"`, and
   `"right"` margins in inches. Defaults to `.5` inches for both vertical
   margins and `.75` for both horizontal margins.
 
 - paginate:
 
-  (`flag`)  
+  (`flag`)\
   whether pagination should be performed. Defaults to `TRUE` if page
   size is specified (including the default).
 
 - cpp:
 
-  (`numeric(1)` or `NULL`)  
+  (`numeric(1)` or `NULL`)\
   width (in characters) per page. If `NA` (the default), this is
   calculated automatically based on the specified page size). `NULL`
   indicates no horizontal pagination should occur.
 
 - lpp:
 
-  (`numeric(1)` or `NULL`)  
+  (`numeric(1)` or `NULL`)\
   lines per page. If `NA` (the default), this is calculated
   automatically based on the specified page size). `NULL` indicates no
   vertical pagination should occur.
@@ -131,7 +131,7 @@ export_as_txt(
 
 - hsep:
 
-  (`string`)  
+  (`string`)\
   character to repeat to create header/body separator line. If `NULL`,
   the object value will be used. If `" "`, an empty separator will be
   printed. See
@@ -140,19 +140,19 @@ export_as_txt(
 
 - indent_size:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   indent size, in characters. Ignored when `x` is already a
   `MatrixPrintForm` object in favor of information there.
 
 - tf_wrap:
 
-  (`flag`)  
+  (`flag`)\
   whether the text for title, subtitles, and footnotes should be
   wrapped.
 
 - max_width:
 
-  (`integer(1)`, `string` or `NULL`)  
+  (`integer(1)`, `string` or `NULL`)\
   width that title and footer (including footnotes) materials should be
   word-wrapped to. If `NULL`, it is set to the current print width of
   the session (`getOption("width")`). If set to `"auto"`, the width of
@@ -161,71 +161,71 @@ export_as_txt(
 
 - colwidths:
 
-  (`numeric`)  
+  (`numeric`)\
   vector of column widths (in characters) for use in vertical
   pagination.
 
 - min_siblings:
 
-  (`numeric`)  
+  (`numeric`)\
   minimum sibling rows which must appear on either side of pagination
   row for a mid-subtable split to be valid. Defaults to 2 for tables. It
   is automatically turned off (set to 0) for listings.
 
 - nosplitin:
 
-  (`character`)  
+  (`character`)\
   list of names of subtables where page breaks are not allowed,
   regardless of other considerations. Defaults to none.
 
 - rep_cols:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   number of *columns* (not including row labels) to be repeated on every
   page. Defaults to 0.
 
 - verbose:
 
-  (`flag`)  
+  (`flag`)\
   whether additional informative messages about the search for
   pagination breaks should be shown. Defaults to `FALSE`.
 
 - page_break:
 
-  (`string`)  
+  (`string`)\
   page break symbol (defaults to `"\\n\\s"`).
 
 - page_num:
 
-  (`string`)  
+  (`string`)\
   placeholder string for page numbers. See
   [default_page_number](https://insightsengineering.github.io/formatters/reference/default_page_number.md)
   for more information. Defaults to `NULL`.
 
 - fontspec:
 
-  (`font_spec`)  
+  (`font_spec`)\
   a font_spec object specifying the font information to use for
   calculating string widths and heights, as returned by
   [`font_spec()`](https://insightsengineering.github.io/formatters/reference/font_spec.md).
 
 - col_gap:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   The number of spaces to be placed between columns in the rendered
   table (and assumed for horizontal pagination).
 
 - round_type:
 
-  (`string`)  
-  .  
+  (`string`)\
+  .\
   The type of rounding to perform. Allowed values: (`"iec"`, `"iec_mod"`
-  or `"sas"`)  
+  or `"sas"`)\
   iec, the default, and iec_mod performs rounding compliant with IEC
   60559 (see notes in
   [`round_fmt()`](https://insightsengineering.github.io/formatters/reference/round_fmt.md)),
   while sas performs nearest-value rounding consistent with rounding
-  within SAS.  
+  within SAS.\
   In addition, the rounding of a negative number that rounds to zero
   will be presented as 0 (with the appropriate number of trailing zeros)
   for both `sas` and `iec_mod`, while for `iec`, it will be presented as

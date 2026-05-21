@@ -22,7 +22,7 @@ set_default_hsep(hsep_char)
 
 - hsep_char:
 
-  (`string`)  
+  (`string`)\
   character that will be set in the R environment options as the default
   horizontal separator. Must be a single character. Use
   `getOption("formatters_default_hsep")` to get its current value

@@ -12,7 +12,7 @@ var_relabel(x, ...)
 
 - x:
 
-  (`data.frame`)  
+  (`data.frame`)\
   a data frame object.
 
 - ...:

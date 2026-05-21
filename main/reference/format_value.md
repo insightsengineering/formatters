@@ -19,37 +19,37 @@ format_value(
 
 - x:
 
-  (`ANY`)  
+  (`ANY`)\
   the value to be formatted.
 
 - format:
 
-  (`string` or `function`)  
+  (`string` or `function`)\
   the format label (string) or formatter function to apply to `x`.
 
 - output:
 
-  (`string`)  
+  (`string`)\
   output type.
 
 - na_str:
 
-  (`character`)  
+  (`character`)\
   character vector to display when the values of `x` are missing. If
   only one string is provided, it is applied for all missing values.
   Defaults to `"NA"`.
 
 - round_type:
 
-  (`string`)  
-  .  
+  (`string`)\
+  .\
   The type of rounding to perform. Allowed values: (`"iec"`, `"iec_mod"`
-  or `"sas"`)  
+  or `"sas"`)\
   iec, the default, and iec_mod performs rounding compliant with IEC
   60559 (see notes in
   [`round_fmt()`](https://insightsengineering.github.io/formatters/reference/round_fmt.md)),
   while sas performs nearest-value rounding consistent with rounding
-  within SAS.  
+  within SAS.\
   In addition, the rounding of a negative number that rounds to zero
   will be presented as 0 (with the appropriate number of trailing zeros)
   for both `sas` and `iec_mod`, while for `iec`, it will be presented as

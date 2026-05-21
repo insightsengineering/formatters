@@ -67,7 +67,7 @@ all_titles(obj)
 
 - obj:
 
-  (`ANY`)  
+  (`ANY`)\
   object to extract information from.
 
 - value:

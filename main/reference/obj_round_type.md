@@ -27,7 +27,7 @@ obj_round_type(obj) <- value
 
 - obj:
 
-  (`ANY`)  
+  (`ANY`)\
   a table-like object.
 
 - value:

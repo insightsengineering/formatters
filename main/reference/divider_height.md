@@ -15,7 +15,7 @@ divider_height(obj)
 
 - obj:
 
-  (`ANY`)  
+  (`ANY`)\
   object.
 
 ## Value

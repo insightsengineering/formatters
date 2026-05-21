@@ -33,54 +33,54 @@ matrix_form(
 
 - obj:
 
-  (`ANY`)  
+  (`ANY`)\
   object to be transformed into a ready-to-render form (a
   [`MatrixPrintForm`](https://insightsengineering.github.io/formatters/reference/MatrixPrintForm.md)
   object).
 
 - indent_rownames:
 
-  (`flag`)  
+  (`flag`)\
   if `TRUE`, the row names column in the `strings` matrix of `obj` will
   have indented row names (strings pre-fixed).
 
 - expand_newlines:
 
-  (`flag`)  
+  (`flag`)\
   whether the generated matrix form should expand rows whose values
   contain newlines into multiple 'physical' rows (as they will appear
   when rendered into ASCII). Defaults to `TRUE`.
 
 - indent_size:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   number of spaces to be used per level of indent (if supported by the
   relevant method). Defaults to 2.
 
 - fontspec:
 
-  (`font_spec`)  
+  (`font_spec`)\
   a font_spec object specifying the font information to use for
   calculating string widths and heights, as returned by
   [`font_spec()`](https://insightsengineering.github.io/formatters/reference/font_spec.md).
 
 - col_gap:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   the gap to be assumed between columns, in number of spaces with font
   specified by `fontspec`.
 
 - round_type:
 
-  (`string`)  
-  .  
+  (`string`)\
+  .\
   The type of rounding to perform. Allowed values: (`"iec"`, `"iec_mod"`
-  or `"sas"`)  
+  or `"sas"`)\
   iec, the default, and iec_mod performs rounding compliant with IEC
   60559 (see notes in
   [`round_fmt()`](https://insightsengineering.github.io/formatters/reference/round_fmt.md)),
   while sas performs nearest-value rounding consistent with rounding
-  within SAS.  
+  within SAS.\
   In addition, the rounding of a negative number that rounds to zero
   will be presented as 0 (with the appropriate number of trailing zeros)
   for both `sas` and `iec_mod`, while for `iec`, it will be presented as

@@ -34,6 +34,7 @@ formats are specified by their labels. We can see the list of these by
 calling the `list_valid_format_labels` function:
 
 ``` r
+
 list_valid_format_labels()
 ```
 
@@ -79,12 +80,14 @@ indicates rounding to 1 decimal place, etc.
 Values are formatted via calls to `format_value`, like so:
 
 ``` r
+
 format_value(5.1235, format = "xx.xx")
 ```
 
     [1] "5.12"
 
 ``` r
+
 format_value(c(1.2355, 2.6789), "(xx.xx, xx.xx)")
 ```
 
@@ -110,6 +113,7 @@ We can build a baby example method for `data.frames` to illustrate this
 process:
 
 ``` r
+
 ## pagdfrow supports a large number of pieces of information regarding
 ## siblings and what information should be repeated after a pagination.
 ## we ignore all that here and just give the absolutely crucial info:

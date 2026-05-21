@@ -50,90 +50,90 @@ make_row_df(
 
 - tt:
 
-  (`ANY`)  
+  (`ANY`)\
   object representing the table-like object to be summarized.
 
 - colwidths:
 
-  (`numeric`)  
+  (`numeric`)\
   internal detail, do not set manually.
 
 - visible_only:
 
-  (`flag`)  
+  (`flag`)\
   should only visible aspects of the table structure be reflected in
   this summary. Defaults to `TRUE`. May not be supported by all methods.
 
 - rownum:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   internal detail, do not set manually.
 
 - indent:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   internal detail, do not set manually.
 
 - path:
 
-  (`character`)  
+  (`character`)\
   path to the (sub)table represented by `tt`. Defaults to
   [`character()`](https://rdrr.io/r/base/character.html).
 
 - incontent:
 
-  (`flag`)  
+  (`flag`)\
   internal detail, do not set manually.
 
 - repr_ext:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   internal detail, do not set manually.
 
 - repr_inds:
 
-  (`integer`)  
+  (`integer`)\
   internal detail, do not set manually.
 
 - sibpos:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   internal detail, do not set manually.
 
 - nsibs:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   internal detail, do not set manually.
 
 - max_width:
 
-  (`numeric(1)` or `NULL`)  
+  (`numeric(1)` or `NULL`)\
   maximum width for title/footer materials.
 
 - fontspec:
 
-  (`font_spec`)  
+  (`font_spec`)\
   a font_spec object specifying the font information to use for
   calculating string widths and heights, as returned by
   [`font_spec()`](https://insightsengineering.github.io/formatters/reference/font_spec.md).
 
 - col_gap:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   the gap to be assumed between columns, in number of spaces with font
   specified by `fontspec`.
 
 - round_type:
 
-  (`string`)  
-  .  
+  (`string`)\
+  .\
   The type of rounding to perform. Allowed values: (`"iec"`, `"iec_mod"`
-  or `"sas"`)  
+  or `"sas"`)\
   iec, the default, and iec_mod performs rounding compliant with IEC
   60559 (see notes in
   [`round_fmt()`](https://insightsengineering.github.io/formatters/reference/round_fmt.md)),
   while sas performs nearest-value rounding consistent with rounding
-  within SAS.  
+  within SAS.\
   In addition, the rounding of a negative number that rounds to zero
   will be presented as 0 (with the appropriate number of trailing zeros)
   for both `sas` and `iec_mod`, while for `iec`, it will be presented as

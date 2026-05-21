@@ -54,6 +54,7 @@ length 1, 2 or – occasionally – 3.
 released version with:
 
 ``` r
+
 install.packages("formatters")
 ```
 
@@ -61,6 +62,7 @@ or you can install the latest development version directly from GitHub
 with:
 
 ``` r
+
 # install.packages("pak")
 pak::pak("insightsengineering/formatters")
 ```
@@ -500,6 +502,8 @@ Other documented functions used by developers of this package
   [`mf_colgap()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
   [`mf_fontspec()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
   [`` `mf_fontspec<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`mf_col_widths()`](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
+  [`` `mf_col_widths<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
   [`` `mf_strings<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
   [`` `mf_spans<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)
   [`` `mf_aligns<-`() ``](https://insightsengineering.github.io/formatters/reference/mpf_accessors.md)

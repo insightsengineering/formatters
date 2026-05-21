@@ -12,7 +12,7 @@ spans_to_viscell(spans)
 
 - spans:
 
-  (`numeric`)  
+  (`numeric`)\
   a vector of spans, with each span value repeated for the cells it
   covers.
 

@@ -12,17 +12,17 @@ fmt_config(format = NULL, na_str = "NA", align = "center")
 
 - format:
 
-  (`string` or `function`)  
+  (`string` or `function`)\
   a format label (string) or formatter function.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string that should be displayed in place of missing values.
 
 - align:
 
-  (`string`)  
+  (`string`)\
   alignment values should be rendered with.
 
 ## Value

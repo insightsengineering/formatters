@@ -42,7 +42,7 @@ MatrixPrintForm(
 
 - strings:
 
-  (`character matrix`)  
+  (`character matrix`)\
   matrix of formatted, ready-to-display strings organized as they will
   be positioned when rendered. Elements that span more than one column
   must be followed by the correct number of placeholders (typically
@@ -50,13 +50,13 @@ MatrixPrintForm(
 
 - spans:
 
-  (`numeric matrix`)  
+  (`numeric matrix`)\
   matrix of same dimension as `strings` giving the spanning information
   for each element. Must be repeated to match placeholders in `strings`.
 
 - aligns:
 
-  (`character matrix`)  
+  (`character matrix`)\
   matrix of same dimension as `strings` giving the text alignment
   information for each element. Must be repeated to match placeholders
   in `strings`. Must be a supported text alignment. See
@@ -65,149 +65,149 @@ MatrixPrintForm(
 
 - formats:
 
-  (`matrix`)  
+  (`matrix`)\
   matrix of same dimension as `strings` giving the text format
   information for each element. Must be repeated to match placeholders
   in `strings`.
 
 - row_info:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data frame with row-information necessary for pagination (see
   [`basic_pagdf()`](https://insightsengineering.github.io/formatters/reference/basic_pagdf.md)
   for more details).
 
 - colpaths:
 
-  (`list` or `NULL`)  
+  (`list` or `NULL`)\
   `NULL`, or a list of paths to each leaf column, for use during
   horizontal pagination.
 
 - line_grouping:
 
-  (`integer`)  
+  (`integer`)\
   sequence of integers indicating how print lines correspond to semantic
   rows in the object. Typically this should not be set manually unless
   `expand_newlines` is set to `FALSE`.
 
 - ref_fnotes:
 
-  (`list`)  
+  (`list`)\
   referential footnote information, if applicable.
 
 - nlines_header:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   number of lines taken up by the values of the header (i.e. not
   including the divider).
 
 - nrow_header:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   number of *rows* corresponding to the header.
 
 - has_topleft:
 
-  (`flag`)  
+  (`flag`)\
   does the corresponding table have "top left information" which should
   be treated differently when expanding newlines. Ignored if
   `expand_newlines` is `FALSE`.
 
 - has_rowlabs:
 
-  (`flag`)  
+  (`flag`)\
   do the matrices (`strings`, `spans`, `aligns`) each contain a column
   that corresponds with row labels (rather than with table cell values).
   Defaults to `TRUE`.
 
 - expand_newlines:
 
-  (`flag`)  
+  (`flag`)\
   whether the matrix form generated should expand rows whose values
   contain newlines into multiple 'physical' rows (as they will appear
   when rendered into ASCII). Defaults to `TRUE`.
 
 - main_title:
 
-  (`string`)  
+  (`string`)\
   main title as a string.
 
 - subtitles:
 
-  (`character`)  
+  (`character`)\
   subtitles, as a character vector.
 
 - page_titles:
 
-  (`character`)  
+  (`character`)\
   page-specific titles, as a character vector.
 
 - listing_keycols:
 
-  (`character`)  
+  (`character`)\
   . if matrix form of a listing, this contains the key columns as a
   character vector.
 
 - main_footer:
 
-  (`character`)  
+  (`character`)\
   main footer, as a character vector.
 
 - prov_footer:
 
-  (`character`)  
+  (`character`)\
   provenance footer information, as a character vector.
 
 - header_section_div:
 
-  (`string`)  
+  (`string`)\
   divider to be used between header and body sections.
 
 - horizontal_sep:
 
-  (`string`)  
+  (`string`)\
   horizontal separator to be used for printing divisors between header
   and table body and between different footers.
 
 - col_gap:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   space (in characters) between columns.
 
 - table_inset:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   table inset. See
   [`table_inset()`](https://insightsengineering.github.io/formatters/reference/table_inset.md).
 
 - colwidths:
 
-  (`numeric` or `NULL`)  
+  (`numeric` or `NULL`)\
   column rendering widths. If non-`NULL`, must have length equal to
   `ncol(strings)`.
 
 - indent_size:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   number of spaces to be used per level of indent (if supported by the
   relevant method). Defaults to 2.
 
 - fontspec:
 
-  (`font_spec`)  
+  (`font_spec`)\
   a font_spec object specifying the font information to use for
   calculating string widths and heights, as returned by
   [`font_spec()`](https://insightsengineering.github.io/formatters/reference/font_spec.md).
 
 - rep_cols:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   number of columns to be repeated as context during horizontal
   pagination.
 
 - round_type:
 
-  (`string`)  
+  (`string`)\
   The type of rounding to perform. Allowed values: (`"iec"`, `"iec_mod"`
   or `"sas"`) See
   [`round_fmt()`](https://insightsengineering.github.io/formatters/reference/round_fmt.md)

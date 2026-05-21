@@ -54,6 +54,7 @@ length 1, 2 or – occasionally – 3.
 released version with:
 
 ``` r
+
 install.packages("formatters")
 ```
 
@@ -61,6 +62,7 @@ or you can install the latest development version directly from GitHub
 with:
 
 ``` r
+
 # install.packages("pak")
 pak::pak("insightsengineering/formatters")
 ```

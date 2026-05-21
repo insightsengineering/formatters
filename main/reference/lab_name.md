@@ -73,7 +73,7 @@ obj_align(obj) <- value
 
 - obj:
 
-  (`ANY`)  
+  (`ANY`)\
   the object.
 
 - value:

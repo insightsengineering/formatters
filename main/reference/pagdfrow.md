@@ -33,7 +33,7 @@ pagdfrow(
 
 - row:
 
-  (`ANY`)  
+  (`ANY`)\
   object representing the row, which is used for default values of `nm`,
   `lab`, `extent`, and `rclass` if provided. Must have methods for
   `obj_name`, `obj_label`, and `nlines`, to retrieve default values of
@@ -41,100 +41,100 @@ pagdfrow(
 
 - nm:
 
-  (`string`)  
+  (`string`)\
   name.
 
 - lab:
 
-  (`string`)  
+  (`string`)\
   label.
 
 - rnum:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   absolute row number.
 
 - pth:
 
-  (`character` or `NULL`)  
+  (`character` or `NULL`)\
   path within larger table.
 
 - sibpos:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   position among sibling rows.
 
 - nsibs:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   number of siblings (including self).
 
 - extent:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   number of lines required to print the row.
 
 - colwidths:
 
-  (`numeric`)  
+  (`numeric`)\
   column widths.
 
 - repext:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   number of lines required to reprint all context for this row if it
   appears directly after pagination.
 
 - repind:
 
-  (`integer`)  
+  (`integer`)\
   vector of row numbers to be reprinted if this row appears directly
   after pagination.
 
 - indent:
 
-  (`integer`)  
+  (`integer`)\
   indent.
 
 - rclass:
 
-  (`string`)  
+  (`string`)\
   class of row object.
 
 - nrowrefs:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   number of row referential footnotes for this row.
 
 - ncellrefs:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   number of cell referential footnotes for the cells in this row.
 
 - nreflines:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   total number of lines required by all referential footnotes.
 
 - force_page:
 
-  (`flag`)  
+  (`flag`)\
   currently ignored.
 
 - page_title:
 
-  (`flag`)  
+  (`flag`)\
   currently ignored.
 
 - trailing_sep:
 
-  (`string`)  
+  (`string`)\
   the string to use as a separator below this row during printing. If
   `NA_character_`, no separator is used.
 
 - fontspec:
 
-  (`font_spec`)  
+  (`font_spec`)\
   a font_spec object specifying the font information to use for
   calculating string widths and heights, as returned by
   [`font_spec()`](https://insightsengineering.github.io/formatters/reference/font_spec.md).

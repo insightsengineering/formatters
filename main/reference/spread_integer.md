@@ -12,12 +12,12 @@ spread_integer(x, len)
 
 - x:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   number to spread.
 
 - len:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   number of times to repeat `x`.
 
 ## Value

@@ -18,14 +18,14 @@ undebug_font_dev()
 
 - fontspec:
 
-  (`font_spec`)  
+  (`font_spec`)\
   a font_spec object specifying the font information to use for
   calculating string widths and heights, as returned by
   [`font_spec()`](https://insightsengineering.github.io/formatters/reference/font_spec.md).
 
 - silent:
 
-  (`logical(1)`)  
+  (`logical(1)`)\
   If `FALSE`, the default, a warning will be emitted if this function
   switches away from an active graphics device.
 
@@ -46,23 +46,23 @@ to be set:
 
 - `open`:
 
-  (`logical(1)`)  
+  (`logical(1)`)\
   whether a device is already open with font info
 
 - `fontspec`:
 
-  (`font_spec`)  
+  (`font_spec`)\
   the font specification, if any, that is currently active
   ([`list()`](https://rdrr.io/r/base/list.html) if none is).
 
 - `spacewidth`:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   the width of the space character in the currently active font.
 
 - `ismonospace`:
 
-  (`logical(1)`)  
+  (`logical(1)`)\
   whether the specified font is monospaced.
 
 `open_font_dev` opens a pdf device with the specified font only if there

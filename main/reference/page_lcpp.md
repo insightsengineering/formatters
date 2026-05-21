@@ -23,54 +23,54 @@ page_lcpp(
 
 - page_type:
 
-  (`string`)  
+  (`string`)\
   name of a page type. See
   [`page_types`](https://insightsengineering.github.io/formatters/reference/page_types.md).
   Ignored when `pg_width` and `pg_height` are set directly.
 
 - landscape:
 
-  (`flag`)  
+  (`flag`)\
   whether the dimensions of `page_type` should be inverted for landscape
   orientation. Defaults to `FALSE`, ignored when `pg_width` and
   `pg_height` are set directly.
 
 - font_family:
 
-  (`string`)  
+  (`string`)\
   name of a font family. An error will be thrown if the family named is
   not monospaced. Defaults to `"Courier"`.
 
 - font_size:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   font size. Defaults to `12`.
 
 - lineheight:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   line height. Defaults to `1`.
 
 - margins:
 
-  (`numeric(4)`)  
+  (`numeric(4)`)\
   named numeric vector containing `"bottom"`, `"left"`, `"top"`, and
   `"right"` margins in inches. Defaults to `.5` inches for both vertical
   margins and `.75` for both horizontal margins.
 
 - pg_width:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   page width in inches.
 
 - pg_height:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   page height in inches.
 
 - fontspec:
 
-  (`font_spec`)  
+  (`font_spec`)\
   a font_spec object specifying the font information to use for
   calculating string widths and heights, as returned by
   [`font_spec()`](https://insightsengineering.github.io/formatters/reference/font_spec.md).

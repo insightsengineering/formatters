@@ -2,7 +2,7 @@
 
 ## Authors
 
-- **Gabriel Becker**. Author.  
+- **Gabriel Becker**. Author.\
   original creator of the package
 
 - **Adrian Waddell**. Author.
@@ -25,13 +25,13 @@ Source:
 [`DESCRIPTION`](https://github.com/insightsengineering/formatters/blob/main/DESCRIPTION)
 
 Becker G, Waddell A, Garolini D, de la Rua E, Zhu J (2026). *formatters:
-ASCII Formatting for Values and Tables*. R package version 0.5.12.9002,
+ASCII Formatting for Values and Tables*. R package version 0.5.12.9003,
 <https://insightsengineering.github.io/formatters/>.
 
     @Manual{,
       title = {formatters: ASCII Formatting for Values and Tables},
       author = {Gabriel Becker and Adrian Waddell and Davide Garolini and Emily {de la Rua} and Joe Zhu},
       year = {2026},
-      note = {R package version 0.5.12.9002},
+      note = {R package version 0.5.12.9003},
       url = {https://insightsengineering.github.io/formatters/},
     }

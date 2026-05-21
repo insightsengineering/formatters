@@ -14,7 +14,7 @@ page_dim(page_type)
 
 - page_type:
 
-  (`string`)  
+  (`string`)\
   the name of a page size specification. Call `page_types()` for
   supported values.
 

@@ -12,12 +12,12 @@ with_label(x, label)
 
 - x:
 
-  (`ANY`)  
+  (`ANY`)\
   an object.
 
 - label:
 
-  (`string`)  
+  (`string`)\
   label attribute to attach to `x`.
 
 ## Value
