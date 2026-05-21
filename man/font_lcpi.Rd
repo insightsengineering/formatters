@@ -31,7 +31,7 @@ Calculate lines per inch and characters per inch for font
 }
 \details{
 This function opens a PDF graphics device, writes to a temporary file, then
-utilizes \code{\link[grid:grid.convert]{grid::convertWidth()}} and \code{\link[grid:grid.convert]{grid::convertHeight()}} to calculate lines
+utilizes \code{\link[grid:convertWidth]{grid::convertWidth()}} and \code{\link[grid:convertHeight]{grid::convertHeight()}} to calculate lines
 per inch and characters per inch for the specified font family, size, and
 line height.
 
