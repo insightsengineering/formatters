@@ -1,4 +1,4 @@
-## formatters 0.5.12.9002
+## formatters 0.5.12.9003
 
 * Export `mf_col_widths` accessor (`getter` and `setter`).
 
