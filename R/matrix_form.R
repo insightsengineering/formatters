@@ -625,10 +625,14 @@ mf_col_paths <- function(mf) {
   }
 }
 
+#' @export
+#' @rdname mpf_accessors
 mf_col_widths <- function(mf) {
   mf$col_widths
 }
 
+#' @export
+#' @rdname mpf_accessors
 `mf_col_widths<-` <- function(mf, value) {
   if (!is.null(value) && length(value) != NCOL(mf_strings(mf))) {
     stop(
